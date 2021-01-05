@@ -24,3 +24,13 @@ yarn-error.log*
 
 .eslintcache
 
+# ----------------------- -----------------------
+
+# Ignore generated Maven build files
+target/
+
+# Ignore editor config
+.idea
+
+# Ignore vscode config
+*.vscode/
