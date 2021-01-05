@@ -1,7 +1,12 @@
-import React from "react";
+import React from "react"
+import classes from "./Marketplace.module.css"
 
 const Marketplace = (props) => {
-  return <div>This is the Marketplace Page.</div>;
-};
+  return (
+    <div>
+      <p>This is the Marketplace page.</p>
+    </div>
+  )
+}
 
-export default Marketplace;
+export default Marketplace

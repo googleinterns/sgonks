@@ -1,7 +1,12 @@
-import React from "react";
+import React from "react"
+import classes from "./Competition.module.css"
 
 const Competition = (props) => {
-  return <div>This is the Competition page.</div>;
-};
+  return (
+    <div>
+      <p>This is the Competition Page.</p>
+    </div>
+  )
+}
 
-export default Competition;
+export default Competition

@@ -1,7 +1,12 @@
-import React from "react";
+import React from "react"
+import classes from "./MySGonks.module.css"
 
 const MySGonks = (props) => {
-  return <div>This is the MySGonks Page.</div>;
-};
+  return (
+    <div>
+      <p>This is the MySGonks Page.</p>
+    </div>
+  )
+}
 
-export default MySGonks;
+export default MySGonks
