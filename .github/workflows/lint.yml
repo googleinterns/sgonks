@@ -12,24 +12,18 @@ jobs:
       - name: install node dependencies
         if: always()
         run: make node_modules
-      # - name: Validate HTML
-      #   if: always()
-      #   run: node_modules/html-validate/bin/html-validate.js portfolio/src/main/webapp/*.html
       - name: Validate CSS
         if: always()
-        run: node_modules/css-validator/bin/css-validator portfolio/sgonks-frontend/src/*.css
+        run: node_modules/css-validator/bin/css-validator portfolio/frontend/src/*.css
       - name: Validate JavaScript
         if: always()
-        run: node_modules/eslint/bin/eslint.js portfolio/sgonks-frontend/src/*.js
-      # - name: Check HTML Formatting
-      #   if: always()
-      #   run: node_modules/prettier/bin-prettier.js -c portfolio/src/main/webapp/*.html
+        run: node_modules/eslint/bin/eslint.js portfolio/frontend/src/*.js
       - name: Check CSS Formatting
         if: always()
-        run: node_modules/prettier/bin-prettier.js -c portfolio/sgonks-frontend/src/*.css
+        run: node_modules/prettier/bin-prettier.js -c portfolio/frontend/src/*.css
       - name: Check JavaScript Formatting
         if: always()
-        run: diff -u <(cat portfolio/sgonks-frontend/src/*.js) <(node_modules/clang-format/bin/linux_x64/clang-format --style=Google portfolio/sgonks-frontend/src/*.js)
+        run: diff -u <(cat portfolio/frontend/src/*.js) <(node_modules/clang-format/bin/linux_x64/clang-format --style=Google portfolio/frontend/src/*.js)
       - name: Check Java Formatting
         if: always()
         run: diff -u <(cat portfolio/src/main/java/com/google/sps/servlets/*.java) <(node_modules/clang-format/bin/linux_x64/clang-format --style=Google portfolio/src/main/java/com/google/sps/servlets/*.java)
