@@ -1,2 +1,3 @@
-#sGonks Project
-Capstone Project for STEP internship, by emmahogan, phoebek, mercurylin
+# sGonks Project
+Capstone Project for STEP internship.
+By @emmahogan, @phoebek, @mercurylin

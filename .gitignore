@@ -1,0 +1,12 @@
+# Ignore generated NPM files
+# These are sometimes included but not necessary for this project
+node_modules/
+
+# Ignore generated Maven build files
+target/
+
+# Ignore editor config
+.idea
+
+# Ignore vscode config
+*.vscode/
