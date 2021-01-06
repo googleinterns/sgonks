@@ -13,3 +13,16 @@
 	text-decoration: none;
 	color: black;
 }
+
+.SGonksPlatform {
+	height: 100%;
+	width: 100%;
+}
+
+.Content {
+	height: 90%;
+}
+
+.Navigation {
+	height: 10%;
+}

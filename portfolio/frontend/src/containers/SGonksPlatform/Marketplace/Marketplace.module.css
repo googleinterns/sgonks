@@ -11,14 +11,14 @@
 
 .GoogleSearchDisplayedConatainer {
 	width: 70%;
-	height: 100%;
+	height: 70%;
 	display: flex;
-	flex-direction: row;
+	flex-direction: column;
 	border-radius: 7px;
 	border: solid 1px rgb(117, 43, 43);
 }
 
-.LeftConatainer {
+.RightColumnConatainer {
 	width: 30%;
 	height: 100%;
 	display: flex;
@@ -37,11 +37,24 @@
 	border: solid 1px rgb(67, 23, 172);
 }
 
+.GoogleSearchInfoContainer {
+	width: 65%;
+	height: 50%;
+	text-align: left;
+	margin: auto;
+	border-radius: 7px;
+	border: solid 1px rgb(160, 20, 118);
+}
+
+.BigText {
+	font-size: 125%;
+}
+
 .TrendingInvestmentContainer {
 	display: flex;
 	flex-direction: column;
 	justify-content: space-between;
-	height: 52%;
+	height: 40%;
 	border-radius: 7px;
 	border: solid 1px lightgray;
 }
@@ -52,6 +65,16 @@
 	display: flex;
 	flex-direction: column;
 	justify-content: space-between;
+}
+
+.TeammatesInvestmentContainer {
+	width: 100%;
+	height: 30%;
+	display: flex;
+	flex-direction: column;
+	justify-content: space-between;
+	border-radius: 7px;
+	border: solid 1px rgb(100, 133, 22);
 }
 
 .RightColumnTitle {

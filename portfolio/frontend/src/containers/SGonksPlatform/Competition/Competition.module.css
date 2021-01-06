@@ -1,0 +1,78 @@
+.Competition {
+	margin: auto;
+	width: 97%;
+	height: 97%;
+	display: flex;
+	flex-direction: row;
+	align-items: space-between;
+	justify-content: center;
+}
+
+.RankingInfoContainer {
+	width: 68%;
+	height: 100%;
+	margin-right: 1.5%;
+	display: flex;
+	flex-direction: column;
+	justify-content: space-between;
+}
+
+.CompInfoContainer {
+	width: 30%;
+	height: 100%;
+	display: flex;
+	flex-direction: column;
+	justify-content: space-between;
+}
+
+.RankingsContainer {
+	height: 57%;
+	border-radius: 7px;
+	border: solid 1px lightgray;
+}
+
+.RankingChartContainer {
+	height: 40%;
+	border-radius: 7px;
+	border: solid 1px lightgray;
+	overflow: hidden;
+}
+
+.UserRankContainer {
+	height: 45%;
+	border-radius: 7px;
+	border: solid 1px lightgray;
+}
+
+.CompDetailsContainer {
+	height: 52%;
+	border-radius: 7px;
+	border: solid 1px lightgray;
+}
+
+.RankingRows {
+	width: 95%;
+	margin: auto;
+	margin-top: 2%;
+	height: 95%;
+}
+
+.Row {
+	display: flex;
+	flex-direction: row;
+	justify-content: space-between;
+	height: 10%;
+}
+
+.RankDisplay {
+	font-size: 150px;
+}
+
+.CompDetailBlock {
+	margin: 10%;
+	font-size: 20px;
+}
+
+.RankingChartContainer img {
+	width: 100%;
+}
