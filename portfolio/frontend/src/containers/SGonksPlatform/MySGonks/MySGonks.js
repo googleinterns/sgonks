@@ -34,12 +34,19 @@ const MySGonks = (props) => {
         </div>
       </div>
       <div className={classes.SGonksTable}>
-        <div className={classes.TableRow}>
+        <div className={`${classes.TableRow} ${classes.TitleRow}`}>
           <p>Search Query</p>
           <p>Buy-in Date</p>
           <p>Amount Invested</p>
           <p>Current Value</p>
           <p>Net Difference</p>
+        </div>
+        <div className={classes.TableRow}>
+          <p>chicken wings </p>
+          <p>31-12-2020</p>
+          <p>t$341</p>
+          <p>t$492810</p>
+          <p>t$492469</p>
         </div>
         <div className={classes.TableRow}>
           <p>chicken wings </p>
