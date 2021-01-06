@@ -1,0 +1,40 @@
+.Body {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-evenly;
+}
+
+.Box {
+    padding: 10px;
+    border-style: solid;
+    margin-top: 10px;
+    margin-bottom: 10px;
+}
+
+.Column {
+    padding: 10px;
+}
+
+.BigFont {
+    font-size: 40px;
+}
+
+.MediumFont {
+    font-size: 25px;
+}
+
+button {
+    width: 100%;
+    height: 40px;
+    background: blue;
+    color: white;
+    font-size: 20px;
+}
+
+img {
+    width: 400px;
+}
+
+p {
+    margin: 5px;
+}
