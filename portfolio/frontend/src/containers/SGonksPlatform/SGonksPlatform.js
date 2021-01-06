@@ -3,6 +3,7 @@ import Dashboard from "./Dashboard/Dashboard"
 import MySGonks from "./MySGonks/MySGonks"
 import Competition from "./Competition/Competition"
 import Marketplace from "./Marketplace/Marketplace"
+import Explanation from "./Explanation/Explanation"
 import classes from "./SGonksPlatform.module.css"
 
 import { Route, NavLink } from "react-router-dom"
@@ -25,6 +26,9 @@ const SGonksPlatform = (props) => {
             <li>
               <NavLink to="/marketplace">sGonks Market</NavLink>
             </li>
+            <li>
+              <NavLink to="/explanation">Explanation</NavLink>
+            </li>
           </ul>
         </nav>
       </header>
@@ -33,6 +37,7 @@ const SGonksPlatform = (props) => {
         <Route path="/mysgonks" exact component={MySGonks}></Route>
         <Route path="/competition" exact component={Competition}></Route>
         <Route path="/marketplace" exact component={Marketplace}></Route>
+        <Route path="/explanation" exact component={Explanation}></Route>
       </div>
     </div>
   )
