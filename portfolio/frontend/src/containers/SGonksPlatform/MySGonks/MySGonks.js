@@ -26,7 +26,7 @@ const MySGonks = (props) => {
             <p>
               <strong>Currently available:</strong>
             </p>
-            <p>t$4918</p>
+            <p className={classes.AvailAmount}>t$4918</p>
           </div>
           <div className={classes.BuyButton}>
             <Link to="/marketplace">Buy sGonks</Link>
