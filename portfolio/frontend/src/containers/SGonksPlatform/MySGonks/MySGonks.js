@@ -9,7 +9,7 @@ const MySGonks = (props) => {
     <div className={classes.MySGonks}>
       <div className={classes.ChartAndInfoContainer}>
         <div className={classes.ChartContainer}>
-          <img src={placeholderChart}></img>
+          <img src={placeholderChart} className={classes.PlaceholderChart}></img>
         </div>
         <div className={classes.InfoContainer}>
           <div className={classes.NameInfoContainer}>
