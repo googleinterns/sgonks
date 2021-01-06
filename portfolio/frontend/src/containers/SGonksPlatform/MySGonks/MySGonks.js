@@ -21,7 +21,7 @@ const MySGonks = (props) => {
             <p><strong>Currently available:</strong></p>
             <p>t$4918</p>
           </div>
-          <Link to={Marketplace}>Buy sGonks</Link>
+          <Link to="/marketplace" >Buy sGonks</Link>
         </div>
       </div>
       <div className={classes.SGonksTable}>
