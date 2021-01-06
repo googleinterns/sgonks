@@ -1,7 +1,6 @@
 import React from "react"
 import classes from "./MySGonks.module.css"
 import placeholderChart from "../../../assets/placeholderChart.png"
-import Marketplace from "../Marketplace/Marketplace"
 import { Link } from "react-router-dom"
 
 const MySGonks = (props) => {
