@@ -26,25 +26,39 @@
 }
 
 .RankingsContainer {
-	background-color: aliceblue;
-	height: 52%;
+	height: 57%;
 	border-radius: 7px;
+	border: solid 1px lightgray;
 }
 
 .RankingChartContainer {
-	background-color: orange;
-	height: 45%;
+	height: 40%;
 	border-radius: 7px;
+	border: solid 1px lightgray;
 }
 
 .UserRankContainer {
 	height: 45%;
-	background-color: pink;
 	border-radius: 7px;
+	border: solid 1px lightgray;
 }
 
 .CompDetailsContainer {
 	height: 52%;
-	background-color: brown;
 	border-radius: 7px;
+	border: solid 1px lightgray;
+}
+
+.RankingRows {
+	width: 95%;
+	margin: auto;
+	margin-top: 2%;
+	height: 95%;
+}
+
+.Row {
+	display: flex;
+	flex-direction: row;
+	justify-content: space-between;
+	height: 10%;
 }
