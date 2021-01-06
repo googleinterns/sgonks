@@ -1,15 +1,15 @@
-import React from "react";
-import Dashboard from "./Dashboard/Dashboard";
-import MySGonks from "./MySGonks/MySGonks";
-import Competition from "./Competition/Competition";
-import Marketplace from "./Marketplace/Marketplace";
-import classes from "./SGonksPlatform.module.css";
+import React from "react"
+import Dashboard from "./Dashboard/Dashboard"
+import MySGonks from "./MySGonks/MySGonks"
+import Competition from "./Competition/Competition"
+import Marketplace from "./Marketplace/Marketplace"
+import classes from "./SGonksPlatform.module.css"
 
-import { Route, NavLink } from "react-router-dom";
+import { Route, NavLink } from "react-router-dom"
 
 const SGonksPlatform = (props) => {
   return (
-    <div>
+    <div className={classes.SGonksPlatform}>
       <header className={classes.Navigation}>
         <nav>
           <ul>
@@ -28,12 +28,14 @@ const SGonksPlatform = (props) => {
           </ul>
         </nav>
       </header>
-      <Route path="/dashboard" exact component={Dashboard}></Route>
-      <Route path="/mysgonks" exact component={MySGonks}></Route>
-      <Route path="/competition" exact component={Competition}></Route>
-      <Route path="/marketplace" exact component={Marketplace}></Route>
+      <div className={classes.Content}>
+        <Route path="/dashboard" exact component={Dashboard}></Route>
+        <Route path="/mysgonks" exact component={MySGonks}></Route>
+        <Route path="/competition" exact component={Competition}></Route>
+        <Route path="/marketplace" exact component={Marketplace}></Route>
+      </div>
     </div>
-  );
-};
+  )
+}
 
-export default SGonksPlatform;
+export default SGonksPlatform

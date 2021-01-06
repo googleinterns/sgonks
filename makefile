@@ -4,7 +4,7 @@ ESLINT=node_modules/eslint/bin/eslint.js
 PRETTIER=node_modules/prettier/bin-prettier.js
 
 node_modules:
-	npm install clang-format prettier css-validator eslint eslint-config-google
+	npm install clang-format prettier css-validator eslint eslint-config-google react-scripts
 
 pretty: node_modules
 	$(PRETTIER) --write portfolio/frontend/src/*.css
