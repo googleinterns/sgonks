@@ -1,0 +1,111 @@
+.MarketPlace {
+	width: 100%;
+	height: 100%;
+	display: flex;
+	flex-direction: row;
+	align-items: space-around;
+	justify-content: center;
+	border-radius: 7px;
+	border: solid 1px rgb(212, 181, 43);
+}
+
+.GoogleSearchDisplayedConatainer {
+	width: 70%;
+	height: 100%;
+	display: flex;
+	flex-direction: row;
+	border-radius: 7px;
+	border: solid 1px rgb(117, 43, 43);
+}
+
+.LeftConatainer {
+	width: 30%;
+	height: 100%;
+	display: flex;
+	flex-direction: column;
+	border-radius: 7px;
+	border: solid 1px rgb(47, 151, 87);
+}
+
+.GoogleSearchContainer {
+	width: 65%;
+	height: 100%;
+	margin: auto;
+	display: flex;
+	flex-direction: column;
+	border-radius: 7px;
+	border: solid 1px rgb(67, 23, 172);
+}
+
+.TrendingInvestmentContainer {
+	display: flex;
+	flex-direction: column;
+	justify-content: space-between;
+	height: 52%;
+	border-radius: 7px;
+	border: solid 1px lightgray;
+}
+
+.RightColumnContainer {
+	width: 30%;
+	height: 100%;
+	display: flex;
+	flex-direction: column;
+	justify-content: space-between;
+}
+
+.RightColumnTitle {
+	font-size: 150px;
+}
+
+.RankingsContainer {
+	height: 57%;
+	border-radius: 7px;
+	border: solid 1px lightgray;
+}
+
+.RankingChartContainer {
+	height: 40%;
+	border-radius: 7px;
+	border: solid 1px lightgray;
+	overflow: hidden;
+}
+
+.UserRankContainer {
+	height: 45%;
+	border-radius: 7px;
+	border: solid 1px lightgray;
+}
+
+.CompDetailsContainer {
+	height: 52%;
+	border-radius: 7px;
+	border: solid 1px lightgray;
+}
+
+.RankingRows {
+	width: 95%;
+	margin: auto;
+	margin-top: 2%;
+	height: 95%;
+}
+
+.Row {
+	display: flex;
+	flex-direction: row;
+	justify-content: space-between;
+	height: 10%;
+}
+
+.RankDisplay {
+	font-size: 150px;
+}
+
+.CompDetailBlock {
+	margin: 10%;
+	font-size: 20px;
+}
+
+.RankingChartContainer img {
+	width: 100%;
+}
