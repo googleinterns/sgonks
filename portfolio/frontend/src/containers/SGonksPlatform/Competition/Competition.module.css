@@ -62,3 +62,12 @@
 	justify-content: space-between;
 	height: 10%;
 }
+
+.RankDisplay {
+	font-size: 150px;
+}
+
+.CompDetailBlock {
+	margin: 10%;
+	font-size: 20px;
+}

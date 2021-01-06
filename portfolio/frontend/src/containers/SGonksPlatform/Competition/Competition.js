@@ -82,8 +82,29 @@ const Competition = (props) => {
         <div className={classes.RankingChartContainer}>chart here</div>
       </div>
       <div className={classes.CompInfoContainer}>
-        <div className={classes.UserRankContainer}>Ranking here</div>
-        <div className={classes.CompDetailsContainer}>Comp status here</div>
+        <div className={classes.UserRankContainer}>
+          <p>Your current ranking:</p>
+          <p>
+            <strong className={classes.RankDisplay}>2</strong>nd
+          </p>
+          <p>+3 from yesterday</p>
+        </div>
+        <div className={classes.CompDetailsContainer}>
+          <div className={classes.CompDetailBlock}>
+            <p>
+              <strong>Competition Details</strong>
+            </p>
+            <p>Start date: 01-12-2020</p>
+            <p>End date: 01-12-2020</p>
+          </div>
+          <div className={classes.CompDetailBlock}>
+            <p>
+              <strong>Time until end of competition:</strong>
+            </p>
+            <p>20 Days 10 hours</p>
+            <p>54 minutes 20 seconds</p>
+          </div>
+        </div>
       </div>
     </div>
   )
