@@ -2,6 +2,7 @@ import React from "react"
 import classes from "./MySGonks.module.css"
 import placeholderChart from "../../../assets/placeholderChart.png"
 import Marketplace from "../Marketplace/Marketplace"
+import {Link} from "react-router-dom"
 
 const MySGonks = (props) => {
   return (
@@ -23,7 +24,43 @@ const MySGonks = (props) => {
           <Link to={Marketplace}>Buy sGonks</Link>
         </div>
       </div>
-      
+      <div className={classes.SGonksTable}>
+        <div className={classes.TableRow}>
+          <p>Search Query</p>
+          <p>Buy-in Date</p>
+          <p>Amount Invested</p>
+          <p>Current Value</p>
+          <p>Net Difference</p>
+        </div>
+        <div className={classes.TableRow}>
+          <p>chicken wings </p>
+          <p>31-12-2020</p>
+          <p>t$341</p>
+          <p>t$492810</p>
+          <p>t$492469</p>
+        </div>
+        <div className={classes.TableRow}>
+          <p>chicken wings </p>
+          <p>31-12-2020</p>
+          <p>t$341</p>
+          <p>t$492810</p>
+          <p>t$492469</p>
+        </div>
+        <div className={classes.TableRow}>
+          <p>chicken wings </p>
+          <p>31-12-2020</p>
+          <p>t$341</p>
+          <p>t$492810</p>
+          <p>t$492469</p>
+        </div>
+        <div className={classes.TableRow}>
+          <p>chicken wings </p>
+          <p>31-12-2020</p>
+          <p>t$341</p>
+          <p>t$492810</p>
+          <p>t$492469</p>
+        </div>
+      </div>
     </div>
   )
 }
