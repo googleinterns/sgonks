@@ -35,6 +35,7 @@
 	height: 40%;
 	border-radius: 7px;
 	border: solid 1px lightgray;
+	overflow: hidden;
 }
 
 .UserRankContainer {
@@ -70,4 +71,8 @@
 .CompDetailBlock {
 	margin: 10%;
 	font-size: 20px;
+}
+
+.RankingChartContainer img {
+	width: 100%;
 }

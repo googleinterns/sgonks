@@ -1,5 +1,6 @@
 import React from "react"
 import classes from "./Competition.module.css"
+import placeholderChart from "../../../assets/placeholderChart.png"
 
 const Competition = (props) => {
   return (
@@ -79,7 +80,9 @@ const Competition = (props) => {
             </div>
           </div>
         </div>
-        <div className={classes.RankingChartContainer}>chart here</div>
+        <div className={classes.RankingChartContainer}>
+          <img src={placeholderChart}></img>
+        </div>
       </div>
       <div className={classes.CompInfoContainer}>
         <div className={classes.UserRankContainer}>
