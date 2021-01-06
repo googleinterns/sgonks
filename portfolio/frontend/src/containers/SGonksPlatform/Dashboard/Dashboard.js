@@ -1,5 +1,5 @@
-import React from "react"
-import classes from "./Dashboard.module.css"
+import React from 'react'
+import classes from './Dashboard.module.css'
 
 const Dashboard = (props) => {
   return (
@@ -35,7 +35,7 @@ const Dashboard = (props) => {
           </ul>
         </div>
         <div className={classes.Box}>
-          <img src='chart_placeholder.jpg' alt="placeholder chart"/>
+          <img src='chart_placeholder.jpg' alt='placeholder chart'/>
         </div>
         <button>View my sGonks</button>
       </div>
