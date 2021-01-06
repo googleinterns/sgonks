@@ -44,7 +44,34 @@
     align-items: center;
 }
 
+.NameInfoContainer {
+    width: 100%;
+    height: 34%;
+    background: coral;
+}
 
+.CurrentlyAvailableContainer {
+    width: 100%;
+    height: 40%;
+    background: teal;
+}
+
+.BuyButton {
+    width: 100%;
+    background: gray;
+    height: 17%;
+    text-align: center;
+    justify-content: center;
+    vertical-align: center;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+
+.BuyButton a {
+    text-decoration: none;
+    color: white;
+}
 
 .SGonksTable {
     width: 100%;
