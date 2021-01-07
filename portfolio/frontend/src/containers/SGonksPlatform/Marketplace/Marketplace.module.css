@@ -1,0 +1,91 @@
+.MarketPlace {
+	width: 100%;
+	height: 100%;
+	display: flex;
+	flex-direction: row;
+	align-items: space-around;
+	justify-content: center;
+}
+
+.GoogleSearchDisplayedConatainer {
+	width: 90%;
+	height: 70%;
+	display: flex;
+	flex-direction: column;
+}
+
+.RightColumnConatainer {
+	width: 30%;
+	height: 100%;
+	display: flex;
+	flex-direction: column;
+}
+
+.GoogleSearchContainer {
+	width: 30%;
+	height: 30%;
+	margin: auto;
+	display: flex;
+	flex-direction: column;
+}
+
+.ChartContainer {
+	margin: auto;
+	width: 100%;
+	height: 100%;
+}
+
+.GoogleSearchInfoContainer {
+	width: 65%;
+	height: 60%;
+	display: flex;
+	flex-direction: column;
+	justify-content: space-between;
+	text-align: left;
+	margin: auto;
+}
+
+.BigText {
+	font-size: 125%;
+}
+
+.TrendingInvestmentContainer {
+	display: flex;
+	flex-direction: column;
+	justify-content: space-between;
+	height: 40%;
+	border-radius: 7px;
+	border: solid 1px lightgray;
+}
+
+.RightColumnContainer {
+	width: 30%;
+	height: 100%;
+	display: flex;
+	flex-direction: column;
+	justify-content: space-between;
+}
+
+.TeammatesInvestmentContainer {
+	width: 100%;
+	height: 30%;
+	display: flex;
+	flex-direction: column;
+	justify-content: space-between;
+	border-radius: 7px;
+	border: solid 1px lightgray;
+}
+
+.button {
+	width: 30%;
+	height: 30%;
+	border: none;
+	color: white;
+	padding: 15px 32px;
+	text-align: center;
+	text-decoration: none;
+	display: inline-block;
+	font-size: 16px;
+	margin: 4px 2px;
+	cursor: pointer;
+}
