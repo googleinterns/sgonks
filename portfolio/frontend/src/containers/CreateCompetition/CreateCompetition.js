@@ -1,5 +1,7 @@
 import React from "react"
 import classes from "./CreateCompetition.module.css"
+import {Link} from "react-router-dom"
+
 const CreateCompetition = (props) => {
   return (
     <div className={classes.CreateCompetitionPage}>
@@ -57,7 +59,7 @@ const CreateCompetition = (props) => {
           <button>Cancel</button>
         </div>
         <div className={classes.Button}>
-          <button>Confirm creation</button>
+          <Link to="/sgonks-platform">Confirm creation</Link>
         </div>
       </div>
     </div>
