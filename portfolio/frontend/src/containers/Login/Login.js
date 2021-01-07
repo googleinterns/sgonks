@@ -20,7 +20,7 @@ const Login = (props) => {
                         Rump hamburger jowl cow. Tail ribeye burgdoggen tongue. Chislic pork belly doner rump frankfurter. 
                         Jowl meatloaf ribeye beef pork, shoulder bresaola filet mignon.</p>
                     <div className={classes.Buttons}>
-                        <button className={classes.Login}>Login</button>
+                        <button className={classes.Login} onClick={() => props.handler()}>Login</button>
                         <button className={classes.Help}>See how it works</button>
                     </div>
                 </div>
