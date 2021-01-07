@@ -1,13 +1,15 @@
 ifeq ($(OS),Windows_NT)     # is Windows_NT on XP, 2000, 7, Vista, 10...
     detected_OS := Windows
-	# yikes what do we do if some numpty is using Windows
+	# don't worry about this for now
 else
     detected_OS := $(shell uname)
 endif
 
-ifeq ($(detected_OS),Darwin)        # Mac OS X
+ifeq ($(detected_OS),Darwin)        
+	# Mac OS X
     CLANG_FORMAT = node_modules/clang-format/bin/darwin_x64/clang-format --style=Google
-else 
+else
+	# Assume Linux, not Windows
 	CLANG_FORMAT = node_modules/clang-format/bin/linux_x64/clang-format --style=Google
 endif
 
