@@ -1,0 +1,104 @@
+.MySGonks {
+    position: relative;
+    margin: auto;
+    width: 97%;
+    height: 97%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.ChartAndInfoContainer {
+    width: 100%;
+    height: 65%;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.ChartContainer {
+    width: 65%;
+    height: 100%;
+    border-radius: 7px;
+    overflow: hidden;
+    border: solid 1px lightgray;
+}
+
+.PlaceholderChart {
+    width: 100%;
+    height: 100%;
+}
+
+.InfoContainer {
+    width: 33%;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.NameInfoContainer {
+    width: 100%;
+    height: 34%;
+    border-radius: 7px;
+    border: solid 1px lightgray;
+}
+
+.CurrentlyAvailableContainer {
+    width: 100%;
+    height: 40%;
+    border-radius: 7px;
+    border: solid 1px lightgray;
+    font-size: 1.5vw;
+}
+
+.AvailAmount {
+    font-size: 2.5vw;
+}
+
+.BuyButton {
+    width: 100%;
+    border-radius: 7px;
+    border: solid 1px #1A73E8;
+    height: 17%;
+    text-align: center;
+    justify-content: center;
+    vertical-align: center;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    background-color: #2F7DE7;
+}
+
+.BuyButton a {
+    text-decoration: none;
+    color: white;
+    font-size: 1.5vw;
+    font-weight: bold;
+}
+
+.SGonksTable {
+    width: 100%;
+    height: 32%;
+    border-radius: 7px;
+    border: solid 1px lightgray;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: start;
+}
+
+.TableRow {
+    width: 95%;
+    height: 14%; 
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+}
+
+.TitleRow {
+    font-weight: bold;
+}
