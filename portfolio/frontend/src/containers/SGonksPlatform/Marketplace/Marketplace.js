@@ -26,9 +26,8 @@ const Marketplace = (props) => {
           </div>
           <p>Amout to purchase: t$</p>
           <p>Currently avaliable: t$</p>
-          <div className={classes.button}>
-            <button class="button">Confirm Purchase</button>
-          </div>
+          <br></br>
+          <div className={classes.Button}>Confirm purchase</div>
         </div>
       </div>
       <div className={classes.RightColumnConatainer}>

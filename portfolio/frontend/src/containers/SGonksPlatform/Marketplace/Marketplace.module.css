@@ -79,16 +79,18 @@
 	border: solid 1px lightgray;
 }
 
-.button {
-	width: 30%;
-	height: 30%;
-	border: none;
-	color: white;
-	padding: 15px 32px;
+.Button {
+	width: 40%;
+	border-radius: 7px;
+	border: solid 1px #1a73e8;
+	height: 20%;
 	text-align: center;
-	text-decoration: none;
-	display: inline-block;
-	font-size: 16px;
-	margin: 4px 2px;
-	cursor: pointer;
+	color: white;
+	font-weight: bolder;
+	justify-content: center;
+	vertical-align: center;
+	display: flex;
+	flex-direction: column;
+	justify-content: center;
+	background-color: #2f7de7;
 }
