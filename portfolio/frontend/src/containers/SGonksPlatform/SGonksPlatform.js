@@ -5,7 +5,7 @@ import Competition from "./Competition/Competition"
 import Marketplace from "./Marketplace/Marketplace"
 import classes from "./SGonksPlatform.module.css"
 
-import { Route, NavLink } from "react-router-dom"
+import { Route, NavLink, Link } from "react-router-dom"
 
 const SGonksPlatform = (props) => {
   return (
@@ -27,6 +27,10 @@ const SGonksPlatform = (props) => {
             </li>
           </ul>
         </nav>
+        <div className="classes.CompAndLogInToggle">
+          <Link to="/switchComp">Switch Competition</Link>
+          <Link to="/" className={classes.LogOutButton}>Log out</Link>
+        </div>
       </header>
       <div className={classes.Content}>
         <Route path={props.match.url} exact component={Dashboard}></Route>
