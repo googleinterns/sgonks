@@ -4,6 +4,7 @@ import MySGonks from "./MySGonks/MySGonks"
 import Competition from "./Competition/Competition"
 import Marketplace from "./Marketplace/Marketplace"
 import classes from "./SGonksPlatform.module.css"
+import SelectCompetition from "../SelectCompetition/SelectCompetition"
 
 import { Route, NavLink, Link } from "react-router-dom"
 
@@ -39,6 +40,7 @@ const SGonksPlatform = (props) => {
         <Route path={props.match.url + "/mysgonks"} exact component={MySGonks}></Route>
         <Route path={props.match.url + "/competition"} exact component={Competition}></Route>
         <Route path={props.match.url + "/marketplace"} exact component={Marketplace}></Route>
+        <Route path="/switchComp" exact component={SelectCompetition}></Route>
       </div>
     </div>
   )
