@@ -1,0 +1,34 @@
+.Header {
+    padding: 20px;
+    display: flex;
+}
+
+.LogoutButton {
+    width: 80px;
+    margin-left: auto;
+}
+
+.ScrollCompetitionsContainer {
+    display: flex;
+    justify-content: space-evenly;
+}
+
+.ScrollButton {
+    margin: auto 0;
+}
+
+.CompetitionCard {
+    display: flex;
+    border: solid;
+    padding: 20px;
+}
+
+.CompetitionCardColumn {
+    padding: 20px;
+    text-align: left;
+}
+
+img {
+    width: 150px;
+    height: auto;
+}
