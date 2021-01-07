@@ -1,5 +1,6 @@
 import React from "react"
 import classes from "./SelectCompetition.module.css"
+import {Link} from "react-router-dom"
 
 const SelectCompetition = (props) => {
   return (
@@ -28,7 +29,7 @@ const SelectCompetition = (props) => {
                     <p><bold>Initial worth: </bold>       t$100</p>
                     <p><bold>Net worth:     </bold>     t$19492</p>
                     <p><bold>Available:     </bold>      t$4931</p>
-                    <button className={classes.ViewCompButton}>View Competition</button>
+                    <Link to="/sgonks-platform" className={classes.ViewCompButton}>View Competition</Link>
                 </div>
             </div>
             <p className={classes.ScrollButton}>Next</p>
