@@ -35,7 +35,7 @@ const SelectCompetition = (props) => {
             <p className={classes.ScrollButton}>Next</p>
         </div>
         <h2>Or...</h2>
-        <button className={classes.CreateCompButton}>Create a competition</button>
+        <Link to="/createComp" className={classes.CreateCompButton}>Create a competition</Link>
     </div>
   )
 }
