@@ -1,5 +1,6 @@
 import React from "react"
 import classes from "./Login.module.css"
+import {Link} from "react-router-dom"
 
 const Login = (props) => {
     return (
@@ -20,7 +21,7 @@ const Login = (props) => {
                         Rump hamburger jowl cow. Tail ribeye burgdoggen tongue. Chislic pork belly doner rump frankfurter. 
                         Jowl meatloaf ribeye beef pork, shoulder bresaola filet mignon.</p>
                     <div className={classes.Buttons}>
-                        <button className={classes.Login} onClick={() => props.handler()}>Login</button>
+                        <Link className={classes.Login} to="/sgonks-platform">Login</Link>
                         <button className={classes.Help}>See how it works</button>
                     </div>
                 </div>

@@ -14,25 +14,25 @@ const SGonksPlatform = (props) => {
         <nav>
           <ul>
             <li>
-              <NavLink to="/dashboard">Dashboard</NavLink>
+              <NavLink to={props.match.url}>Dashboard</NavLink>
             </li>
             <li>
-              <NavLink to="/mysgonks">My sGonks</NavLink>
+              <NavLink to={props.match.url + "/mysgonks"}>My sGonks</NavLink>
             </li>
             <li>
-              <NavLink to="/competition">Competition</NavLink>
+              <NavLink to={props.match.url + "/competition"}>Competition</NavLink>
             </li>
             <li>
-              <NavLink to="/marketplace">sGonks Market</NavLink>
+              <NavLink to={props.match.url + "/marketplace"}>sGonks Market</NavLink>
             </li>
           </ul>
         </nav>
       </header>
       <div className={classes.Content}>
-        <Route path="/dashboard" exact component={Dashboard}></Route>
-        <Route path="/mysgonks" exact component={MySGonks}></Route>
-        <Route path="/competition" exact component={Competition}></Route>
-        <Route path="/marketplace" exact component={Marketplace}></Route>
+        <Route path={props.match.url} exact component={Dashboard}></Route>
+        <Route path={props.match.url + "/mysgonks"} exact component={MySGonks}></Route>
+        <Route path={props.match.url + "/competition"} exact component={Competition}></Route>
+        <Route path={props.match.url + "/marketplace"} exact component={Marketplace}></Route>
       </div>
     </div>
   )
