@@ -1,5 +1,5 @@
 import './App.css'
-import { BrowserRouter, Route } from 'react-router-dom'
+import {BrowserRouter, Route} from 'react-router-dom'
 
 import Login from './containers/Login/Login'
 import SGonksPlatfrom from './containers/SGonksPlatform/SGonksPlatform'
