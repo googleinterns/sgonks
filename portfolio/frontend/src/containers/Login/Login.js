@@ -7,7 +7,7 @@ const Login = (props) => {
             <div className={classes.Header}>
                 <img src="sGonksLogo.png" alt="sGonks Logo" className={classes.Logo}></img>
                 <div className={classes.HeaderButtons}>
-                    <button className={classes.Login}>Login</button>
+                    <button className={classes.Login} onClick={() => props.handler()}>Login</button>
                     <button className={classes.Help}>See how it works</button>
                 </div>
             </div>
