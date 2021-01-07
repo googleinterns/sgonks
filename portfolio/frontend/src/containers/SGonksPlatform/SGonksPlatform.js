@@ -27,9 +27,11 @@ const SGonksPlatform = (props) => {
             </li>
           </ul>
         </nav>
-        <div className="classes.CompAndLogInToggle">
+        <div className={classes.CompAndLogInToggle}>
           <Link to="/switchComp">Switch Competition</Link>
-          <Link to="/" className={classes.LogOutButton}>Log out</Link>
+          <div className={classes.LogOutButtonContainer}>
+            <Link to="/" className={classes.LogOutButton}>Log out</Link>
+          </div>
         </div>
       </header>
       <div className={classes.Content}>
