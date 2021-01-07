@@ -23,9 +23,8 @@ const SelectCompetition = (props) => {
                 </div>
 
                 <div className={classes.CompetitionCardColumn}>
-                    <h2>Current ranking: 7th</h2>
-                    <br/>
-                    <br/>
+                    <h2>Current ranking: </h2>
+                    <h1 className={classes.Place}>7th</h1>
                     <p><bold>Initial worth: </bold>       t$100</p>
                     <p><bold>Net worth:     </bold>     t$19492</p>
                     <p><bold>Available:     </bold>      t$4931</p>
