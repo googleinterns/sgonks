@@ -7,9 +7,9 @@ const Login = (props) => {
         <div>
             <div className={classes.Header}>
                 <img src="sGonksLogo.png" alt="sGonks Logo" className={classes.Logo}></img>
-                <div className={classes.HeaderButtons}>
-                    <button className={classes.Login} onClick={() => props.handler()}>Login</button>
-                    <button className={classes.Help}>See how it works</button>
+                <div className={classes.Buttons}>
+                    <Link className={classes.Login} to="/sgonks-platform">Login</Link>
+                    <Link className={classes.Help} to="/explanation">See how it works</Link>
                 </div>
             </div>
 
@@ -22,7 +22,7 @@ const Login = (props) => {
                         Jowl meatloaf ribeye beef pork, shoulder bresaola filet mignon.</p>
                     <div className={classes.Buttons}>
                         <Link className={classes.Login} to="/sgonks-platform">Login</Link>
-                        <button className={classes.Help}>See how it works</button>
+                        <Link className={classes.Help} to="/explanation">See how it works</Link>
                     </div>
                 </div>
                 <div className={classes.Column}>
