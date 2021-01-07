@@ -56,7 +56,7 @@ const CreateCompetition = (props) => {
       </div>
       <div className={classes.ButtonContainer}>
         <div className={classes.Button}>
-          <button>Cancel</button>
+          <Link to="/switchComp">Cancel</Link>
         </div>
         <div className={classes.Button}>
           <Link to="/sgonks-platform">Confirm creation</Link>
