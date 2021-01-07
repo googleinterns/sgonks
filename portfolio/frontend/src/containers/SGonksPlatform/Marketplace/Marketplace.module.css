@@ -8,8 +8,8 @@
 }
 
 .GoogleSearchDisplayedConatainer {
-	width: 90%;
-	height: 70%;
+	width: 100%;
+	height: 90%;
 	display: flex;
 	flex-direction: column;
 }
@@ -30,9 +30,12 @@
 }
 
 .ChartContainer {
-	margin: auto;
-	width: 100%;
-	height: 100%;
+	height: auto;
+	max-width: 100%;
+}
+
+.ChartImg {
+	width: 80%;
 }
 
 .GoogleSearchInfoContainer {
