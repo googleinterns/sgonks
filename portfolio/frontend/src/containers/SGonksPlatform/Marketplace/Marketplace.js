@@ -17,17 +17,17 @@ const Marketplace = (props) => {
           <br></br>
         </div>
         <div className={classes.ChartContainer}>
-          <img src={placeholderMarket}></img>
+          <img className={classes.ChartImg} src={placeholderMarket}></img>
         </div>
         <div className={classes.GoogleSearchInfoContainer}>
           <div className={classes.BigText}>
+            <br></br>
             <p>"Chick Wings"</p>
           </div>
           <p>Amout to purchase: t$</p>
           <p>Currently avaliable: t$</p>
-          <div className={classes.button}>
-            <button class="button">Confirm Purchase</button>
-          </div>
+          <br></br>
+          <div className={classes.Button}>Confirm purchase</div>
         </div>
       </div>
       <div className={classes.RightColumnConatainer}>
@@ -36,15 +36,16 @@ const Marketplace = (props) => {
         </div>
         <div className={classes.TrendingInvestmentContainer}>
           <p> 1. new year 2021</p>
-          <p> 1. new year 2021</p>
-          <p> 1. new year 2021</p>
-          <p> 1. new year 2021</p>
-          <p> 1. new year 2021</p>
-          <p> 1. new year 2021</p>
-          <p> 1. new year 2021</p>
-          <p> 1. new year 2021</p>
+          <p> 2. bit coin</p>
+          <p> 3. COVID 19</p>
+          <p> 4. COVID vaccine</p>
+          <p> 5. Taylor Swift</p>
+          <p> 6. American football</p>
+          <p> 7. US Election results</p>
+          <p> 8. work from home tips</p>
         </div>
         <div className={classes.BigText}>
+          <br></br>
           <p>See what your team is buying:</p>
         </div>
         <div className={classes.TeammatesInvestmentContainer}>

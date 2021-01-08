@@ -1,5 +1,6 @@
 import React from "react"
 import classes from "./CreateCompetition.module.css"
+import { Link } from "react-router-dom"
 const CreateCompetition = (props) => {
   return (
     <div className={classes.CreateCompetitionPage}>
@@ -53,11 +54,11 @@ const CreateCompetition = (props) => {
         </div>
       </div>
       <div className={classes.ButtonContainer}>
-        <div className={classes.Button}>
-          <button>Cancel</button>
+        <div className={[classes.Button, classes.White].join(" ")}>
+          <Link to="/switchComp">Cancel</Link>
         </div>
-        <div className={classes.Button}>
-          <button>Confirm creation</button>
+        <div className={[classes.Button, classes.Blue].join(" ")}>
+          <Link to="/dashboard">Confirm creation</Link>
         </div>
       </div>
     </div>
