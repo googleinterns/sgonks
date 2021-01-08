@@ -1,0 +1,18 @@
+.Title {
+	font-size: 150%;
+}
+.ExplanationPage {
+	margin: auto;
+}
+
+.ExplanationContainer {
+	width: 75%;
+	height: 75%;
+	display: flex;
+	margin: auto;
+	padding: 25px 25px 25px 25px;
+	flex-direction: column;
+	justify-content: space-between;
+	border-radius: 7px;
+	border: solid 1px lightgray;
+}
