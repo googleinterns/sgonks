@@ -8,8 +8,8 @@ const Login = (props) => {
             <div className={classes.Header}>
                 <img src="sGonksLogo.png" alt="sGonks Logo" className={classes.Logo}></img>
                 <div className={classes.Buttons}>
-                    <Link className={classes.Login} to="/switchComp">Login</Link>
-                    <Link className={classes.Help} to="/explanation">See how it works</Link>
+                    <Link className={`${classes.Login} ${classes.Button}`} to="/sgonks-platform">Login</Link>
+                    <Link className={`${classes.Help} ${classes.Button}`} to="/explanation">See how it works</Link>
                 </div>
             </div>
 
@@ -21,8 +21,8 @@ const Login = (props) => {
                         Rump hamburger jowl cow. Tail ribeye burgdoggen tongue. Chislic pork belly doner rump frankfurter. 
                         Jowl meatloaf ribeye beef pork, shoulder bresaola filet mignon.</p>
                     <div className={classes.Buttons}>
-                        <Link className={classes.Login} to="/switchComp">Login</Link>
-                        <Link className={classes.Help} to="/explanation">See how it works</Link>
+                        <Link className={`${classes.Login} ${classes.Button}`} to="/sgonks-platform">Login</Link>
+                        <Link className={`${classes.Help} ${classes.Button}`} to="/explanation">See how it works</Link>
                     </div>
                 </div>
                 <div className={classes.Column}>
