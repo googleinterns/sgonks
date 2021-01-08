@@ -6,13 +6,19 @@
 
 .Box {
     padding: 10px;
-    border-style: solid;
+    border: solid 1px lightgray;
     margin-top: 10px;
     margin-bottom: 10px;
+    border-radius: 7px;
+    flex: 0 0 30%;
 }
 
 .Column {
     padding: 10px;
+    height: 600px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
 }
 
 .BigFont {
@@ -23,18 +29,31 @@
     font-size: 25px;
 }
 
-button {
-    width: 100%;
-    height: 40px;
-    background: blue;
-    color: white;
-    font-size: 20px;
-}
-
 img {
     width: 400px;
 }
 
 p {
     margin: 5px;
+}
+
+.ViewSGonksNav {
+    padding-top: 20px;
+    height: 40px;
+    border: solid 1px lightgray;
+    text-decoration: none;
+    font-weight: bold;
+    color: #2F7DE7;
+    border-radius: 7px;
+}
+
+.BuySGonksNav {
+    padding-top: 20px;
+    height: 40px;
+    border: solid 1px #1A73E8;
+    background-color: #2F7DE7;
+    text-decoration: none;
+    font-weight: bold;
+    border-radius: 7px;
+    color: white;
 }

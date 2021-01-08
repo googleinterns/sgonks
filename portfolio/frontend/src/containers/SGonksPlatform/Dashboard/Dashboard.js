@@ -1,5 +1,6 @@
 import React from 'react'
 import classes from './Dashboard.module.css'
+import {Link} from 'react-router-dom'
 
 const Dashboard = (props) => {
   return (
@@ -37,7 +38,7 @@ const Dashboard = (props) => {
         <div className={classes.Box}>
           <img src='chart_placeholder.jpg' alt='placeholder chart'/>
         </div>
-        <button>View my sGonks</button>
+        <Link to="/sgonks-platform/mysgonks" className={classes.ViewSGonksNav}>View my sGonks</Link>
       </div>
 
       <div className={classes.Column}>
@@ -47,7 +48,7 @@ const Dashboard = (props) => {
           <p>New worth:</p>
           <p className={classes.MediumFont}>t$19492</p>
         </div>
-        <button>Buy sGonks</button>
+        <Link to="/sgonks-platform/marketplace" className={classes.BuySGonksNav}>Buy sGonks</Link>
         <div className={classes.Box}>
           <p className={classes.MediumFont}>Trending investments:</p>
           <ul>
