@@ -100,3 +100,28 @@
 	flex-direction: column;
 	justify-content: center;
 }
+
+.Button {
+	width: 40%;
+	height: 30%;
+	border-radius: 7px;
+	font-weight: bolder;
+	text-align: center;
+	justify-content: center;
+	vertical-align: center;
+	display: flex;
+	flex-direction: column;
+	justify-content: center;
+}
+
+.Blue {
+	color: white;
+	background-color: #2f7de7;
+	border: solid 1px #1a73e8;
+}
+
+.White {
+	background-color: white;
+	border: solid 1px lightgray;
+	color: #1a73e8;
+}

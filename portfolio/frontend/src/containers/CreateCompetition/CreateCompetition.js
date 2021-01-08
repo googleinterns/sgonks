@@ -54,10 +54,10 @@ const CreateCompetition = (props) => {
         </div>
       </div>
       <div className={classes.ButtonContainer}>
-        <div className={classes.WhiteButton}>
+        <div className={[classes.Button, classes.White].join(" ")}>
           <Link to="/switchComp">Cancel</Link>
         </div>
-        <div className={classes.BlueButton}>
+        <div className={[classes.Button, classes.Blue].join(" ")}>
           <Link to="/dashboard">Confirm creation</Link>
         </div>
       </div>
