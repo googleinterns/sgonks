@@ -4,7 +4,7 @@ import {Link} from "react-router-dom"
 
 const SelectCompetition = (props) => {
   return (
-    <div>
+    <div className={classes.SelectCompContainer}>
         <div className={classes.Header}>
             <img src="sGonksLogo.png" alt="sGonks logo"></img>
             <button className={classes.LogoutButton}>Logout</button>
