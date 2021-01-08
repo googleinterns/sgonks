@@ -7,7 +7,7 @@ const SelectCompetition = (props) => {
     <div className={classes.SelectCompContainer}>
         <div className={classes.Header}>
             <img src="sGonksLogo.png" alt="sGonks logo"></img>
-            <button className={classes.LogoutButton}>Logout</button>
+            <Link to="/" className={classes.LogoutButton}>Logout</Link>
         </div>
         <h2>Select a competition...</h2>
         <div className={classes.ScrollCompetitionsContainer}>
