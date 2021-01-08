@@ -5,6 +5,7 @@ import Login from './containers/Login/Login'
 import SGonksPlatfrom from './containers/SGonksPlatform/SGonksPlatform'
 import SelectCompetition from "./containers/SelectCompetition/SelectCompetition"
 import CreateCompetition from "./containers/CreateCompetition/CreateCompetition"
+import Explanation from "./containers/Explanation/Explanation"
 
 function App() {
   return (
@@ -14,6 +15,7 @@ function App() {
         <Route path='/sgonks-platform' component={SGonksPlatfrom}></Route>
         <Route path="/switchComp" exact component={SelectCompetition}></Route>
         <Route path="/createComp" exact component={CreateCompetition}></Route>
+        <Route path="/explanation" exact component={Explanation}></Route>
       </div>
     </BrowserRouter>
   )

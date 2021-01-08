@@ -59,7 +59,7 @@ const CreateCompetition = (props) => {
           <Link to="/switchComp">Cancel</Link>
         </div>
         <div className={[classes.Button, classes.Blue].join(" ")}>
-          <Link to="/dashboard">Confirm creation</Link>
+          <Link to="/sgonks-platform">Confirm creation</Link>
         </div>
       </div>
     </div>
