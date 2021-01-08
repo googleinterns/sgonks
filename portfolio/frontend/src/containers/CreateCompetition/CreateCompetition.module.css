@@ -68,39 +68,6 @@
 	margin-left: 27%;
 }
 
-.BlueButton {
-	width: 40%;
-	border-radius: 7px;
-	border: solid 1px #1a73e8;
-	height: 30%;
-	color: white;
-	font-weight: bolder;
-	text-align: center;
-	justify-content: center;
-	vertical-align: center;
-	display: flex;
-	flex-direction: column;
-	justify-content: center;
-	background-color: #2f7de7;
-}
-
-.WhiteButton {
-	color: #1a73e8;
-	border: lightgray;
-	background-color: white;
-	font-weight: bolder;
-	width: 40%;
-	border-radius: 7px;
-	border: solid 1px #1a73e8;
-	height: 50%;
-	text-align: center;
-	justify-content: center;
-	vertical-align: center;
-	display: flex;
-	flex-direction: column;
-	justify-content: center;
-}
-
 .Button {
 	width: 40%;
 	height: 30%;
