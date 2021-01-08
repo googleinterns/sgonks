@@ -43,11 +43,14 @@ img {
 }
 
 .CreateCompButton {
+    padding-top: 20px;
     height: 40px;
+    border: solid 1px #1A73E8;
+    background-color: #2F7DE7;
+    text-decoration: none;
+    font-weight: bold;
+    border-radius: 7px;
     color: white;
-    background-color: blue;
-    padding-left: 40px;
-    padding-right: 40px;
 }
 
 .Place {
