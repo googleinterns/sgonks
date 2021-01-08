@@ -1,6 +1,7 @@
 import React from "react"
 import classes from "./CreateCompetition.module.css"
-import { Link } from "react-router-dom"
+import {Link} from "react-router-dom"
+
 const CreateCompetition = (props) => {
   return (
     <div className={classes.CreateCompetitionPage}>

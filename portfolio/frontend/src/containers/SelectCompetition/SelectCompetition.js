@@ -1,12 +1,13 @@
 import React from "react"
 import classes from "./SelectCompetition.module.css"
+import {Link} from "react-router-dom"
 
 const SelectCompetition = (props) => {
   return (
-    <div>
+    <div className={classes.SelectCompContainer}>
         <div className={classes.Header}>
             <img src="sGonksLogo.png" alt="sGonks logo"></img>
-            <button className={classes.LogoutButton}>Logout</button>
+            <Link to="/" className={classes.LogoutButton}>Logout</Link>
         </div>
         <h2>Select a competition...</h2>
         <div className={classes.ScrollCompetitionsContainer}>
@@ -28,13 +29,13 @@ const SelectCompetition = (props) => {
                     <p><bold>Initial worth: </bold>       t$100</p>
                     <p><bold>Net worth:     </bold>     t$19492</p>
                     <p><bold>Available:     </bold>      t$4931</p>
-                    <button className={classes.ViewCompButton}>View Competition</button>
+                    <Link to="/sgonks-platform" className={classes.ViewCompButton}>View Competition</Link>
                 </div>
             </div>
             <p className={classes.ScrollButton}>Next</p>
         </div>
         <h2>Or...</h2>
-        <button className={classes.CreateCompButton}>Create a competition</button>
+        <Link to="/createComp" className={classes.CreateCompButton}>Create a competition</Link>
     </div>
   )
 }

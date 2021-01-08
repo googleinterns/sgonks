@@ -3,6 +3,8 @@ import {BrowserRouter, Route} from 'react-router-dom'
 
 import Login from './containers/Login/Login'
 import SGonksPlatfrom from './containers/SGonksPlatform/SGonksPlatform'
+import SelectCompetition from "./containers/SelectCompetition/SelectCompetition"
+import CreateCompetition from "./containers/CreateCompetition/CreateCompetition"
 
 function App() {
   return (
@@ -10,6 +12,8 @@ function App() {
       <div className='App'>
         <Route path='/' exact component={Login}></Route>
         <Route path='/sgonks-platform' component={SGonksPlatfrom}></Route>
+        <Route path="/switchComp" exact component={SelectCompetition}></Route>
+        <Route path="/createComp" exact component={CreateCompetition}></Route>
       </div>
     </BrowserRouter>
   )
