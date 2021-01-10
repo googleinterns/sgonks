@@ -1,5 +1,6 @@
 import React from "react"
 import classes from "./Explanation.module.css"
+import {Link} from "react-router-dom"
 
 const Explanation = (props) => {
   return (
@@ -36,6 +37,7 @@ const Explanation = (props) => {
           belly pork jerky porchetta jowl.
         </p>
       </div>
+      <Link to="/" className={classes.BackButton}>Back</Link>
     </div>
   )
 }
