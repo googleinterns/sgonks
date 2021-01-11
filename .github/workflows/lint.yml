@@ -8,25 +8,25 @@ jobs:
     steps:
       - uses: actions/checkout@v2
       - name: Maven compile
-        run: cd portfolio; mvn package
+        run: cd project/main; mvn package
       - name: install node dependencies
         if: always()
         run: make node_modules
       - name: Validate CSS
         if: always()
-        run: node_modules/css-validator/bin/css-validator portfolio/frontend/src/*.css
+        run: node_modules/css-validator/bin/css-validator project/main/frontend/src/*.css
       - name: Validate JavaScript
         if: always()
-        run: node_modules/eslint/bin/eslint.js portfolio/frontend/src/*.js
+        run: node_modules/eslint/bin/eslint.js project/main/frontend/src/*.js
       - name: Check CSS Formatting
         if: always()
-        run: node_modules/prettier/bin-prettier.js -c portfolio/frontend/src/*.css
+        run: node_modules/prettier/bin-prettier.js -c project/main/frontend/src/*.css
       - name: Check JavaScript Formatting
         if: always()
-        run: diff -u <(cat portfolio/frontend/src/*.js) <(node_modules/clang-format/bin/linux_x64/clang-format --style=Google portfolio/frontend/src/*.js)
+        run: diff -u <(cat project/main/frontend/src/*.js) <(node_modules/clang-format/bin/linux_x64/clang-format --style=Google project/main/frontend/src/*.js)
       - name: Check Java Formatting
         if: always()
-        run: diff -u <(cat portfolio/src/main/java/com/google/sps/servlets/*.java) <(node_modules/clang-format/bin/linux_x64/clang-format --style=Google portfolio/src/main/java/com/google/sps/servlets/*.java)
+        run: diff -u <(cat project/main/java/com/google/sps/servlets/*.java) <(node_modules/clang-format/bin/linux_x64/clang-format --style=Google project/main/java/com/google/sps/servlets/*.java)
       - name: Notify on failure
         if: failure()
         run: echo 'run "make validate" and "make pretty" to see/fix errors locally'
