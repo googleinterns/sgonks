@@ -1,6 +1,6 @@
 # SGONKS - Trading Game
 
-SGONKS is a trading game created with Node.js with Server in Java.
+SGONKS is a trading game created with Node.js with a java backend.
 
 ## Table of Contents
 
@@ -9,10 +9,14 @@ SGONKS is a trading game created with Node.js with Server in Java.
 - [Setup](#setup)
 - [Instructions about React](#react)
 
+<a name="general-info"></a>
+
 # About the project
 
 This project is design to get Googlers connect in a fun and exciting way by using Google Search Trends.
 The project will work along similar ideas to virtual trading platforms, but instead of investing in stocks, the player can invest “Trend Bucks” in a Google search query. By buying into a search at a given point in time, they can cash out later and earn or lose “Trend Bucks" based on increased or decreased global interest in that query, as indicated by Google trends data. This provides an interactive way for teams to compete with one another to predict search trends overtime.
+
+<a name="game-instructions"></a>
 
 # How to play the game
 
@@ -27,7 +31,11 @@ The project will work along similar ideas to virtual trading platforms, but inst
    - If they decide to purchase this search qurey they can put in the about they want to invest in and purchase it.
 5. The competition page is where the user can see their ranking in their team. This page will diplays the competitions details and current rank of everyone in that competition.
 
+<a name="setup"></a>
+
 # Setup
+
+<a name="react"></a>
 
 # Instructions about React
 
