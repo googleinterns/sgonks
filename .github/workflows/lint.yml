@@ -14,19 +14,19 @@ jobs:
         run: make node_modules
       - name: Validate CSS
         if: always()
-        run: node_modules/css-validator/bin/css-validator project/main/frontend/src/*.css
+        run: node_modules/css-validator/bin/css-validator project/src/main/webapp/src/*.css
       - name: Validate JavaScript
         if: always()
-        run: node_modules/eslint/bin/eslint.js project/main/frontend/src/*.js
+        run: node_modules/eslint/bin/eslint.js project/src/main/webapp/src/*.js
       - name: Check CSS Formatting
         if: always()
-        run: node_modules/prettier/bin-prettier.js -c project/main/frontend/src/*.css
+        run: node_modules/prettier/bin-prettier.js -c project/src/main/webapp/src/*.css
       - name: Check JavaScript Formatting
         if: always()
-        run: diff -u <(cat project/main/frontend/src/*.js) <(node_modules/clang-format/bin/linux_x64/clang-format --style=Google project/main/frontend/src/*.js)
+        run: diff -u <(cat project/src/main/webapp/src/*.js) <(node_modules/clang-format/bin/linux_x64/clang-format --style=Google project/src/main/webapp/src/*.js)
       - name: Check Java Formatting
         if: always()
-        run: diff -u <(cat project/main/java/com/google/sps/servlets/*.java) <(node_modules/clang-format/bin/linux_x64/clang-format --style=Google project/main/java/com/google/sps/servlets/*.java)
+        run: diff -u <(cat project/main/java/com/google/sps/*.java) <(node_modules/clang-format/bin/linux_x64/clang-format --style=Google project/src/main/java/com/google/sps/*.java)
       - name: Notify on failure
         if: failure()
         run: echo 'run "make validate" and "make pretty" to see/fix errors locally'
