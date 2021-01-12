@@ -8,7 +8,7 @@ jobs:
     steps:
       - uses: actions/checkout@v2
       - name: Maven compile
-        run: cd project/main; mvn package
+        run: cd project/src/main; mvn package
       - name: install node dependencies
         if: always()
         run: make node_modules
