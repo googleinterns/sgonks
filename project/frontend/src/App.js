@@ -1,6 +1,8 @@
 import './App.css'
 import {BrowserRouter, Route} from 'react-router-dom'
 
+import React from 'react';
+import ReactDOM from 'react-dom';
 import Login from './containers/Login/Login'
 import SGonksPlatfrom from './containers/SGonksPlatform/SGonksPlatform'
 import SelectCompetition from "./containers/SelectCompetition/SelectCompetition"
