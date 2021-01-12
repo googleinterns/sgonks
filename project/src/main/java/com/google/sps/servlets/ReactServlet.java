@@ -11,8 +11,9 @@ import javax.servlet.ServletException;
 
 @WebServlet(
     urlPatterns = {
-      "/test",
-      "/anotherTest"
+      "",
+      "/",
+      "/test"
     })
 public class ReactServlet extends HttpServlet {
   public void doGet(HttpServletRequest request, HttpServletResponse response)
@@ -20,10 +21,10 @@ public class ReactServlet extends HttpServlet {
     String servletPath = request.getServletPath();
     if (servletPath.equals("/test")) {
       System.out.println("GOING");
-      request.setAttribute("TITLE", "test");
-      ServletUtils.RenderReact("App", request, response);
+      request.setAttribute("TITLE", "THIS IS WORKING");
+      ServletUtils.RenderReact("index", request, response);
     }
-    request.setAttribute("TITLE", "test");
-    ServletUtils.RenderReact("App", request, response);
+    request.setAttribute("TITLE", "THIS IS WORKING TOO!!!!");
+    ServletUtils.RenderReact("index", request, response);
   }
 }
