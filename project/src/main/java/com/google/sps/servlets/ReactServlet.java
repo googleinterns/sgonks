@@ -9,22 +9,12 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import javax.servlet.ServletException;
 
-@WebServlet(
-    urlPatterns = {
-      "",
-      "/",
-      "/test"
-    })
+@WebServlet("/")
 public class ReactServlet extends HttpServlet {
   public void doGet(HttpServletRequest request, HttpServletResponse response)
       throws IOException, ServletException {
-    String servletPath = request.getServletPath();
-    if (servletPath.equals("/test")) {
-      System.out.println("GOING");
-      request.setAttribute("TITLE", "THIS IS WORKING");
-      ServletUtils.RenderReact("index", request, response);
-    }
-    request.setAttribute("TITLE", "THIS IS WORKING TOO!!!!");
+
+    request.setAttribute("TITLE", "sGonks");
     ServletUtils.RenderReact("index", request, response);
   }
 }
