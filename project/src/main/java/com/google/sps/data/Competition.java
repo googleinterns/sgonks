@@ -45,3 +45,4 @@ public class Competition {
       this.startDate = startDate;
       this.endDate = endDate;
   }
+}
