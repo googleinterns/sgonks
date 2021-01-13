@@ -39,4 +39,5 @@ target/
 # Ignore vscode java checks
 project/.classpath
 project/.factorypath
-project/.projectproject/.settings/
+project/.project
+project/.settings/
