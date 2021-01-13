@@ -21,13 +21,13 @@ node_modules:
 	npm install clang-format prettier css-validator eslint eslint-config-google react-scripts
 
 pretty: node_modules
-	$(PRETTIER) --write project/main/frontend/src/*.css
-	find project/main/java -iname *.java | xargs $(CLANG_FORMAT) -i
-	find project/main/frontend/src -iname *.js | xargs $(CLANG_FORMAT) -i
+	$(PRETTIER) --write project/frontend/src/*.css
+	find project/src/main/java -iname *.java | xargs $(CLANG_FORMAT) -i
+	find project/frontend/src -iname *.js | xargs $(CLANG_FORMAT) -i
 
 validate: node_modules
-	$(CSS_VALIDATOR) project/main/frontend/src/*.css
-	$(ESLINT) project/main/frontend/src/*.js
+	$(CSS_VALIDATOR) project/frontend/src/*.css
+	$(ESLINT) project/frontend/src/*.js
 
 package:
 	mvn package
