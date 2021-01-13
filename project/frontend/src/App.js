@@ -1,7 +1,6 @@
 import './App.css'
 
 import React from 'react';
-import ReactDOM from 'react-dom';
 import {BrowserRouter, Route} from 'react-router-dom'
 
 import CreateCompetition from './containers/CreateCompetition/CreateCompetition'
