@@ -2,6 +2,7 @@ import React from "react"
 import classes from "./HeaderBar.module.css"
 import Logo from "../../assets/sGonksLogo.png"
 import { Link, NavLink } from "react-router-dom"
+import LinkButton from "../UI/LinkButton/LinkButton"
 
 const HeaderBar = (props) => {
   let innerNavLinks = [
@@ -35,8 +36,8 @@ const HeaderBar = (props) => {
         {innerNav}
       </div>
       <div className={classes.ButtonsContainer}>
-        buttons 
-        {/* TODO: replace with LinkButton */}
+        <LinkButton to='/'>Button</LinkButton>
+        <LinkButton to='/' inverted>Button</LinkButton>
       </div>
     </header>
   )
