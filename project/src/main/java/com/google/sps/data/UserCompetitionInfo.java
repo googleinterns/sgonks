@@ -13,6 +13,8 @@
 // limitations under the License.
 
 package com.google.sps.data;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Class representing each user information in one competition.
@@ -24,6 +26,8 @@ public class UserCompetitionInfo implements Comparable<UserCompetitionInfo> {
 
   /** How much money user currently have */
   private long currentMoney;
+  private Competition competition;
+  private List<Investment> mySGonks;
 
   /** User current ranking in the team */
   private int rank;
@@ -36,6 +40,8 @@ public class UserCompetitionInfo implements Comparable<UserCompetitionInfo> {
     this.user = user;
     this.currentMoney = currentMoney;
     this.rank = rank;
+    this.competition = competition;
+    this.mySGonks = new ArrayList<>();
     this.netWorth = currentMoney + 50;
   }
 
@@ -45,6 +51,15 @@ public class UserCompetitionInfo implements Comparable<UserCompetitionInfo> {
    */
   public long getNetWorth() {
     return netWorth;
+  }
+
+  /**
+   * This function will update user's current money base on how much the value change.
+   * @param amountChange -- use as a negative number if user brought an investment.
+   *                     -- use as a positive number if user sold an investment.
+   */
+  public void setCurrentMoney(long amountChange) {
+    this.currentMoney = this.currentMoney + amountChange;
   }
 
   /**

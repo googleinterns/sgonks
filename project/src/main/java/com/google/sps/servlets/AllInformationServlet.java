@@ -31,25 +31,23 @@ public class AllInformationServlet extends HttpServlet {
   @Override
   public void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
     List<Investment> tenRecentPurchase = new ArrayList<>();
-    tenRecentPurchase.add(new Investment(
-        new User(123, "emmahogan@", "Emma Hogan"), new SearchItem("Trump", 200), 10, 1631065));
-    tenRecentPurchase.add(new Investment(new User(124, "mercurylin@", "Mercury Lin"),
-        new SearchItem("Chicken wings", 200), 10, 1631065));
+    User user1 = new User(123, "emmahogan@", "Emma Hogan");
+    User user2 = new User(124, "mercurylin@", "Mercury Lin");
+    tenRecentPurchase.add(new Investment(user1, new SearchItem("Trump", 200), 10, 1631065));
+    tenRecentPurchase.add(new Investment(user2, new SearchItem("Chicken wings", 200), 10, 1631065));
 
     List<SearchItem> topTrendingSearch = new ArrayList<>();
     topTrendingSearch.add(new SearchItem("COVID 19", 10000));
     topTrendingSearch.add(new SearchItem("what ever", 10002));
 
     List<UserCompetitionInfo> teammateInfo = new ArrayList<>();
-    teammateInfo.add(new UserCompetitionInfo(new User(123, "emmahogan@", "Emma Hogan"), 200, 2));
-    teammateInfo.add(new UserCompetitionInfo(new User(124, "mercurylin@", "Mercury Lin"), 250, 1));
+    teammateInfo.add(new UserCompetitionInfo(user1, 200, 2));
+    teammateInfo.add(new UserCompetitionInfo(user2, 250, 1));
     Collections.sort(teammateInfo);
 
     List<Investment> mySGonks = new ArrayList<>();
-    mySGonks.add(new Investment(
-        new User(123, "emmahogan@", "Emma Hogan"), new SearchItem("Trump", 200), 10, 1631065));
-    mySGonks.add(new Investment(new User(123, "emmahogan@", "Emma Hogan"),
-        new SearchItem("Chicken wings", 200), 10, 1631065));
+    mySGonks.add(new Investment(user1, new SearchItem("Trump", 200), 10, 1631065));
+    mySGonks.add(new Investment(user1, new SearchItem("Chicken wings", 200), 10, 1631065));
 
     HashMap<String, List<?>> bashInfo = new HashMap<>();
     bashInfo.put("tenRecentPurchase", tenRecentPurchase);

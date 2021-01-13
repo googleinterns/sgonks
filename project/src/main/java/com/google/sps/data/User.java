@@ -13,14 +13,14 @@
 // limitations under the License.
 
 package com.google.sps.data;
-
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Class representing each user object.
  * This is a global object that is the same for every competition that the user is in.
  */
 public class User {
-
   /** The id of the user entry in database */
   private long id;
 
@@ -30,9 +30,15 @@ public class User {
   /** The idap of the user */
   private String userIdap;
 
+  private List<UserCompetitionInfo> allCompetitions = new ArrayList<>();
+
   public User(long id, String userName, String userIdap) {
     this.id = id;
     this.userName = userName;
     this.userIdap = userIdap;
+  }
+
+  public void addCompetition(UserCompetitionInfo competition) {
+    allCompetitions.add(competition);
   }
 }
