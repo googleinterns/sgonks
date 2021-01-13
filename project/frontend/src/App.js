@@ -1,7 +1,7 @@
 import './App.css'
 
 import React from 'react';
-import {BrowserRouter, Route} from 'react-router-dom'
+import {Route} from 'react-router-dom'
 
 import CreateCompetition from './containers/CreateCompetition/CreateCompetition'
 import Explanation from './containers/Explanation/Explanation'
@@ -11,7 +11,6 @@ import SGonksPlatfrom from './containers/SGonksPlatform/SGonksPlatform'
 
 function App() {
   return (
-    <BrowserRouter>
       <div className='App'>
         <Route path='/' exact component={Login}></Route>
         <Route path='/sgonks-platform' component={SGonksPlatfrom}></Route>
@@ -19,7 +18,6 @@ function App() {
         <Route path='/createComp' exact component={CreateCompetition}></Route>
         <Route path='/explanation' exact component={Explanation}></Route>
       </div>
-    </BrowserRouter>
   )
 }
 
