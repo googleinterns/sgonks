@@ -46,8 +46,7 @@
   <build>
     <plugins>
       <!-- Provides `mvn package appengine:run` for local testing
-           and `mvn package appengine:deploy` for deploying. 
-           TODO: add project id once that is set up-->
+           and `mvn package appengine:deploy` for deploying.-->
       <plugin>
         <groupId>com.google.cloud.tools</groupId>
         <artifactId>appengine-maven-plugin</artifactId>
@@ -56,6 +55,11 @@
           <deploy.projectId>google.com:sgonks-step272</deploy.projectId>
           <deploy.version>1</deploy.version>
         </configuration>
+      </plugin>
+      <plugin>
+        <groupId>com.google.appengine</groupId>
+        <artifactId>appengine-maven-plugin</artifactId>
+        <version>1.9.9</version>
       </plugin>
     </plugins>
   </build>

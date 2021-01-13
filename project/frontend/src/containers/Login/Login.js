@@ -1,12 +1,13 @@
 import React from "react"
 import classes from "./Login.module.css"
 import {Link} from "react-router-dom"
+import logo from "../../assets/sGonksLogo.png"
 
 const Login = (props) => {
     return (
         <div>
             <div className={classes.Header}>
-                <img src="sGonksLogo.png" alt="sGonks Logo" className={classes.Logo}></img>
+                <img src={logo} alt="sGonks Logo" className={classes.Logo}></img>
                 <div className={classes.Buttons}>
                     <Link className={`${classes.Login} ${classes.Button}`} to="/sgonks-platform">Login</Link>
                     <Link className={`${classes.Help} ${classes.Button}`} to="/explanation">See how it works</Link>
