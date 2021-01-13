@@ -39,8 +39,13 @@
     text-decoration: none;
     font-weight: bold;
     color: #858585;
+    padding-bottom: 10px;
 }
 
 .ButtonsContainer {
     width: 700px;
+}
+
+.Navigation a.active {
+    border-bottom: 2px solid #216FD6;
 }

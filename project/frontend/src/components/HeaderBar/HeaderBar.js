@@ -13,13 +13,13 @@ const HeaderBar = (props) => {
         <nav className={classes.Navigation}>
           <ul>
             <li>
-              <Link to="/">My sGonks</Link>
+              <NavLink to="/" activeClassName={classes.active}>My sGonks</NavLink>
             </li>
             <li>
-              <Link to="/">Competition</Link>
+              <NavLink to="/" activeClassName={classes.active}>Competition</NavLink>
             </li>
             <li>
-              <Link to="/">sGonks Market</Link>
+              <NavLink to="/" activeClassName={classes.active}>sGonks Market</NavLink>
             </li>
           </ul>
         </nav>
