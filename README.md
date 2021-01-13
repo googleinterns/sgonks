@@ -48,7 +48,24 @@ To run this project, you will need to have installed:
 
 ## Running the project in development
 
-TBC
+Run the backend on port 8080:
+
+#### `cd project`
+#### `mvn package appengine:run`
+
+Run the frontend on port 9000:
+
+#### `cd frontend`
+
+If node modules are not already installed, first run
+
+#### `npm i`
+
+With installed node modules, run
+
+#### `npm run watch`
+
+The project can be now be viewed at http://localhost:8080.
 
 ## Deploying the project
 
