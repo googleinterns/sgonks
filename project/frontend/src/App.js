@@ -17,7 +17,7 @@ function App() {
 
   return (
       <div className='App'>
-        <HeaderBar></HeaderBar>
+        <HeaderBar innerNav="true"></HeaderBar>
         <Route path='/' exact component={Login}></Route>
         <Route path='/sgonks-platform' component={SGonksPlatfrom}></Route>
         <Route path='/switchComp' exact component={SelectCompetition}></Route>
