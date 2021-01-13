@@ -17,7 +17,7 @@ from pytrends.request import TrendReq
 pytrends = TrendReq(tz=0) #tz=0 puts us on UTC
 
 
-# [TEMPORARY] hard code a search query
+# [TEMPORARY] hard code some searches to query
 query = ["donald trump"]
 
 def fetch_hourly_data(query):
@@ -48,7 +48,6 @@ def fetch_hourly_data(query):
 
 def aggregate_hourly_to_daily(query, hourly_df):
     """
-    query : the search term the dataframe is about
     hourly_df : a dataframe of hourly search data
     returns a dataframe of daily search data
     """
@@ -70,6 +69,7 @@ def aggregate_hourly_to_daily(query, hourly_df):
 
     #create new df indexed by dates
     daily_df = pd.DataFrame(new_data, index=date_list)
+
     return daily_df
 
 
