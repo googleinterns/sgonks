@@ -14,25 +14,21 @@
 
 package com.google.sps.data;
 
-
 /**
- * Class representing each user object.
- * This is a global object that is the same for every competition that the user is in.
+ * Class representing an investment object when the user make a purchase. 
  */
-public class User {
+public class Investment {
 
-  /** The id of the user entry in database */
-  private long id;
+  private User investmentPerson;
+  private SearchItem searchItem;
+  private long priceBrought;
+  private long dateBrought; //@TODO has to be in miliseconds form
+  private long currentPrice; //@TODO should be able to calculate from the information givin
 
-  /** The name of the user */
-  private String userName;
-
-  /** The idap of the user */
-  private String userIdap;
-
-  public User(long id, String userName, String userIdap) {
-    this.id = id;
-    this.userName = userName;
-    this.userIdap = userIdap;
+  public Investment(User investmentPerson, SearchItem searchItem, long priceBrought, long dateBrought) {
+    this.investmentPerson = investmentPerson;
+    this.searchItem = searchItem;
+    this.priceBrought = priceBrought;
+    this.dateBrought = dateBrought;
   }
 }

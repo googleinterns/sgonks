@@ -14,25 +14,19 @@
 
 package com.google.sps.data;
 
-
 /**
- * Class representing each user object.
- * This is a global object that is the same for every competition that the user is in.
+ * Class representing each search query object
  */
-public class User {
+public class SearchItem {
 
-  /** The id of the user entry in database */
-  private long id;
+  /** The actual content of the search  query*/
+  private String searchQuery;
 
-  /** The name of the user */
-  private String userName;
+  /** The popularity of each search query */
+  private long popularity;
 
-  /** The idap of the user */
-  private String userIdap;
-
-  public User(long id, String userName, String userIdap) {
-    this.id = id;
-    this.userName = userName;
-    this.userIdap = userIdap;
+  public SearchItem(String searchQuery, long popularity) {
+    this.searchQuery = searchQuery;
+    this.popularity = popularity;
   }
 }
