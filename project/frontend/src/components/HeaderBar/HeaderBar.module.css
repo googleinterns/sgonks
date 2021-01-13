@@ -1,0 +1,46 @@
+.HeaderBar {
+    height: 60px;
+    display: flex;
+    flex-direction: row;
+    flex-wrap: nowrap;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.Logo {
+    width: 120px;
+    margin-left: 20px;
+}
+
+.NavigationContainer {
+    width: 100%;
+    padding-left: 20px;
+}
+
+.Navigation {
+	height: 100%;
+	display: flex;
+    flex-direction: row;
+    align-items: center;
+}
+
+.Navigation ul {
+	list-style: none;
+	margin: 0;
+	padding: 0;
+}
+
+.Navigation li {
+	display: inline-block;
+	margin: 20px;
+}
+
+.Navigation a {
+    text-decoration: none;
+    font-weight: bold;
+    color: #858585;
+}
+
+.ButtonsContainer {
+    width: 700px;
+}

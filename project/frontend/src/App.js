@@ -9,9 +9,15 @@ import Login from './containers/Login/Login'
 import SelectCompetition from './containers/SelectCompetition/SelectCompetition'
 import SGonksPlatfrom from './containers/SGonksPlatform/SGonksPlatform'
 
+import HeaderBar from "./components/HeaderBar/HeaderBar";
+
 function App() {
+
+
+
   return (
       <div className='App'>
+        <HeaderBar></HeaderBar>
         <Route path='/' exact component={Login}></Route>
         <Route path='/sgonks-platform' component={SGonksPlatfrom}></Route>
         <Route path='/switchComp' exact component={SelectCompetition}></Route>
