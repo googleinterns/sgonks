@@ -1,6 +1,7 @@
 import React from 'react'
 import classes from './Dashboard.module.css'
 import {Link} from 'react-router-dom'
+import placeholderChart from "../../../assets/chart_placeholder.jpg"
 
 const Dashboard = (props) => {
   return (
@@ -36,7 +37,7 @@ const Dashboard = (props) => {
           </ul>
         </div>
         <div className={classes.Box}>
-          <img src='chart_placeholder.jpg' alt='placeholder chart'/>
+          <img src={placeholderChart} alt='placeholder chart'/>
         </div>
         <Link to="/sgonks-platform/mysgonks" className={classes.ViewSGonksNav}>View my sGonks</Link>
       </div>
