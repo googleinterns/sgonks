@@ -35,8 +35,8 @@ const HeaderBar = (props) => {
         {innerNav}
       </div>
       <div className={classes.ButtonsContainer}>
-        <button>button</button>
-        <button>button2</button>
+        buttons 
+        {/* TODO: replace with LinkButton */}
       </div>
     </header>
   )
