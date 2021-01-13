@@ -1,11 +1,13 @@
 # For now I am assuming the investment date will be returned from the db 
 # as a string yyyy-mm-dd, representing the day the trend was purchased in UTC time
 
+#!/usr/bin/env python3
+
 from datetime import datetime
 import pytz
 
 
-def get_start_times_from_date(date):
+def get_start_times(date):
     """
     date: a string of the form "yyyy-mm-dd" that the investment was purchased
     returns the integers (year, month, day)
