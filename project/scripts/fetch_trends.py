@@ -12,38 +12,54 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+
+#!/usr/bin/env python3
+
+
 import pandas as pd
 from pytrends.request import TrendReq
 pytrends = TrendReq(tz=0) #tz=0 puts us on UTC
 
+from dates import get_start_times, get_end_times
 
-# [TEMPORARY] hard code some searches to query
-query = ["donald trump"]
 
-def fetch_hourly_data(query):
+def get_updated_daily_data(query, investment_date):
+    """
+    query: a search to retrieve data for
+    investment_date: the date to start fetching data from as a string "yyyy-mm-dd"
+    returns a pandas dataframe of daily data for the query from the investment date to today
+    """
+    start = get_start_times(investment_date)
+    end = get_end_times()
+
+    hourly_data = fetch_hourly_data([query], *start, *end)
+    daily_data = aggregate_hourly_to_daily(query, hourly_data)
+
+    return daily_data
+
+
+def fetch_hourly_data(query, year_start, month_start, day_start, year_end, month_end, day_end):
     """
     queries: a search to retrieve data for
     returns a pandas dataframe of hourly data for each query over the given time range
     """
     # geo = '' default to world-wide search
     # gprop = '' defaults to web-searches (rather than limitting to, eg, YouTube searches)
-    hourly_df = pytrends.get_historical_interest(
+    hourly_data = pytrends.get_historical_interest(
         query, 
-        year_start=2021,
-        month_start=1, 
-        day_start=4, 
+        year_start=year_start,
+        month_start=month_start, 
+        day_start=day_start, 
         hour_start=0, 
-        year_end=2021,
-        month_end=1,
-        day_end=11,
+        year_end=year_end,
+        month_end=month_end,
+        day_end=day_end,
         hour_end=0,
         geo='', 
         gprop=''
     )
 
-    daily_df = aggregate_hourly_to_daily(query[0], hourly_df)
-    print(hourly_df)
-    print(daily_df)
+    return hourly_data
 
 
 def aggregate_hourly_to_daily(query, hourly_df):
@@ -69,9 +85,4 @@ def aggregate_hourly_to_daily(query, hourly_df):
 
     #create new df indexed by dates
     daily_df = pd.DataFrame(new_data, index=date_list)
-
     return daily_df
-
-
-fetch_hourly_data(query)
-
