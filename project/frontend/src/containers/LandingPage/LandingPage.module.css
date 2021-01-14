@@ -22,11 +22,12 @@
 
 .Hero h1 {
     color: #202124;
+    font-size: 3.5vw;
 }
 
 .Hero h3 {
     color: #5f6368;
-    font-size: 1em;
+    font-size: 1.1vw;
 }
 
 
