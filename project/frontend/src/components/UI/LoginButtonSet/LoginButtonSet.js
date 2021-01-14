@@ -1,15 +1,22 @@
-import React from 'react';
-import LinkButton from "../LinkButton/LinkButton";
+import React from "react"
+import LinkButton from "../LinkButton/LinkButton"
 import classes from "./LoginButtonSet.module.css"
 
-const LoginButtonSet = props => {
+const LoginButtonSet = (props) => {
+  const fetchUserData = () => {
+    fetch("./authentication")
+      .then((response) => (response.json()))
+      .then((data) => {
+        console.log(data)
+      })
+  }
 
-    return (
-        <div className={classes.ButtonSetContainer}>
-            <LinkButton inverted>What is sGonks?</LinkButton>
-            <LinkButton>Sign in</LinkButton>
-        </div>
-    )
+  return (
+    <div className={classes.ButtonSetContainer}>
+      <LinkButton inverted>What is sGonks?</LinkButton>
+      <LinkButton onClick={() => fetchUserData()} to="/page">Sign in</LinkButton>
+    </div>
+  )
 }
 
-export default LoginButtonSet;
+export default LoginButtonSet
