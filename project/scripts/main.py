@@ -21,16 +21,16 @@ from fetch_trends import get_updated_daily_data
 import time
 
 
-def get_queries():
+def get_investment_data():
     """
     Fetch investment data from database. Hard code for now.
-    returns a list of ("query", "investment_date") tuples
+    returns a list of ("search_term", "investment_date") tuples
     """
-    search_queries = ["bananas", "censorship", "weather forecast", "giraffe", "chicken nuggets"]
+    search_terms = ["bananas", "censorship", "weather forecast", "giraffe", "chicken nuggets"]
     # hard coded to be exactly one week ago:
-    dates = [time.time() - 604800] * len(search_queries)
+    investment_dates = [time.time() - 604800] * len(search_terms)
 
-    return zip(search_queries, dates)
+    return zip(search_terms, investment_dates)
 
 
 def update_database(data):
@@ -41,8 +41,8 @@ def update_database(data):
 
 
 if __name__ == "__main__":
-    queries = get_queries()
-    for query in queries:
-        daily_data = get_updated_daily_data(*query)
+    investments = get_investment_data()
+    for investment in investments:
+        daily_data = get_updated_daily_data(*investment)
         print(daily_data)
         update_database(daily_data)

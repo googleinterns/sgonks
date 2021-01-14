@@ -23,30 +23,30 @@ pytrends = TrendReq(tz=0) #tz=0 puts us on UTC
 from dates import get_start_times, get_end_times
 
 
-def get_updated_daily_data(query, investment_date):
+def get_updated_daily_data(search_term, investment_date):
     """
-    query: a search to retrieve data for
-    investment_date: the date to start fetching data from as a string "yyyy-mm-dd"
+    search_term: a search to retrieve data for
+    investment_date: the date to start fetching data from as an int since epoch
     returns a pandas dataframe of daily data for the query from the investment date to today
     """
     start = get_start_times(investment_date)
     end = get_end_times()
 
-    hourly_data = fetch_hourly_data([query], *start, *end)
-    daily_data = aggregate_hourly_to_daily(query, hourly_data)
+    hourly_data = fetch_hourly_data([search_term], *start, *end)
+    daily_data = aggregate_hourly_to_daily(search_term, hourly_data)
 
     return daily_data
 
 
-def fetch_hourly_data(query, year_start, month_start, day_start, year_end, month_end, day_end):
+def fetch_hourly_data(search_term, year_start, month_start, day_start, year_end, month_end, day_end):
     """
-    queries: a search to retrieve data for
-    returns a pandas dataframe of hourly data for each query over the given time range
+    search_term: a search to retrieve data for
+    returns a pandas dataframe of hourly data for each search_term over the given time range
     """
     # geo = '' default to world-wide search
     # gprop = '' defaults to web-searches (rather than limitting to, eg, YouTube searches)
     hourly_data = pytrends.get_historical_interest(
-        query, 
+        search_term, 
         year_start=year_start,
         month_start=month_start, 
         day_start=day_start, 
@@ -62,25 +62,25 @@ def fetch_hourly_data(query, year_start, month_start, day_start, year_end, month
     return hourly_data
 
 
-def aggregate_hourly_to_daily(query, hourly_df):
+def aggregate_hourly_to_daily(search_term, hourly_df):
     """
     hourly_df : a dataframe of hourly search data
     returns a dataframe of daily search data
     """
     date_list = []
-    new_data = {query: []}
+    new_data = {search_term: []}
     count = 1
     day_total = 0
     for datetime, row in hourly_df.iterrows():
         if count % 24 == 0:
             #finished accumulating day data
             date_list.append(datetime.date())
-            new_data[query].append(day_total)
+            new_data[search_term].append(day_total)
             #reset counters
             day_total = 0
             count = 1
 
-        day_total += row[query]
+        day_total += row[search_term]
         count += 1
 
     #create new df indexed by dates
