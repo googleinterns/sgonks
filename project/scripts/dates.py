@@ -9,11 +9,11 @@ import pytz
 
 def get_start_times(date):
     """
-    date: a string of the form "yyyy-mm-dd" that the investment was purchased
+    date: an epoch integer representing the date that the investment was purchased
     returns the integers (year, month, day)
     """
-    values = tuple(map(int, date.split("-")))
-    return values
+    datetime_object = datetime.utcfromtimestamp(date)
+    return datetime_object.year, datetime_object.month, datetime_object.day
 
 
 def get_end_times():

@@ -17,6 +17,9 @@
 
 from fetch_trends import get_updated_daily_data
 
+# for test purposes
+import time
+
 
 def get_queries():
     """
@@ -24,7 +27,8 @@ def get_queries():
     returns a list of ("query", "investment_date") tuples
     """
     search_queries = ["bananas", "censorship", "weather forecast", "giraffe", "chicken nuggets"]
-    dates = ["2020-12-15", "2021-01-01", "2021-01-07", "2020-11-30", "2020-12-25"]
+    # hard coded to be exactly one week ago:
+    dates = [time.time() - 604800] * len(search_queries)
 
     return zip(search_queries, dates)
 
@@ -40,4 +44,5 @@ if __name__ == "__main__":
     queries = get_queries()
     for query in queries:
         daily_data = get_updated_daily_data(*query)
+        print(daily_data)
         update_database(daily_data)
