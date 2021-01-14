@@ -3,7 +3,7 @@
 
 #!/usr/bin/env python3
 
-from datetime import datetime
+from datetime import datetime, timedelta
 import pytz
 
 
@@ -20,7 +20,7 @@ def get_end_times():
     """
     returns the end dates to query pytrends for as integers (year, month, day)
     """
-    datetime = get_current_date()
+    datetime = get_current_date() - timedelta(days = 1) #get yesterday's date
     return datetime.year, datetime.month, datetime.day
 
 

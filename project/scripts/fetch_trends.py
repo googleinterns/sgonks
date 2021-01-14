@@ -32,7 +32,7 @@ def get_updated_daily_data(search_term, investment_date):
     start = get_start_times(investment_date)
     end = get_end_times()
 
-    hourly_data = fetch_hourly_data([search_term], *start, *end)
+    hourly_data = fetch_hourly_data(search_term, *start, *end)
     daily_data = aggregate_hourly_to_daily(hourly_data)
 
     return daily_data
@@ -46,7 +46,7 @@ def fetch_hourly_data(search_term, year_start, month_start, day_start, year_end,
     # geo = '' default to world-wide search
     # gprop = '' defaults to web-searches (rather than limitting to, eg, YouTube searches)
     hourly_data = pytrends.get_historical_interest(
-        search_term, 
+        [search_term], 
         year_start=year_start,
         month_start=month_start, 
         day_start=day_start, 
@@ -54,7 +54,7 @@ def fetch_hourly_data(search_term, year_start, month_start, day_start, year_end,
         year_end=year_end,
         month_end=month_end,
         day_end=day_end,
-        hour_end=0,
+        hour_end=23,
         geo='', 
         gprop=''
     )
@@ -72,7 +72,7 @@ def aggregate_hourly_to_daily(hourly_df):
     new_data = {search_term: []}
     count = 1
     day_total = 0
-    
+
     for datetime, row in hourly_df.iterrows():
         if count % 24 == 0:
             #finished accumulating day data
