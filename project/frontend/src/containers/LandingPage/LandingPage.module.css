@@ -7,7 +7,7 @@
     align-items: center;
 }
 
-.Prompt {
+.Hero {
     width: 40%;
     height: 60%;
     display: flex;
@@ -15,9 +15,18 @@
     justify-content: space-around;
 }
 
-.Prompt h1, h3 {
+.Hero h1, h3 {
     font-weight: 400;
     text-align: left;
+}
+
+.Hero h1 {
+    color: #202124;
+}
+
+.Hero h3 {
+    color: #5f6368;
+    font-size: 1em;
 }
 
 
