@@ -7,9 +7,9 @@ import LoginButtonSet from "../UI/LoginButtonSet/LoginButtonSet";
 
 const HeaderBar = (props) => {
   let innerNavLinks = [
-    { linkTo: "/", display: "My sGonks" },
-    { linkTo: "/", display: "Competition" },
-    { linkTo: "/", display: "Marketplace" },
+    { linkTo: "/", display: "My sGonks", key: "mysgonks"},
+    { linkTo: "/", display: "Competition", key: "competition" },
+    { linkTo: "/", display: "Marketplace", key: "marketplace" },
   ]
 
   let innerNav = props.innerNav ? (
@@ -17,7 +17,7 @@ const HeaderBar = (props) => {
       <ul>
         {innerNavLinks.map((link) => {
           return (
-            <li>
+            <li key={link.key}>
               <NavLink to={link.linkTo} activeClassName={classes.active}>
                 {link.display}
               </NavLink>
