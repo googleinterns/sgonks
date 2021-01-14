@@ -20,7 +20,7 @@ function App() {
       <Layout>
         <Route path="/" component={LandingPage}></Route>
       </Layout>
-      {/* // <Route path='/' exact component={Login}></Route> */}
+      {/* <Route path='/' exact component={Login}></Route> */}
       <Route path="/sgonks-platform" component={SGonksPlatfrom}></Route>
       <Route path="/switchComp" exact component={SelectCompetition}></Route>
       <Route path="/createComp" exact component={CreateCompetition}></Route>
