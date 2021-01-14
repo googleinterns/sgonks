@@ -35,3 +35,9 @@ target/
 
 # Ignore vscode config
 *.vscode/
+
+# Ignore vscode java checks
+project/.classpath
+project/.factorypath
+project/.project
+project/.settings/
