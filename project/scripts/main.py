@@ -23,7 +23,7 @@ def get_queries():
     Fetch investment data from database. Hard code for now.
     returns a list of ("query", "investment_date") tuples
     """
-    search_queries = ["impeachment", "donald trump", "weather forecast", "giraffe", "chicken nuggets"]
+    search_queries = ["bananas", "censorship", "weather forecast", "giraffe", "chicken nuggets"]
     dates = ["2020-12-15", "2021-01-01", "2021-01-07", "2020-11-30", "2020-12-25"]
 
     return zip(search_queries, dates)
