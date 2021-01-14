@@ -13,7 +13,7 @@ const LoginButtonSet = (props) => {
 
   return (
     <div className={classes.ButtonSetContainer}>
-      <LinkButton inverted>What is sGonks?</LinkButton>
+      <LinkButton inverted="true">What is sGonks?</LinkButton>
       <LinkButton onClick={() => fetchUserData()} to="/page">Sign in</LinkButton>
     </div>
   )
