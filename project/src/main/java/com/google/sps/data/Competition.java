@@ -21,7 +21,7 @@ public class Competition {
   /** The id of the competition entry in database */
   private long id;
 
-  /** The name of the user who made the comment */
+  /** The name of competition */
   private String competitionName;
 
   /** The name of the competition organiser */
