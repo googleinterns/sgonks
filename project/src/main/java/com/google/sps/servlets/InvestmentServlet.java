@@ -30,13 +30,14 @@ public class InvestmentServlet extends HttpServlet {
   List<Investment> usersInvestments = new ArrayList<>();
   @Override
   public void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
-    addHardCodedData();
+    getUserInvestments();
     response.setContentType("text/html;");
 
     response.getWriter().println(new Gson().toJson(usersInvestments));
   }
 
-  public void addHardCodedData() {
+  private void getUserInvestments() {
+    // hard coded data that will need to be removed
     usersInvestments.add(
         new Investment("Bob", "Chicken Wings", 50, new Date(2020, 12, 26).getTime()));
     usersInvestments.add(new Investment("Jack", "Trump", 25, new Date(2020, 11, 26).getTime()));

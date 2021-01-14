@@ -27,8 +27,18 @@ import javax.servlet.http.HttpServletResponse;
 
 @WebServlet("/competitionInfo")
 public class CompetitionInfoServlet extends HttpServlet {
+  List<Competition> usersCompetitions = new ArrayList<>();
   @Override
   public void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
+    getUserCompetitions();
+    Gson gson = new Gson();
+
+    response.setContentType("text/html;");
+
+    response.getWriter().println(gson.toJson(usersCompetitions));
+  }
+
+  private void getUserCompetitions() {
     List<CompetitorInfo> competitors = new ArrayList<>();
     competitors.add(new CompetitorInfo(1, 1, "Bob", "bobk@", 1000, 500));
     competitors.add(new CompetitorInfo(2, 2, "Jack", "jackm@", 800, 450));
@@ -42,14 +52,7 @@ public class CompetitionInfoServlet extends HttpServlet {
     Competition compObj2 = new Competition(1896, "Tide Pod", "Mercury Lin", "mercurylin@",
         new Date(2021, 1, 1).getTime(), new Date(2021, 1, 10).getTime(), competitors2);
 
-    List<Competition> usersCompetitions = new ArrayList<>();
     usersCompetitions.add(compObj);
     usersCompetitions.add(compObj2);
-
-    Gson gson = new Gson();
-
-    response.setContentType("text/html;");
-
-    response.getWriter().println(gson.toJson(usersCompetitions));
   }
 }
