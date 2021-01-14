@@ -24,12 +24,12 @@ public class Investment {
   private String searchItem;
   private long amountInvested;
   private long dateInvested;
-  private List<long> timeSeriesData = new ArrayList<>();
+  private List<Long> timeSeriesData = new ArrayList<>();
 
   public Investment(String investor, String searchItem, long amountInvested, long dateInvested) {
     this.investor = investor;
     this.searchItem = searchItem;
     this.amountInvested = amountInvested;
-    this.dateBrought = dateBrought;
+    this.dateInvested = dateInvested;
   }
 }
