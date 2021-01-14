@@ -18,7 +18,6 @@ package com.google.sps.data;
  * Class representing each competition object
  */
 public class Competition {
-
   /** The id of the competition entry in database */
   private long id;
 
@@ -37,12 +36,16 @@ public class Competition {
   /** The unformatted start date (milliseconds) */
   private long endDate;
 
-  public Competition(long id, String competitionName, String organiserName, String organiserIdap, long startDate, long endDate) {
-      this.id = id;
-      this.competitionName = competitionName;
-      this.organiserName = organiserName;
-      this.organiserIdap = organiserIdap;
-      this.startDate = startDate;
-      this.endDate = endDate;
+  private List<CompetitorInfo> competitors = new ArrayList<>();
+
+  public Competition(long id, String competitionName, String organiserName, String organiserIdap,
+      long startDate, long endDate, List<CompetitorInfo> competitors) {
+    this.id = id;
+    this.competitionName = competitionName;
+    this.organiserName = organiserName;
+    this.organiserIdap = organiserIdap;
+    this.startDate = startDate;
+    this.endDate = endDate;
+    this.competitors = competitors;
   }
 }
