@@ -43,10 +43,15 @@
     padding-bottom: 10px;
 }
 
-.ButtonsContainer {
-    width: 700px;
-}
-
 .Navigation a.active {
     border-bottom: 2px solid #216FD6;
+}
+
+.ButtonsContainer {
+    width: 700px;
+    display: flex;
+    flex-direction: row;
+    flex-wrap: nowrap;
+    justify-content: flex-end;
+    padding-right: 20px;
 }

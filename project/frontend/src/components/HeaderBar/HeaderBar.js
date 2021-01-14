@@ -3,6 +3,7 @@ import classes from "./HeaderBar.module.css"
 import Logo from "../../assets/sGonksLogo.png"
 import { Link, NavLink } from "react-router-dom"
 import LinkButton from "../UI/LinkButton/LinkButton"
+import LoginButtonSet from "../UI/LoginButtonSet/LoginButtonSet";
 
 const HeaderBar = (props) => {
   let innerNavLinks = [
@@ -36,8 +37,7 @@ const HeaderBar = (props) => {
         {innerNav}
       </div>
       <div className={classes.ButtonsContainer}>
-        <LinkButton to='/'>Button</LinkButton>
-        <LinkButton to='/' inverted>Button</LinkButton>
+        <LoginButtonSet></LoginButtonSet>
       </div>
     </header>
   )
