@@ -33,7 +33,7 @@ def get_updated_daily_data(search_term, investment_date):
     end = get_end_times()
 
     hourly_data = fetch_hourly_data([search_term], *start, *end)
-    daily_data = aggregate_hourly_to_daily(search_term, hourly_data)
+    daily_data = aggregate_hourly_to_daily(hourly_data)
 
     return daily_data
 
@@ -62,15 +62,17 @@ def fetch_hourly_data(search_term, year_start, month_start, day_start, year_end,
     return hourly_data
 
 
-def aggregate_hourly_to_daily(search_term, hourly_df):
+def aggregate_hourly_to_daily(hourly_df):
     """
     hourly_df : a dataframe of hourly search data
     returns a dataframe of daily search data
     """
+    search_term = hourly_df.columns[0]
     date_list = []
     new_data = {search_term: []}
     count = 1
     day_total = 0
+    
     for datetime, row in hourly_df.iterrows():
         if count % 24 == 0:
             #finished accumulating day data
