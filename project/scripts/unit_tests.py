@@ -2,28 +2,44 @@
 
 import unittest
 import pandas as pd
+from datetime import datetime, timedelta
 
-from fetch_trends import fetch_hourly_data, aggregate_hourly_to_daily
+from fetch_trends import aggregate_hourly_to_daily
 from dates import get_end_times, get_start_times
 
 
 class TestFetch(unittest.TestCase):
 
     def setUp(self):
-        self.hourly_result = fetch_hourly_data("test", 2021, 1, 1, 2021, 1, 1)
-        self.daily_result = aggregate_hourly_to_daily(self.hourly_result)
+        data = {
+            "test" : [1] * 24
+        }
+        dates = [datetime.now()] * 24
+        hourly_df = pd.DataFrame(data, index=dates)
+        self.daily_result = aggregate_hourly_to_daily(hourly_df)
+
+        longer_data = {
+            "test" : list(range(48))
+        }
+        longer_dates = [datetime.now()] * 48
+        longer_hourly_df = pd.DataFrame(longer_data, index=longer_dates)
+        self.longer_daily_result = aggregate_hourly_to_daily(longer_hourly_df)
 
     def test_fetch_return_types(self):
-        self.assertIsInstance(self.hourly_result, pd.DataFrame, "Should be a dataframe")
         self.assertIsInstance(self.daily_result, pd.DataFrame, "Should be a dataframe")
 
     def test_dataframe_lengths(self):
-        self.assertEquals(len(self.hourly_result), 24, "Should have 24 hours of data")
-        self.assertEquals(len(self.daily_result), 1, "Should have one day of data")
+        self.assertEqual(len(self.daily_result), 1, "Should have one day of data")
 
-    def test_daily_is_aggregate(self):
-        sum_hourly = sum(self.hourly_result['test'].tolist())
-        self.assertEquals(sum_hourly, self.daily_result['test'].tolist()[0])
+    def test_daily_aggregate_all_ones(self):
+        self.assertEqual(24, self.daily_result["test"].tolist()[0], "Should sum to 24")
+
+    def test_two_day_aggregate_correct_length(self):
+       self.assertEqual(len(self.longer_daily_result), 2, "Should have two days of data")
+
+    def test_more_complicated_sum(self):
+        self.assertEqual(self.longer_daily_result["test"].tolist()[0], sum(range(0,24)), "Incorrect aggregate for day 1")
+        self.assertEqual(self.longer_daily_result["test"].tolist()[1], sum(range(24,48)), "Incorrect aggregate for day 2")
 
 
 class TestDates(unittest.TestCase):
