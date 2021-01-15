@@ -13,7 +13,9 @@ else
 	CLANG_FORMAT = node_modules/clang-format/bin/linux_x64/clang-format --style=Google
 endif
 
-# node_modules:
+PRETTIER=node_modules/prettier/bin-prettier.js	
+
+node_modules:	
 	npm install clang-format prettier css-validator eslint eslint-config-google react-scripts
 
 pretty: node_modules
