@@ -13,24 +13,21 @@
 // limitations under the License.
 
 package com.google.sps.data;
+import com.google.auto.value.AutoValue;
 
 /**
  * Class representing each user object
  */
-public class User {
-
-  /** The id of the user entry in database */
-  private long id;
-
-  /** The name of the user */
-  private String userName;
-
-  /** The idap of the user */
-  private String userIdap;
-
-  public User(long id, String userName, String userIdap) {
-    this.id = id;
-    this.userName = userName;
-    this.userIdap = userIdap;
+@AutoValue
+public abstract class User {
+  public static User create(long id, String name, String userIdap) {
+    return new AutoValue_User( id,  name,  userIdap);
   }
+  /** The id of the user entry in database */
+  public abstract long id();
+  /** The name of the user */
+  public abstract String name();
+  /** The username of the user */
+  public abstract String userIdap();
+
 }
