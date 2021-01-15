@@ -14,25 +14,23 @@
 
 package com.google.sps.servlets;
 
+import com.google.gson.Gson;
+import com.google.sps.data.*;
 import java.io.IOException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import com.google.gson.Gson;
-import com.google.sps.data.*;  
 
 @WebServlet("/authentication")
 public class AuthServlet extends HttpServlet {
-
   @Override
   public void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
-    //Competition compObj = new Competition(1895,"Google-Clouds-Comp","Emma Hogan","emmahogan@",0,0);
-    User userObj = new User(1896,"Phoebe Khokgawe","phoebek@");
+    User userObj = new User(1896, "Phoebe Khokgawe", "phoebek@");
 
     Gson gson = new Gson();
-    
-    response.setContentType("text/html;");
+
+    response.setContentType("application/json");
 
     response.getWriter().println(gson.toJson(userObj));
   }
