@@ -25,8 +25,12 @@ public abstract class Investment {
   public static Investment create(String investor, String searchItem, long amountInvested, long dateInvestedMilliSeconds) {
     return new AutoValue_Investment(investor, searchItem,amountInvested,dateInvestedMilliSeconds);
   }
+  /** The name of the investor for this investment */
   public abstract String investor();
+  /** The search query that is invested */
   public abstract String searchItem();
+  /** The amount invested for the search query*/
   public abstract long amountInvested();
+  /** The date that this investment is made stored in a millisecond type*/
   public abstract long dateInvestedMilliSeconds();
 }

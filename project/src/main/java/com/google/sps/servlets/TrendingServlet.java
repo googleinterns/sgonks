@@ -34,7 +34,7 @@ public class TrendingServlet extends HttpServlet {
     public void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
         getTrendingSearches();
         Gson gson = new Gson();
-        response.setContentType("text/html;");
+        response.setContentType("application/json ");
         response.getWriter().println(gson.toJson(trendingSearches));
     }
 

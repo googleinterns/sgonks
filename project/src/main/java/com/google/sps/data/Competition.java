@@ -15,39 +15,32 @@
 package com.google.sps.data;
 import java.util.ArrayList;
 import java.util.List;
+import com.google.auto.value.AutoValue;
 
 /**
  * Class representing each competition object
  */
-public class Competition {
-  /** The id of the competition entry in database */
-  private long id;
+@AutoValue
+public abstract class Competition {
 
-  /** The name of competition */
-  private String competitionName;
+    // @TODO: Still need to add List<CompetitorInfo> competitors but currently not compiling
+    public static Competition create(long id, String competitionName, String organiserName, String organiserIdap,
+                                     long startDate, long endDate) {
+        return new AutoValue_Competition(  id,  competitionName,  organiserName,  organiserIdap,
+                startDate,  endDate);
+    }
 
-  /** The name of the competition organiser */
-  private String organiserName;
-
-  /** The idap of the organiser */
-  private String organiserIdap;
-
-  /** The unformatted start date (milliseconds)*/
-  private long startDate;
-
-  /** The unformatted start date (milliseconds) */
-  private long endDate;
-
-  private List<CompetitorInfo> competitors = new ArrayList<>();
-
-  public Competition(long id, String competitionName, String organiserName, String organiserIdap,
-      long startDate, long endDate, List<CompetitorInfo> competitors) {
-    this.id = id;
-    this.competitionName = competitionName;
-    this.organiserName = organiserName;
-    this.organiserIdap = organiserIdap;
-    this.startDate = startDate;
-    this.endDate = endDate;
-    this.competitors = competitors;
-  }
+    /** The id of the competition entry in database */
+    public abstract long id();
+    /** The name of competition */
+    public abstract String competitionName();
+    /** The name of the competition organiser */
+    public abstract String organiserName();
+    /** The idap of the organiser */
+    public abstract String organiserIdap();
+    /** The unformatted start date (milliseconds)*/
+    public abstract long startDate();
+    /** The amount the user has available for additional investments */
+    public abstract long endDate();
 }
+

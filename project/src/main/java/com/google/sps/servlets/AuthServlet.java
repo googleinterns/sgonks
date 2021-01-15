@@ -27,12 +27,11 @@ public class AuthServlet extends HttpServlet {
 
   @Override
   public void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
-    //Competition compObj = new Competition(1895,"Google-Clouds-Comp","Emma Hogan","emmahogan@",0,0);
     User userObj = User.create(1896,"Phoebe Khokgawe","phoebek@");
 
     Gson gson = new Gson();
     
-    response.setContentType("text/html;");
+    response.setContentType("application/json");
 
     response.getWriter().println(gson.toJson(userObj));
   }

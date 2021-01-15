@@ -31,7 +31,7 @@ public class InvestmentServlet extends HttpServlet {
   @Override
   public void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
     getUserInvestments();
-    response.setContentType("text/html;");
+    response.setContentType("application/json");
 
     response.getWriter().println(new Gson().toJson(usersInvestments));
   }
