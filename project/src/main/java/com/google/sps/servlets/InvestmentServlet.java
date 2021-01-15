@@ -38,7 +38,8 @@ public class InvestmentServlet extends HttpServlet {
 
   private void getUserInvestments() {
     // hard coded data that will need to be removed
-    usersInvestments.add(Investment.create("Bob", "Chicken Wings", 50, new Date(2020, 12, 26).getTime()));
+    usersInvestments.add(
+        Investment.create("Bob", "Chicken Wings", 50, new Date(2020, 12, 26).getTime()));
     usersInvestments.add(Investment.create("Jack", "Trump", 25, new Date(2020, 11, 26).getTime()));
     usersInvestments.add(Investment.create("Mary", "COVID", 30, new Date(2020, 10, 26).getTime()));
   }

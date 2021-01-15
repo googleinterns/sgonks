@@ -23,24 +23,22 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-
 // Delivers a list of strings representing today's trending searches worldwide
 @WebServlet("/trending")
 public class TrendingServlet extends HttpServlet {
+  private List<String> trendingSearches = new ArrayList<>();
 
-    private List<String> trendingSearches = new ArrayList<>();
-    
-    @Override
-    public void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
-        getTrendingSearches();
-        Gson gson = new Gson();
-        response.setContentType("application/json ");
-        response.getWriter().println(gson.toJson(trendingSearches));
-    }
+  @Override
+  public void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
+    getTrendingSearches();
+    Gson gson = new Gson();
+    response.setContentType("application/json ");
+    response.getWriter().println(gson.toJson(trendingSearches));
+  }
 
-    public void getTrendingSearches() {
-        //fetch trending searches from db - hard coded data for now
-        trendingSearches.add("Giraffes");
-        trendingSearches.add("Chicken nuggets");
-    }
+  public void getTrendingSearches() {
+    // fetch trending searches from db - hard coded data for now
+    trendingSearches.add("Giraffes");
+    trendingSearches.add("Chicken nuggets");
+  }
 }

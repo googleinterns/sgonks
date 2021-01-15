@@ -22,8 +22,9 @@ import java.util.List;
  */
 @AutoValue
 public abstract class Investment {
-  public static Investment create(String investor, String searchItem, long amountInvested, long dateInvestedMilliSeconds) {
-    return new AutoValue_Investment(investor, searchItem,amountInvested,dateInvestedMilliSeconds);
+  public static Investment create(
+      String investor, String searchItem, long amountInvested, long dateInvestedMilliSeconds) {
+    return new AutoValue_Investment(investor, searchItem, amountInvested, dateInvestedMilliSeconds);
   }
   /** The name of the investor for this investment */
   public abstract String investor();
