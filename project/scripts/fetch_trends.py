@@ -70,20 +70,19 @@ def aggregate_hourly_to_daily(hourly_df):
     search_term = hourly_df.columns[0]
     date_list = []
     new_data = {search_term: []}
-    count = 1
+    count = 0
     day_total = 0
 
     for datetime, row in hourly_df.iterrows():
+        day_total += row[search_term]
+        count += 1
         if count % 24 == 0:
             #finished accumulating day data
             date_list.append(datetime.date())
             new_data[search_term].append(day_total)
             #reset counters
             day_total = 0
-            count = 1
-
-        day_total += row[search_term]
-        count += 1
+            count = 0
 
     #create new df indexed by dates
     daily_df = pd.DataFrame(new_data, index=date_list)
