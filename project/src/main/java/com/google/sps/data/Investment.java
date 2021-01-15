@@ -13,23 +13,20 @@
 // limitations under the License.
 
 package com.google.sps.data;
+import com.google.auto.value.AutoValue;
 import java.util.ArrayList;
 import java.util.List;
 
 /**
  * Class representing an investment object when users make a purchase.
  */
-public class Investment {
-  private String investor;
-  private String searchItem;
-  private long amountInvested;
-  private long dateInvested;
-  private List<Long> timeSeriesData = new ArrayList<>();
-
-  public Investment(String investor, String searchItem, long amountInvested, long dateInvested) {
-    this.investor = investor;
-    this.searchItem = searchItem;
-    this.amountInvested = amountInvested;
-    this.dateInvested = dateInvested;
+@AutoValue
+public abstract class Investment {
+  public static Investment create(String investor, String searchItem, long amountInvested, long dateInvestedMilliSeconds) {
+    return new AutoValue_Investment(investor, searchItem,amountInvested,dateInvestedMilliSeconds);
   }
+  public abstract String investor();
+  public abstract String searchItem();
+  public abstract long amountInvested();
+  public abstract long dateInvestedMilliSeconds();
 }
