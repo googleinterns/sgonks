@@ -16,10 +16,10 @@ export const AuthContext = React.createContext();
 
 function App() {
   const [userInfo, setUserInfo] = useState(null);
-  const [compId, setCompId] = useState(null);
+  const [compId, setCompId] = useState(0);
   
   React.useEffect(() => {
-    const parsedId = Number(localStorage.getItem("compId" || null))
+    const parsedId = Number(localStorage.getItem("compId" || 0))
     setCompId(parsedId)
   }, [])
 
@@ -42,10 +42,11 @@ function App() {
     }
   }
 
+  console.log(compId)
   return (
     <div className="App">
       <AuthContext.Provider value={authHandlers}>
-        {header}
+        <HeaderBar loggedIn={userInfo != null} innerNav={compId != 0}></HeaderBar>
         <Layout>{pageRoute}</Layout>
       </AuthContext.Provider>
     </div>
