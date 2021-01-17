@@ -1,11 +1,13 @@
-import React from "react"
+import React, { useContext } from "react"
 import classes from "./HeaderBar.module.css"
 import Logo from "../../assets/sGonksLogo.png"
 import { Link, NavLink } from "react-router-dom"
 import LinkButton from "../UI/LinkButton/LinkButton"
 import LoginButtonSet from "../UI/LoginButtonSet/LoginButtonSet";
 
+
 const HeaderBar = (props) => {
+
   let innerNavLinks = [
     { linkTo: "/", display: "My sGonks", key: "mysgonks"},
     { linkTo: "/", display: "Competition", key: "competition" },
