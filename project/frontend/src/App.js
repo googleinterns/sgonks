@@ -35,6 +35,10 @@ function App() {
           console.log("userInfo set");
         });
     },
+    clearAuth: () => {
+      setUserInfo(null);
+      console.log("useInfo nullified")
+    }
   }
 
   return (

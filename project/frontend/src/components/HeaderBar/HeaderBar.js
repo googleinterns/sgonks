@@ -2,7 +2,7 @@ import React, { useContext } from "react";
 import classes from "./HeaderBar.module.css";
 import Logo from "../../assets/sGonksLogo.png";
 import { Link, NavLink } from "react-router-dom";
-import LinkButton from "../UI/LinkButton/LinkButton";
+import SignOutButton from "./SignOutButton/SignOutButton"
 import LoginButtonSet from "../UI/LoginButtonSet/LoginButtonSet";
 import Aux from "../../hoc/Auxiliary";
 
@@ -40,9 +40,7 @@ const HeaderBar = (props) => {
           </li>
         </ul>
       </nav>
-      <LinkButton to="/" inverted="true">
-        Sign out
-      </LinkButton>
+      <SignOutButton></SignOutButton>
     </Aux>
   ) : (
     <LoginButtonSet></LoginButtonSet>
