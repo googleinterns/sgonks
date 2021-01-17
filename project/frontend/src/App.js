@@ -16,7 +16,15 @@ export const AuthContext = React.createContext();
 
 function App() {
   const [userInfo, setUserInfo] = useState(null);
+  const [compId, setCompId] = useState(null);
   
+  React.useEffect(() => {
+    const parsedId = Number(localStorage.getItem("compId" || null))
+    setCompId(parsedId)
+  }, [])
+
+  let header = userInfo == null ? <HeaderBar/> : <HeaderBar innerNav></HeaderBar>
+
   let pageRoute = <Route path="/" component={LandingPage}></Route>;
   const defaultAuth = {
     handleAuth: () => {
@@ -32,7 +40,7 @@ function App() {
   return (
     <div className="App">
       <AuthContext.Provider value={defaultAuth}>
-        <HeaderBar></HeaderBar>
+        {header}
         <Layout>{pageRoute}</Layout>
       </AuthContext.Provider>
     </div>
