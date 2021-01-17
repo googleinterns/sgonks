@@ -59,6 +59,13 @@
       <version>4.12</version>
       <scope>test</scope>
     </dependency>
+    <dependency>
+      <groupId>com.google.appengine</groupId>
+      <artifactId>appengine-testing</artifactId>
+      <version>1.9.84</version>
+      <scope>test</scope>
+    </dependency>
+
   </dependencies>
 
   <build>
