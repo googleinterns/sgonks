@@ -23,7 +23,7 @@ function App() {
     setCompId(parsedId)
   }, [])
 
-  let header = userInfo == null ? <HeaderBar/> : <HeaderBar innerNav></HeaderBar>
+  let header = userInfo == null ? <HeaderBar/> : <HeaderBar loggedIn innerNav></HeaderBar>
 
   let pageRoute = <Route path="/" component={LandingPage}></Route>;
   const defaultAuth = {

@@ -4,6 +4,7 @@ import Logo from "../../assets/sGonksLogo.png";
 import { Link, NavLink } from "react-router-dom";
 import LinkButton from "../UI/LinkButton/LinkButton";
 import LoginButtonSet from "../UI/LoginButtonSet/LoginButtonSet";
+import Aux from "../../hoc/Auxiliary";
 
 const HeaderBar = (props) => {
   let innerNavLinks = [
@@ -29,10 +30,20 @@ const HeaderBar = (props) => {
   ) : null;
 
   let buttonSet = props.loggedIn ? (
-    <div>
-      <NavLink>Select Competition</NavLink>
-      <LinkButton inverted>Sign out</LinkButton>
-    </div>
+    <Aux>
+      <nav className={classes.Navigation}>
+        <ul>
+          <li>
+            <NavLink to="/" activeClassName={classes.active}>
+              Select Competition
+            </NavLink>
+          </li>
+        </ul>
+      </nav>
+      <LinkButton to="/" inverted="true">
+        Sign out
+      </LinkButton>
+    </Aux>
   ) : (
     <LoginButtonSet></LoginButtonSet>
   );
