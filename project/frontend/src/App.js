@@ -26,7 +26,8 @@ function App() {
   let header = userInfo == null ? <HeaderBar/> : <HeaderBar loggedIn innerNav></HeaderBar>
 
   let pageRoute = <Route path="/" component={LandingPage}></Route>;
-  const defaultAuth = {
+
+  const authHandlers = {
     handleAuth: () => {
       fetch("./authentication")
         .then((response) => response.json())
@@ -43,7 +44,7 @@ function App() {
 
   return (
     <div className="App">
-      <AuthContext.Provider value={defaultAuth}>
+      <AuthContext.Provider value={authHandlers}>
         {header}
         <Layout>{pageRoute}</Layout>
       </AuthContext.Provider>
