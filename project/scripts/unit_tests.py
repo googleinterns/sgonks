@@ -19,22 +19,18 @@ class TestFetch(unittest.TestCase):
         longer_dates = [datetime.now()] * 48
         self.longer_hourly_df = pd.DataFrame(longer_data, index=longer_dates)
 
-    def test_dataframe_lengths(self):
-        daily_result = aggregate_hourly_to_daily(self.hourly_df)
-        self.assertEqual(len(daily_result), 1, "Should have one day of data")
-
     def test_daily_aggregate_all_ones(self):
         daily_result = aggregate_hourly_to_daily(self.hourly_df)
-        self.assertEqual(24, daily_result["test"].tolist()[0], "Should sum to 24")
-
-    def test_aggregate_hourly_to_daily_two_days_of_data(self):
-        longer_daily_result = aggregate_hourly_to_daily(self.longer_hourly_df)
-        self.assertEqual(len(longer_daily_result), 2, "Should have two days of data")
+        expected_result = pd.DataFrame({"test" : [24]}, index=[datetime.now().date()])
+        self.assertTrue(daily_result.equals(expected_result), "Incorrect aggregate of hourly data over 1 day")
 
     def test_more_complicated_sum(self):
         longer_daily_result = aggregate_hourly_to_daily(self.longer_hourly_df)
-        self.assertEqual(longer_daily_result["test"].tolist()[0], sum(range(0,24)), "Incorrect aggregate for day 1")
-        self.assertEqual(longer_daily_result["test"].tolist()[1], sum(range(24,48)), "Incorrect aggregate for day 2")
+        expected_result = pd.DataFrame(
+            {"test" : [sum(range(0,24)), sum(range(24,48))]}, 
+            index=[datetime.now().date()] * 2
+        )
+        self.assertTrue(longer_daily_result.equals(expected_result), "Incorrect aggregate of hourly data over 2 days")
 
 
 class TestDates(unittest.TestCase):
