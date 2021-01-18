@@ -17,15 +17,20 @@ export const AuthContext = React.createContext();
 function App() {
   const [userInfo, setUserInfo] = useState(null);
   const [compId, setCompId] = useState(0);
-  
+
   React.useEffect(() => {
-    const parsedId = Number(localStorage.getItem("compId" || 0))
-    setCompId(parsedId)
-  }, [])
+    const parsedId = Number(localStorage.getItem("compId" || 0));
+    setCompId(parsedId);
+  }, []);
 
-  let header = userInfo == null ? <HeaderBar/> : <HeaderBar loggedIn innerNav></HeaderBar>
-
-  let pageRoute = <Route path="/" component={LandingPage}></Route>;
+  let pageRoute =
+    userInfo == null ? (
+      <Route path="/" component={LandingPage}></Route>
+    ) : compId == 0 ? (
+      <Route path="/" component={SelectCompetition}></Route>
+    ) : (
+      <Route path="/" component={Explanation}></Route>
+    );
 
   const authHandlers = {
     handleAuth: () => {
@@ -38,15 +43,17 @@ function App() {
     },
     clearAuth: () => {
       setUserInfo(null);
-      console.log("useInfo nullified")
-    }
-  }
+      console.log("useInfo nullified");
+    },
+  };
 
-  console.log(compId)
   return (
     <div className="App">
       <AuthContext.Provider value={authHandlers}>
-        <HeaderBar loggedIn={userInfo != null} innerNav={compId != 0}></HeaderBar>
+        <HeaderBar
+          loggedIn={userInfo != null}
+          innerNav={compId != 0}
+        ></HeaderBar>
         <Layout>{pageRoute}</Layout>
       </AuthContext.Provider>
     </div>
