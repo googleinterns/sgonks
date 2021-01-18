@@ -33,8 +33,11 @@ public class CompetitionInfoServlet extends HttpServlet {
     Gson gson = new Gson();
 
     response.setContentType("application/json");
+    String competitor = gson.toJson(getCompetitorInfo());
+    String competitions = gson.toJson(getUserCompetitions());
+    String allInfo = combineJSON(competitor, competitions);
 
-    response.getWriter().println(gson.toJson(getUserCompetitions()));
+    response.getWriter().println(allInfo);
   }
 
   /**
@@ -42,6 +45,7 @@ public class CompetitionInfoServlet extends HttpServlet {
    * @return -- all Competitions object that user is in.
    */
   private List<Competition> getUserCompetitions() {
+    //data for each of the user's competitions, including info about other competitors
     List<Competition> usersCompetitions = new ArrayList<>();
     List<CompetitorInfo> competitors = new ArrayList<>();
 
@@ -61,5 +65,17 @@ public class CompetitionInfoServlet extends HttpServlet {
     usersCompetitions.add(compObj2);
 
     return usersCompetitions;
+  }
+
+  private CompetitorInfo getCompetitorInfo() {
+    //hard coded example for now. This is data specific to the logged in user
+    return CompetitorInfo.create(1, 1, "Emma", "emmahogan@", 100000, 10);
+  }
+
+  private String combineJSON(String competitorInfo, String competitions) {
+    return "{" + 
+      "\"user\" : " + competitorInfo + ", " +
+      "\"competitionInfo\" : " + competitions + 
+      "}";
   }
 }
