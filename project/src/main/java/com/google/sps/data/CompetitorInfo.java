@@ -20,8 +20,8 @@ import com.google.auto.value.AutoValue;
 @AutoValue
 public abstract class CompetitorInfo {
   public static CompetitorInfo create(
-      int rank, int rankYesterday, String name, String idap, long networth, long amtAvailable) {
-    return new AutoValue_CompetitorInfo(rank, rankYesterday, name, idap, networth, amtAvailable);
+      int rank, int rankYesterday, String name, String idap, long netWorth, long amountAvailable) {
+    return new AutoValue_CompetitorInfo(rank, rankYesterday, name, idap, netWorth, amountAvailable);
   }
 
   /** The current ranking of the user in this competition based on networth */
@@ -33,7 +33,7 @@ public abstract class CompetitorInfo {
   /** The competitor's idap */
   public abstract String idap();
   /** The networth of the competitor */
-  public abstract long networth();
+  public abstract long netWorth();
   /** The amount the user has available for additional investments */
-  public abstract long amtAvailable();
+  public abstract long amountAvailable();
 }

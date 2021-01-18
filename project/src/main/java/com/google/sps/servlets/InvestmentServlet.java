@@ -27,20 +27,21 @@ import javax.servlet.http.HttpServletResponse;
 
 @WebServlet("/investments")
 public class InvestmentServlet extends HttpServlet {
-  List<Investment> usersInvestments = new ArrayList<>();
+
   @Override
   public void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
-    getUserInvestments();
     response.setContentType("application/json");
 
-    response.getWriter().println(new Gson().toJson(usersInvestments));
+    response.getWriter().println(new Gson().toJson(getUserInvestments()));
   }
 
-  private void getUserInvestments() {
+  private List<Investment> getUserInvestments() {
+    List<Investment> usersInvestments = new ArrayList<>();
     // hard coded data that will need to be removed
     usersInvestments.add(
         Investment.create("Bob", "Chicken Wings", 50, new Date(2020, 12, 26).getTime()));
     usersInvestments.add(Investment.create("Jack", "Trump", 25, new Date(2020, 11, 26).getTime()));
     usersInvestments.add(Investment.create("Mary", "COVID", 30, new Date(2020, 10, 26).getTime()));
+    return  usersInvestments;
   }
 }

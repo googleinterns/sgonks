@@ -27,19 +27,24 @@ import javax.servlet.http.HttpServletResponse;
 
 @WebServlet("/competitionInfo")
 public class CompetitionInfoServlet extends HttpServlet {
-  List<Competition> usersCompetitions = new ArrayList<>();
+
   @Override
   public void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
-    getUserCompetitions();
     Gson gson = new Gson();
 
     response.setContentType("application/json");
 
-    response.getWriter().println(gson.toJson(usersCompetitions));
+    response.getWriter().println(gson.toJson(getUserCompetitions()));
   }
 
-  private void getUserCompetitions() {
+  /**
+   * Return all competitions that the user is in. (Hard-coded for now)
+   * @return -- all Competitions object that user is in.
+   */
+  private List<Competition> getUserCompetitions() {
+    List<Competition> usersCompetitions = new ArrayList<>();
     List<CompetitorInfo> competitors = new ArrayList<>();
+
     competitors.add(CompetitorInfo.create(1, 1, "Bob", "bobk@", 1000, 500));
     competitors.add(CompetitorInfo.create(2, 2, "Jack", "jackm@", 800, 450));
     Competition compObj = Competition.create(1895, "Google-Clouds-Comp", "Emma Hogan", "emmahogan@",
@@ -54,5 +59,7 @@ public class CompetitionInfoServlet extends HttpServlet {
 
     usersCompetitions.add(compObj);
     usersCompetitions.add(compObj2);
+
+    return usersCompetitions;
   }
 }
