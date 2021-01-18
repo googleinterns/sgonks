@@ -11,7 +11,10 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.PrintWriter;
 import java.io.StringWriter;
-//import com.google.sps.servlets.AuthServlet;
+import com.google.sps.servlets.AuthServlet;
+import static org.junit.Assert.assertTrue;
+import static org.mockito.Mockito.*;
+
 
 
 @RunWith(JUnit4.class)
@@ -23,10 +26,10 @@ public class AuthServletTest {
     private HttpServletRequest mockRequest;
     private HttpServletResponse mockResponse;
     private StringWriter responseWriter;
-    private AuthSevlet authSevlet;
+    private AuthServlet authSevlet;
 
     @Before
-    public void setUp(){
+    public void setUp() throws Exception{
         helper.setUp();
         authSevlet = new AuthServlet();
         mockRequest = mock(HttpServletRequest.class);
@@ -39,12 +42,12 @@ public class AuthServletTest {
     }
 
     @After
-    public void tearDown(){
+    public void tearDown() throws Exception{
         helper.tearDown();
     }
 
     @Test
-    public void loggedIn(){
+    public void loggedIn() throws Exception{
         authSevlet.doGet(mockRequest,mockResponse);
         String response = responseWriter.toString();
         System.out.println("This is the response!!!: " + response);
