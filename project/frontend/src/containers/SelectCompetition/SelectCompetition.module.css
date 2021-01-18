@@ -1,0 +1,23 @@
+.SelectCompetitionContainer {
+  height: 85%;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  flex-wrap: nowrap;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.CardsContainer {
+  background: blue;
+  height: 70%;
+  width: 100%;
+  display: flex;
+  align-items: center;
+}
+
+.CardsContainer ul {
+  margin: 0;
+  padding: 0;
+  display: flex;
+}
