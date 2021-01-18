@@ -1,32 +1,71 @@
-import "./App.css"
+import "./App.css";
 
-import React from "react"
-import { Route } from "react-router-dom"
+import React, { useState } from "react";
+import { Route, Switch, Redirect } from "react-router-dom";
 
-import CreateCompetition from "./containers/CreateCompetition/CreateCompetition"
-import Explanation from "./containers/Explanation/Explanation"
-import Login from "./containers/Login/Login"
-import SelectCompetition from "./containers/SelectCompetition/SelectCompetition"
-import SGonksPlatfrom from "./containers/SGonksPlatform/SGonksPlatform"
+import CreateCompetition from "./containers/CreateCompetition/CreateCompetition";
+import Explanation from "./containers/Explanation/Explanation";
+import Login from "./containers/Login/Login";
+import SelectCompetition from "./containers/SelectCompetition/SelectCompetition";
+import SGonksPlatfrom from "./containers/SGonksPlatform/SGonksPlatform";
 
-import HeaderBar from "./components/HeaderBar/HeaderBar"
-import LandingPage from "./containers/LandingPage/LandingPage"
-import Layout from "./hoc/Layout/Layout"
+import HeaderBar from "./components/HeaderBar/HeaderBar";
+import LandingPage from "./containers/LandingPage/LandingPage";
+import Layout from "./hoc/Layout/Layout";
+export const AuthContext = React.createContext();
 
 function App() {
+  const [userInfo, setUserInfo] = useState(null);
+  const [compId, setCompId] = useState(0);
+
+  React.useEffect(() => {
+    const parsedId = Number(localStorage.getItem("compId" || 0));
+    setCompId(parsedId);
+  }, []);
+
+  let pageRoute =
+    userInfo == null ? (
+      <Switch>
+        <Route path="/signin" component={LandingPage}></Route>
+        <Redirect to="/signin"></Redirect>
+      </Switch>
+    ) : compId == 0 ? (
+      <Switch>
+        <Route path="/compselect" component={SelectCompetition}></Route>
+        <Redirect to="/compselect"></Redirect>
+      </Switch>
+    ) : (
+      <Switch>
+        <Route path="/placeholder" component={Explanation}></Route>
+      </Switch>
+    );
+
+  const authHandlers = {
+    handleAuth: () => {
+      fetch("./authentication")
+        .then((response) => response.json())
+        .then((data) => {
+          setUserInfo(data);
+          console.log("userInfo set");
+        });
+    },
+    clearAuth: () => {
+      setUserInfo(null);
+      console.log("useInfo nullified");
+    },
+  };
+
   return (
     <div className="App">
-      <HeaderBar innerNav></HeaderBar>
-      <Layout>
-        <Route path="/" component={LandingPage}></Route>
-      </Layout>
-      {/* <Route path='/' exact component={Login}></Route> */}
-      <Route path="/sgonks-platform" component={SGonksPlatfrom}></Route>
-      <Route path="/switchComp" exact component={SelectCompetition}></Route>
-      <Route path="/createComp" exact component={CreateCompetition}></Route>
-      <Route path="/explanation" exact component={Explanation}></Route>
+      <AuthContext.Provider value={authHandlers}>
+        <HeaderBar
+          loggedIn={userInfo != null}
+          innerNav={compId != 0}
+        ></HeaderBar>
+        <Layout>{pageRoute}</Layout>
+      </AuthContext.Provider>
     </div>
-  )
+  );
 }
 
-export default App
+export default App;
