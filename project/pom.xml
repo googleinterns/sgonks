@@ -41,6 +41,19 @@
      <artifactId>guava</artifactId>
      <version>r05</version>
     </dependency>
+
+    <dependency>
+      <groupId>com.google.auto.value</groupId>
+      <artifactId>auto-value-annotations</artifactId>
+      <version>1.6.2</version>
+    </dependency>
+    <dependency>
+      <groupId>com.google.auto.value</groupId>
+      <artifactId>auto-value</artifactId>
+      <version>1.6.2</version>
+      <scope>provided</scope>
+    </dependency>
+
   </dependencies>
 
   <build>
@@ -61,6 +74,7 @@
         <artifactId>appengine-maven-plugin</artifactId>
         <version>1.9.9</version>
       </plugin>
+
     </plugins>
   </build>
 </project>

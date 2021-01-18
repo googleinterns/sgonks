@@ -14,25 +14,52 @@
 
 package com.google.sps.servlets;
 
+import com.google.gson.Gson;
+import com.google.sps.data.*;
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.List;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import com.google.gson.Gson;
-import com.google.sps.data.*;  
 
 @WebServlet("/competitionInfo")
 public class CompetitionInfoServlet extends HttpServlet {
 
   @Override
   public void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
-    Competition compObj = new Competition(1895,"Google-Clouds-Comp","Emma Hogan","emmahogan@",0,0);
-
     Gson gson = new Gson();
-    
-    response.setContentType("text/html;");
 
-    response.getWriter().println(gson.toJson(compObj));
+    response.setContentType("application/json");
+
+    response.getWriter().println(gson.toJson(getUserCompetitions()));
+  }
+
+  /**
+   * Return all competitions that the user is in. (Hard-coded for now)
+   * @return -- all Competitions object that user is in.
+   */
+  private List<Competition> getUserCompetitions() {
+    List<Competition> usersCompetitions = new ArrayList<>();
+    List<CompetitorInfo> competitors = new ArrayList<>();
+
+    competitors.add(CompetitorInfo.create(1, 1, "Bob", "bobk@", 1000, 500));
+    competitors.add(CompetitorInfo.create(2, 2, "Jack", "jackm@", 800, 450));
+    Competition compObj = Competition.create(1895, "Google-Clouds-Comp", "Emma Hogan", "emmahogan@",
+        new Date(2021, 1, 1).getTime(), new Date(2021, 1, 10).getTime());
+
+    List<CompetitorInfo> competitors2 = new ArrayList<>();
+    competitors2.add(CompetitorInfo.create(1, 1, "Mary", "maryk@", 1000, 500));
+    competitors2.add(CompetitorInfo.create(2, 2, "Bell", "bellm@", 800, 450));
+    competitors2.add(CompetitorInfo.create(3, 3, "Bob", "bobk@", 700, 400));
+    Competition compObj2 = Competition.create(1896, "Tide Pod", "Mercury Lin", "mercurylin@",
+        new Date(2021, 1, 1).getTime(), new Date(2021, 1, 10).getTime());
+
+    usersCompetitions.add(compObj);
+    usersCompetitions.add(compObj2);
+
+    return usersCompetitions;
   }
 }
