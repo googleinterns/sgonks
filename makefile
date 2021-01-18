@@ -13,21 +13,13 @@ else
 	CLANG_FORMAT = node_modules/clang-format/bin/linux_x64/clang-format --style=Google
 endif
 
-CSS_VALIDATOR=node_modules/css-validator/bin/css-validator
-ESLINT=node_modules/eslint/bin/eslint.js
-PRETTIER=node_modules/prettier/bin-prettier.js
+PRETTIER=node_modules/prettier/bin-prettier.js	
 
-node_modules:
+node_modules:	
 	npm install clang-format prettier css-validator eslint eslint-config-google react-scripts
 
 pretty: node_modules
-	$(PRETTIER) --write project/frontend/src/*.css
 	find project/src/main/java -iname *.java | xargs $(CLANG_FORMAT) -i
-	find project/frontend/src -iname *.js | xargs $(CLANG_FORMAT) -i
-
-validate: node_modules
-	$(CSS_VALIDATOR) project/frontend/src/*.css
-	$(ESLINT) project/frontend/src/*.js
 
 package:
 	mvn package

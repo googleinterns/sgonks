@@ -1,0 +1,65 @@
+.HeaderBar {
+    height: 60px;
+    display: flex;
+    flex-direction: row;
+    flex-wrap: nowrap;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.Logo {
+    width: 130px;
+    padding: 30px;
+    padding-right: 0;
+}
+
+.NavigationContainer {
+    width: 100%;
+    padding-left: 20px;
+}
+
+.Navigation {
+	height: 100%;
+	display: flex;
+    flex-direction: row;
+    align-items: center;
+}
+
+.Navigation ul {
+	list-style: none;
+	margin: 0;
+	padding: 0;
+}
+
+.Navigation li {
+	display: inline-block;
+    margin: 3px;
+    padding: 12px 17px;
+    border-radius: 4px;
+}
+
+.Navigation a {
+    font-family: "Open Sans";
+    text-decoration: none;
+    font-weight:600;
+    font-size: 14px;
+    color: #5f6368;
+    padding-bottom: 10px;
+}
+
+.Navigation a.active {
+    border-bottom: 2px solid #216FD6;
+}
+
+.ButtonsContainer {
+    width: 700px;
+    display: flex;
+    flex-direction: row;
+    flex-wrap: nowrap;
+    justify-content: flex-end;
+    padding-right: 20px;
+}
+
+.Navigation li:hover {
+    background: #f8f9fa;
+}
