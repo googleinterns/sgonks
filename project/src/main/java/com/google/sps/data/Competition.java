@@ -13,36 +13,32 @@
 // limitations under the License.
 
 package com.google.sps.data;
+import com.google.auto.value.AutoValue;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Class representing each competition object
  */
-public class Competition {
+@AutoValue
+public abstract class Competition {
+  // @TODO: Still need to add List<CompetitorInfo> competitors but currently not compiling
+  public static Competition create(long id, String competitionName, String organiserName,
+      String organiserUsername, long startDate, long endDate) {
+    return new AutoValue_Competition(
+        id, competitionName, organiserName, organiserUsername, startDate, endDate);
+  }
 
   /** The id of the competition entry in database */
-  private long id;
-
-  /** The name of the user who made the comment */
-  private String competitionName;
-
+  public abstract long id();
+  /** The name of competition */
+  public abstract String competitionName();
   /** The name of the competition organiser */
-  private String organiserName;
-
-  /** The idap of the organiser */
-  private String organiserIdap;
-
+  public abstract String organiserName();
+  /** The username of the organiser */
+  public abstract String organiserUsername();
   /** The unformatted start date (milliseconds)*/
-  private long startDate;
-
-  /** The unformatted start date (milliseconds) */
-  private long endDate;
-
-  public Competition(long id, String competitionName, String organiserName, String organiserIdap, long startDate, long endDate) {
-      this.id = id;
-      this.competitionName = competitionName;
-      this.organiserName = organiserName;
-      this.organiserIdap = organiserIdap;
-      this.startDate = startDate;
-      this.endDate = endDate;
-  }
+  public abstract long startDate();
+  /** The unformatted end date (milliseconds)*/
+  public abstract long endDate();
 }

@@ -14,25 +14,34 @@
 
 package com.google.sps.servlets;
 
+import com.google.gson.Gson;
+import com.google.sps.data.*;
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.List;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import com.google.gson.Gson;
-import com.google.sps.data.*;  
 
-@WebServlet("/authentication")
-public class AuthServlet extends HttpServlet {
+@WebServlet("/investments")
+public class InvestmentServlet extends HttpServlet {
 
   @Override
   public void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
-    User userObj = User.create(1896,"Phoebe Khokgawe","phoebek@");
-
-    Gson gson = new Gson();
-    
     response.setContentType("application/json");
 
-    response.getWriter().println(gson.toJson(userObj));
+    response.getWriter().println(new Gson().toJson(getUserInvestments()));
+  }
+
+  private List<Investment> getUserInvestments() {
+    List<Investment> usersInvestments = new ArrayList<>();
+    // hard coded data that will need to be removed
+    usersInvestments.add(
+        Investment.create("Bob", "Chicken Wings", 50, new Date(2020, 12, 26).getTime()));
+    usersInvestments.add(Investment.create("Jack", "Trump", 25, new Date(2020, 11, 26).getTime()));
+    usersInvestments.add(Investment.create("Mary", "COVID", 30, new Date(2020, 10, 26).getTime()));
+    return  usersInvestments;
   }
 }

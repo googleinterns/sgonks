@@ -14,25 +14,36 @@
 
 package com.google.sps.servlets;
 
+import com.google.gson.Gson;
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import com.google.gson.Gson;
-import com.google.sps.data.*;  
 
-@WebServlet("/authentication")
-public class AuthServlet extends HttpServlet {
+// Delivers a list of strings representing today's trending searches worldwide
+@WebServlet("/trending")
+public class TrendingServlet extends HttpServlet {
+
 
   @Override
   public void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
-    User userObj = User.create(1896,"Phoebe Khokgawe","phoebek@");
-
     Gson gson = new Gson();
-    
-    response.setContentType("application/json");
+    response.setContentType("application/json ");
+    response.getWriter().println(gson.toJson(getTrendingSearches()));
+  }
 
-    response.getWriter().println(gson.toJson(userObj));
+  /**
+   * Return lists of trending seraches from API.
+   */
+  public List<String> getTrendingSearches() {
+    List<String> trendingSearches = new ArrayList<>();
+    // fetch trending searches from db - hard coded data for now
+    trendingSearches.add("Giraffes");
+    trendingSearches.add("Chicken nuggets");
+
+    return trendingSearches;
   }
 }
