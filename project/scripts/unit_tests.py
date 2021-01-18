@@ -2,7 +2,7 @@
 
 import unittest
 import pandas as pd
-from datetime import datetime, timedelta
+from datetime import datetime
 
 from fetch_trends import aggregate_hourly_to_daily
 from dates import get_end_times, get_start_times
@@ -20,17 +20,14 @@ class TestFetch(unittest.TestCase):
         self.longer_hourly_df = pd.DataFrame(longer_data, index=longer_dates)
 
     def test_daily_aggregate_all_ones(self):
-        daily_result = aggregate_hourly_to_daily(self.hourly_df)
-        expected_result = pd.DataFrame({"test" : [24]}, index=[datetime.now().date()])
-        self.assertTrue(daily_result.equals(expected_result), "Incorrect aggregate of hourly data over 1 day")
+        daily_result = aggregate_hourly_to_daily(self.hourly_df).to_string(index=False)
+        expected_result = pd.DataFrame({"test" : [24]}).to_string(index=False)
+        self.assertEqual(daily_result, expected_result, "Incorrect aggregate of hourly data over 1 day")
 
     def test_more_complicated_sum(self):
-        longer_daily_result = aggregate_hourly_to_daily(self.longer_hourly_df)
-        expected_result = pd.DataFrame(
-            {"test" : [sum(range(0,24)), sum(range(24,48))]}, 
-            index=[datetime.now().date()] * 2
-        )
-        self.assertTrue(longer_daily_result.equals(expected_result), "Incorrect aggregate of hourly data over 2 days")
+        longer_daily_result = aggregate_hourly_to_daily(self.longer_hourly_df).to_string(index=False)
+        expected_result = pd.DataFrame({"test" : [sum(range(0,24)), sum(range(24,48))]}).to_string(index=False)
+        self.assertEqual(longer_daily_result, expected_result, "Incorrect aggregate of hourly data over 2 days")
 
 
 class TestDates(unittest.TestCase):
