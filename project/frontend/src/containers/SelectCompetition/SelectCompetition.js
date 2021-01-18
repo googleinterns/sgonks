@@ -1,6 +1,6 @@
 import React, { useEffect } from "react";
 import classes from "./SelectCompetition.module.css";
-import { Link } from "react-router-dom";
+import CompetitionCard from "../../components/CompetitionCard/CompetitionCard";
 
 const SelectCompetition = (props) => {
   useEffect(() => {
@@ -14,6 +14,8 @@ const SelectCompetition = (props) => {
   return (
     <div className={classes.SelectCompContainer}>
       <p>select comp page</p>
+      <CompetitionCard></CompetitionCard>
+      <p>Or...</p>
     </div>
   );
 };
