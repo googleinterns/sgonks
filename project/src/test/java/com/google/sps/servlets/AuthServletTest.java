@@ -16,7 +16,9 @@ import static org.junit.Assert.assertTrue;
 import static org.mockito.Mockito.*;
 
 
-
+/**
+ * This is a test class for Authenthication Servlet"
+ */
 @RunWith(JUnit4.class)
 public class AuthServletTest {
 
@@ -25,9 +27,14 @@ public class AuthServletTest {
 
     private HttpServletRequest mockRequest;
     private HttpServletResponse mockResponse;
-    private StringWriter responseWriter;
+    private StringWriter servletResponse;
     private AuthServlet authSevlet;
 
+    /**
+     * This function is called before each test,
+     * to set up an environment in which tests that use local services can execute,
+     * mock request and reponse for the testing the servlet.
+     */
     @Before
     public void setUp() throws Exception{
         helper.setUp();
@@ -36,11 +43,15 @@ public class AuthServletTest {
         mockResponse = mock(HttpServletResponse.class);
 
         // Set up a fake HTTP response
-        responseWriter = new StringWriter();
-        when(mockResponse.getWriter()).thenReturn(new PrintWriter(responseWriter));
+        servletResponse = new StringWriter();
+        when(mockResponse.getWriter()).thenReturn(new PrintWriter(servletResponse));
 
     }
 
+    /**
+     * This function is called after each test,
+     * to tear down the environment in which tests that use local services can execute.
+     */
     @After
     public void tearDown() throws Exception{
         helper.tearDown();
@@ -49,8 +60,16 @@ public class AuthServletTest {
     @Test
     public void loggedIn() throws Exception{
         authSevlet.doGet(mockRequest,mockResponse);
-        String response = responseWriter.toString();
+        String response = servletResponse.toString();
         System.out.println("This is the response!!!: " + response);
+
+    }
+
+    @Test
+    public void loggedIn2() throws Exception{
+        authSevlet.doGet(mockRequest,mockResponse);
+        String response = servletResponse.toString();
+        System.out.println("This is the response 2 times!!!: " + response);
 
     }
 
