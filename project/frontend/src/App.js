@@ -1,7 +1,7 @@
 import "./App.css";
 
 import React, { useState } from "react";
-import { Route } from "react-router-dom";
+import { Route, Switch, Redirect } from "react-router-dom";
 
 import CreateCompetition from "./containers/CreateCompetition/CreateCompetition";
 import Explanation from "./containers/Explanation/Explanation";
@@ -25,11 +25,19 @@ function App() {
 
   let pageRoute =
     userInfo == null ? (
-      <Route path="/" component={LandingPage}></Route>
+      <Switch>
+        <Route path="/signin" component={LandingPage}></Route>
+        <Redirect to="/signin"></Redirect>
+      </Switch>
     ) : compId == 0 ? (
-      <Route path="/compselect" component={SelectCompetition}></Route>
+      <Switch>
+        <Route path="/compselect" component={SelectCompetition}></Route>
+        <Redirect to="/compselect"></Redirect>
+      </Switch>
     ) : (
-      <Route path="/placeholder" component={Explanation}></Route>
+      <Switch>
+        <Route path="/placeholder" component={Explanation}></Route>
+      </Switch>
     );
 
   const authHandlers = {

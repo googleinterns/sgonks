@@ -6,7 +6,7 @@ const SignOutButton = (props) => {
   const authContext = useContext(AuthContext);
 
   return (
-    <LinkButton to="/" onClick={authContext.clearAuth} inverted="true">
+    <LinkButton to="/signin" onClick={authContext.clearAuth} inverted="true">
       Sign out
     </LinkButton>
   );
