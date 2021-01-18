@@ -16,6 +16,7 @@ import static org.junit.Assert.assertTrue;
 import static org.mockito.Mockito.*;
 
 
+
 /**
  * This is a test class for Authenthication Servlet"
  */
@@ -42,7 +43,7 @@ public class AuthServletTest {
         mockRequest = mock(HttpServletRequest.class);
         mockResponse = mock(HttpServletResponse.class);
 
-        // Set up a fake HTTP response
+        // fake HTTP response set up
         servletResponse = new StringWriter();
         when(mockResponse.getWriter()).thenReturn(new PrintWriter(servletResponse));
 
@@ -61,15 +62,6 @@ public class AuthServletTest {
     public void loggedIn() throws Exception{
         authSevlet.doGet(mockRequest,mockResponse);
         String response = servletResponse.toString();
-        System.out.println("This is the response!!!: " + response);
-
-    }
-
-    @Test
-    public void loggedIn2() throws Exception{
-        authSevlet.doGet(mockRequest,mockResponse);
-        String response = servletResponse.toString();
-        System.out.println("This is the response 2 times!!!: " + response);
 
     }
 
