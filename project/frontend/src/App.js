@@ -27,9 +27,9 @@ function App() {
     userInfo == null ? (
       <Route path="/" component={LandingPage}></Route>
     ) : compId == 0 ? (
-      <Route path="/" component={SelectCompetition}></Route>
+      <Route path="/compselect" component={SelectCompetition}></Route>
     ) : (
-      <Route path="/" component={Explanation}></Route>
+      <Route path="/placeholder" component={Explanation}></Route>
     );
 
   const authHandlers = {
