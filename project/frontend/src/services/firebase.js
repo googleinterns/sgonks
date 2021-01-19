@@ -36,13 +36,14 @@ export const onAuthStateChange = (callback) => {
   return firebase.auth().onAuthStateChanged((user) => {
     if (user) {
       callback({
+        signedIn: true,
         name: user.displayName,
         email: user.email,
       });
-      console.log("firebase.js: onAuthStateChange: if: SIGNED IN");
     } else {
-      callback(null);
-      console.log("firebase.js: onAuthStateChange: else: SIGNED OUT");
+      callback({
+        signedIn: false,
+      });
     }
   });
 };

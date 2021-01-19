@@ -17,7 +17,7 @@ import {
 } from "./services/firebase";
 
 function App() {
-  const [user, setUser] = useState(null);
+  const [user, setUser] = useState({ signedIn: false });
   const [compId, setCompId] = useState(0);
 
   React.useEffect(() => {
@@ -27,22 +27,16 @@ function App() {
     };
   }, []);
 
-  let pageRoute =
-    user == null ? (
-      <Switch>
-        <Route path="/signin" component={LandingPage}></Route>
-        <Redirect to="/signin"></Redirect>
-      </Switch>
-    ) : compId == 0 ? (
-      <Switch>
-        <Route path="/compselect" component={SelectCompetition}></Route>
-        <Redirect to="/compselect"></Redirect>
-      </Switch>
-    ) : (
-      <Switch>
-        <Route path="/placeholder" component={Explanation}></Route>
-      </Switch>
-    );
+  if (user.signedIn && !user.id) {
+    //TODO: fetch for id... with useremail param... once backend is ready
+    //for now id hardcoded to 123
+    setUser((prevState) => {
+      return {
+        ...prevState,
+        id: 123,
+      };
+    });
+  }
 
   const auth = {
     authedUser: user,
@@ -50,10 +44,26 @@ function App() {
     clearAuth: signOut,
   };
 
+  let pageRoute = !user.signedIn ? (
+    <Switch>
+      <Route path="/signin" component={LandingPage}></Route>
+      <Redirect to="/signin"></Redirect>
+    </Switch>
+  ) : compId == 0 ? (
+    <Switch>
+      <Route path="/compselect" component={SelectCompetition}></Route>
+      <Redirect to="/compselect"></Redirect>
+    </Switch>
+  ) : (
+    <Switch>
+      <Route path="/placeholder" component={Explanation}></Route>
+    </Switch>
+  );
+
   return (
     <div className="App">
       <AuthContext.Provider value={auth}>
-        <HeaderBar loggedIn={user != null} innerNav={compId != 0}></HeaderBar>
+        <HeaderBar loggedIn={user.signedIn} innerNav={compId != 0}></HeaderBar>
         <Layout>{pageRoute}</Layout>
       </AuthContext.Provider>
     </div>
