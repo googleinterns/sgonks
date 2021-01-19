@@ -13,8 +13,7 @@ import HeaderBar from "./components/HeaderBar/HeaderBar";
 import LandingPage from "./containers/LandingPage/LandingPage";
 import Layout from "./hoc/Layout/Layout";
 export const AuthContext = React.createContext();
-
-import firebase from "firebase";
+import { signInWithGoogle } from "./services/firebase";
 
 function App() {
   const [userInfo, setUserInfo] = useState(null);
@@ -43,19 +42,37 @@ function App() {
     );
 
   const authHandlers = {
-    handleAuth: () => {
-      fetch("./authentication")
-        .then((response) => response.json())
-        .then((data) => {
-          setUserInfo(data);
-          console.log("userInfo set");
-        });
-    },
+    handleAuth: signInWithGoogle,
     clearAuth: () => {
       setUserInfo(null);
       console.log("useInfo nullified");
     },
   };
+
+  // var provider = new firebase.auth.GoogleAuthProvider();
+  // firebase
+  //   .auth()
+  //   .signInWithPopup(provider)
+  //   .then((result) => {
+  //     /** @type {firebase.auth.OAuthCredential} */
+  //     var credential = result.credential;
+
+  //     // This gives you a Google Access Token. You can use it to access the Google API.
+  //     var token = credential.accessToken;
+  //     // The signed-in user info.
+  //     var user = result.user;
+  //     // ...
+  //   })
+  //   .catch((error) => {
+  //     // Handle Errors here.
+  //     var errorCode = error.code;
+  //     var errorMessage = error.message;
+  //     // The email of the user's account used.
+  //     var email = error.email;
+  //     // The firebase.auth.AuthCredential type that was used.
+  //     var credential = error.credential;
+  //     // ...
+  //   });
 
   return (
     <div className="App">
