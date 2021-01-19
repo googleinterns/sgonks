@@ -44,14 +44,15 @@ function App() {
       </Switch>
     );
 
-  const authHandlers = {
+  const auth = {
+    authedUser: user,
     handleAuth: signInWithGoogle,
     clearAuth: signOut,
   };
 
   return (
     <div className="App">
-      <AuthContext.Provider value={authHandlers}>
+      <AuthContext.Provider value={auth}>
         <HeaderBar loggedIn={user != null} innerNav={compId != 0}></HeaderBar>
         <Layout>{pageRoute}</Layout>
       </AuthContext.Provider>
