@@ -23,10 +23,7 @@ const googleProvider = new firebase.auth.GoogleAuthProvider();
 export const signInWithGoogle = () => {
   auth
     .signInWithPopup(googleProvider)
-    .then((res) => {
-      console.log("authed here");
-      console.log(res.user);
-    })
+    .then()
     .catch((error) => {
       console.log(error.message);
     });
