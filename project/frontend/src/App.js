@@ -3,11 +3,8 @@ import "./App.css";
 import React, { useState } from "react";
 import { Route, Switch, Redirect } from "react-router-dom";
 
-import CreateCompetition from "./containers/CreateCompetition/CreateCompetition";
 import Explanation from "./containers/Explanation/Explanation";
-import Login from "./containers/Login/Login";
 import SelectCompetition from "./containers/SelectCompetition/SelectCompetition";
-import SGonksPlatfrom from "./containers/SGonksPlatform/SGonksPlatform";
 
 import HeaderBar from "./components/HeaderBar/HeaderBar";
 import LandingPage from "./containers/LandingPage/LandingPage";
