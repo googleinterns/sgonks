@@ -13,32 +13,41 @@
 // limitations under the License.
 
 package com.google.sps.data;
-import com.google.auto.value.AutoValue;
 import java.util.ArrayList;
 import java.util.List;
 
 /**
  * Class representing each competition object
  */
-@AutoValue
-public abstract class Competition {
-  // @TODO: Still need to add List<CompetitorInfo> competitors but currently not compiling
-  public static Competition create(long id, String competitionName, String organiserName,
-      String organiserUsername, long startDate, long endDate) {
-    return new AutoValue_Competition(
-        id, competitionName, organiserName, organiserUsername, startDate, endDate);
-  }
+public class Competition {
+    /** The id of the competition entity in the database*/
+    private long id;
 
-  /** The id of the competition entry in database */
-  public abstract long id();
-  /** The name of competition */
-  public abstract String competitionName();
-  /** The name of the competition organiser */
-  public abstract String organiserName();
-  /** The username of the organiser */
-  public abstract String organiserUsername();
-  /** The unformatted start date (milliseconds)*/
-  public abstract long startDate();
-  /** The unformatted end date (milliseconds)*/
-  public abstract long endDate();
-}
+    /** The name of competition */	
+    private String competitionName;	
+
+    /** The name of the competition organiser */	
+    private String organiserName;	
+  
+    /** The idap of the organiser */	
+    private String organiserIdap;	
+  
+    /** The unformatted start date (milliseconds)*/	
+    private long startDate;	
+  
+    /** The unformatted start date (milliseconds) */	
+    private long endDate;	
+  
+    private List<CompetitorInfo> competitors = new ArrayList<>();	
+  
+    public Competition(long id, String competitionName, String organiserName, String organiserIdap,	
+        long startDate, long endDate, List<CompetitorInfo> competitors) {	
+      this.id = id;	
+      this.competitionName = competitionName;	
+      this.organiserName = organiserName;	
+      this.organiserIdap = organiserIdap;	
+      this.startDate = startDate;	
+      this.endDate = endDate;	
+      this.competitors = competitors;	
+    }	
+  } 
