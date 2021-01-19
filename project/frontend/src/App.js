@@ -14,6 +14,8 @@ import LandingPage from "./containers/LandingPage/LandingPage";
 import Layout from "./hoc/Layout/Layout";
 export const AuthContext = React.createContext();
 
+import firebase from "firebase";
+
 function App() {
   const [userInfo, setUserInfo] = useState(null);
   const [compId, setCompId] = useState(0);
