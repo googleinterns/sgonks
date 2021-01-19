@@ -13,8 +13,6 @@ import firebaseConfig from "./config/firebaseConfig";
 //   measurementId: process.env.REACT_APP_MEASUREMENT_ID,
 // };
 
-console.log(firebaseConfig);
-
 firebase.initializeApp(firebaseConfig);
 
 export const auth = firebase.auth();
