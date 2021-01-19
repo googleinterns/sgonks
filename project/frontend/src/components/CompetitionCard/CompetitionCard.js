@@ -3,9 +3,9 @@ import classes from "./CompetitionCard.module.css";
 
 const CompetitionCard = (props) => {
   return (
-    <div className={classes.CompetitionCardContainer}>
+    <li className={classes.CompetitionCardContainer}>
       <p>cdsaard</p>
-    </div>
+    </li>
   );
 };
 

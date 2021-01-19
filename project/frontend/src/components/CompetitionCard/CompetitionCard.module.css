@@ -1,2 +1,7 @@
 .CompetitionCardContainer {
+  list-style: none;
+  height: 90%;
+  min-width: 60%;
+  border: 1px solid black;
+  margin: 0px 25px;
 }
