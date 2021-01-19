@@ -31,3 +31,22 @@ export const signInWithGoogle = () => {
       console.log(error.message);
     });
 };
+
+export const onAuthStateChange = (callback) => {
+  return firebase.auth().onAuthStateChanged((user) => {
+    if (user) {
+      callback({
+        name: user.displayName,
+        email: user.email,
+      });
+      console.log("firebase.js: onAuthStateChange: if: SIGNED IN");
+    } else {
+      callback(null);
+      console.log("firebase.js: onAuthStateChange: else: SIGNED OUT");
+    }
+  });
+};
+
+export const signOut = () => {
+  firebase.auth().signOut();
+};
