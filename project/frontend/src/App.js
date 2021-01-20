@@ -1,67 +1,70 @@
 import "./App.css";
-
 import React, { useState } from "react";
 import { Route, Switch, Redirect } from "react-router-dom";
 
-import CreateCompetition from "./containers/CreateCompetition/CreateCompetition";
 import Explanation from "./containers/Explanation/Explanation";
-import Login from "./containers/Login/Login";
 import SelectCompetition from "./containers/SelectCompetition/SelectCompetition";
-import SGonksPlatfrom from "./containers/SGonksPlatform/SGonksPlatform";
 
 import HeaderBar from "./components/HeaderBar/HeaderBar";
 import LandingPage from "./containers/LandingPage/LandingPage";
 import Layout from "./hoc/Layout/Layout";
 export const AuthContext = React.createContext();
+import {
+  signInWithGoogle,
+  signOut,
+  onAuthStateChange,
+} from "./services/firebase";
+
+const NO_COMPETITION = 0;
 
 function App() {
-  const [userInfo, setUserInfo] = useState(null);
+  const [user, setUser] = useState({ signedIn: false });
   const [compId, setCompId] = useState(0);
 
   React.useEffect(() => {
-    const parsedId = Number(localStorage.getItem("compId" || 0));
-    setCompId(parsedId);
+    const unsubscribe = onAuthStateChange(setUser);
+    return () => {
+      unsubscribe();
+    };
   }, []);
 
-  let pageRoute =
-    userInfo == null ? (
-      <Switch>
-        <Route path="/signin" component={LandingPage}></Route>
-        <Redirect to="/signin"></Redirect>
-      </Switch>
-    ) : compId == 0 ? (
-      <Switch>
-        <Route path="/compselect" component={SelectCompetition}></Route>
-        <Redirect to="/compselect"></Redirect>
-      </Switch>
-    ) : (
-      <Switch>
-        <Route path="/placeholder" component={Explanation}></Route>
-      </Switch>
-    );
+  if (user.signedIn && !user.id) {
+    //TODO: fetch for id... with useremail param... once backend is ready
+    //for now id hardcoded to 123
+    setUser((prevState) => {
+      return {
+        ...prevState,
+        id: 123,
+      };
+    });
+  }
 
-  const authHandlers = {
-    handleAuth: () => {
-      fetch("./authentication")
-        .then((response) => response.json())
-        .then((data) => {
-          setUserInfo(data);
-          console.log("userInfo set");
-        });
-    },
-    clearAuth: () => {
-      setUserInfo(null);
-      console.log("useInfo nullified");
-    },
+  const auth = {
+    authedUser: user,
+    handleAuth: signInWithGoogle,
+    clearAuth: signOut,
   };
+
+  let pageRoute = !user.signedIn ? (
+    <Switch>
+      <Route path="/signin" component={LandingPage}></Route>
+      <Redirect to="/signin"></Redirect>
+    </Switch>
+  ) : compId == NO_COMPETITION ? (
+    <Switch>
+      <Route path="/compselect" component={SelectCompetition}></Route>
+      <Redirect to="/compselect"></Redirect>
+    </Switch>
+  ) : (
+    <Switch>
+      <Route path="/placeholder" component={Explanation}></Route>
+    </Switch>
+  );
 
   return (
     <div className="App">
-      <AuthContext.Provider value={authHandlers}>
-        <HeaderBar
-          loggedIn={userInfo != null}
-          innerNav={compId != 0}
-        ></HeaderBar>
+      <AuthContext.Provider value={auth}>
+        <HeaderBar loggedIn={user.signedIn} innerNav={compId != 0}></HeaderBar>
         <Layout>{pageRoute}</Layout>
       </AuthContext.Provider>
     </div>
