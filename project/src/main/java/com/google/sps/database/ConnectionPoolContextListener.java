@@ -28,6 +28,9 @@ import javax.servlet.ServletContextListener;
 import javax.servlet.annotation.WebListener;
 import javax.sql.DataSource;
 import java.util.logging.Logger;
+import java.util.ArrayList;
+import java.util.Arrays.*;
+import java.util.List;
 
 @SuppressFBWarnings(
     value = {"HARD_CODE_PASSWORD", "WEM_WEAK_EXCEPTION_MESSAGING"},
@@ -74,7 +77,7 @@ public class ConnectionPoolContextListener implements ServletContextListener {
 
     config.setJdbcUrl(String.format("jdbc:mysql://localhost:3306/%s", "test"));
     config.setUsername("root"); // e.g. "root", "mysql"
-    config.setPassword("SirAshleyBloomfield"); // e.g. "my-password"
+    config.setPassword(REDACTED); // e.g. "my-password"
 
     //config.addDataSourceProperty("socketFactory", "com.google.cloud.sql.mysql.SocketFactory");
     //config.addDataSourceProperty("cloudSqlInstance",  "google.com:sgonks-step272:australia-southeast1:my-instance");//"127.0.0.1");
@@ -95,6 +98,8 @@ public class ConnectionPoolContextListener implements ServletContextListener {
       } try (PreparedStatement createInvestmentsStatement = conn.prepareStatement(CREATE_INVESTMENTS_TABLE);) {
         createInvestmentsStatement.execute();
       }
+      //get rid of this when we no longer need hard coded data
+      insertTestData(pool);
     }
   }
 
@@ -124,6 +129,42 @@ public class ConnectionPoolContextListener implements ServletContextListener {
           "Unable to verify table schema. Please double check the steps"
               + "in the README and try again.",
           ex);
+    }
+  }
+
+  public void insertTestData(DataSource pool) throws SQLException {
+    String[] stmts = new String[] {
+      "INSERT INTO users (name, email) VALUES ('Emma', 'emmahogan@google.com');",
+      "INSERT INTO users (name, email) VALUES ('Phoebe', 'phoebek@google.com');",
+      "INSERT INTO users (name, email) VALUES ('Mercury', 'mercurylin@google.com');",
+      "INSERT INTO users (name, email) VALUES ('Tex', 'texm@google.com');",
+      "INSERT INTO users (name, email) VALUES ('Leon', 'nemleon@google.com');",
+
+      "INSERT INTO competitions (start_date, end_date) VALUES (DATE '2021-01-01', DATE '2021-03-01');",
+      "INSERT INTO competitions (start_date, end_date) VALUES (DATE '2021-01-10', DATE '2021-03-10');",
+
+      "INSERT INTO participants (user, competition, amt_available) VALUES (1, 1, 100);",
+      "INSERT INTO participants (user, competition, amt_available) VALUES (1, 2, 500);",
+      "INSERT INTO participants (user, competition, amt_available) VALUES (2, 1, 200);",
+      "INSERT INTO participants (user, competition, amt_available) VALUES (3, 2, 100);",
+      "INSERT INTO participants (user, competition, amt_available) VALUES (4, 1, 200);",
+      "INSERT INTO participants (user, competition, amt_available) VALUES (5, 1, 400);",
+
+      "INSERT INTO investments (user, competition, google_search, invest_date, sell_date, amt_invested) VALUES (1, 1, 'giraffe', DATE '2021-01-01', NULL, 100);",
+      "INSERT INTO investments (user, competition, google_search, invest_date, sell_date, amt_invested) VALUES (1, 1, 'pangolin', DATE '2021-01-04', DATE '2021-01-08', 50);",
+      "INSERT INTO investments (user, competition, google_search, invest_date, sell_date, amt_invested) VALUES (1, 1, 'france', DATE '2021-01-10', DATE '2021-01-13', 400);",
+      "INSERT INTO investments (user, competition, google_search, invest_date, sell_date, amt_invested) VALUES (1, 1, 'pancake', DATE '2021-01-01', NULL, 300);",
+      "INSERT INTO investments (user, competition, google_search, invest_date, sell_date, amt_invested) VALUES (1, 1, 'sandwich', DATE '2021-01-01', DATE '2021-01-10', 100);",
+      "INSERT INTO investments (user, competition, google_search, invest_date, sell_date, amt_invested) VALUES (1, 1, 'olympics', DATE '2021-01-10', DATE '2021-01-12', 60);",
+      "INSERT INTO investments (user, competition, google_search, invest_date, sell_date, amt_invested) VALUES (1, 1, 'coffee', DATE '2021-01-01', DATE '2021-01-10', 10);",
+      "INSERT INTO investments (user, competition, google_search, invest_date, sell_date, amt_invested) VALUES (1, 1, 'sadness', DATE '2021-01-01', DATE '2021-01-10', 150);"
+    };
+    try (Connection conn = pool.getConnection()) {
+      for (int i = 0; i < stmts.length; i++) {
+        try (PreparedStatement stmt = conn.prepareStatement(stmts[i]);) {
+          stmt.execute();
+        }
+      }
     }
   }
 }
