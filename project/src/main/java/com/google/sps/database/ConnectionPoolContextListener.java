@@ -52,7 +52,7 @@ public class ConnectionPoolContextListener implements ServletContextListener {
 
   private static String CREATE_PARTICIPANTS_TABLE = 
     "CREATE TABLE IF NOT EXISTS participants ( "
-    + "id SERIAL NOT NULL, user INT NOT NULL, amt_available INT NOT NULL,"
+    + "id SERIAL NOT NULL, user INT NOT NULL, competition INT NOT NULL, amt_available INT NOT NULL,"
     + " PRIMARY KEY (id) );";
 
   private static String CREATE_INVESTMENTS_TABLE = 
