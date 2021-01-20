@@ -40,6 +40,27 @@ public class ConnectionPoolContextListener implements ServletContextListener {
   private static final String CLOUD_SQL_CONNECTION_NAME =
       System.getenv("CLOUD_SQL_CONNECTION_NAME");
 
+  private static String CREATE_USERS_TABLE = 
+    "CREATE TABLE IF NOT EXISTS users ( "
+    + "id SERIAL NOT NULL, name VARCHAR(255) NOT NULL, email VARCHAR(255) NOT NULL,"
+    + " PRIMARY KEY (id) );";
+
+  private static String CREATE_COMPETITIONS_TABLE = 
+    "CREATE TABLE IF NOT EXISTS competitions ( "
+    + "id SERIAL NOT NULL, start_date DATE NOT NULL, end_date DATE NOT NULL,"
+    + " PRIMARY KEY (id) );";
+
+  private static String CREATE_PARTICIPANTS_TABLE = 
+    "CREATE TABLE IF NOT EXISTS participants ( "
+    + "id SERIAL NOT NULL, user INT NOT NULL, amt_available INT NOT NULL,"
+    + " PRIMARY KEY (id) );";
+
+  private static String CREATE_INVESTMENTS_TABLE = 
+    "CREATE TABLE IF NOT EXISTS investments ( "
+    + "id SERIAL NOT NULL, user INT NOT NULL, competition INT NOT NULL, google_search VARCHAR(255) NOT NULL, "
+    + "invest_date DATE NOT NULL, sell_date DATE, amt_invested INT NOT NULL,"
+    + " PRIMARY KEY (id) );";
+
   private static final Logger log = Logger.getLogger(ConnectionPoolContextListener.class.getName());
   @SuppressFBWarnings(
       value = "USBR_UNNECESSARY_STORE_BEFORE_RETURN",
@@ -53,21 +74,26 @@ public class ConnectionPoolContextListener implements ServletContextListener {
 
     config.setJdbcUrl(String.format("jdbc:mysql://localhost:3306/%s", "test"));
     config.setUsername("root"); // e.g. "root", "mysql"
-    config.setPassword(REDACTED); // e.g. "my-password"
+    config.setPassword("SirAshleyBloomfield"); // e.g. "my-password"
+
+    //config.addDataSourceProperty("socketFactory", "com.google.cloud.sql.mysql.SocketFactory");
+    //config.addDataSourceProperty("cloudSqlInstance",  "google.com:sgonks-step272:australia-southeast1:my-instance");//"127.0.0.1");
 
     // Initialize the connection pool using the configuration object.
     return new HikariDataSource(config);
   }
 
-  private void createTable(DataSource pool) throws SQLException {
-    // Safely attempt to create the table schema.
+  private void createTables(DataSource pool) throws SQLException {
+    // Safely attempt to create users table
     try (Connection conn = pool.getConnection()) {
-      String stmt =
-          "CREATE TABLE IF NOT EXISTS users ( "
-              + "id SERIAL NOT NULL, name VARCHAR(255) NOT NULL, email VARCHAR(255) NOT NULL,"
-              + " PRIMARY KEY (id) );";
-      try (PreparedStatement createTableStatement = conn.prepareStatement(stmt);) {
-        createTableStatement.execute();
+      try (PreparedStatement createUsersStatement = conn.prepareStatement(CREATE_USERS_TABLE);) {
+        createUsersStatement.execute();
+      } try (PreparedStatement createCompetitionsStatement = conn.prepareStatement(CREATE_COMPETITIONS_TABLE);) {
+        createCompetitionsStatement.execute();
+      } try (PreparedStatement createParticipantsStatement = conn.prepareStatement(CREATE_PARTICIPANTS_TABLE);) {
+        createParticipantsStatement.execute();
+      } try (PreparedStatement createInvestmentsStatement = conn.prepareStatement(CREATE_INVESTMENTS_TABLE);) {
+        createInvestmentsStatement.execute();
       }
     }
   }
@@ -92,7 +118,7 @@ public class ConnectionPoolContextListener implements ServletContextListener {
       servletContext.setAttribute("my-pool", pool);
     }
     try {
-      createTable(pool);
+      createTables(pool);
     } catch (SQLException ex) {
       throw new RuntimeException(
           "Unable to verify table schema. Please double check the steps"
