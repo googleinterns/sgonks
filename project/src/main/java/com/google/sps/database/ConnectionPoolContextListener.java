@@ -53,7 +53,7 @@ public class ConnectionPoolContextListener implements ServletContextListener {
 
     config.setJdbcUrl(String.format("jdbc:mysql://localhost:3306/%s", "test"));
     config.setUsername("root"); // e.g. "root", "mysql"
-    config.setPassword("Sgonks!Sgonks!Sgonks!"); // e.g. "my-password"
+    config.setPassword(REDACTED); // e.g. "my-password"
 
     config.addDataSourceProperty("ipTypes", "PUBLIC,PRIVATE");
 
