@@ -55,22 +55,6 @@ public class ConnectionPoolContextListener implements ServletContextListener {
     config.setUsername("root"); // e.g. "root", "mysql"
     config.setPassword(REDACTED); // e.g. "my-password"
 
-    config.addDataSourceProperty("ipTypes", "PUBLIC,PRIVATE");
-
-    config.setMaximumPoolSize(5);
-    // minimumIdle is the minimum number of idle connections Hikari maintains in the pool.
-    // Additional connections will be established to meet this value unless the pool is full.
-    config.setMinimumIdle(5);
-
-    // setConnectionTimeout is the maximum number of milliseconds to wait for a connection checkout.
-    // Any attempt to retrieve a connection from this pool that exceeds the set limit will throw an
-    // SQLException.
-    config.setConnectionTimeout(10000); // 10 seconds
-    // idleTimeout is the maximum amount of time a connection can sit in the pool. Connections that
-    // sit idle for this many milliseconds are retried if minimumIdle is exceeded.
-    config.setIdleTimeout(600000); // 10 minutes
-    config.setMaxLifetime(1800000); // 30 minutes
-
     // Initialize the connection pool using the configuration object.
     return new HikariDataSource(config);
   }
