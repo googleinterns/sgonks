@@ -15,6 +15,8 @@ import {
   onAuthStateChange,
 } from "./services/firebase";
 
+const NO_COMPETITION = 0;
+
 function App() {
   const [user, setUser] = useState({ signedIn: false });
   const [compId, setCompId] = useState(0);
@@ -48,7 +50,7 @@ function App() {
       <Route path="/signin" component={LandingPage}></Route>
       <Redirect to="/signin"></Redirect>
     </Switch>
-  ) : compId == 0 ? (
+  ) : compId == NO_COMPETITION ? (
     <Switch>
       <Route path="/compselect" component={SelectCompetition}></Route>
       <Redirect to="/compselect"></Redirect>
