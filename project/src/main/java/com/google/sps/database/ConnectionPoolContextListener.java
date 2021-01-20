@@ -27,6 +27,7 @@ import javax.servlet.ServletContextEvent;
 import javax.servlet.ServletContextListener;
 import javax.servlet.annotation.WebListener;
 import javax.sql.DataSource;
+import java.util.logging.Logger;
 
 @SuppressFBWarnings(
     value = {"HARD_CODE_PASSWORD", "WEM_WEAK_EXCEPTION_MESSAGING"},
@@ -39,6 +40,7 @@ public class ConnectionPoolContextListener implements ServletContextListener {
   private static final String CLOUD_SQL_CONNECTION_NAME =
       System.getenv("CLOUD_SQL_CONNECTION_NAME");
 
+  private static final Logger log = Logger.getLogger(ConnectionPoolContextListener.class.getName());
   @SuppressFBWarnings(
       value = "USBR_UNNECESSARY_STORE_BEFORE_RETURN",
       justification = "Necessary for sample region tag.")
@@ -47,12 +49,12 @@ public class ConnectionPoolContextListener implements ServletContextListener {
     // The configuration object specifies behaviors for the connection pool.
     HikariConfig config = new HikariConfig();
 
-    config.setJdbcUrl(String.format("jdbc:mysql://localhost:3306/%s", "my-instance"));
+    log.info("I'm alive");
+
+    config.setJdbcUrl(String.format("jdbc:mysql://localhost:3306/%s", "test"));
     config.setUsername("root"); // e.g. "root", "mysql"
     config.setPassword(REDACTED); // e.g. "my-password"
 
-    config.addDataSourceProperty("socketFactory", "com.google.cloud.sql.mysql.SocketFactory");
-    config.addDataSourceProperty("cloudSqlInstance", CLOUD_SQL_CONNECTION_NAME);
     config.addDataSourceProperty("ipTypes", "PUBLIC,PRIVATE");
 
     config.setMaximumPoolSize(5);
