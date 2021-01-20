@@ -17,9 +17,9 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * Class representing each competition object
+ * Class representing each competition object with user relevant info
  */
-public class Competition {
+public class UserCompetition {
     /** The id of the competition entity in the database*/
     private long id;
 
@@ -37,17 +37,22 @@ public class Competition {
   
     /** The unformatted start date (milliseconds) */	
     private long endDate;	
+
+    /** The user's data for this competition */
+    private CompetitorInfo user;
   
+    /** A ranked list of other competitors */
     private List<CompetitorInfo> competitors = new ArrayList<>();	
   
-    public Competition(long id, String competitionName, String organiserName, String organiserIdap,	
-        long startDate, long endDate, List<CompetitorInfo> competitors) {	
+    public UserCompetition(long id, String competitionName, String organiserName, String organiserIdap,	
+        long startDate, long endDate, CompetitorInfo user, List<CompetitorInfo> competitors) {	
       this.id = id;	
       this.competitionName = competitionName;	
       this.organiserName = organiserName;	
       this.organiserIdap = organiserIdap;	
       this.startDate = startDate;	
       this.endDate = endDate;	
+      this.user = user;
       this.competitors = competitors;	
     }	
   } 
