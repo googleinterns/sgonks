@@ -46,53 +46,20 @@ public class TestServlet extends HttpServlet {
 
   private static final Logger LOGGER = Logger.getLogger(TestServlet.class.getName());
 
-  class TemplateData {
+  public List<User> getAllUsers(DataSource pool) throws ServletException {
 
-    public int tabCount;
-    public int spaceCount;
-    public List<Vote> recentVotes;
-
-    public TemplateData(int tabCount, int spaceCount, List<Vote> recentVotes) {
-      this.tabCount = tabCount;
-      this.spaceCount = spaceCount;
-      this.recentVotes = recentVotes;
-    }
-  }
-
-  public TemplateData getTemplateData(DataSource pool) throws ServletException {
-
-    int tabCount = 0;
-    int spaceCount = 0;
-    List<Vote> recentVotes = new ArrayList<>();
+    List<User> users = new ArrayList<>();
     try (Connection conn = pool.getConnection()) {
-      // PreparedStatements are compiled by the database immediately and executed at a later date.
-      // Most databases cache previously compiled queries, which improves efficiency.
-      String stmt1 = "SELECT candidate, time_cast FROM votes ORDER BY time_cast DESC LIMIT 5";
-      try (PreparedStatement voteStmt = conn.prepareStatement(stmt1);) {
+      String stmt1 = "SELECT id, name, email FROM users ORDER BY id";
+      try (PreparedStatement usersStmt = conn.prepareStatement(stmt1);) {
         // Execute the statement
-        ResultSet voteResults = voteStmt.executeQuery();
-        // Convert a ResultSet into Vote objects
-        while (voteResults.next()) {
-          String candidate = voteResults.getString(1);
-          Timestamp timeCast = voteResults.getTimestamp(2);
-          recentVotes.add(new Vote(candidate, timeCast));
-        }
-      }
-
-      // PreparedStatements can also be executed multiple times with different arguments. This can
-      // improve efficiency, and project a query from being vulnerable to an SQL injection.
-      String stmt2 = "SELECT COUNT(vote_id) FROM votes WHERE candidate=?";
-      try (PreparedStatement voteCountStmt = conn.prepareStatement(stmt2);) {
-        voteCountStmt.setString(1, "TABS");
-        ResultSet tabResult = voteCountStmt.executeQuery();
-        if (tabResult.next()) { // Move to the first result
-          tabCount = tabResult.getInt(1);
-        }
-
-        voteCountStmt.setString(1, "SPACES");
-        ResultSet spaceResult = voteCountStmt.executeQuery();
-        if (spaceResult.next()) { // Move to the first result
-          spaceCount = spaceResult.getInt(1);
+        ResultSet userResults = usersStmt.executeQuery();
+        // Convert a ResultSet into User objects
+        while (userResults.next()) {
+          int id = userResults.getInt(1);
+          String name = userResults.getString(2);
+          String email = userResults.getString(3);
+          users.add(User.create(id, name, email));
         }
       }
     } catch (SQLException ex) {
@@ -104,84 +71,45 @@ public class TestServlet extends HttpServlet {
               + "steps in the README and try again.",
           ex);
     }
-    TemplateData templateData = new TemplateData(tabCount, spaceCount, recentVotes);
-
-    return templateData;
+    return users;
   }
 
   @Override
-  public void doGet(HttpServletRequest request, HttpServletResponse response)
-      throws IOException, ServletException {
-    // Extract the pool from the Servlet Context, reusing the one that was created
-    // in the ContextListener when the application was started
+  public void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException {
+
+    String name = request.getParameter("name");
+    String email = request.getParameter("email");
+
     DataSource pool = (DataSource) request.getServletContext().getAttribute("my-pool");
-
-    TemplateData templateData = getTemplateData(pool);
-
-    response.setContentType("text/html;");
-    response.getWriter().println("<p>going</p>");
-    response.getWriter().println("<h1>" + templateData.recentVotes + "</h1>");
-  }
-
-  // Used to validate user input. All user provided data should be validated and sanitized before
-  // being used something like a SQL query. Returns null if invalid.
-  @Nullable
-  private String validateTeam(String input) {
-    if (input != null) {
-      input = input.toUpperCase(Locale.ENGLISH);
-      // Must be either "TABS" or "SPACES"
-      if (!"TABS".equals(input) && !"SPACES".equals(input)) {
-        return null;
-      }
-    }
-    return input;
-  }
-
-  @SuppressFBWarnings(
-      value = {"SERVLET_PARAMETER", "XSS_SERVLET"},
-      justification = "Input is validated and sanitized.")
-  @Override
-  public void doPost(HttpServletRequest req, HttpServletResponse resp) throws IOException {
-    // Get the team from the request and record the time of the vote.
-    String team = validateTeam(req.getParameter("team"));
-    Timestamp now = new Timestamp(new Date().getTime());
-    if (team == null) {
-      resp.setStatus(400);
-      resp.getWriter().append("Invalid team specified.");
-      return;
-    }
-
-    // Reuse the pool that was created in the ContextListener when the Servlet started.
-    DataSource pool = (DataSource) req.getServletContext().getAttribute("my-pool");
-    // [START cloud_sql_mysql_servlet_connection]
-    // Using a try-with-resources statement ensures that the connection is always released back
-    // into the pool at the end of the statement (even if an error occurs)
     try (Connection conn = pool.getConnection()) {
-
       // PreparedStatements can be more efficient and project against injections.
-      String stmt = "INSERT INTO votes (time_cast, candidate) VALUES (?, ?);";
-      try (PreparedStatement voteStmt = conn.prepareStatement(stmt);) {
-        voteStmt.setTimestamp(1, now);
-        voteStmt.setString(2, team);
+      String stmt = "INSERT INTO users (name, email) VALUES (?, ?);";
+      try (PreparedStatement userStmt = conn.prepareStatement(stmt);) {
+        userStmt.setString(1, name);
+        userStmt.setString(2, email);
 
         // Finally, execute the statement. If it fails, an error will be thrown.
-        voteStmt.execute();
+        userStmt.execute();
       }
     } catch (SQLException ex) {
       // If something goes wrong, handle the error in this section. This might involve retrying or
       // adjusting parameters depending on the situation.
       // [START_EXCLUDE]
-      LOGGER.log(Level.WARNING, "Error while attempting to submit vote.", ex);
-      resp.setStatus(500);
-      resp.getWriter()
+      LOGGER.log(Level.WARNING, "Error while attempting to submit user.", ex);
+      response.setStatus(500);
+      response.getWriter()
           .write(
-              "Unable to successfully cast vote! Please check the application "
+              "Unable to successfully create user! Please check the application "
                   + "logs for more details.");
-      // [END_EXCLUDE]
     }
-    // [END cloud_sql_mysql_servlet_connection]
 
-    resp.setStatus(200);
-    resp.getWriter().printf("Vote successfully cast for '%s' at time %s!%n", team, now);
+    response.setStatus(200);
+    response.getWriter().printf("Entry successfully created for '%s'", name);
+
+    List<User> users = getAllUsers(pool);
+
+    response.setContentType("text/html;");
+    response.getWriter().println("<p>going</p>");
+    response.getWriter().println("<h1>" + users + "</h1>");
   }
 }

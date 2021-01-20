@@ -53,7 +53,7 @@ public class ConnectionPoolContextListener implements ServletContextListener {
 
     config.setJdbcUrl(String.format("jdbc:mysql://localhost:3306/%s", "test"));
     config.setUsername("root"); // e.g. "root", "mysql"
-    config.setPassword(REDACTED); // e.g. "my-password"
+    config.setPassword("Sgonks!Sgonks!Sgonks!"); // e.g. "my-password"
 
     config.addDataSourceProperty("ipTypes", "PUBLIC,PRIVATE");
 
@@ -80,8 +80,8 @@ public class ConnectionPoolContextListener implements ServletContextListener {
     try (Connection conn = pool.getConnection()) {
       String stmt =
           "CREATE TABLE IF NOT EXISTS users ( "
-              + "vote_id SERIAL NOT NULL, time_cast timestamp NOT NULL, candidate CHAR(6) NOT NULL,"
-              + " PRIMARY KEY (vote_id) );";
+              + "id SERIAL NOT NULL, name VARCHAR(255) NOT NULL, email VARCHAR(255) NOT NULL,"
+              + " PRIMARY KEY (id) );";
       try (PreparedStatement createTableStatement = conn.prepareStatement(stmt);) {
         createTableStatement.execute();
       }
