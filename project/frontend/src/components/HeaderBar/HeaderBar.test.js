@@ -15,6 +15,10 @@ describe("<HeaderBar />", () => {
     wrapper = shallow(<HeaderBar />);
   });
 
+  it("should render", () => {
+    expect(wrapper.exists()).toBeTruthy();
+  });
+
   it('should render "What is sGonks?" and "Sign in" buttins if not authenticated', () => {
     expect(wrapper.find(LoginButtonSet).exists()).toBeTruthy();
     expect(wrapper.find(SignOutButton).exists()).toBeFalsy();

@@ -23,7 +23,7 @@ const SelectCompetition = (props) => {
         </ul>
       </div>
       <p>Or...</p>
-      <LinkButton>Create a competition</LinkButton>
+      <LinkButton to="/createcomp">Create a competition</LinkButton>
     </div>
   );
 };
