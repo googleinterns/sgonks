@@ -41,7 +41,7 @@ public class InvestmentServlet extends HttpServlet {
 
   @Override
   public void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
-    DataSource pool = (DataSource) request.getServletContext().getAttribute("my-pool");
+    DataSource pool = (DataSource) request.getServletContext().getAttribute("db-connection-pool");
 
     try (Connection conn = pool.getConnection()) {
       int userId = Integer.parseInt(request.getParameter("user"));
@@ -85,9 +85,7 @@ public class InvestmentServlet extends HttpServlet {
           sellDate = sellDateOrNull.getTime();
         }
         amtInvested = rs.getInt(4);
-        LOGGER.log(Level.WARNING, "GOING");
         investments.add(Investment.create(googleSearch, investDate, sellDate, amtInvested));
-        LOGGER.log(Level.WARNING, "GOING");
       }
       return investments;
     }

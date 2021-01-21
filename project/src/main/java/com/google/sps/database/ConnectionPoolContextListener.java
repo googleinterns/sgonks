@@ -28,8 +28,7 @@ import javax.servlet.ServletContextListener;
 import javax.servlet.annotation.WebListener;
 import javax.sql.DataSource;
 import java.util.logging.Logger;
-import com.google.sps.config.*;
-import com.google.common.base.Ascii;
+
 
 @SuppressFBWarnings(
     value = {"HARD_CODE_PASSWORD", "WEM_WEAK_EXCEPTION_MESSAGING"},
@@ -68,22 +67,16 @@ public class ConnectionPoolContextListener implements ServletContextListener {
       value = "USBR_UNNECESSARY_STORE_BEFORE_RETURN",
       justification = "Necessary for sample region tag.")
   public DataSource createConnectionPool() {
-    // [START cloud_sql_mysql_servlet_create]
-    // The configuration object specifies behaviors for the connection pool.
     HikariConfig config = new HikariConfig();
-
-    log.info("I'm alive");
-
     Config mySecrets = new Config();
 
     config.setJdbcUrl(String.format("jdbc:mysql://localhost:3306/%s", "test"));
-    config.setUsername("root"); // e.g. "root", "mysql"
-    config.setPassword(mySecrets.databasePassword); // e.g. "my-password"
+    config.setUsername("root");
+    config.setPassword(mySecrets.databasePassword);
 
     config.addDataSourceProperty("socketFactory", "com.google.cloud.sql.mysql.SocketFactory");
-    config.addDataSourceProperty("cloudSqlInstance",  "google.com:sgonks-step272:australia-southeast1:my-instance"); //"127.0.0.1");
+    config.addDataSourceProperty("cloudSqlInstance",  "google.com:sgonks-step272:australia-southeast1:my-instance");
 
-    log.info("I'm still alive");
     // Initialize the connection pool using the configuration object.
     return new HikariDataSource(config);
   }
@@ -101,14 +94,14 @@ public class ConnectionPoolContextListener implements ServletContextListener {
         createInvestmentsStatement.execute();
       }
       //get rid of this when we no longer need hard coded data
-      insertTestData(pool);
+      //insertTestData(pool);
     }
   }
 
   @Override
   public void contextDestroyed(ServletContextEvent event) {
     // This function is called when the Servlet is destroyed.
-    HikariDataSource pool = (HikariDataSource) event.getServletContext().getAttribute("my-pool");
+    HikariDataSource pool = (HikariDataSource) event.getServletContext().getAttribute("db-connection-pool");
     if (pool != null) {
       pool.close();
     }
@@ -119,10 +112,10 @@ public class ConnectionPoolContextListener implements ServletContextListener {
     // This function is called when the application starts and will safely create a connection pool
     // that can be used to connect to.
     ServletContext servletContext = event.getServletContext();
-    DataSource pool = (DataSource) servletContext.getAttribute("my-pool");
+    DataSource pool = (DataSource) servletContext.getAttribute("db-connection-pool");
     if (pool == null) {
       pool = createConnectionPool();
-      servletContext.setAttribute("my-pool", pool);
+      servletContext.setAttribute("db-connection-pool", pool);
     }
     try {
       createTables(pool);
