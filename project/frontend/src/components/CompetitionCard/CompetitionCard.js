@@ -6,11 +6,11 @@ const CompetitionCard = (props) => {
   return (
     <li className={classes.CompetitionCardContainer}>
       <div className={classes.CompetitionInfoContainer}>
-        <div className={classes.CompetitionIdentificationContainer}>
+        <div className={classes.CompIdentification}>
           <h1 className={classes.CompetitionTitle}>Title</h1>
-          <h2>Organised by</h2>
+          <h2 className={classes.InfoText}>Organised by</h2>
         </div>
-        <div className={classes.CompetitionDetailsContainer}>
+        <div className={classes.CompetitionDetails}>
           <h3>Competition Details</h3>
           <p>Start date</p>
           <p>End date</p>
