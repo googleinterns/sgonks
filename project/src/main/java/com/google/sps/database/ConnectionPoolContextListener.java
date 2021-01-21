@@ -29,6 +29,7 @@ import javax.servlet.annotation.WebListener;
 import javax.sql.DataSource;
 import java.util.logging.Logger;
 import com.google.sps.config.*;
+import com.google.common.base.Ascii;
 
 @SuppressFBWarnings(
     value = {"HARD_CODE_PASSWORD", "WEM_WEAK_EXCEPTION_MESSAGING"},
@@ -66,7 +67,7 @@ public class ConnectionPoolContextListener implements ServletContextListener {
   @SuppressFBWarnings(
       value = "USBR_UNNECESSARY_STORE_BEFORE_RETURN",
       justification = "Necessary for sample region tag.")
-  private DataSource createConnectionPool() {
+  public DataSource createConnectionPool() {
     // [START cloud_sql_mysql_servlet_create]
     // The configuration object specifies behaviors for the connection pool.
     HikariConfig config = new HikariConfig();
@@ -79,9 +80,10 @@ public class ConnectionPoolContextListener implements ServletContextListener {
     config.setUsername("root"); // e.g. "root", "mysql"
     config.setPassword(mySecrets.databasePassword); // e.g. "my-password"
 
-    //config.addDataSourceProperty("socketFactory", "com.google.cloud.sql.mysql.SocketFactory");
-    //config.addDataSourceProperty("cloudSqlInstance",  "google.com:sgonks-step272:australia-southeast1:my-instance");//"127.0.0.1");
+    config.addDataSourceProperty("socketFactory", "com.google.cloud.sql.mysql.SocketFactory");
+    config.addDataSourceProperty("cloudSqlInstance",  "google.com:sgonks-step272:australia-southeast1:my-instance"); //"127.0.0.1");
 
+    log.info("I'm still alive");
     // Initialize the connection pool using the configuration object.
     return new HikariDataSource(config);
   }
@@ -129,6 +131,10 @@ public class ConnectionPoolContextListener implements ServletContextListener {
           "Unable to verify table schema. Please double check the steps"
               + "in the README and try again.",
           ex);
+    } catch (Exception ex) {
+      throw new RuntimeException(
+        "FAILED GENERICALLY",
+        ex);
     }
   }
 
@@ -152,12 +158,12 @@ public class ConnectionPoolContextListener implements ServletContextListener {
 
       "INSERT INTO investments (user, competition, google_search, invest_date, sell_date, amt_invested) VALUES (1, 1, 'giraffe', DATE '2021-01-01', NULL, 100);",
       "INSERT INTO investments (user, competition, google_search, invest_date, sell_date, amt_invested) VALUES (1, 1, 'pangolin', DATE '2021-01-04', DATE '2021-01-08', 50);",
-      "INSERT INTO investments (user, competition, google_search, invest_date, sell_date, amt_invested) VALUES (1, 1, 'france', DATE '2021-01-10', DATE '2021-01-13', 400);",
-      "INSERT INTO investments (user, competition, google_search, invest_date, sell_date, amt_invested) VALUES (1, 1, 'pancake', DATE '2021-01-01', NULL, 300);",
-      "INSERT INTO investments (user, competition, google_search, invest_date, sell_date, amt_invested) VALUES (1, 1, 'sandwich', DATE '2021-01-01', DATE '2021-01-10', 100);",
-      "INSERT INTO investments (user, competition, google_search, invest_date, sell_date, amt_invested) VALUES (1, 1, 'olympics', DATE '2021-01-10', DATE '2021-01-12', 60);",
-      "INSERT INTO investments (user, competition, google_search, invest_date, sell_date, amt_invested) VALUES (1, 1, 'coffee', DATE '2021-01-01', DATE '2021-01-10', 10);",
-      "INSERT INTO investments (user, competition, google_search, invest_date, sell_date, amt_invested) VALUES (1, 1, 'sadness', DATE '2021-01-01', DATE '2021-01-10', 150);"
+      "INSERT INTO investments (user, competition, google_search, invest_date, sell_date, amt_invested) VALUES (1, 2, 'france', DATE '2021-01-10', DATE '2021-01-13', 400);",
+      "INSERT INTO investments (user, competition, google_search, invest_date, sell_date, amt_invested) VALUES (2, 1, 'pancake', DATE '2021-01-01', NULL, 300);",
+      "INSERT INTO investments (user, competition, google_search, invest_date, sell_date, amt_invested) VALUES (2, 1, 'sandwich', DATE '2021-01-01', DATE '2021-01-10', 100);",
+      "INSERT INTO investments (user, competition, google_search, invest_date, sell_date, amt_invested) VALUES (3, 2, 'olympics', DATE '2021-01-10', DATE '2021-01-12', 60);",
+      "INSERT INTO investments (user, competition, google_search, invest_date, sell_date, amt_invested) VALUES (4, 1, 'coffee', DATE '2021-01-01', DATE '2021-01-10', 10);",
+      "INSERT INTO investments (user, competition, google_search, invest_date, sell_date, amt_invested) VALUES (5, 1, 'sadness', DATE '2021-01-01', DATE '2021-01-10', 150);"
     };
     try (Connection conn = pool.getConnection()) {
       for (int i = 0; i < stmts.length; i++) {
