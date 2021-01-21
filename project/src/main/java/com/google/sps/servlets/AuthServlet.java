@@ -38,7 +38,7 @@ public class AuthServlet extends HttpServlet {
 
   @Override
   public void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
-    DataSource pool = (DataSource) request.getServletContext().getAttribute("my-pool");
+    DataSource pool = (DataSource) request.getServletContext().getAttribute("db-connection-pool");
 
     try (Connection conn = pool.getConnection()) {
       String email = request.getParameter("email");
