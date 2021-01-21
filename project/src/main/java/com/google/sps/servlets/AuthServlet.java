@@ -14,6 +14,7 @@
 
 package com.google.sps.servlets;
 
+
 import java.io.IOException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -27,6 +28,7 @@ public class AuthServlet extends HttpServlet {
 
   @Override
   public void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
+
     User userObj = User.create(1896,"Phoebe Khokgawe","phoebek@");
 
     Gson gson = new Gson();
