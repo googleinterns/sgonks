@@ -16,12 +16,14 @@ describe("<HeaderBar />", () => {
   });
 
   it('should render "What is sGonks?" and "Sign in" buttins if not authenticated', () => {
-    expect(wrapper.find(LoginButtonSet));
+    expect(wrapper.find(LoginButtonSet).exists()).toBeTruthy();
+    expect(wrapper.find(SignOutButton).exists()).toBeFalsy();
   });
 
   it('should render "Select competition" and "Sign out" buttins if authenticated', () => {
     wrapper.setProps({ loggedIn: true });
-    expect(wrapper.find(SignOutButton));
+    expect(wrapper.find(SignOutButton).exists()).toBeTruthy();
+    expect(wrapper.find(LoginButtonSet).exists()).toBeFalsy();
     expect(wrapper.find(NavLink).text()).toEqual("Select Competition");
   });
 
