@@ -1,8 +1,0 @@
-{
-  "name": "frontend",
-  "jest": {
-    "testRegex": "(/__tests__/.*|\\.(test|spec))\\.(js|jsx)$",
-    "verbose": true,
-    "moduleFileExtensions": ["js", "jsx"]
-  }
-}
