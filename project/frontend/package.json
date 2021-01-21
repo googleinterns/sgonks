@@ -8,7 +8,6 @@
     "@testing-library/user-event": "^12.6.0",
     "classnames": "^2.2.6",
     "firebase": "^8.2.3",
-    "jest": "^26.2.2",
     "react": "^17.0.1",
     "react-dom": "^17.0.1",
     "react-router-dom": "^5.2.0",
@@ -16,14 +15,13 @@
     "url-loader": "^4.1.0",
     "web-vitals": "^0.2.4",
     "webpack": "^4.34.0",
-    "webpack-cli": "^3.3.4",
-    "webpack-dev-server": "^3.7.2"
+    "webpack-cli": "^3.3.4"
   },
   "scripts": {
     "build": "webpack",
     "watch": "webpack-dev-server",
     "start": "yarn watch",
-    "test": "jest --config ./jest.config.json",
+    "test": "jest",
     "test:watch": "npm run test -- --watch"
   },
   "eslintConfig": {
@@ -43,5 +41,10 @@
       "last 1 firefox version",
       "last 1 safari version"
     ]
+  },
+  "devDependencies": {
+    "@babel/plugin-proposal-class-properties": "^7.12.1",
+    "jest": "^26.6.3",
+    "webpack-dev-server": "^3.11.2"
   }
 }
