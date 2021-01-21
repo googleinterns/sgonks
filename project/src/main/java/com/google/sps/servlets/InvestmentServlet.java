@@ -25,23 +25,71 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.Connection;
+import java.sql.SQLException;
+import javax.sql.DataSource;
+
+import java.util.logging.Level;
+import java.util.logging.Logger;
+
 @WebServlet("/investments")
 public class InvestmentServlet extends HttpServlet {
 
+  private static final Logger LOGGER = Logger.getLogger(AuthServlet.class.getName());
+
   @Override
   public void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
-    response.setContentType("application/json");
+    DataSource pool = (DataSource) request.getServletContext().getAttribute("my-pool");
 
-    response.getWriter().println(new Gson().toJson(getUserInvestments()));
+    try (Connection conn = pool.getConnection()) {
+      int userId = Integer.parseInt(request.getParameter("user"));
+      int competitionId = Integer.parseInt(request.getParameter("competition"));
+
+      List<Investment> investments = getUserInvestments(conn, userId, competitionId);
+
+      Gson gson = new Gson();
+      response.setContentType("application/json");
+      response.getWriter().println(gson.toJson(investments));
+
+      //response.setContentType("text/html;");
+      //response.getWriter().println("<h1>" + investments + "</h1>");
+
+    } catch (SQLException ex) {
+      LOGGER.log(Level.WARNING, "Error while attempting to fetch investments.", ex);
+      response.setStatus(500);
+      response.getWriter().write("Unable to successfully fetch user investments");
+    }
   }
 
-  private List<Investment> getUserInvestments() {
-    List<Investment> usersInvestments = new ArrayList<>();
-    // hard coded data that will need to be removed
-    usersInvestments.add(
-        Investment.create("Bob", "Chicken Wings", 50, new Date(2020, 12, 26).getTime()));
-    usersInvestments.add(Investment.create("Jack", "Trump", 25, new Date(2020, 11, 26).getTime()));
-    usersInvestments.add(Investment.create("Mary", "COVID", 30, new Date(2020, 10, 26).getTime()));
-    return  usersInvestments;
+  public List<Investment> getUserInvestments(Connection conn, int userId, int competitionId) throws SQLException {
+    String stmt = "SELECT google_search, invest_date, sell_date, amt_invested FROM investments WHERE user=" + userId + " AND competition=" + competitionId + ";";
+    List<Investment> investments = new ArrayList<>();
+    try (PreparedStatement investmentsStmt = conn.prepareStatement(stmt);) {
+      // Execute the statement
+      ResultSet rs = investmentsStmt.executeQuery();
+      // Convert a result into User object
+      String googleSearch;
+      long investDate;
+      Date sellDateOrNull;
+      long sellDate;
+      int amtInvested;
+      while (rs.next()) {
+        googleSearch = rs.getString(1);
+        investDate = rs.getDate(2).getTime();
+        sellDateOrNull = rs.getDate(3);
+        if (sellDateOrNull == null) {
+          sellDate = 0;
+        } else {
+          sellDate = sellDateOrNull.getTime();
+        }
+        amtInvested = rs.getInt(4);
+        LOGGER.log(Level.WARNING, "GOING");
+        investments.add(Investment.create(googleSearch, investDate, sellDate, amtInvested));
+        LOGGER.log(Level.WARNING, "GOING");
+      }
+      return investments;
+    }
   }
 }
