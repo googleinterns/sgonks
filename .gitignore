@@ -41,3 +41,5 @@ project/.classpath
 project/.factorypath
 project/.project
 project/.settings/
+
+firebaseConfig.js
