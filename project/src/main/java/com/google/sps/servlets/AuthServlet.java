@@ -60,14 +60,14 @@ public class AuthServlet extends HttpServlet {
     String stmt = "SELECT id, name FROM users WHERE email='" + email + "';";
     try (PreparedStatement userStmt = conn.prepareStatement(stmt);) {
       // Execute the statement
-      ResultSet userRs = userStmt.executeQuery();
+      ResultSet rs = userStmt.executeQuery();
       // Convert a result into User object
       int id;
       String name;
       User user;
-      while (userRs.next()) {
-        id = userRs.getInt(1);
-        name = userRs.getString(2);
+      while (rs.next()) {
+        id = rs.getInt(1);
+        name = rs.getString(2);
         return User.create(id, name, email);
       }
       return null;
