@@ -28,9 +28,7 @@ import javax.servlet.ServletContextListener;
 import javax.servlet.annotation.WebListener;
 import javax.sql.DataSource;
 import java.util.logging.Logger;
-import java.util.ArrayList;
-import java.util.Arrays.*;
-import java.util.List;
+import com.google.sps.config.*;
 
 @SuppressFBWarnings(
     value = {"HARD_CODE_PASSWORD", "WEM_WEAK_EXCEPTION_MESSAGING"},
@@ -75,9 +73,11 @@ public class ConnectionPoolContextListener implements ServletContextListener {
 
     log.info("I'm alive");
 
+    Config mySecrets = new Config();
+
     config.setJdbcUrl(String.format("jdbc:mysql://localhost:3306/%s", "test"));
     config.setUsername("root"); // e.g. "root", "mysql"
-    config.setPassword(REDACTED); // e.g. "my-password"
+    config.setPassword(mySecrets.databasePassword); // e.g. "my-password"
 
     //config.addDataSourceProperty("socketFactory", "com.google.cloud.sql.mysql.SocketFactory");
     //config.addDataSourceProperty("cloudSqlInstance",  "google.com:sgonks-step272:australia-southeast1:my-instance");//"127.0.0.1");
