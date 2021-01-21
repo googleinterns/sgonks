@@ -10,6 +10,6 @@ configure({ adapter: new Adapter() });
 describe("<HeaderBar />", () => {
   it('should render "What is sGonks?" and "Sign in" buttins if not authenticated', () => {
     const wrapper = shallow(<HeaderBar />);
-    expect(wrapper.find(LoginButtonSet)).tohaveLength(1);
+    expect(wrapper.find(LoginButtonSet)).toHaveLength(1);
   });
 });
