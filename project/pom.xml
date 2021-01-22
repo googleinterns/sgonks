@@ -16,7 +16,24 @@
     <failOnMissingWebXml>false</failOnMissingWebXml>
   </properties>
 
+  <dependencyManagement>
+    <dependencies>
+      <dependency>
+        <groupId>com.google.cloud</groupId>
+        <artifactId>libraries-bom</artifactId>
+        <version>16.3.0</version>
+        <type>pom</type>
+        <scope>import</scope>
+      </dependency>
+    </dependencies>
+  </dependencyManagement>
+
   <dependencies>
+    <dependency>
+      <groupId>com.google.cloud</groupId>
+      <artifactId>google-cloud-datastore</artifactId>
+    </dependency>
+
     <dependency>
       <groupId>javax.servlet</groupId>
       <artifactId>javax.servlet-api</artifactId>
@@ -87,13 +104,6 @@
       <scope>provided</scope>
     </dependency>
 
-    <dependency>
-      <groupId>com.google.firebase</groupId>
-      <artifactId>firebase-admin</artifactId>
-      <version>7.1.0</version>
-    </dependency>
-         
-
   </dependencies>
 
   <build>
@@ -114,7 +124,6 @@
         <artifactId>appengine-maven-plugin</artifactId>
         <version>1.9.9</version>
       </plugin>
-
     </plugins>
   </build>
 </project>
