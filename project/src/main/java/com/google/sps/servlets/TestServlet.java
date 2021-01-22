@@ -36,14 +36,11 @@ import javax.servlet.http.HttpServletResponse;
 import javax.sql.DataSource;
 import com.google.sps.data.*;
 
-import com.google.appengine.api.datastore.DatastoreService;
-import com.google.appengine.api.datastore.DatastoreServiceFactory;
-import com.google.appengine.api.datastore.EmbeddedEntity;
-import com.google.appengine.api.datastore.Entity;
-import com.google.appengine.api.datastore.EntityNotFoundException;
-import com.google.appengine.api.datastore.Key;
-import com.google.appengine.api.datastore.KeyFactory;
-import com.google.appengine.api.datastore.KeyRange;
+// Imports the Google Cloud client library
+import com.google.cloud.datastore.Datastore;
+import com.google.cloud.datastore.DatastoreOptions;
+import com.google.cloud.datastore.Entity;
+import com.google.cloud.datastore.Key;
 
 
 
@@ -124,14 +121,30 @@ public class TestServlet extends HttpServlet {
     response.getWriter().println("<h1>" + users + "</h1>");
   }
 
-  public void testDatastore() {
-    Entity employee = new Entity("Employee", "asalieri");
-    employee.setProperty("firstName", "Antonio");
-    employee.setProperty("lastName", "Salieri");
-    employee.setProperty("hireDate", new Date());
-    employee.setProperty("attendedHrTraining", true);
+  private void testDatastore() {
+    // Instantiates a client
+    Datastore datastore = DatastoreOptions.getDefaultInstance().getService();
 
-    DatastoreService datastore = DatastoreServiceFactory.getDatastoreService();
-    datastore.put(employee);
+    // The kind for the new entity
+    String kind = "Task";
+    // The name/ID for the new entity
+    String name = "example";
+    // The Cloud Datastore key for the new entity
+    Key taskKey = datastore.newKeyFactory().setKind(kind).newKey(name);
+
+    // Prepares the new entity
+    Entity task = Entity.newBuilder(taskKey)
+        .set("description", "Buy milk")
+        .build();
+
+    // Saves the entity
+    datastore.put(task);
+
+    System.out.printf("Saved %s: %s%n", task.getKey().getName(), task.getString("description"));
+
+    //Retrieve entity
+    Entity retrieved = datastore.get(taskKey);
+
+    System.out.printf("Retrieved %s: %s%n", taskKey.getName(), retrieved.getString("description"));
   }
 }
