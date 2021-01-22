@@ -80,7 +80,7 @@ public class TestServlet extends HttpServlet {
     String name = request.getParameter("name");
     String email = request.getParameter("email");
 
-    DataSource pool = (DataSource) request.getServletContext().getAttribute("my-pool");
+    DataSource pool = (DataSource) request.getServletContext().getAttribute("db-connection-pool");
     try (Connection conn = pool.getConnection()) {
       // PreparedStatements can be more efficient and project against injections.
       String stmt = "INSERT INTO users (name, email) VALUES (?, ?);";
