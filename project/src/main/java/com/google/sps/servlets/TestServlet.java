@@ -36,6 +36,15 @@ import javax.servlet.http.HttpServletResponse;
 import javax.sql.DataSource;
 import com.google.sps.data.*;
 
+import com.google.appengine.api.datastore.DatastoreService;
+import com.google.appengine.api.datastore.DatastoreServiceFactory;
+import com.google.appengine.api.datastore.EmbeddedEntity;
+import com.google.appengine.api.datastore.Entity;
+import com.google.appengine.api.datastore.EntityNotFoundException;
+import com.google.appengine.api.datastore.Key;
+import com.google.appengine.api.datastore.KeyFactory;
+import com.google.appengine.api.datastore.KeyRange;
+
 
 
 @SuppressFBWarnings(
@@ -77,6 +86,8 @@ public class TestServlet extends HttpServlet {
   @Override
   public void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException {
 
+    testDatastore();
+
     String name = request.getParameter("name");
     String email = request.getParameter("email");
 
@@ -111,5 +122,16 @@ public class TestServlet extends HttpServlet {
     response.setContentType("text/html;");
     response.getWriter().println("<p>going</p>");
     response.getWriter().println("<h1>" + users + "</h1>");
+  }
+
+  public void testDatastore() {
+    Entity employee = new Entity("Employee", "asalieri");
+    employee.setProperty("firstName", "Antonio");
+    employee.setProperty("lastName", "Salieri");
+    employee.setProperty("hireDate", new Date());
+    employee.setProperty("attendedHrTraining", true);
+
+    DatastoreService datastore = DatastoreServiceFactory.getDatastoreService();
+    datastore.put(employee);
   }
 }
