@@ -15,7 +15,11 @@
 
 #!/usr/bin/env python3
 
+# Imports the method for fetching formatted data from google trends
 from fetch_trends import get_updated_daily_data
+
+# Imports the Google Cloud client library
+from google.cloud import datastore
 
 # for test purposes
 import time
@@ -33,16 +37,20 @@ def get_investment_data():
     return zip(search_terms, investment_dates)
 
 
-def update_database(data):
+def update_database(data, client):
     """
-    Add daily search data for term to Cloud Firestore db, overwriting old data if present
+    Add daily search data for term to Datastore db, overwriting old data if present
     """
-    return
+    search_query = datastore.Entity(client.key("TrendsData"))
+    search_query.update(data)
+    client.put(search_query)
 
 
 if __name__ == "__main__":
+    # Instantiates a client
+    datastore_client = datastore.Client()
     investments = get_investment_data()
     for investment in investments:
         daily_data = get_updated_daily_data(*investment)
         print(daily_data)
-        update_database(daily_data)
+        update_database(daily_data, datastore_client)
