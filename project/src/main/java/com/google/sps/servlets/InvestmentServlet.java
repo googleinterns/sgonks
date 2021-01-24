@@ -21,7 +21,6 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
-import java.util.Arrays;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
@@ -89,7 +88,7 @@ public class InvestmentServlet extends HttpServlet {
           sellDate = sellDateOrNull.getTime();
         }
         amtInvested = rs.getInt(4);
-        investments.add(Investment.create(googleSearch, investDate, sellDate, amtInvested,ImmutableList.copyOf(Arrays.asList(new Long[]{}))));
+        investments.add(Investment.create(googleSearch, investDate, sellDate, amtInvested,ImmutableList.copyOf(new ArrayList<>())));
       }
       return investments;
     }
