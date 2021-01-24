@@ -31,3 +31,10 @@ def get_current_date():
     utc = pytz.utc
     date = datetime.now(tz=utc)
     return date
+
+
+def date_to_epoch(date):
+    """
+    converts date object back into epoch
+    """
+    return date.timestamp()
