@@ -26,7 +26,7 @@ const SelectCompetition = (props) => {
   };
 
   useEffect(() => {
-    fetch("./competitionInfo?userId=" + "123")
+    fetch("./competitionInfo?userId=" + userId)
       .then((response) => response.json())
       .then((data) => {
         console.log(data);
