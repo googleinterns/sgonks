@@ -4,23 +4,41 @@ import CompetitionCard from "../../components/CompetitionCard/CompetitionCard";
 import LinkButton from "../../components/UI/LinkButton/LinkButton";
 
 const SelectCompetition = (props) => {
+  const userId = 123;
+  const [comps, setComps] = useState(null);
+
+  const renderCompCards = (compsList) => {
+    setComps(
+      compsList.map((comp) => {
+        return (
+          <CompetitionCard
+            key={comp.id}
+            id={comp.id}
+            name={comp.competitionName}
+            organiser={comp.organiserName}
+            organiserLdap={comp.organiserUsername}
+            startDate={comp.startDate}
+            endDate={comp.endDate}
+          ></CompetitionCard>
+        );
+      })
+    );
+  };
+
   useEffect(() => {
-    fetch("./competitionInfo?compId=" + "123")
+    fetch("./competitionInfo?userId=" + "123")
       .then((response) => response.json())
       .then((data) => {
         console.log(data);
+        renderCompCards(data);
       });
-  });
+  }, [userId]);
 
   return (
     <div className={classes.SelectCompetitionContainer}>
       <p>Select a competition...</p>
       <div className={classes.CardsContainer}>
-        <ul>
-          <CompetitionCard></CompetitionCard>
-          <CompetitionCard></CompetitionCard>
-          <CompetitionCard></CompetitionCard>
-        </ul>
+        <ul>{comps}</ul>
       </div>
       <p>Or...</p>
       <LinkButton>Create a competition</LinkButton>

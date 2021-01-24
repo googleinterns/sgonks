@@ -27,7 +27,7 @@ const CompetitionCard = (props) => {
           <p>Current net worth:</p>
           <p>Currently available:</p>
         </div>
-        <LinkButton inverted>View Competition</LinkButton>
+        <LinkButton inverted="true">View Competition</LinkButton>
       </div>
     </li>
   );
