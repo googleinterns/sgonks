@@ -1,18 +1,22 @@
 import React from "react";
-import { configure, shallow } from "enzyme";
+import { configure, render } from "enzyme";
 import Adapter from "enzyme-adapter-react-16";
 
 import HeaderBar from "./HeaderBar";
 import LoginButtonSet from "../UI/LoginButtonSet/LoginButtonSet";
 import SignOutButton from "./SignOutButton/SignOutButton";
-import { NavLink } from "react-router-dom";
+import { NavLink, BrowserRouter } from "react-router-dom";
 
 configure({ adapter: new Adapter() });
 
 describe("<HeaderBar />", () => {
   let wrapper;
   beforeEach(() => {
-    wrapper = shallow(<HeaderBar />);
+    wrapper = render(
+      <BrowserRouter>
+        <HeaderBar />
+      </BrowserRouter>
+    );
   });
 
   it("should render", () => {
