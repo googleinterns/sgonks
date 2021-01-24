@@ -27,7 +27,6 @@
   justify-content: flex-start;
   align-items: flex-start;
   text-align: left;
-  background: lightblue;
 }
 
 .CompIdentification {
@@ -44,18 +43,18 @@
 
 .CompIdentification h2 {
   font-weight: 400;
-  font-size: 1.4vw;
+  font-size: 1.3vw;
   line-height: 0.6;
 }
 
 .CompetitionDetails h3 {
-  font-weight: 600;
+  font-weight: 500;
   font-size: 1.5vw;
 }
 
 .CompetitionDetails p {
   font-weight: 400;
-  font-size: 1.4vw;
+  font-size: 1.3vw;
   line-height: 1.1;
 }
 
@@ -66,13 +65,20 @@
   justify-content: space-around;
   width: 43%;
   height: 90%;
-  background: pink;
   text-align: left;
 }
 
 .CompetitionPersonalInfoContainer p {
+  font-size: 1.5vw;
+}
+
+.CompetitionPersonalInfoContainer p span {
+  font-size: 2.3vw;
+  font-weight: 600;
+  padding-left: 10%;
 }
 
 .UserCompInfo p {
-  font-size: 1.4vw;
+  font-size: 1.3vw;
+  line-height: 1.1;
 }

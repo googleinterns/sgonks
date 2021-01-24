@@ -3,6 +3,8 @@ import classes from "./CompetitionCard.module.css";
 import LinkButton from "../UI/LinkButton/LinkButton";
 
 const CompetitionCard = (props) => {
+  console.log("props");
+  console.log(props);
   return (
     <li className={classes.CompetitionCardContainer}>
       <div className={classes.CompetitionInfoContainer}>
@@ -12,16 +14,18 @@ const CompetitionCard = (props) => {
         </div>
         <div className={classes.CompetitionDetails}>
           <h3>Competition Details</h3>
-          <p>Start date</p>
-          <p>End date</p>
+          <p>Start date: </p>
+          <p>End date:</p>
         </div>
       </div>
       <div className={classes.CompetitionPersonalInfoContainer}>
-        <p>Ranking</p>
+        <p>
+          Current ranking: <span>0th</span>
+        </p>
         <div className={classes.UserCompInfo}>
-          <p>Initial worth</p>
-          <p>Current worth</p>
-          <p>Currently available</p>
+          <p>Initial worth:</p>
+          <p>Current net worth:</p>
+          <p>Currently available:</p>
         </div>
         <LinkButton inverted>View Competition</LinkButton>
       </div>
