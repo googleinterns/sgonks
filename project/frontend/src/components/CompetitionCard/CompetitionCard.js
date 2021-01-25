@@ -51,7 +51,12 @@ const CompetitionCard = (props) => {
             <span>t${props.currentlyAvailable}</span>
           </p>
         </div>
-        <LinkButton inverted="true">View Competition</LinkButton>
+        <LinkButton
+          onClick={() => props.onCompSelect(props.id)}
+          inverted="true"
+        >
+          View Competition
+        </LinkButton>
       </div>
     </li>
   );

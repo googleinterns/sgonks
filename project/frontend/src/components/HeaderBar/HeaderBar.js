@@ -2,7 +2,7 @@ import React, { useContext } from "react";
 import classes from "./HeaderBar.module.css";
 import Logo from "../../assets/sGonksLogo.png";
 import { Link, NavLink } from "react-router-dom";
-import SignOutButton from "./SignOutButton/SignOutButton"
+import SignOutButton from "./SignOutButton/SignOutButton";
 import LoginButtonSet from "../UI/LoginButtonSet/LoginButtonSet";
 import Aux from "../../hoc/Auxiliary";
 
@@ -29,12 +29,21 @@ const HeaderBar = (props) => {
     </nav>
   ) : null;
 
+  const clearCompId = () => {
+    localStorage.setItem("compId", 0);
+    props.compIdChange(0);
+  };
+
   let buttonSet = props.loggedIn ? (
     <Aux>
       <nav className={classes.Navigation}>
         <ul>
           <li>
-            <NavLink to="/" activeClassName={classes.active}>
+            <NavLink
+              to="/compselect"
+              onClick={clearCompId}
+              activeClassName={classes.active}
+            >
               Select Competition
             </NavLink>
           </li>

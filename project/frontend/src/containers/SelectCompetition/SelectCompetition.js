@@ -10,6 +10,12 @@ const SelectCompetition = (props) => {
   const userId = 1;
   const [comps, setComps] = useState(null);
 
+  const competitionSelectedHandler = (compId) => {
+    console.log("Storing" + compId);
+    localStorage.setItem("compId", compId);
+    props.compIdChanged(compId);
+  };
+
   const renderCompCards = (compsList) => {
     setComps(
       compsList.map((comp) => {
@@ -26,6 +32,7 @@ const SelectCompetition = (props) => {
             rankYesterday={comp.user.rankYesterday}
             netWorth={comp.user.netWorth}
             currentlyAvailable={comp.user.amountAvailable}
+            onCompSelect={competitionSelectedHandler}
           ></CompetitionCard>
         );
       })
