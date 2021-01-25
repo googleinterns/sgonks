@@ -15,34 +15,45 @@
 
 #!/usr/bin/env python3
 
+# Imports the method for fetching formatted data from google trends
 from fetch_trends import get_updated_daily_data
 
-# for test purposes
-import time
+# Imports the Google Cloud client library
+from google.cloud import datastore
 
 
-def get_investment_data():
+def get_investment_data(client):
     """
-    Fetch investment data from database. Hard code for now.
+    Fetch investment data from database.
     returns a list of ("search_term", "investment_date") tuples
     """
-    search_terms = ["bananas", "censorship", "weather forecast", "giraffe", "chicken nuggets"]
-    # hard coded to be exactly one week ago:
-    investment_dates = [time.time() - 604800] * len(search_terms)
+    search_terms = []
+    investment_dates = []
 
+    query = client.query(kind="TrendsData")
+    results = list(query.fetch()) # a list of every entry of kind TrendsData
+    for entity in results:
+        search_terms.append(entity['search_term'])
+        investment_dates.append(entity['initial_date'])
     return zip(search_terms, investment_dates)
 
 
-def update_database(data):
+def update_database(data, client):
     """
-    Add daily search data for term to Cloud Firestore db, overwriting old data if present
+    Add daily search data for term to Datastore db, overwriting old data for given search term
     """
-    return
+    search_query = datastore.Entity(client.key("TrendsData", data["search_term"]))
+    search_query.update(data)
+    client.put(search_query)
 
 
 if __name__ == "__main__":
-    investments = get_investment_data()
+    # Instantiates a client
+    datastore_client = datastore.Client()
+    # Retrieve relevant data from datastore
+    investments = get_investment_data(datastore_client)
     for investment in investments:
+        # Retrieve up to date trends data for each search term
         daily_data = get_updated_daily_data(*investment)
-        print(daily_data)
-        update_database(daily_data)
+        # Add up to date data do datastore
+        update_database(daily_data, datastore_client)

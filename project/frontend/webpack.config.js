@@ -34,7 +34,14 @@ module.exports = {
               "@babel/preset-env",
               "@babel/react",
               {
-                plugins: ["@babel/plugin-proposal-class-properties"],
+                plugins: [
+                  [
+                    "@babel/plugin-proposal-class-properties",
+                    {
+                      loose: true,
+                    },
+                  ],
+                ],
               },
             ],
           },
@@ -46,7 +53,7 @@ module.exports = {
       },
       {
         test: /\.(webm|mp4)$/i,
-        use: 'file-loader?name=videos/[name].[ext]',
+        use: "file-loader?name=videos/[name].[ext]",
       },
       {
         test: /\.(png|jpg|gif|svg|jpeg)$/i,

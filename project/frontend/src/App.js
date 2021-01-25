@@ -1,6 +1,6 @@
 import "./App.css";
 import React, { useState } from "react";
-import { Route, Switch, Redirect } from "react-router-dom";
+import { Route, Switch, Redirect, BrowserRouter } from "react-router-dom";
 
 import Explanation from "./containers/Explanation/Explanation";
 import SelectCompetition from "./containers/SelectCompetition/SelectCompetition";
@@ -79,16 +79,17 @@ function App() {
   );
 
   return (
-    <div className="App">
-      <AuthContext.Provider value={auth}>
-        <HeaderBar
-          loggedIn={user.signedIn}
-          innerNav={compId != 0}
-          compIdChange={setCompId}
-        ></HeaderBar>
-        <Layout>{pageRoute}</Layout>
-      </AuthContext.Provider>
-    </div>
+    <BrowserRouter>
+      <div className="App">
+        <AuthContext.Provider value={auth}>
+          <HeaderBar
+            loggedIn={user.signedIn}
+            innerNav={compId != 0}
+          ></HeaderBar>
+          <Layout>{pageRoute}</Layout>
+        </AuthContext.Provider>
+      </div>
+    </BrowserRouter>
   );
 }
 

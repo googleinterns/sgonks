@@ -7,23 +7,21 @@
     "@testing-library/react": "^11.2.2",
     "@testing-library/user-event": "^12.6.0",
     "classnames": "^2.2.6",
+    "enzyme": "^3.11.0",
     "firebase": "^8.2.3",
-    "jest": "^26.2.2",
-    "react": "^17.0.1",
-    "react-dom": "^17.0.1",
+    "react": "^16.14.0",
     "react-router-dom": "^5.2.0",
     "react-scripts": "4.0.1",
     "url-loader": "^4.1.0",
     "web-vitals": "^0.2.4",
     "webpack": "^4.34.0",
-    "webpack-cli": "^3.3.4",
-    "webpack-dev-server": "^3.7.2"
+    "webpack-cli": "^3.3.4"
   },
   "scripts": {
     "build": "webpack",
     "watch": "webpack-dev-server",
     "start": "yarn watch",
-    "test": "jest --config ./jest.config.json",
+    "test": "jest",
     "test:watch": "npm run test -- --watch"
   },
   "eslintConfig": {
@@ -43,5 +41,16 @@
       "last 1 firefox version",
       "last 1 safari version"
     ]
+  },
+  "devDependencies": {
+    "@babel/plugin-proposal-class-properties": "^7.12.1",
+    "@babel/preset-env": "^7.12.11",
+    "@babel/preset-react": "^7.12.10",
+    "babel-jest": "^26.6.3",
+    "enzyme-adapter-react-16": "^1.15.6",
+    "jest": "^26.6.3",
+    "react-dom": "^16.14.0",
+    "react-test-renderer": "^16.14.0",
+    "webpack-dev-server": "^3.11.2"
   }
 }
