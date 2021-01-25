@@ -14,13 +14,19 @@ const CompetitionCard = (props) => {
         </div>
         <div className={classes.CompetitionDetails}>
           <h3>Competition Details</h3>
-          <p>Start date: &nbsp; {new Date(props.startDate).toLocaleString()}</p>
-          <p>End date: &nbsp; {new Date(props.endDate).toLocaleString()}</p>
+          <p>
+            <span>Start date: </span>
+            <span>{new Date(props.startDate).toLocaleString()}</span>
+          </p>
+          <p>
+            <span>End date: </span>
+            <span>{new Date(props.endDate).toLocaleString()}</span>
+          </p>
         </div>
       </div>
       <div className={classes.CompetitionPersonalInfoContainer}>
         <p>
-          Current ranking: <span>0th</span>
+          Current ranking: <span>?th</span>
         </p>
         <div className={classes.UserCompInfo}>
           <p>Initial worth: ?????</p>
