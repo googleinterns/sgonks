@@ -1,78 +1,58 @@
-
-.SelectCompContainer {
-    height: 100%;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
+.SelectCompetitionContainer {
+  height: 85%;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  flex-wrap: nowrap;
+  justify-content: space-between;
+  align-items: center;
 }
 
-.Header {
-    padding: 20px;
-    width: 95%;
-    display: flex;
-    justify-content: space-between;
+.SelectCompetitionContainer p {
+  font-size: 1.6vw;
 }
 
-.LogoutButton {
-    width: 80px;
-    margin-left: auto;
-    color: blue;
+.CardsContainer {
+  height: 75%;
+  width: 100%;
+  display: flex;
+  align-items: center;
 }
 
-.ScrollCompetitionsContainer {
-    width: 100%;
-    display: flex;
-    justify-content: space-evenly;
+.CardsContainer ul {
+  margin: 0;
+  padding: 0;
+  display: flex;
+  width: 100%;
+  height: 100%;
+  align-items: center;
+  flex-direction: row;
+  flex-wrap: nowrap;
+  overflow: hidden;
+  overflow-x: scroll;
+  scrollbar-width: none; /* Firefox */
+  -ms-overflow-style: none; /* Internet Explorer 10+ */
 }
 
-.ScrollButton {
-    margin: auto 0;
+.CardsContainer ul::-webkit-scrollbar {
+  display: none; /* Safari and Chrome */
 }
 
-.CompetitionCard {
-    display: flex;
-    border: solid;
-    padding: 20px;
+.menu-item {
+  padding: 0 40px;
+  margin: 5px 10px;
+  user-select: none;
+  cursor: pointer;
+  border: none;
+}
+.menu-item-wrapper.active {
+  border: 1px blue solid;
+}
+.menu-item.active {
+  border: 1px green solid;
 }
 
-.CompetitionCardColumn {
-    padding: 20px;
-    text-align: left;
-    display: flex;
-    flex-direction: column;
-}
-
-img {
-    width: 150px;
-    height: auto;
-}
-
-.ViewCompButton {
-    margin: 10px;
-    padding-top: 15px;
-    height: 30px;
-    width: 250px;
-    border: solid 1px #E9E9E9;
-    text-decoration: none;
-    font-weight: bold;
-    border-radius: 7px;
-    color: #2F7DE7;
-    text-align: center;
-}
-
-.CreateCompButton {
-    padding-top: 20px;
-    height: 40px;
-    width: 250px;
-    border: solid 1px #1A73E8;
-    background-color: #2F7DE7;
-    text-decoration: none;
-    font-weight: bold;
-    border-radius: 7px;
-    color: white;
-}
-
-.Place {
-    font-size: 40px;
-    text-align: center;
+.scroll-menu-arrow {
+  padding: 20px;
+  cursor: pointer;
 }
