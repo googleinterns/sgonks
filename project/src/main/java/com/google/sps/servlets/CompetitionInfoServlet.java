@@ -89,12 +89,12 @@ public class CompetitionInfoServlet extends HttpServlet {
     //not yet implemented
     String COMP_NAME = "COMPETITION NAME";
     String CREATOR = "CREATOR";
-    String CREATOR_IDAP = "CREATOR IDAP";
+    String CREATOR_EMAIL = "CREATOR EMAIL";
 
     List<CompetitorInfo> participants = getCompetitionParticipants(conn, competitionId);
     CompetitorInfo user = getCompetitorInfo(conn, userId, competitionId);
 
-    return new UserCompetition(competitionId, COMP_NAME, CREATOR, CREATOR_IDAP, start, end, user, participants);
+    return new UserCompetition(competitionId, COMP_NAME, CREATOR, CREATOR_EMAIL, start, end, user, participants);
   }
 
   /**
