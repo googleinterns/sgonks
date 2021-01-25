@@ -37,4 +37,4 @@ def date_to_epoch(date):
     """
     converts date object back into epoch
     """
-    return date.timestamp()
+    return int(date.timestamp())
