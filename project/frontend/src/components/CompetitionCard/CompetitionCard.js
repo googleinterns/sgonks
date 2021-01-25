@@ -3,6 +3,12 @@ import classes from "./CompetitionCard.module.css";
 import LinkButton from "../UI/LinkButton/LinkButton";
 
 const CompetitionCard = (props) => {
+  const getNumberWithOrdinal = (n) => {
+    var s = ["th", "st", "nd", "rd"],
+      v = n % 100;
+    return n + (s[(v - 20) % 10] || s[v] || s[0]);
+  };
+
   return (
     <li className={classes.CompetitionCardContainer}>
       <div className={classes.CompetitionInfoContainer}>
@@ -27,20 +33,22 @@ const CompetitionCard = (props) => {
       <div className={classes.CompetitionPersonalInfoContainer}>
         <p>
           <span>Current ranking: </span>
-          <span className={classes.RankingLabel}>?th</span>
+          <span className={classes.RankingLabel}>
+            {getNumberWithOrdinal(props.rank)}
+          </span>
         </p>
         <div className={classes.UserCompInfo}>
           <p>
             <span>Initial worth: </span>
-            <span>t$????</span>
+            <span>t$???</span>
           </p>
           <p>
             <span>Current net worth: </span>
-            <span>t$????</span>
+            <span>t${props.netWorth}</span>
           </p>
           <p>
             <span>Currently available: </span>
-            <span>t$????</span>
+            <span>t${props.currentlyAvailable}</span>
           </p>
         </div>
         <LinkButton inverted="true">View Competition</LinkButton>

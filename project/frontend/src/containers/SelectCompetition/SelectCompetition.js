@@ -4,7 +4,7 @@ import CompetitionCard from "../../components/CompetitionCard/CompetitionCard";
 import LinkButton from "../../components/UI/LinkButton/LinkButton";
 
 const SelectCompetition = (props) => {
-  const userId = 123;
+  const userId = 1;
   const [comps, setComps] = useState(null);
 
   const renderCompCards = (compsList) => {
@@ -16,9 +16,13 @@ const SelectCompetition = (props) => {
             id={comp.id}
             name={comp.competitionName}
             organiser={comp.organiserName}
-            organiserLdap={comp.organiserUsername}
+            organiserLdap={comp.organiserIdap}
             startDate={comp.startDate}
             endDate={comp.endDate}
+            rank={comp.user.rank}
+            rankYesterday={comp.user.rankYesterday}
+            netWorth={comp.user.netWorth}
+            currentlyAvailable={comp.user.amountAvailable}
           ></CompetitionCard>
         );
       })
@@ -26,7 +30,7 @@ const SelectCompetition = (props) => {
   };
 
   useEffect(() => {
-    fetch("./competitionInfo?userId=" + userId)
+    fetch("./competitionInfo?user=" + userId)
       .then((response) => response.json())
       .then((data) => {
         console.log(data);

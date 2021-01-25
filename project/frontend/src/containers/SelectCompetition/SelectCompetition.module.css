@@ -8,6 +8,10 @@
   align-items: center;
 }
 
+.SelectCompetitionContainer p {
+  font-size: 1.6vw;
+}
+
 .CardsContainer {
   height: 75%;
   width: 100%;
