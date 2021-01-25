@@ -26,12 +26,22 @@ const CompetitionCard = (props) => {
       </div>
       <div className={classes.CompetitionPersonalInfoContainer}>
         <p>
-          Current ranking: <span>?th</span>
+          <span>Current ranking: </span>
+          <span className={classes.RankingLabel}>?th</span>
         </p>
         <div className={classes.UserCompInfo}>
-          <p>Initial worth: ?????</p>
-          <p>Current net worth: ?????</p>
-          <p>Currently available: ?????</p>
+          <p>
+            <span>Initial worth: </span>
+            <span>t$????</span>
+          </p>
+          <p>
+            <span>Current net worth: </span>
+            <span>t$????</span>
+          </p>
+          <p>
+            <span>Currently available: </span>
+            <span>t$????</span>
+          </p>
         </div>
         <LinkButton inverted="true">View Competition</LinkButton>
       </div>
