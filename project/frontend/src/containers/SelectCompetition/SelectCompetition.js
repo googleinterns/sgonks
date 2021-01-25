@@ -2,8 +2,11 @@ import React, { useEffect, useState } from "react";
 import classes from "./SelectCompetition.module.css";
 import CompetitionCard from "../../components/CompetitionCard/CompetitionCard";
 import LinkButton from "../../components/UI/LinkButton/LinkButton";
+import { useHorizontalScroll } from "../../components/UI/UIActions/useHorizontalScroll";
 
 const SelectCompetition = (props) => {
+  const scrollRef = useHorizontalScroll();
+
   const userId = 1;
   const [comps, setComps] = useState(null);
 
@@ -42,7 +45,7 @@ const SelectCompetition = (props) => {
     <div className={classes.SelectCompetitionContainer}>
       <p>Select a competition...</p>
       <div className={classes.CardsContainer}>
-        <ul>{comps}</ul>
+        <ul ref={scrollRef}>{comps}</ul>
       </div>
       <p>Or...</p>
       <LinkButton>Create a competition</LinkButton>
