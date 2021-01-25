@@ -68,8 +68,10 @@ def aggregate_hourly_to_daily(hourly_df):
     returns a dictionary of aggregated data
     """
     search_term = hourly_df.columns[0]
-    new_data = {"search_term": search_term}
-    new_data["initial_date"] = date_to_epoch(hourly_df.index[0])
+    new_data = {
+        "search_term": search_term,
+        "initial_date": date_to_epoch(hourly_df.index[0])
+    }
     count = 0
     day_total = 0
 

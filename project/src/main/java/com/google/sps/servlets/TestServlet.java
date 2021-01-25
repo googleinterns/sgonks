@@ -40,11 +40,7 @@ import com.google.sps.data.*;
 import com.google.cloud.datastore.*;
 
 
-
-
-@SuppressFBWarnings(
-    value = {"SE_NO_SERIALVERSIONID", "WEM_WEAK_EXCEPTION_MESSAGING"},
-    justification = "Not needed for TestServlet, Exception adds context")
+@SuppressFBWarnings(value = {"SE_NO_SERIALVERSIONID", "WEM_WEAK_EXCEPTION_MESSAGING"}, justification = "Not needed for TestServlet, Exception adds context")
 @WebServlet("/test")
 public class TestServlet extends HttpServlet {
 
