@@ -3,6 +3,11 @@ import classes from "./CompetitionCard.module.css";
 import LinkButton from "../UI/LinkButton/LinkButton";
 
 const CompetitionCard = (props) => {
+  /*
+  Given a number, outputs the number along with its appropriate ordinal
+  i.e. 1 -> 1st, 3 -> 3rd, 11 -> 11th
+  Used for displaying user ranking 
+  */
   const getNumberWithOrdinal = (n) => {
     var s = ["th", "st", "nd", "rd"],
       v = n % 100;
