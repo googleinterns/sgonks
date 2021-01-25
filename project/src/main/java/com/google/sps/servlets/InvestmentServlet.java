@@ -16,6 +16,7 @@ package com.google.sps.servlets;
 
 import com.google.gson.Gson;
 import com.google.sps.data.*;
+import com.google.common.collect.ImmutableList;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Date;
@@ -24,6 +25,8 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import java.util.ArrayList;
+import java.util.List;
 
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -85,7 +88,7 @@ public class InvestmentServlet extends HttpServlet {
           sellDate = sellDateOrNull.getTime();
         }
         amtInvested = rs.getInt(4);
-        investments.add(Investment.create(googleSearch, investDate, sellDate, amtInvested));
+        investments.add(Investment.create(googleSearch, investDate, sellDate, amtInvested,ImmutableList.copyOf(new ArrayList<>())));
       }
       return investments;
     }

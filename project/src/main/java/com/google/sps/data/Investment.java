@@ -14,8 +14,7 @@
 
 package com.google.sps.data;
 import com.google.auto.value.AutoValue;
-import java.util.ArrayList;
-import java.util.List;
+import com.google.common.collect.ImmutableList;
 
 /**
  * Class representing an investment object when users make a purchase.
@@ -23,8 +22,8 @@ import java.util.List;
 @AutoValue
 public abstract class Investment {
   public static Investment create(
-    String searchItem, long dateInvestedMilliSeconds, long dateSoldMilliSeconds, int amtInvested) {
-    return new AutoValue_Investment(searchItem, dateInvestedMilliSeconds, dateSoldMilliSeconds, amtInvested);
+    String searchItem, long dateInvestedMilliSeconds, long dateSoldMilliSeconds, int amtInvested, ImmutableList<Long> dataPoints) {
+    return new AutoValue_Investment(searchItem, dateInvestedMilliSeconds, dateSoldMilliSeconds, amtInvested, dataPoints);
   }
   /** The search query that is invested */
   public abstract String searchItem();
@@ -34,4 +33,6 @@ public abstract class Investment {
   public abstract long dateSoldMilliSeconds();
   /** The amount invested for the search query*/
   public abstract int amtInvested();
+  /** The data points from the trends API, about the investment over a period of time.*/
+  public abstract ImmutableList<Long> dataPoints();
 }
