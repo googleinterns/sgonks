@@ -49,12 +49,12 @@ public class ConnectionPoolContextListener implements ServletContextListener {
 
   private static String CREATE_COMPETITIONS_TABLE = 
     "CREATE TABLE IF NOT EXISTS competitions ( "
-    + "id SERIAL NOT NULL, start_date DATE NOT NULL, end_date DATE NOT NULL,"
+    + "id SERIAL NOT NULL, start_date DATE NOT NULL, end_date DATE NOT NULL, competition_name VARCHAR(255) NOT NULL, creator INT NOT NULL, creator_email VARCHAR(255) NOT NULL,"
     + " PRIMARY KEY (id) );";
 
   private static String CREATE_PARTICIPANTS_TABLE = 
     "CREATE TABLE IF NOT EXISTS participants ( "
-    + "id SERIAL NOT NULL, user INT NOT NULL, competition INT NOT NULL, amt_available INT NOT NULL,"
+    + "id SERIAL NOT NULL, user INT NOT NULL, competition INT NOT NULL, amt_available INT NOT NULL, rank INT NOT NULL, rank_yesterday INT,"
     + " PRIMARY KEY (id) );";
 
   private static String CREATE_INVESTMENTS_TABLE = 
@@ -140,15 +140,15 @@ public class ConnectionPoolContextListener implements ServletContextListener {
       "INSERT INTO users (name, email) VALUES ('Tex', 'texm@google.com');",
       "INSERT INTO users (name, email) VALUES ('Leon', 'nemleon@google.com');",
 
-      "INSERT INTO competitions (start_date, end_date) VALUES (DATE '2021-01-01', DATE '2021-03-01');",
-      "INSERT INTO competitions (start_date, end_date) VALUES (DATE '2021-01-10', DATE '2021-03-10');",
+      "INSERT INTO competitions (start_date, end_date, competition_name, creator, creator_email) VALUES (DATE '2021-01-01', DATE '2021-03-01', 'TidePod', 1, 'emmahogan@google.com');",
+      "INSERT INTO competitions (start_date, end_date, competition_name, creator, creator_email) VALUES (DATE '2021-01-10', DATE '2021-03-10', 'Another Competition', 4, 'texm@google.com');",
 
-      "INSERT INTO participants (user, competition, amt_available) VALUES (1, 1, 100);",
-      "INSERT INTO participants (user, competition, amt_available) VALUES (1, 2, 500);",
-      "INSERT INTO participants (user, competition, amt_available) VALUES (2, 1, 200);",
-      "INSERT INTO participants (user, competition, amt_available) VALUES (3, 2, 100);",
-      "INSERT INTO participants (user, competition, amt_available) VALUES (4, 1, 200);",
-      "INSERT INTO participants (user, competition, amt_available) VALUES (5, 1, 400);",
+      "INSERT INTO participants (user, competition, amt_available, rank, rank_yesterday) VALUES (1, 1, 100, 1, 6);",
+      "INSERT INTO participants (user, competition, amt_available, rank, rank_yesterday) VALUES (1, 2, 500, 2, 5);",
+      "INSERT INTO participants (user, competition, amt_available, rank, rank_yesterday) VALUES (2, 1, 200, 3, 4);",
+      "INSERT INTO participants (user, competition, amt_available, rank, rank_yesterday) VALUES (3, 2, 100, 4, 3);",
+      "INSERT INTO participants (user, competition, amt_available, rank, rank_yesterday) VALUES (4, 1, 200, 5, 2);",
+      "INSERT INTO participants (user, competition, amt_available, rank, rank_yesterday) VALUES (5, 1, 400, 6, 1);",
 
       "INSERT INTO investments (user, competition, google_search, invest_date, sell_date, amt_invested) VALUES (1, 1, 'giraffe', DATE '2021-01-01', NULL, 100);",
       "INSERT INTO investments (user, competition, google_search, invest_date, sell_date, amt_invested) VALUES (1, 1, 'pangolin', DATE '2021-01-04', DATE '2021-01-08', 50);",
