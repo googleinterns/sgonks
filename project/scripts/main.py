@@ -37,11 +37,18 @@ def get_investment_data():
     return zip(search_terms, investment_dates)
 
 
+def test(client):
+    query = client.query(kind="TrendsData")
+    results = list(query.fetch()) # a list of every entry of kind TrendsData
+    print(results)
+
+
+
 def update_database(data, client):
     """
-    Add daily search data for term to Datastore db, overwriting old data if present
+    Add daily search data for term to Datastore db, overwriting old data for given search term
     """
-    search_query = datastore.Entity(client.key("TrendsData"))
+    search_query = datastore.Entity(client.key("TrendsData", data["search_term"]))
     search_query.update(data)
     client.put(search_query)
 
@@ -49,6 +56,7 @@ def update_database(data, client):
 if __name__ == "__main__":
     # Instantiates a client
     datastore_client = datastore.Client()
+    test(datastore_client)
     investments = get_investment_data()
     for investment in investments:
         daily_data = get_updated_daily_data(*investment)
