@@ -20,14 +20,14 @@ import com.google.auto.value.AutoValue;
 @AutoValue
 public abstract class CompetitorInfo {
   public static CompetitorInfo create(
-      int rank, int rankYesterday, String name, String email, long netWorth, long amountAvailable) {
+      int rank, Integer rankYesterday, String name, String email, long netWorth, long amountAvailable) {
     return new AutoValue_CompetitorInfo(rank, rankYesterday, name, email, netWorth, amountAvailable);
   }
 
   /** The current ranking of the user in this competition based on networth */
   public abstract int rank();
   /** The rank of the user yesterday for purposes of displaying rises/falls in leaderboard */
-  public abstract int rankYesterday();
+  public abstract Integer rankYesterday();
   /** The competitor's name */
   public abstract String name();
   /** The competitor's Google email */
