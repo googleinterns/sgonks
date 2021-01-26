@@ -42,5 +42,9 @@ project/.factorypath
 project/.project
 project/.settings/
 
+# Ignore secrets
 firebaseConfig.js
-Config.java
+config/
+
+# Ignore Python generated files
+__pycache__/

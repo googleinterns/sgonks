@@ -20,14 +20,14 @@ import com.google.auto.value.AutoValue;
  */
 @AutoValue
 public abstract class User {
-  public static User create(long id, String name, String username) {
-    return new AutoValue_User( id,  name,  username);
+  public static User create(long id, String name, String email) {
+    return new AutoValue_User(id,  name,  email);
   }
   /** The id of the user entry in database */
   public abstract long id();
   /** The name of the user */
   public abstract String name();
-  /** The username of the user */
-  public abstract String username();
+  /** The email of the user */
+  public abstract String email();
 
 }

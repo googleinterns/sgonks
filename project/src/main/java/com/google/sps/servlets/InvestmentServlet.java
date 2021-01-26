@@ -55,10 +55,6 @@ public class InvestmentServlet extends HttpServlet {
       Gson gson = new Gson();
       response.setContentType("application/json");
       response.getWriter().println(gson.toJson(investments));
-
-      //response.setContentType("text/html;");
-      //response.getWriter().println("<h1>" + investments + "</h1>");
-
     } catch (SQLException ex) {
       LOGGER.log(Level.WARNING, "Error while attempting to fetch investments.", ex);
       response.setStatus(500);

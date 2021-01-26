@@ -58,24 +58,30 @@ public class CompetitionInfoServlet extends HttpServlet {
   }
 
   /**
-   * Return all competitions that the user is in. (Hard-coded for now)
+   * Return all competitions that the user is in.
    * @return -- all Competitions object that user is in.
    */
   private List<UserCompetition> getUserCompetitions(Connection conn, int userId) throws SQLException {
-    String stmt = "SELECT competitions.id, competitions.start_date, competitions.end_date FROM competitions, participants " 
-    + "WHERE competitions.id=participants.id AND participants.user=" + userId + ";";
+    String stmt = "SELECT competitions.id, competitions.competition_name, competitions.creator, competitions.creator_email, competitions.start_date, " 
+    + "competitions.end_date FROM competitions, participants WHERE competitions.id=participants.id AND participants.user=" + userId + ";";
     List<UserCompetition> competitions = new ArrayList<>();
     try (PreparedStatement competitionsStmt = conn.prepareStatement(stmt);) {
       // Execute the statement
       ResultSet rs = competitionsStmt.executeQuery();
       int competitionId;
+      String competitionName;
+      int creatorId;
+      String creatorEmail;
       long startDate;
       long endDate;
       while (rs.next()) {
         competitionId = rs.getInt(1);
-        startDate = rs.getDate(2).getTime();
-        endDate = rs.getDate(3).getTime();
-        competitions.add(getUserCompetition(conn, userId, competitionId, startDate, endDate));
+        competitionName = rs.getString(2);
+        creatorId = rs.getInt(3);
+        creatorEmail = rs.getString(4);
+        startDate = rs.getDate(5).getTime();
+        endDate = rs.getDate(6).getTime();
+        competitions.add(getUserCompetition(conn, userId, competitionId, startDate, endDate, competitionName, creatorId, creatorEmail));
       }
       return competitions;
     }
@@ -85,16 +91,11 @@ public class CompetitionInfoServlet extends HttpServlet {
    * Construct a userCompetition object given data
    * @return -- userCompetition object
    */
-  private UserCompetition getUserCompetition(Connection conn, int userId, int competitionId, long start, long end) throws SQLException {
-    //not yet implemented
-    String COMP_NAME = "COMPETITION NAME";
-    String CREATOR = "CREATOR";
-    String CREATOR_IDAP = "CREATOR IDAP";
-
+  private UserCompetition getUserCompetition(Connection conn, int userId, int competitionId, long start, long end, String competitionName, int creatorId, String creatorEmail) throws SQLException {
     List<CompetitorInfo> participants = getCompetitionParticipants(conn, competitionId);
     CompetitorInfo user = getCompetitorInfo(conn, userId, competitionId);
 
-    return new UserCompetition(competitionId, COMP_NAME, CREATOR, CREATOR_IDAP, start, end, user, participants);
+    return new UserCompetition(competitionId, competitionName, creatorId, creatorEmail, start, end, user, participants);
   }
 
   /**
@@ -108,6 +109,8 @@ public class CompetitionInfoServlet extends HttpServlet {
       // Execute the statement
       ResultSet rs = competitorsStmt.executeQuery();
       int userId;
+      int rank;
+      int rankYesterday;
       while (rs.next()) {
         userId = rs.getInt(1);
         competitors.add(getCompetitorInfo(conn, userId, competitionId));
@@ -121,12 +124,9 @@ public class CompetitionInfoServlet extends HttpServlet {
    * @return -- CompetitorInfo object
    */
   private CompetitorInfo getCompetitorInfo(Connection conn, int userId, int competitionId) throws SQLException {
-    //not yet implemented
-    int RANK = 1;
-    int RANK_YESTERDAY = 1;
     int NET_WORTH = 10000;
 
-    String stmt = "SELECT users.name, users.email, participants.amt_available FROM users, participants where users.id=" + userId 
+    String stmt = "SELECT users.name, users.email, participants.amt_available, participants.rank, participants.rank_yesterday FROM users, participants where users.id=" + userId 
     + " AND participants.user=" + userId + " AND participants.competition=" + competitionId + ";";
     try (PreparedStatement competitorStmt = conn.prepareStatement(stmt);) {
       // Execute the statement
@@ -134,12 +134,16 @@ public class CompetitionInfoServlet extends HttpServlet {
       String name = null;
       String email = null;
       int amtAvailable = 0;
+      int rank = 0;
+      Integer rankYesterday = null; //on first day of competition, there is no previous day's rank
       while (rs.next()) {
         name = rs.getString(1);
         email = rs.getString(2);
         amtAvailable = rs.getInt(3);
+        rank = rs.getInt(4);
+        rankYesterday = rs.getInt(5);
       }
-      return CompetitorInfo.create(RANK, RANK_YESTERDAY, name, email, NET_WORTH, amtAvailable);
+      return CompetitorInfo.create(rank, rankYesterday, name, email, NET_WORTH, amtAvailable);
     }
   }
 }
