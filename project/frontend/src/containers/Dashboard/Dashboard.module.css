@@ -1,5 +1,4 @@
 .DashboardContainer {
-  background: lightblue;
   height: 95%;
   width: 95%;
   display: flex;
@@ -10,7 +9,6 @@
 }
 
 .Column {
-  background: gray;
   height: 100%;
   width: 32%;
   display: flex;
@@ -23,4 +21,31 @@
   border: 1px solid lightgray;
   border-radius: 7px;
   background-color: rgba(255, 255, 255, 0.45);
+}
+
+.WelcomeMessage {
+  height: 9%;
+  background: lightblue;
+}
+
+.WelcomeMessage p {
+  font-size: 2vw;
+  text-align: left;
+  white-space: nowrap;
+  font-weight: 300;
+  line-height: 0.5;
+}
+
+.WelcomeMessage p span {
+  font-weight: 500;
+}
+
+.CompInfo {
+  height: 44%;
+  background: lightpink;
+}
+
+.TeammateBuy {
+  height: 41%;
+  background: lightgoldenrodyellow;
 }

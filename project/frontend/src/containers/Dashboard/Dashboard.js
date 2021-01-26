@@ -7,9 +7,11 @@ const Dashboard = (props) => {
   return (
     <div className={classes.DashboardContainer}>
       <div className={classes.Column}>
-        <p>
-          Welcome back, <span>Firstname</span>!
-        </p>
+        <div className={classes.WelcomeMessage}>
+          <p className={classes.WelcomeMessage}>
+            Welcome back, <span>Firstname</span>!
+          </p>
+        </div>
         <div className={classnames(classes.Block, classes.CompInfo)}>
           compinfo
         </div>
