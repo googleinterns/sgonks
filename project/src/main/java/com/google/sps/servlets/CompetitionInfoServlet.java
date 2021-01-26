@@ -58,7 +58,7 @@ public class CompetitionInfoServlet extends HttpServlet {
   }
 
   /**
-   * Return all competitions that the user is in. (Hard-coded for now)
+   * Return all competitions that the user is in.
    * @return -- all Competitions object that user is in.
    */
   private List<UserCompetition> getUserCompetitions(Connection conn, int userId) throws SQLException {
