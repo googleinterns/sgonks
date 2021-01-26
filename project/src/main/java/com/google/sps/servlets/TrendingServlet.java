@@ -22,11 +22,11 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import com.google.cloud.datastore.*;
 
 // Delivers a list of strings representing today's trending searches worldwide
 @WebServlet("/trending")
 public class TrendingServlet extends HttpServlet {
-
 
   @Override
   public void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
@@ -40,9 +40,23 @@ public class TrendingServlet extends HttpServlet {
    */
   public List<String> getTrendingSearches() {
     List<String> trendingSearches = new ArrayList<>();
-    // fetch trending searches from db - hard coded data for now
-    trendingSearches.add("Giraffes");
-    trendingSearches.add("Chicken nuggets");
+    // fetch trending searches from db
+    // Instantiates a client
+    Datastore datastore = DatastoreOptions.getDefaultInstance().getService();
+
+    //fetch test data to confirm working
+    Query<Entity> query = Query.newEntityQueryBuilder().setKind("TopTrends").build();
+    QueryResults<Entity> trends = datastore.run(query);
+
+    Entity trend;
+    String trendingSearch;
+    while (trends.hasNext()) {
+      trend = trends.next();
+      for (int i = 1; i <= 10; i++) {
+        trendingSearch = trend.getString(Integer.toString(i));
+        trendingSearches.add(trendingSearch);
+      }
+    }
 
     return trendingSearches;
   }
