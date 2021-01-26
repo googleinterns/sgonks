@@ -33,7 +33,7 @@ const Dashboard = (props) => {
           money info
         </div>
         <LinkButton>Buy sGonks</LinkButton>
-        <div className={classnames(classes.TrendingSearches)}>
+        <div className={classnames(classes.Block, classes.TrendingSearches)}>
           trending searches
         </div>
       </div>
