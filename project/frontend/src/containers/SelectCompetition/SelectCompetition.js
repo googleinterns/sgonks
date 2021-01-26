@@ -20,7 +20,7 @@ const SelectCompetition = (props) => {
     if (compsList.length === 0) {
       setComps(
         <p className={classes.NoCompetition}>
-          You are not currently enrolled in any competitions... D:
+          You're not currently enrolled in any competitions... D:
         </p>
       );
       return;
