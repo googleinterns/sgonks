@@ -29,7 +29,7 @@ const Dashboard = (props) => {
         <LinkButton inverted="true">View my sGonks</LinkButton>
       </div>
       <div className={classes.Column}>
-        <div className={classnames(classes.Block, classes.moneyInfo)}>
+        <div className={classnames(classes.Block, classes.MoneyInfo)}>
           money info
         </div>
         <LinkButton>Buy sGonks</LinkButton>
