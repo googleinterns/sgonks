@@ -95,14 +95,7 @@ public class CompetitionInfoServlet extends HttpServlet {
   private UserCompetition getUserCompetition(Connection conn, int userId, int competitionId, long start, long end, String competitionName, int creatorId, String creatorEmail) throws SQLException {
     List<CompetitorInfo> participants = getCompetitionParticipants(conn, competitionId);
     CompetitorInfo user = getCompetitorInfo(conn, userId, competitionId);
-
-    int rank = 0;
-    for (int i = 1; i <= participants.size(); i++) {
-      if (participants.get(i-1).getId() == userId) {
-        rank = i;
-      }
-    }
-
+    int rank = getUserRank(participants, userId);
     return new UserCompetition(competitionId, competitionName, creatorId, creatorEmail, start, end, user, rank, participants);
   }
 
@@ -156,5 +149,17 @@ public class CompetitionInfoServlet extends HttpServlet {
    */
   private void RankCompetitorsList(List<CompetitorInfo> competitors) {
     Collections.sort(competitors);
+  }
+
+  /**
+   * Return the user's rank from a sorted list of competitors
+   */
+  private int getUserRank(List<CompetitorInfo> participants, int userId) {
+    for (int i = 1; i <= participants.size(); i++) {
+      if (participants.get(i-1).getId() == userId) {
+        return i;
+      }
+    }
+    return 0; //something went wrong
   }
 }
