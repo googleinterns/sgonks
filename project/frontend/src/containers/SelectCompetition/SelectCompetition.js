@@ -17,6 +17,14 @@ const SelectCompetition = (props) => {
   };
 
   const renderCompCards = (compsList) => {
+    if (compsList.length === 0) {
+      setComps(
+        <p className={classes.NoCompetition}>
+          You're not currently enrolled in any competitions... D:
+        </p>
+      );
+      return;
+    }
     setComps(
       compsList.map((comp) => {
         return (

@@ -85,6 +85,7 @@ function App() {
           <HeaderBar
             loggedIn={user.signedIn}
             innerNav={compId != 0}
+            compIdChanged={setCompId}
           ></HeaderBar>
           <Layout>{pageRoute}</Layout>
         </AuthContext.Provider>
