@@ -39,7 +39,7 @@ import java.util.TimeZone;
 public class InvestmentCalculator {
 
     private static final Logger LOGGER = Logger.getLogger(AuthServlet.class.getName());
-    private static final ONE_DAY_SECONDS = 24 * 60 * 60;
+    private static final int ONE_DAY_SECONDS = 24 * 60 * 60;
 
     public int calculateNetWorth(Connection conn, int userId, int competitionId) throws SQLException{
         int investmentsValue = sumInvestmentValues(conn, userId, competitionId);
