@@ -32,33 +32,3 @@
 .WelcomeMessage h1 span {
   font-weight: 500;
 }
-
-.CompInfo {
-  height: 43%;
-}
-
-.TeammateBuy {
-  height: 40%;
-}
-
-.YourSGonks {
-  height: 49%;
-}
-
-.ChartContainer {
-  height: 36%;
-}
-
-.MoneyInfo {
-  height: 34%;
-}
-
-.TrendingSearches {
-  height: 51%;
-}
-
-.CompInfo h2 {
-  text-align: left;
-  font-size: 1.5vw;
-  font-weight: 500;
-}

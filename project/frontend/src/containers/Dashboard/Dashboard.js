@@ -13,53 +13,23 @@ const Dashboard = (props) => {
             Welcome back, <span>Firstname</span>!
           </h1>
         </div>
-        <Block style={{ height: "43%" }}>
-          {/* <h2>Time until end of competition:</h2>
+        <Block style={{ height: "44%" }}>
+          <h2>Time until end of competition:</h2>
           <p>20 days 19 hours etc</p>
-          <h2>Your current ranking</h2> */}
-          Lorem ipsum dolor sit amet, consectetur adipiscing elit. Curabitur
-          vitae neque facilisis dui venenatis ullamcorper sed vitae dui. Aliquam
-          pretium id erat vel dapibus. Aliquam porta justo ut ipsum porta, eget
-          efficitur sapien efficitur. Maecenas tincidunt ut nisl vel vehicula.
-          Class aptent taciti sociosqu ad litora torquent per conubia nostra,
-          per inceptos himenaeos. Aliquam et tellus elit. Donec mattis, quam a
-          feugiat laoreet, sem dui elementum ex, ut imperdiet nunc eros a sem.
-          Pellentesque imperdiet consectetur sagittis. Quisque venenatis eu
-          libero sit amet maximus. Curabitur egestas, urna id tincidunt
-          fermentum, nibh augue maximus augue, vel semper nulla justo sit amet
-          nisi. In hac habitasse platea dictumst. Maecenas non felis a lorem
-          vestibulum mollis a vitae ex. Lorem ipsum dolor sit amet, consectetur
-          adipiscing elit. Cras feugiat sapien ipsum, vitae laoreet elit rutrum
-          scelerisque. In faucibus egestas massa egestas imperdiet. Vivamus
-          ornare nunc in ligula mollis, nec feugiat sapien ultrices. Etiam id
-          velit nisi. Vestibulum interdum lacinia velit, mattis luctus nunc
-          mattis vel. Vivamus auctor auctor sem, at convallis lectus cursus at.
-          Etiam vestibulum odio vel risus accumsan, id sagittis libero
-          fermentum. Duis eleifend, dolor sed hendrerit ultrices, orci velit
-          lobortis turpis, nec euismod quam ex ut elit. Cras mollis malesuada
-          pulvinar. Vestibulum tempus semper magna quis lacinia.
+          <h2>Your current ranking</h2>
+          <p>1nd</p>
         </Block>
-        <div className={classnames(classes.Block, classes.TeammateBuy)}>
-          xx bought
-        </div>
+        <Block style={{ height: "41%" }}>xx bought</Block>
       </div>
       <div className={classes.Column}>
-        <div className={classnames(classes.Block, classes.YourSGonks)}>
-          your sgonks
-        </div>
-        <div className={classnames(classes.Block, classes.ChartContainer)}>
-          chart here
-        </div>
+        <Block style={{ height: "50%" }}>your sgonks</Block>
+        <Block style={{ height: "37%" }}>chart here</Block>
         <LinkButton inverted="true">View my sGonks</LinkButton>
       </div>
       <div className={classes.Column}>
-        <div className={classnames(classes.Block, classes.MoneyInfo)}>
-          money info
-        </div>
+        <Block style={{ height: "35%" }}>money info</Block>
         <LinkButton>Buy sGonks</LinkButton>
-        <div className={classnames(classes.Block, classes.TrendingSearches)}>
-          trending searches
-        </div>
+        <Block style={{ height: "52%" }}>trending searches</Block>
       </div>
     </div>
   );
