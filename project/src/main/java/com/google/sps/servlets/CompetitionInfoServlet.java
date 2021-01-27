@@ -33,6 +33,7 @@ import javax.sql.DataSource;
 
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import java.util.Collections;
 
 @WebServlet("/competitionInfo")
 public class CompetitionInfoServlet extends HttpServlet {
@@ -95,7 +96,14 @@ public class CompetitionInfoServlet extends HttpServlet {
     List<CompetitorInfo> participants = getCompetitionParticipants(conn, competitionId);
     CompetitorInfo user = getCompetitorInfo(conn, userId, competitionId);
 
-    return new UserCompetition(competitionId, competitionName, creatorId, creatorEmail, start, end, user, participants);
+    int rank = 0;
+    for (int i = 1; i <= participants.size(); i++) {
+      if (participants.get(i-1).getId() == userId) {
+        rank = i;
+      }
+    }
+
+    return new UserCompetition(competitionId, competitionName, creatorId, creatorEmail, start, end, user, rank, participants);
   }
 
   /**
@@ -113,6 +121,7 @@ public class CompetitionInfoServlet extends HttpServlet {
         userId = rs.getInt(1);
         competitors.add(getCompetitorInfo(conn, userId, competitionId));
       }
+      RankCompetitorsList(competitors);
       return competitors;
     }
   }
@@ -125,7 +134,7 @@ public class CompetitionInfoServlet extends HttpServlet {
     InvestmentCalculator calc = new InvestmentCalculator();
     int net_worth = calc.calculateNetWorth(conn, userId, competitionId);
 
-    String stmt = "SELECT users.name, users.email, participants.amt_available, participants.rank, participants.rank_yesterday FROM users, participants where users.id=" + userId 
+    String stmt = "SELECT users.name, users.email, participants.amt_available FROM users, participants where users.id=" + userId 
     + " AND participants.user=" + userId + " AND participants.competition=" + competitionId + ";";
     try (PreparedStatement competitorStmt = conn.prepareStatement(stmt);) {
       // Execute the statement
@@ -133,16 +142,19 @@ public class CompetitionInfoServlet extends HttpServlet {
       String name = null;
       String email = null;
       int amtAvailable = 0;
-      int rank = 0;
-      Integer rankYesterday = null; //on first day of competition, there is no previous day's rank
       while (rs.next()) {
         name = rs.getString(1);
         email = rs.getString(2);
         amtAvailable = rs.getInt(3);
-        rank = rs.getInt(4);
-        rankYesterday = rs.getInt(5);
       }
-      return CompetitorInfo.create(rank, rankYesterday, name, email, net_worth, amtAvailable);
+      return new CompetitorInfo(userId, name, email, net_worth, amtAvailable);
     }
+  }
+
+  /**
+   * Sort the list of competitors by net worth
+   */
+  private void RankCompetitorsList(List<CompetitorInfo> competitors) {
+    Collections.sort(competitors);
   }
 }
