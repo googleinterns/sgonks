@@ -36,11 +36,11 @@ import javax.servlet.http.HttpServletResponse;
 import javax.sql.DataSource;
 import com.google.sps.data.*;
 
+// Imports the Google Cloud client library
+import com.google.cloud.datastore.*;
 
 
-@SuppressFBWarnings(
-    value = {"SE_NO_SERIALVERSIONID", "WEM_WEAK_EXCEPTION_MESSAGING"},
-    justification = "Not needed for TestServlet, Exception adds context")
+@SuppressFBWarnings(value = {"SE_NO_SERIALVERSIONID", "WEM_WEAK_EXCEPTION_MESSAGING"}, justification = "Not needed for TestServlet, Exception adds context")
 @WebServlet("/test")
 public class TestServlet extends HttpServlet {
 
@@ -77,10 +77,12 @@ public class TestServlet extends HttpServlet {
   @Override
   public void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException {
 
+    Entity trend = testDatastore();
+
     String name = request.getParameter("name");
     String email = request.getParameter("email");
 
-    DataSource pool = (DataSource) request.getServletContext().getAttribute("my-pool");
+    DataSource pool = (DataSource) request.getServletContext().getAttribute("db-connection-pool");
     try (Connection conn = pool.getConnection()) {
       // PreparedStatements can be more efficient and project against injections.
       String stmt = "INSERT INTO users (name, email) VALUES (?, ?);";
@@ -111,5 +113,21 @@ public class TestServlet extends HttpServlet {
     response.setContentType("text/html;");
     response.getWriter().println("<p>going</p>");
     response.getWriter().println("<h1>" + users + "</h1>");
+    response.getWriter().println("<h1>" + trend + "</h1>");
+  }
+
+  private Entity testDatastore() {
+    // Instantiates a client
+    Datastore datastore = DatastoreOptions.getDefaultInstance().getService();
+
+    //fetch test data to confirm working
+    Query<Entity> query = Query.newEntityQueryBuilder().setKind("TrendsData").build();
+    QueryResults<Entity> trends = datastore.run(query);
+    Entity trend;
+
+    while (trends.hasNext()) {
+      return trends.next();
+    }
+    return null;
   }
 }

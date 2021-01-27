@@ -8,11 +8,17 @@
   align-items: center;
 }
 
+.SelectCompetitionContainer p {
+  font-size: 1.6vw;
+}
+
 .CardsContainer {
   height: 75%;
   width: 100%;
   display: flex;
   align-items: center;
+  border-top: 1px solid lightgray;
+  border-bottom: 1px solid lightgray;
 }
 
 .CardsContainer ul {
@@ -26,23 +32,15 @@
   flex-wrap: nowrap;
   overflow: hidden;
   overflow-x: scroll;
+  scrollbar-width: none; /* Firefox */
+  -ms-overflow-style: none; /* Internet Explorer 10+ */
 }
 
-.menu-item {
-  padding: 0 40px;
-  margin: 5px 10px;
-  user-select: none;
-  cursor: pointer;
-  border: none;
-}
-.menu-item-wrapper.active {
-  border: 1px blue solid;
-}
-.menu-item.active {
-  border: 1px green solid;
+.CardsContainer ul::-webkit-scrollbar {
+  display: none; /* Safari and Chrome */
 }
 
-.scroll-menu-arrow {
-  padding: 20px;
-  cursor: pointer;
+.NoCompetition {
+  margin: auto;
+  font-weight: 300;
 }
