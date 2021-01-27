@@ -37,10 +37,12 @@ import java.util.TimeZone;
 
 
 public class InvestmentCalculator {
+
     private static final Logger LOGGER = Logger.getLogger(AuthServlet.class.getName());
+    private static final ONE_DAY_SECONDS = 24 * 60 * 60;
+
     public int calculateNetWorth(Connection conn, int userId, int competitionId) throws SQLException{
         int investmentsValue = sumInvestmentValues(conn, userId, competitionId);
-        LOGGER.log(Level.WARNING, Integer.toString(investmentsValue));
         int amtAvailable = getAmtAvailable(conn, userId, competitionId);
         return investmentsValue + amtAvailable;
     }
@@ -125,7 +127,7 @@ public class InvestmentCalculator {
         c.set(Calendar.MINUTE, 0);
         c.set(Calendar.SECOND, 0);
         c.set(Calendar.MILLISECOND, 0);
-        long unixTime = c.getTimeInMillis() / 1000 - (24 * 60 * 60);
+        long unixTime = c.getTimeInMillis() / 1000 - ONE_DAY_SECONDS;
         return unixTime + "";
     }
 }
