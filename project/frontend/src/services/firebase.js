@@ -7,13 +7,36 @@ firebase.initializeApp(firebaseConfig);
 export const auth = firebase.auth();
 
 const googleProvider = new firebase.auth.GoogleAuthProvider();
-export const signInWithGoogle = () => {
-  auth
-    .signInWithPopup(googleProvider)
-    .then()
-    .catch((error) => {
-      console.log(error.message);
+export const signInWithGoogle = async () => {
+  let verify = await auth.signInWithPopup(googleProvider);
+
+  let idToken = await auth.currentUser.getIdToken(true);
+
+  try {
+    await fetch("./authentication", {
+      method: "POST", // or 'PUT'
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(idToken),
     });
+  } catch (error) {
+    console.error("Error:", error);
+  }
+
+  // .then((verify) => {
+
+  //   firebase.auth().currentUser.getIdToken(/* forceRefresh */ true).then(function(idToken) {
+
+  //     // Send token to your backend via HTTPS
+  //     // ...
+  //   }).catch(function(error) {
+  //     // Handle error
+  //   });
+  // })
+  // .catch((error) => {
+  //   console.log(error.message);
+  // });
 };
 
 export const onAuthStateChange = (callback) => {

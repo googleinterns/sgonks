@@ -14,26 +14,23 @@
 
 package com.google.sps.servlets;
 
+import com.google.gson.Gson;
+import com.google.sps.data.*;
 import java.io.IOException;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import com.google.gson.Gson;
-import com.google.sps.data.*;  
-
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.Connection;
-import java.sql.SQLException;
 import javax.sql.DataSource;
-
-import java.util.logging.Level;
-import java.util.logging.Logger;
 
 @WebServlet("/authentication")
 public class AuthServlet extends HttpServlet {
-
   private static final Logger LOGGER = Logger.getLogger(AuthServlet.class.getName());
 
   @Override
@@ -47,13 +44,18 @@ public class AuthServlet extends HttpServlet {
       Gson gson = new Gson();
       response.setContentType("application/json");
       response.getWriter().println(gson.toJson(user));
-      //response.setContentType("text/html;");
-      //response.getWriter().println("<h1>" + user + "</h1>");
+      // response.setContentType("text/html;");
+      // response.getWriter().println("<h1>" + user + "</h1>");
     } catch (SQLException ex) {
       LOGGER.log(Level.WARNING, "Error while attempting to find user.", ex);
       response.setStatus(500);
       response.getWriter().write("Unable to successfully fetch user");
     }
+  }
+
+  @Override
+  public void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException {
+    response.setStatus(501);
   }
 
   private User getUser(Connection conn, String email) throws SQLException {
