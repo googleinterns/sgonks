@@ -37,9 +37,7 @@ def date_to_epoch(date):
     """
     converts date object back into epoch (at exactly midnight utc on day of timestamp)
     """
-    year, month, day = date.year, date.month, date.day
-    dt = datetime(year=year, month=month, day=day)
+    dt = datetime(year=date.year, month=date.month, day=date.day)
     utc_time = dt.replace(tzinfo = timezone.utc) 
     utc_dt = utc_time.timestamp()
     return int(utc_dt)
-
