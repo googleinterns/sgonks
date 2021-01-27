@@ -23,30 +23,34 @@ const Explanation = (props) => {
         <h1>How does it work?</h1>
         <ol>
           <li>
-            You can find all the competition you’re in in the or create a
-            competition if you don’t have any.
+            You can find all the competitions you're competing in, or create a
+            competition on the competition page.
           </li>
           <li>
-            The aim of the game is to invest in the Google Search that you think
-            it’s popularity is going to increase in the future and end up with
-            the most trend bucks at the end of the competition.
+            The aim of the game is to invest in Google Search queries that you
+            think are going to increase in popularity over the duration of the
+            competition, and sell these queries at a profit to get the most
+            Trend Bucks by the competition end date.
           </li>
           <li>
-            You will receive trends bucks based on the increased percentage of
-            your google search investments. Same thing applies to losing trend
-            bucks when the popularity of your investment decreases.
+            You receive and lose Trend Bucks based on how many you invested in
+            the query, and the proportional change in popularity of the query
+            since you invested. For instance, if you invest 100 Trend Bucks in a
+            query that doubles in popularity by the time you sell, you cash out
+            with 200 Trend Bucks, and 100 Trend Buck profit.
           </li>
           <li>
-            You can find all your current information in the game at my sGonks
-            page. This includes your current trend buck, your initial worth,
-            your google search investments and it’s current value.
+            You can find all your current information for the game at the My
+            sGonks page. This includes your current net worth in Trend Bucks
+            across your investments, the amount you have available to spend, and
+            a summary of your current investments and their values.
           </li>
           <li>
-            You can find Google searches to invest in at sGonks Market page.
+            You can find Google searches to invest in at the sGonks Market page.
           </li>
           <li>
-            To see your ranking in your team and information about your
-            teammates, go to the Competition page.
+            To see your ranking and information about the performance of other
+            competitors, go to the Competition page.
           </li>
         </ol>
       </div>
