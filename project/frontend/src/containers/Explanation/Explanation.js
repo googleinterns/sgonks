@@ -24,7 +24,7 @@ const Explanation = (props) => {
         <ol>
           <li>
             You can find all the competitions you're competing in, or create a
-            competition on the competition page.
+            competition on the Competition page.
           </li>
           <li>
             The aim of the game is to invest in Google Search queries that you
