@@ -1,6 +1,6 @@
 .DashboardContainer {
   height: 93%;
-  width: 97%;
+  width: 95%;
   display: flex;
   flex-direction: row;
   flex-wrap: nowrap;
@@ -17,48 +17,48 @@
   justify-content: space-between;
 }
 
-.Block {
-  border: 1px solid lightgray;
-  border-radius: 7px;
-  background-color: rgba(255, 255, 255, 0.45);
-}
-
 .WelcomeMessage {
   height: 9%;
 }
 
-.WelcomeMessage p {
+.WelcomeMessage h1 {
   font-size: 2vw;
   text-align: left;
   white-space: nowrap;
   font-weight: 300;
-  line-height: 0.3;
+  line-height: 0;
 }
 
-.WelcomeMessage p span {
+.WelcomeMessage h1 span {
   font-weight: 500;
 }
 
 .CompInfo {
-  height: 44%;
+  height: 43%;
 }
 
 .TeammateBuy {
-  height: 41%;
+  height: 40%;
 }
 
 .YourSGonks {
-  height: 50%;
+  height: 49%;
 }
 
 .ChartContainer {
-  height: 37%;
+  height: 36%;
 }
 
 .MoneyInfo {
-  height: 35%;
+  height: 34%;
 }
 
 .TrendingSearches {
-  height: 52%;
+  height: 51%;
+}
+
+.CompInfo h2 {
+  text-align: left;
+  font-size: 1.5vw;
+  font-weight: 500;
 }
