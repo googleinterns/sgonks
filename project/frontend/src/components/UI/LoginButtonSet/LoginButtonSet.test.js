@@ -4,12 +4,21 @@ import Adapter from "enzyme-adapter-react-16";
 
 import LoginButtonSet from "./LoginButtonSet";
 
+import { BrowserRouter } from "react-router-dom";
+import { AuthContext } from "../../../context/AuthContext";
+
 configure({ adapter: new Adapter() });
 
 describe("<LoginButtonSet />", () => {
   let wrapper;
   beforeEach(() => {
-    wrapper = mount(<LoginButtonSet />);
+    wrapper = mount(
+      <BrowserRouter>
+        <AuthContext>
+          <LoginButtonSet />
+        </AuthContext>
+      </BrowserRouter>
+    );
   });
 
   it("should render", () => {
