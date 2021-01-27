@@ -12,23 +12,41 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-package com.google.sps;
+package com.google.sps.servlets;
 
-import org.junit.Before;
-import org.junit.Test;
-import org.junit.After;
-import org.junit.runner.RunWith;
-import org.junit.runners.JUnit4;
+
+import ch.vorburger.mariadb4j.DB;
+import ch.vorburger.mariadb4j.DBConfigurationBuilder;
 import com.google.appengine.tools.development.testing.LocalServiceTestHelper;
 import com.google.appengine.tools.development.testing.LocalUserServiceTestConfig;
-import com.google.appengine.tools.development.testing.LocalDatastoreServiceTestConfig;
+
+import static com.google.common.truth.Truth.assertThat;
+import static com.google.common.truth.Truth.assertWithMessage;
+
+//import static org.hamcrest.CoreMatchers.containsString;
+//import static org.hamcrest.MatcherAssert.assertThat;
+import com.google.sps.database.ConnectionPoolContextListener;
+import com.google.sps.servlets.AuthServlet;
+import org.apache.commons.dbutils.DbUtils;
+import org.junit.After;
+import org.junit.Before;
+import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.junit.runners.JUnit4;
+
+import javax.servlet.ServletContext;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.sql.DataSource;
 import java.io.PrintWriter;
 import java.io.StringWriter;
-import com.google.sps.servlets.AuthServlet;
-import static org.junit.Assert.assertTrue;
-import static org.mockito.Mockito.*;
+import java.sql.Connection;
+import java.sql.DriverManager;
+
+import static org.mockito.Matchers.any;
+import static org.mockito.Matchers.eq;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.when;
 
 /**
  * This is a test class for Authenthication Servlet"
@@ -72,7 +90,44 @@ public class AuthServletTest {
 
     @Test
     public void loggedIn() throws Exception{
-        authSevlet.doGet(mockRequest,mockResponse);
+        DBConfigurationBuilder config = DBConfigurationBuilder.newBuilder();
+        config.setPort(0); // 0 => autom. detect free port
+        DB db = DB.newEmbeddedDB(config.build());
+        db.start();
+
+        String dbName = "test"; // or just "test"
+        if (!dbName.equals("test")) {
+            // mysqld out-of-the-box already has a DB named "test"
+            // in case we need another DB, here's how to create it first
+            db.createDB(dbName);
+        }
+        Connection conn = null;
+        try {
+
+            conn = DriverManager.getConnection(config.getURL(dbName), "root", "");
+            ConnectionPoolContextListener.createTables(conn);
+            ConnectionPoolContextListener.insertTestData(conn);
+
+            ServletContext mockServletContext = mock(ServletContext.class);
+            when(mockRequest.getServletContext()).thenReturn(mockServletContext);
+            DataSource mockDataSource = mock(DataSource.class);
+            when(mockServletContext.getAttribute(any())).thenReturn(mockDataSource);
+            when(mockDataSource.getConnection()).thenReturn(conn);
+            when(mockRequest.getParameter(eq("email"))).thenReturn("nemleon@google.com");
+            StringWriter stringWriter = new StringWriter();
+            when(mockResponse.getWriter()).thenReturn(new PrintWriter(stringWriter));
+            authSevlet.doGet(mockRequest, mockResponse);
+
+            String q = stringWriter.toString();
+            assertThat(q).contains("leon");
+
+//            Truth. stringWriter.toString()
+
+
+
+        } finally {
+            DbUtils.closeQuietly(conn);
+        }
         String response = servletResponse.toString();
     }
 }

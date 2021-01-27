@@ -28,7 +28,7 @@ import javax.servlet.ServletContextListener;
 import javax.servlet.annotation.WebListener;
 import javax.sql.DataSource;
 import java.util.logging.Logger;
-import com.google.sps.config.*;
+//import com.google.sps.config.*;
 
 
 @SuppressFBWarnings(
@@ -70,7 +70,8 @@ public class ConnectionPoolContextListener implements ServletContextListener {
       justification = "Necessary for sample region tag.")
   public DataSource createConnectionPool() {
     HikariConfig config = new HikariConfig();
-    Config mySecrets = new Config();
+/*
+//    Config mySecrets = new Config();
 
     config.setJdbcUrl(String.format("jdbc:mysql://localhost:3306/%s", "test"));
     config.setUsername("root");
@@ -78,14 +79,14 @@ public class ConnectionPoolContextListener implements ServletContextListener {
 
     config.addDataSourceProperty("socketFactory", "com.google.cloud.sql.mysql.SocketFactory");
     config.addDataSourceProperty("cloudSqlInstance",  "google.com:sgonks-step272:australia-southeast1:my-instance");
+*/
 
     // Initialize the connection pool using the configuration object.
     return new HikariDataSource(config);
   }
 
-  private void createTables(DataSource pool) throws SQLException {
+  public static void createTables(Connection conn) throws SQLException {
     // Safely attempt to create users table
-    try (Connection conn = pool.getConnection()) {
       try (PreparedStatement createUsersStatement = conn.prepareStatement(CREATE_USERS_TABLE);) {
         createUsersStatement.execute();
       } try (PreparedStatement createCompetitionsStatement = conn.prepareStatement(CREATE_COMPETITIONS_TABLE);) {
@@ -97,7 +98,6 @@ public class ConnectionPoolContextListener implements ServletContextListener {
       }
       //get rid of this when we no longer need hard coded data
       //insertTestData(pool);
-    }
   }
 
   @Override
@@ -120,7 +120,7 @@ public class ConnectionPoolContextListener implements ServletContextListener {
       servletContext.setAttribute("db-connection-pool", pool);
     }
     try {
-      createTables(pool);
+      createTables(pool.getConnection());
     } catch (SQLException ex) {
       throw new RuntimeException(
           "Unable to verify table schema. Please double check the steps"
@@ -133,7 +133,7 @@ public class ConnectionPoolContextListener implements ServletContextListener {
     }
   }
 
-  public void insertTestData(DataSource pool) throws SQLException {
+  public static void insertTestData(Connection conn) throws SQLException {
     String[] stmts = new String[] {
       "INSERT INTO users (name, email) VALUES ('Emma', 'emmahogan@google.com');",
       "INSERT INTO users (name, email) VALUES ('Phoebe', 'phoebek@google.com');",
@@ -160,11 +160,9 @@ public class ConnectionPoolContextListener implements ServletContextListener {
       "INSERT INTO investments (user, competition, google_search, invest_date, sell_date, amt_invested) VALUES (4, 1, 'coffee', DATE '2021-01-01', DATE '2021-01-10', 10);",
       "INSERT INTO investments (user, competition, google_search, invest_date, sell_date, amt_invested) VALUES (5, 1, 'sadness', DATE '2021-01-01', DATE '2021-01-10', 150);"
     };
-    try (Connection conn = pool.getConnection()) {
-      for (int i = 0; i < stmts.length; i++) {
-        try (PreparedStatement stmt = conn.prepareStatement(stmts[i]);) {
-          stmt.execute();
-        }
+    for (int i = 0; i < stmts.length; i++) {
+      try (PreparedStatement stmt = conn.prepareStatement(stmts[i]);) {
+        stmt.execute();
       }
     }
   }
