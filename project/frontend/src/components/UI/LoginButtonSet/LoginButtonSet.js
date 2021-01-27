@@ -1,4 +1,4 @@
-import React, { useContext } from "react";
+import React from "react";
 import LinkButton from "../LinkButton/LinkButton";
 import classes from "./LoginButtonSet.module.css";
 import Consumer from "../../../context/AuthContext";
