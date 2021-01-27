@@ -85,6 +85,7 @@ public class ConnectionPoolContextListener implements ServletContextListener {
     return new HikariDataSource(config);
   }
 
+  //TODO(nemleon): deserves to be factored out.
   public static void createTables(Connection conn) throws SQLException {
     // Safely attempt to create users table
       try (PreparedStatement createUsersStatement = conn.prepareStatement(CREATE_USERS_TABLE);) {
@@ -133,6 +134,7 @@ public class ConnectionPoolContextListener implements ServletContextListener {
     }
   }
 
+  //TODO(nemleon): deserves to be factored out
   public static void insertTestData(Connection conn) throws SQLException {
     String[] stmts = new String[] {
       "INSERT INTO users (name, email) VALUES ('Emma', 'emmahogan@google.com');",

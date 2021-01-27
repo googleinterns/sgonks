@@ -143,6 +143,14 @@
       <version>1.1.2</version>
       <scope>test</scope>
     </dependency>
+
+    <dependency>
+      <groupId>org.organicdesign</groupId>
+      <artifactId>TestUtils</artifactId>
+      <version>1.0.2</version>
+      <scope>test</scope>
+    </dependency>
+
   </dependencies>
 
   <build>

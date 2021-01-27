@@ -17,50 +17,43 @@ package com.google.sps.servlets;
 
 import ch.vorburger.mariadb4j.DB;
 import ch.vorburger.mariadb4j.DBConfigurationBuilder;
-import com.google.appengine.tools.development.testing.LocalServiceTestHelper;
-import com.google.appengine.tools.development.testing.LocalUserServiceTestConfig;
-
-import static com.google.common.truth.Truth.assertThat;
-import static com.google.common.truth.Truth.assertWithMessage;
-
-//import static org.hamcrest.CoreMatchers.containsString;
-//import static org.hamcrest.MatcherAssert.assertThat;
 import com.google.sps.database.ConnectionPoolContextListener;
-import com.google.sps.servlets.AuthServlet;
 import org.apache.commons.dbutils.DbUtils;
 import org.junit.After;
 import org.junit.Before;
+import org.junit.Rule;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.junit.runners.JUnit4;
+import org.mockito.Mock;
+import org.mockito.junit.MockitoJUnit;
+import org.mockito.junit.MockitoRule;
+import org.organicdesign.testUtils.http.FakeHttpServletResponse;
 
 import javax.servlet.ServletContext;
 import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
 import javax.sql.DataSource;
-import java.io.PrintWriter;
-import java.io.StringWriter;
 import java.sql.Connection;
 import java.sql.DriverManager;
 
-import static org.mockito.Matchers.any;
+import static com.google.common.truth.Truth.assertThat;
 import static org.mockito.Matchers.eq;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
 /**
- * This is a test class for Authenthication Servlet"
+ * This is a test class for {@link AuthServlet}"
  */
 @RunWith(JUnit4.class)
 public class AuthServletTest {
 
-    private LocalServiceTestHelper helper = new LocalServiceTestHelper(
-            new LocalUserServiceTestConfig());
+    @Rule
+    public MockitoRule rule = MockitoJUnit.rule();
 
+    @Mock
     private HttpServletRequest mockRequest;
-    private HttpServletResponse mockResponse;
-    private StringWriter servletResponse;
-    private AuthServlet authSevlet;
+    private AuthServlet authServlet;
+    private Connection conn;
 
     /**
      * This function is called before each test,
@@ -68,15 +61,26 @@ public class AuthServletTest {
      * mock request and reponse for the testing the servlet.
      */
     @Before
-    public void setUp() throws Exception{
-        helper.setUp();
-        authSevlet = new AuthServlet();
-        mockRequest = mock(HttpServletRequest.class);
-        mockResponse = mock(HttpServletResponse.class);
+    public void setUp() throws Exception {
+        authServlet = new AuthServlet();
 
-        // fake HTTP response set up
-        servletResponse = new StringWriter();
-        when(mockResponse.getWriter()).thenReturn(new PrintWriter(servletResponse));
+        DBConfigurationBuilder config = DBConfigurationBuilder.newBuilder();
+        config.setPort(0); // 0 => autom. detect free port
+        DB db = DB.newEmbeddedDB(config.build());
+        // mysqld out-of-the-box already has a DB named "test"
+        // in case we need another DB, use db.createDB("name")
+        String dbName = "test";
+        db.start();
+
+        conn = DriverManager.getConnection(config.getURL(dbName), "root", "");
+        ConnectionPoolContextListener.createTables(conn);
+        ConnectionPoolContextListener.insertTestData(conn);
+
+        ServletContext mockServletContext = mock(ServletContext.class);
+        when(mockRequest.getServletContext()).thenReturn(mockServletContext);
+        DataSource mockDataSource = mock(DataSource.class);
+        when(mockServletContext.getAttribute(eq("db-connection-pool"))).thenReturn(mockDataSource);
+        when(mockDataSource.getConnection()).thenReturn(conn);
     }
 
     /**
@@ -84,51 +88,39 @@ public class AuthServletTest {
      * to tear down the environment in which tests that use local services can execute.
      */
     @After
-    public void tearDown() throws Exception{
-        helper.tearDown();
+    public void tearDown() throws Exception {
+        DbUtils.closeQuietly(conn);
     }
 
     @Test
-    public void loggedIn() throws Exception{
-        DBConfigurationBuilder config = DBConfigurationBuilder.newBuilder();
-        config.setPort(0); // 0 => autom. detect free port
-        DB db = DB.newEmbeddedDB(config.build());
-        db.start();
+    public void loggedIn() throws Exception {
+        when(mockRequest.getParameter(eq("email"))).thenReturn("nemleon@google.com");
+        FakeHttpServletResponse fakeHttpServletResponse = new FakeHttpServletResponse();
 
-        String dbName = "test"; // or just "test"
-        if (!dbName.equals("test")) {
-            // mysqld out-of-the-box already has a DB named "test"
-            // in case we need another DB, here's how to create it first
-            db.createDB(dbName);
-        }
-        Connection conn = null;
-        try {
+        authServlet.doGet(mockRequest, fakeHttpServletResponse);
 
-            conn = DriverManager.getConnection(config.getURL(dbName), "root", "");
-            ConnectionPoolContextListener.createTables(conn);
-            ConnectionPoolContextListener.insertTestData(conn);
+        final String actual = fakeHttpServletResponse.getOutputStream().getStringWriter().toString();
+        assertThat(actual).contains("nemleon@google.com");
+    }
 
-            ServletContext mockServletContext = mock(ServletContext.class);
-            when(mockRequest.getServletContext()).thenReturn(mockServletContext);
-            DataSource mockDataSource = mock(DataSource.class);
-            when(mockServletContext.getAttribute(any())).thenReturn(mockDataSource);
-            when(mockDataSource.getConnection()).thenReturn(conn);
-            when(mockRequest.getParameter(eq("email"))).thenReturn("nemleon@google.com");
-            StringWriter stringWriter = new StringWriter();
-            when(mockResponse.getWriter()).thenReturn(new PrintWriter(stringWriter));
-            authSevlet.doGet(mockRequest, mockResponse);
+    @Test
+    public void nonExistentUser() throws Exception {
+        when(mockRequest.getParameter(eq("email"))).thenReturn("nobody@google.com");
+        FakeHttpServletResponse fakeHttpServletResponse = new FakeHttpServletResponse();
 
-            String q = stringWriter.toString();
-            assertThat(q).contains("leon");
+        authServlet.doGet(mockRequest, fakeHttpServletResponse);
 
-//            Truth. stringWriter.toString()
+        final String actual = fakeHttpServletResponse.getOutputStream().getStringWriter().toString();
+        assertThat(actual).startsWith("null");
+    }
 
+    @Test
+    public void connectionIssue() throws Exception {
+        DbUtils.closeQuietly(conn);
+        FakeHttpServletResponse fakeHttpServletResponse = new FakeHttpServletResponse();
+        authServlet.doGet(mockRequest, fakeHttpServletResponse);
 
-
-        } finally {
-            DbUtils.closeQuietly(conn);
-        }
-        String response = servletResponse.toString();
+        assertThat(fakeHttpServletResponse.getStatus()).isEqualTo(500);
     }
 }
 
