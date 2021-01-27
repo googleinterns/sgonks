@@ -109,8 +109,6 @@ public class CompetitionInfoServlet extends HttpServlet {
       // Execute the statement
       ResultSet rs = competitorsStmt.executeQuery();
       int userId;
-      int rank;
-      int rankYesterday;
       while (rs.next()) {
         userId = rs.getInt(1);
         competitors.add(getCompetitorInfo(conn, userId, competitionId));
@@ -124,7 +122,8 @@ public class CompetitionInfoServlet extends HttpServlet {
    * @return -- CompetitorInfo object
    */
   private CompetitorInfo getCompetitorInfo(Connection conn, int userId, int competitionId) throws SQLException {
-    int NET_WORTH = 10000;
+    InvestmentCalculator calc = new InvestmentCalculator();
+    int net_worth = calc.calculateNetWorth(conn, userId, competitionId);
 
     String stmt = "SELECT users.name, users.email, participants.amt_available, participants.rank, participants.rank_yesterday FROM users, participants where users.id=" + userId 
     + " AND participants.user=" + userId + " AND participants.competition=" + competitionId + ";";
@@ -143,7 +142,7 @@ public class CompetitionInfoServlet extends HttpServlet {
         rank = rs.getInt(4);
         rankYesterday = rs.getInt(5);
       }
-      return CompetitorInfo.create(rank, rankYesterday, name, email, NET_WORTH, amtAvailable);
+      return CompetitorInfo.create(rank, rankYesterday, name, email, net_worth, amtAvailable);
     }
   }
 }
