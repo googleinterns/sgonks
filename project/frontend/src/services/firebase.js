@@ -1,6 +1,7 @@
 import firebase from "firebase/app";
 import "firebase/auth";
 import firebaseConfig from "./config/firebaseConfig";
+import "regenerator-runtime/runtime";
 
 firebase.initializeApp(firebaseConfig);
 
@@ -13,13 +14,14 @@ export const signInWithGoogle = async () => {
   let idToken = await auth.currentUser.getIdToken(true);
 
   try {
-    await fetch("./authentication", {
-      method: "POST", // or 'PUT'
+    await fetch("/authentication", {
+      method: "POST",
       headers: {
         "Content-Type": "application/json",
       },
       body: JSON.stringify(idToken),
     });
+    console.log("Sent ID token this si new :  " + idToken);
   } catch (error) {
     console.error("Error:", error);
   }

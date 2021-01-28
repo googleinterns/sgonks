@@ -14,6 +14,9 @@
 
 package com.google.sps.servlets;
 
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseAuthException;
+import com.google.firebase.auth.FirebaseToken;
 import com.google.gson.Gson;
 import com.google.sps.data.*;
 import java.io.IOException;
@@ -55,7 +58,16 @@ public class AuthServlet extends HttpServlet {
 
   @Override
   public void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException {
-    response.setStatus(501);
+    System.out.println("This function has been called!!!");
+    String idToken = request.getHeader("body");
+    FirebaseToken decodedToken = null;
+    try {
+      decodedToken = FirebaseAuth.getInstance().verifyIdToken(idToken);
+    } catch (FirebaseAuthException e) {
+      e.printStackTrace();
+    }
+    String uid = decodedToken.getUid();
+    System.out.println("THIS IS THE UID!?!?  " + uid);
   }
 
   private User getUser(Connection conn, String email) throws SQLException {
