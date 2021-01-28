@@ -33,14 +33,21 @@ import java.sql.ResultSet;
 import java.sql.Connection;
 import java.sql.SQLException;
 import javax.sql.DataSource;
+import com.google.cloud.datastore.StructuredQuery.PropertyFilter;
+import com.google.cloud.datastore.*;
 
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import java.util.Collections;
+
+import com.google.common.collect.ImmutableList;
 
 @WebServlet("/investments")
 public class InvestmentServlet extends HttpServlet {
 
   private static final Logger LOGGER = Logger.getLogger(AuthServlet.class.getName());
+  private static final int ONE_WEEK_SECONDS = 7 * 24 * 60 * 60;
+  private static final int ONE_DAY_SECONDS = 24 * 60 * 60;
 
   @Override
   public void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
@@ -65,6 +72,7 @@ public class InvestmentServlet extends HttpServlet {
   public List<Investment> getUserInvestments(Connection conn, int userId, int competitionId) throws SQLException {
     String stmt = "SELECT google_search, invest_date, sell_date, amt_invested FROM investments WHERE user=" + userId + " AND competition=" + competitionId + ";";
     List<Investment> investments = new ArrayList<>();
+    InvestmentCalculator calc = new InvestmentCalculator();
     try (PreparedStatement investmentsStmt = conn.prepareStatement(stmt);) {
       // Execute the statement
       ResultSet rs = investmentsStmt.executeQuery();
@@ -74,6 +82,8 @@ public class InvestmentServlet extends HttpServlet {
       Date sellDateOrNull;
       long sellDate;
       int amtInvested;
+      int currentValue;
+      ImmutableList<Long> dataPoints;
       while (rs.next()) {
         googleSearch = rs.getString(1);
         investDate = rs.getDate(2).getTime();
@@ -84,9 +94,82 @@ public class InvestmentServlet extends HttpServlet {
           sellDate = sellDateOrNull.getTime();
         }
         amtInvested = rs.getInt(4);
-        investments.add(Investment.create(googleSearch, investDate, sellDate, amtInvested,ImmutableList.copyOf(new ArrayList<>())));
+        currentValue = calc.getInvestmentValue(googleSearch, investDate, sellDate, amtInvested);
+        dataPoints = getInvestmentDataPoints(googleSearch, investDate, sellDate);
+        investments.add(Investment.create(googleSearch, investDate, sellDate, amtInvested, currentValue, dataPoints));
+        LOGGER.log(Level.WARNING, "TWO");
       }
       return investments;
     }
+  }
+
+  private ImmutableList<Long> getInvestmentDataPoints(String searchQuery, long investDate, long sellDate) {
+    LOGGER.log(Level.WARNING, "ZERO");
+    List<String> dates = getListOfDates(investDate, sellDate);
+    Datastore datastore = DatastoreOptions.getDefaultInstance().getService();
+
+    Query<Entity> query = Query.newEntityQueryBuilder()
+      .setKind("TrendsData")
+      .setFilter(PropertyFilter.eq("search_term", searchQuery))
+      .build();
+    QueryResults<Entity> trends = datastore.run(query);
+
+    Entity trend;
+    Long value;
+    List<Long> values = new ArrayList();
+
+    LOGGER.log(Level.WARNING, "ONE");
+
+    while (trends.hasNext()) {
+      trend = trends.next();
+      for (String date : dates) {
+        value = trend.getLong(date);
+        values.add(value);
+      }
+      return ImmutableList.copyOf(values);
+    }
+    return ImmutableList.copyOf(values);
+  }
+
+  /**
+   * Return an ArrayList of dates between the invest date and sell date (or current date) inclusive
+   * formatted as strings in epoch form.
+   */
+  private List<String> getListOfDates(long investDate, long sellDate) {
+    InvestmentCalculator calc = new InvestmentCalculator();
+    Long startDateEpoch = oneWeekBefore(investDate / 1000L);
+    Long endDateEpoch;
+    if (sellDate == 0) {
+      // haven't sold investment yet, get data up to latest datapoint
+      endDateEpoch = calc.getLatestDate();
+    } else {
+      endDateEpoch = sellDate / 1000L;
+    }
+
+    List<String> dates = new ArrayList();
+    Long currentDateLong = startDateEpoch;
+    String currentDateString = startDateEpoch + "";
+
+    while (currentDateLong < endDateEpoch) {
+      dates.add(currentDateString);
+      currentDateLong = addOneDay(currentDateLong);
+      currentDateString = currentDateLong + "";
+    }
+    dates.add(currentDateString);
+    return dates;
+  }
+
+  /**
+   * Return epoch exactly one week before given date
+   */
+  private Long oneWeekBefore(long date) {
+    return date - ONE_WEEK_SECONDS;
+  }
+
+  /**
+   * Return epoch exactly one day after given date
+   */
+  private Long addOneDay(long date) {
+    return date + ONE_DAY_SECONDS;
   }
 }
