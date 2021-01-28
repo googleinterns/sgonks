@@ -14,11 +14,16 @@
 
 package com.google.sps.servlets;
 
+import com.google.auth.oauth2.GoogleCredentials;
+import com.google.firebase.FirebaseApp;
+import com.google.firebase.FirebaseOptions;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseAuthException;
 import com.google.firebase.auth.FirebaseToken;
 import com.google.gson.Gson;
 import com.google.sps.data.*;
+
+import java.io.BufferedReader;
 import java.io.IOException;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -58,8 +63,23 @@ public class AuthServlet extends HttpServlet {
 
   @Override
   public void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException {
+    FirebaseOptions options = FirebaseOptions.builder()
+            .setCredentials(GoogleCredentials.getApplicationDefault())
+            .setDatabaseUrl("https://<DATABASE_NAME>.firebaseio.com/")
+            .build();
+
+    FirebaseApp.initializeApp(options);
+
     System.out.println("This function has been called!!!");
-    String idToken = request.getHeader("body");
+    StringBuilder buffer = new StringBuilder();
+    BufferedReader reader = request.getReader();
+    String line;
+    while ((line = reader.readLine()) != null) {
+      buffer.append(line);
+      buffer.append(System.lineSeparator());
+    }
+    String idToken = buffer.toString();
+    System.out.println("ID TOKENNNNNNN : " + idToken);
     FirebaseToken decodedToken = null;
     try {
       decodedToken = FirebaseAuth.getInstance().verifyIdToken(idToken);

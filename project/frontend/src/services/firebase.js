@@ -13,6 +13,18 @@ export const signInWithGoogle = async () => {
 
   let idToken = await auth.currentUser.getIdToken(true);
 
+  // admin
+  //   .auth()
+  //   .verifyIdToken(idToken)
+  //   .then((decodedToken) => {
+  //     const uid = decodedToken.uid;
+  //     // ...
+  //     console.log("Decoded uid  : " + uid);
+  //   })
+  //   .catch((error) => {
+  //     console.error("Error:", error);
+  //   });
+
   try {
     await fetch("/authentication", {
       method: "POST",
