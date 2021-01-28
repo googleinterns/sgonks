@@ -3,6 +3,7 @@ import classes from "./Dashboard.module.css";
 import classnames from "classnames";
 import LinkButton from "../../components/UI/LinkButton/LinkButton";
 import Block from "../../components/UI/Block/Block";
+import ShortSGonksList from "../../components/SGonksLists/ShortSGonksList/ShortSGonksList";
 
 const Dashboard = (props) => {
   return (
@@ -26,7 +27,9 @@ const Dashboard = (props) => {
       <div className={classes.Column}>
         <Block className={classes.YourSGonks}>
           <h2>Your sGonks</h2>
-          <div className={classes.sGonksListContainer}>list container</div>
+          <div className={classes.sGonksListContainer}>
+            <ShortSGonksList></ShortSGonksList>
+          </div>
         </Block>
         <Block className={classes.ChartContainer}>chart here</Block>
         <LinkButton inverted="true">View my sGonks</LinkButton>
@@ -34,9 +37,9 @@ const Dashboard = (props) => {
       <div className={classes.Column}>
         <Block className={classes.MoneyInfo}>
           <h2>Currently available:</h2>
-          <p>t$????</p>
+          <p>t${props.currentlyAvail}</p>
           <h2>Net worth:</h2>
-          <p>t$????</p>
+          <p>t${props.netWorth}</p>
         </Block>
         <LinkButton>Buy sGonks</LinkButton>
         <Block className={classes.TrendingSearches}>
