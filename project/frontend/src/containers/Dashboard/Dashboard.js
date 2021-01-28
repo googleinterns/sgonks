@@ -68,6 +68,44 @@ const Dashboard = (props) => {
     "Starlink",
   ];
 
+  const placeholderRecentBuys = [
+    {
+      buyerName: "Mercury Lin",
+      buyerEmail: "mercurylin@google.com",
+      amountBought: 3921,
+      searchTerm: "pineapples",
+      timeBought: 1580085733000,
+    },
+    {
+      buyerName: "Emma Hogan",
+      buyerEmail: "emmahogan@google.com",
+      amountBought: 64526,
+      searchTerm: "bitcoin",
+      timeBought: 1580129754000,
+    },
+    {
+      buyerName: "Phoebe Khokgawe",
+      buyerEmail: "phoebek@google.com",
+      amountBought: 4213,
+      searchTerm: "chicken wings",
+      timeBought: 1579664662000,
+    },
+    {
+      buyerName: "Tex Moran",
+      buyerEmail: "texm@google.com",
+      amountBought: 1,
+      searchTerm: "kangaroo",
+      timeBought: 1611877597799,
+    },
+    {
+      buyerName: "Leon Nemets",
+      buyerEmail: "nemleon@google.com",
+      amountBought: 3921,
+      searchTerm: "pineapples",
+      timeBought: 1580214808000,
+    },
+  ];
+
   //TODO put this in App.js
   // fetch("./trending")
   //   .then((response) => response.json())
