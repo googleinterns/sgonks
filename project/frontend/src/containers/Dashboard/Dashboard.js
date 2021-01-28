@@ -6,6 +6,34 @@ import Block from "../../components/UI/Block/Block";
 import ShortSGonksList from "../../components/SGonksLists/ShortSGonksList/ShortSGonksList";
 
 const Dashboard = (props) => {
+  const placeholderSGonks = [
+    {
+      searchTerm: "chicken wings",
+      currentPrice: "39122",
+      priceYesterday: "29319",
+    },
+    {
+      searchTerm: "chicken nuggets",
+      currentPrice: "4214",
+      priceYesterday: "321442",
+    },
+    {
+      searchTerm: "random term",
+      currentPrice: "321",
+      priceYesterday: "4155",
+    },
+    {
+      searchTerm: "spite zero",
+      currentPrice: "2313",
+      priceYesterday: "2313",
+    },
+    {
+      searchTerm: "escher",
+      currentPrice: "321",
+      priceYesterday: "654",
+    },
+  ];
+
   return (
     <div className={classes.DashboardContainer}>
       <div className={classes.Column}>
@@ -28,7 +56,7 @@ const Dashboard = (props) => {
         <Block className={classes.YourSGonks}>
           <h2>Your sGonks</h2>
           <div className={classes.sGonksListContainer}>
-            <ShortSGonksList></ShortSGonksList>
+            <ShortSGonksList sgonks={placeholderSGonks}></ShortSGonksList>
           </div>
         </Block>
         <Block className={classes.ChartContainer}>chart here</Block>

@@ -1,0 +1,21 @@
+.Row {
+  border: 1px solid black;
+  height: 10%;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+}
+
+.ChangeArrow {
+  width: 10%;
+}
+
+.SearchTerm {
+  width: 50%;
+  text-align: left;
+}
+
+.CurrentPrice {
+  width: 38%;
+  text-align: right;
+}
