@@ -60,7 +60,6 @@ def update_trending_database(data, client):
 
 
 if __name__ == "__main__":
-    """
     # Instantiates a client
     datastore_client = datastore.Client()
     # Retrieve relevant data from datastore
@@ -73,6 +72,5 @@ if __name__ == "__main__":
 
     trending_data = get_trending_searches()
     update_trending_database(trending_data, datastore_client)
-    """
     # run the cron servlet
     requests.get("http://localhost:8080/cron?password=" + Secret().password)
