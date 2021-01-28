@@ -22,6 +22,8 @@ pytrends = TrendReq(tz=0) #tz=0 puts us on UTC
 
 from dates import get_start_times, get_end_times, date_to_epoch
 
+NUM_TRENDING = 10 # number of trending searches to return
+
 
 def get_updated_daily_data(search_term, investment_date):
     """
@@ -87,3 +89,18 @@ def aggregate_hourly_to_daily(hourly_df):
             count = 0
 
     return new_data
+
+
+def get_trending_searches():
+    """
+    Returns a dictionary of the top 10 trending searches, indexed by rank
+    """
+    df = pytrends.trending_searches()
+    data = {}
+
+    for index, row in df.iterrows():
+        if index >= 10:
+            break
+        data[str(index+1)] = row[0]
+
+    return data
