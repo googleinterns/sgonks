@@ -34,6 +34,7 @@ import javax.sql.DataSource;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import java.util.Collections;
+import com.google.common.primitives.Longs;
 
 @WebServlet("/competitionInfo")
 public class CompetitionInfoServlet extends HttpServlet {
@@ -140,7 +141,7 @@ public class CompetitionInfoServlet extends HttpServlet {
         email = rs.getString(2);
         amtAvailable = rs.getInt(3);
       }
-      return new CompetitorInfo(userId, name, email, net_worth, amtAvailable);
+      return CompetitorInfo.create(userId, name, email, net_worth, amtAvailable);
     }
   }
 
@@ -148,7 +149,7 @@ public class CompetitionInfoServlet extends HttpServlet {
    * Sort the list of competitors by net worth
    */
   private void RankCompetitorsList(List<CompetitorInfo> competitors) {
-    Collections.sort(competitors);
+    Collections.sort(competitors, (c0, c1) -> Longs.compare(c0.netWorth(), c1.netWorth()));
   }
 
   /**
@@ -156,7 +157,7 @@ public class CompetitionInfoServlet extends HttpServlet {
    */
   private int getUserRank(List<CompetitorInfo> participants, int userId) {
     for (int i = 1; i <= participants.size(); i++) {
-      if (participants.get(i-1).getId() == userId) {
+      if (participants.get(i-1).id() == userId) {
         return i;
       }
     }
