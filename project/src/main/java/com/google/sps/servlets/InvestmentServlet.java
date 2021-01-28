@@ -97,14 +97,12 @@ public class InvestmentServlet extends HttpServlet {
         currentValue = calc.getInvestmentValue(googleSearch, investDate, sellDate, amtInvested);
         dataPoints = getInvestmentDataPoints(googleSearch, investDate, sellDate);
         investments.add(Investment.create(googleSearch, investDate, sellDate, amtInvested, currentValue, dataPoints));
-        LOGGER.log(Level.WARNING, "TWO");
       }
       return investments;
     }
   }
 
   private ImmutableList<Long> getInvestmentDataPoints(String searchQuery, long investDate, long sellDate) {
-    LOGGER.log(Level.WARNING, "ZERO");
     List<String> dates = getListOfDates(investDate, sellDate);
     Datastore datastore = DatastoreOptions.getDefaultInstance().getService();
 
@@ -117,8 +115,6 @@ public class InvestmentServlet extends HttpServlet {
     Entity trend;
     Long value;
     List<Long> values = new ArrayList();
-
-    LOGGER.log(Level.WARNING, "ONE");
 
     while (trends.hasNext()) {
       trend = trends.next();
