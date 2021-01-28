@@ -1,3 +1,4 @@
+
 // Copyright 2021 Google LLC
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
@@ -13,44 +14,24 @@
 // limitations under the License.
 
 package com.google.sps.data;
+import com.google.auto.value.AutoValue;
 
 /**
  * Class representing user data specific to a competition
  */
-public class CompetitorInfo implements Comparable<CompetitorInfo> {
+@AutoValue
+public abstract class CompetitorInfo {
+  public static CompetitorInfo create(long id, String name, String email, long netWorth, long amountAvailable) {
+    return new AutoValue_CompetitorInfo(id, name, email, netWorth, amountAvailable);
+  }
   /** The id of the competitor */
-  private long id;
-
-  /** The name of the competitor */
-  private String name;
-
-  /** The email of the competitor */
-  private String email;
-
+  public abstract long id();
+  /** The competitor's name */
+  public abstract String name();
+  /** The competitor's Google email */
+  public abstract String email();
   /** The networth of the competitor */
-  private int netWorth;
-
-  /** The amount the competitor has available to spend */
-  private int amountAvailable;
-
-  public CompetitorInfo(long id, String name, String email, int netWorth, int amountAvailable) {
-    this.id = id;
-    this.name = name;
-    this.email = email;
-    this.netWorth = netWorth;
-    this.amountAvailable = amountAvailable;
-  }
-
-  @Override
-  public int compareTo(CompetitorInfo c2) {
-    return this.getNetWorth() - c2.getNetWorth();
-  }
-
-  public long getId() {
-    return this.id;
-  }
-
-  public int getNetWorth() {
-    return this.netWorth;
-  }
+  public abstract long netWorth();
+  /** The amount the user has available for additional investments */
+  public abstract long amountAvailable();
 }
