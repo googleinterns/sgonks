@@ -4,8 +4,10 @@ import classes from "./ShortSGonksList.module.css";
 import ShortSGonksRow from "./ShortSGonksRow/ShortSGonksRow";
 
 const ShortSGonksList = (props) => {
+  console.log(props.sgonks);
   const sGonksList = props.sgonks.slice(0, 10).map((singularSGonk) => {
-    <ShortSGonksRow sgonk={singularSGonk}></ShortSGonksRow>;
+    console.log(singularSGonk);
+    return <ShortSGonksRow sgonk={singularSGonk}></ShortSGonksRow>;
   });
 
   return (
