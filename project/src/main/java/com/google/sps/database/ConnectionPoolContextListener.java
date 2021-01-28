@@ -50,7 +50,7 @@ public class ConnectionPoolContextListener implements ServletContextListener {
   private static String CREATE_COMPETITIONS_TABLE = 
     "CREATE TABLE IF NOT EXISTS competitions ( "
     + "id SERIAL NOT NULL, start_date DATE NOT NULL, end_date DATE NOT NULL,"
-    + " competition_name VARCHAR(255) NOT NULL, creator INT NOT NULL, creator_email VARCHAR(255) NOT NULL,"
+    + " competition_name VARCHAR(255) NOT NULL, creator INT NOT NULL,"
     + " PRIMARY KEY (id) );";
 
   private static String CREATE_PARTICIPANTS_TABLE = 
@@ -142,8 +142,8 @@ public class ConnectionPoolContextListener implements ServletContextListener {
       "INSERT INTO users (name, email) VALUES ('Tex', 'texm@google.com');",
       "INSERT INTO users (name, email) VALUES ('Leon', 'nemleon@google.com');",
 
-      "INSERT INTO competitions (start_date, end_date, competition_name, creator, creator_email) VALUES (DATE '2021-01-01', DATE '2021-03-01', 'TidePod', 1, 'emmahogan@google.com');",
-      "INSERT INTO competitions (start_date, end_date, competition_name, creator, creator_email) VALUES (DATE '2021-01-10', DATE '2021-03-10', 'Another Competition', 4, 'texm@google.com');",
+      "INSERT INTO competitions (start_date, end_date, competition_name, creator) VALUES (DATE '2021-01-01', DATE '2021-03-01', 'TidePod', 1);",
+      "INSERT INTO competitions (start_date, end_date, competition_name, creator) VALUES (DATE '2021-01-10', DATE '2021-03-10', 'Another Competition', 4);",
 
       "INSERT INTO participants (user, competition, amt_available, net_worth, rank, rank_yesterday) VALUES (1, 1, 100, 0, 1, 6);",
       "INSERT INTO participants (user, competition, amt_available, net_worth, rank, rank_yesterday) VALUES (1, 2, 500, 0, 2, 5);",
