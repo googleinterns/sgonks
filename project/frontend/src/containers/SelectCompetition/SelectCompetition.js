@@ -16,6 +16,10 @@ const SelectCompetition = (props) => {
     props.compIdChanged(compId);
   };
 
+  const toLdap = (email) => {
+    return email.split("@")[0];
+  };
+
   const renderCompCards = (compsList) => {
     if (compsList.length === 0) {
       setComps(
@@ -33,7 +37,7 @@ const SelectCompetition = (props) => {
             id={comp.id}
             name={comp.competitionName}
             organiser={comp.organiserName}
-            organiserLdap={comp.organiserIdap}
+            organiserLdap={toLdap(comp.organiserEmail)}
             startDate={comp.startDate}
             endDate={comp.endDate}
             rank={comp.user.rank}

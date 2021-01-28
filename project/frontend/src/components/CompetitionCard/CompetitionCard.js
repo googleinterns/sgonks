@@ -20,7 +20,7 @@ const CompetitionCard = (props) => {
         <div className={classes.CompIdentification}>
           <h1 className={classes.CompetitionTitle}>{props.name}</h1>
           <h2 className={classes.InfoText}>
-            Organised by {props.organiser} ({props.organiserLdap})
+            Organised by {props.organiser} ({props.organiserLdap}@)
           </h2>
         </div>
         <div className={classes.CompetitionDetails}>
