@@ -40,12 +40,15 @@ public class UserCompetition {
 
     /** The user's data for this competition */
     private CompetitorInfo user;
+
+    /** The user's rank in this competition */
+    private int rank;
   
     /** A ranked list of other competitors */
     private List<CompetitorInfo> competitors = new ArrayList<>();	
   
     public UserCompetition(long id, String competitionName, int organiserId, String organiserEmail,	
-        long startDate, long endDate, CompetitorInfo user, List<CompetitorInfo> competitors) {	
+        long startDate, long endDate, CompetitorInfo user, int rank, List<CompetitorInfo> competitors) {	
       this.id = id;	
       this.competitionName = competitionName;	
       this.organiserId = organiserId;	
@@ -53,6 +56,7 @@ public class UserCompetition {
       this.startDate = startDate;	
       this.endDate = endDate;	
       this.user = user;
+      this.rank = rank;
       this.competitors = competitors;	
     }	
 }
