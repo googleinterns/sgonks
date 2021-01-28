@@ -41,13 +41,13 @@ public class InvestmentCalculator {
     private static final Logger LOGGER = Logger.getLogger(AuthServlet.class.getName());
     private static final int ONE_DAY_SECONDS = 24 * 60 * 60;
 
-    public int calculateNetWorth(Connection conn, int userId, int competitionId) throws SQLException{
+    public int calculateNetWorth(Connection conn, long userId, long competitionId) throws SQLException{
         int investmentsValue = sumInvestmentValues(conn, userId, competitionId);
         int amtAvailable = getAmtAvailable(conn, userId, competitionId);
         return investmentsValue + amtAvailable;
     }
 
-    public int getAmtAvailable(Connection conn, int userId, int competitionId) throws SQLException{
+    public int getAmtAvailable(Connection conn, long userId, long competitionId) throws SQLException{
         String stmt = "SELECT amt_available FROM participants WHERE user=" + userId 
         + " AND competition=" + competitionId + ";";
         int amtAvailable = 0;
@@ -61,7 +61,7 @@ public class InvestmentCalculator {
         return amtAvailable;
     }
 
-    public int sumInvestmentValues(Connection conn, int userId, int competitionId) throws SQLException{
+    public int sumInvestmentValues(Connection conn, long userId, long competitionId) throws SQLException{
         String stmt = "SELECT google_search, invest_date, sell_date, amt_invested FROM investments WHERE user=" + userId 
         + " AND competition=" + competitionId + ";";
         int totalInvestmentsValue = 0;
