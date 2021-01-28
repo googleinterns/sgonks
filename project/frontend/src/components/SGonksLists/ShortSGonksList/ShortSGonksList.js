@@ -19,7 +19,9 @@ const ShortSGonksList = (props) => {
     <div {...props} className={classes.List}>
       {sGonksList}
       {props.sgonks.length > 7 ? (
-        <Link className={classes.SeeAll}>...more</Link>
+        <Link to="/toroutelater" className={classes.SeeAll}>
+          ...more
+        </Link>
       ) : null}
     </div>
   );
