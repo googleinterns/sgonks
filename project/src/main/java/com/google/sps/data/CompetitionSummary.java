@@ -13,6 +13,7 @@
 // limitations under the License.
 
 package com.google.sps.data;
+import com.google.auto.value.AutoValue;
 
 /**
  * A summary of a competition the user is in
@@ -31,6 +32,7 @@ public abstract class CompetitionSummary {
   public abstract long startDate();
   public abstract long endDate();
   public abstract int rank();
+  public abstract int rankYesterday();
   public abstract int netWorth();
   public abstract int amountAvailable();
 }
