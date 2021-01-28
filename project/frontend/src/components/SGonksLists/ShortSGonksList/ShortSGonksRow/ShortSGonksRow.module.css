@@ -18,3 +18,9 @@
   width: 38%;
   text-align: right;
 }
+
+.ChangeIndicator {
+  font-weight: 700;
+  font-size: 2vw;
+  margin-top: -2%;
+}
