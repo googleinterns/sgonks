@@ -3,7 +3,7 @@
 
 #!/usr/bin/env python3
 
-from datetime import datetime, timedelta
+from datetime import datetime, timezone, timedelta
 import pytz
 
 
@@ -35,6 +35,9 @@ def get_current_date():
 
 def date_to_epoch(date):
     """
-    converts date object back into epoch
+    converts date object back into epoch (at exactly midnight utc on day of timestamp)
     """
-    return int(date.timestamp())
+    dt = datetime(year=date.year, month=date.month, day=date.day)
+    utc_time = dt.replace(tzinfo = timezone.utc) 
+    utc_dt = utc_time.timestamp()
+    return int(utc_dt)

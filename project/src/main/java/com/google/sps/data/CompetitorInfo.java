@@ -1,3 +1,4 @@
+
 // Copyright 2021 Google LLC
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
@@ -14,20 +15,17 @@
 
 package com.google.sps.data;
 import com.google.auto.value.AutoValue;
+
 /**
  * Class representing user data specific to a competition
  */
 @AutoValue
 public abstract class CompetitorInfo {
-  public static CompetitorInfo create(
-      int rank, Integer rankYesterday, String name, String email, long netWorth, long amountAvailable) {
-    return new AutoValue_CompetitorInfo(rank, rankYesterday, name, email, netWorth, amountAvailable);
+  public static CompetitorInfo create(long id, String name, String email, long netWorth, long amountAvailable) {
+    return new AutoValue_CompetitorInfo(id, name, email, netWorth, amountAvailable);
   }
-
-  /** The current ranking of the user in this competition based on networth */
-  public abstract int rank();
-  /** The rank of the user yesterday for purposes of displaying rises/falls in leaderboard */
-  public abstract Integer rankYesterday();
+  /** The id of the competitor */
+  public abstract long id();
   /** The competitor's name */
   public abstract String name();
   /** The competitor's Google email */
