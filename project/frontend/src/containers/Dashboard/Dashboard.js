@@ -32,6 +32,26 @@ const Dashboard = (props) => {
       currentPrice: "321",
       priceYesterday: "654",
     },
+    {
+      searchTerm: "react donut",
+      currentPrice: "32145",
+      priceYesterday: "532578",
+    },
+    {
+      searchTerm: "asdfdsagsafwg qweqrqewqe",
+      currentPrice: "61512",
+      priceYesterday: "76522",
+    },
+    {
+      searchTerm: "unicorns",
+      currentPrice: "321809",
+      priceYesterday: "321321",
+    },
+    {
+      searchTerm: "eek",
+      currentPrice: "321",
+      priceYesterday: "321521",
+    },
   ];
 
   return (
