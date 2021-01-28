@@ -28,7 +28,7 @@ import javax.servlet.ServletContextListener;
 import javax.servlet.annotation.WebListener;
 import javax.sql.DataSource;
 import java.util.logging.Logger;
-//import com.google.sps.config.*;
+import com.google.sps.config.*;
 
 
 @SuppressFBWarnings(
@@ -70,8 +70,8 @@ public class ConnectionPoolContextListener implements ServletContextListener {
       justification = "Necessary for sample region tag.")
   public DataSource createConnectionPool() {
     HikariConfig config = new HikariConfig();
-/*
-//    Config mySecrets = new Config();
+
+    Config mySecrets = new Config();
 
     config.setJdbcUrl(String.format("jdbc:mysql://localhost:3306/%s", "test"));
     config.setUsername("root");
@@ -79,7 +79,6 @@ public class ConnectionPoolContextListener implements ServletContextListener {
 
     config.addDataSourceProperty("socketFactory", "com.google.cloud.sql.mysql.SocketFactory");
     config.addDataSourceProperty("cloudSqlInstance",  "google.com:sgonks-step272:australia-southeast1:my-instance");
-*/
 
     // Initialize the connection pool using the configuration object.
     return new HikariDataSource(config);

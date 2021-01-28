@@ -117,6 +117,7 @@ public class AuthServletTest {
     @Test
     public void connectionIssue() throws Exception {
         DbUtils.closeQuietly(conn);
+
         FakeHttpServletResponse fakeHttpServletResponse = new FakeHttpServletResponse();
         authServlet.doGet(mockRequest, fakeHttpServletResponse);
 
