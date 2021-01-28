@@ -70,7 +70,7 @@ public class AuthServlet extends HttpServlet {
 
     FirebaseApp.initializeApp(options);
 
-    System.out.println("This function has been called!!!");
+    //get the client ID Token from the request body
     StringBuilder buffer = new StringBuilder();
     BufferedReader reader = request.getReader();
     String line;
@@ -79,7 +79,9 @@ public class AuthServlet extends HttpServlet {
       buffer.append(System.lineSeparator());
     }
     String idToken = buffer.toString();
-    System.out.println("ID TOKENNNNNNN : " + idToken);
+    System.out.println(idToken);
+
+    //decoding and verify client ID token
     FirebaseToken decodedToken = null;
     try {
       decodedToken = FirebaseAuth.getInstance().verifyIdToken(idToken);
@@ -87,7 +89,7 @@ public class AuthServlet extends HttpServlet {
       e.printStackTrace();
     }
     String uid = decodedToken.getUid();
-    System.out.println("THIS IS THE UID!?!?  " + uid);
+    System.out.println("This is the UID  " + uid);
   }
 
   private User getUser(Connection conn, String email) throws SQLException {

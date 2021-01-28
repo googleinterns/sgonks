@@ -13,44 +13,18 @@ export const signInWithGoogle = async () => {
 
   let idToken = await auth.currentUser.getIdToken(true);
 
-  // admin
-  //   .auth()
-  //   .verifyIdToken(idToken)
-  //   .then((decodedToken) => {
-  //     const uid = decodedToken.uid;
-  //     // ...
-  //     console.log("Decoded uid  : " + uid);
-  //   })
-  //   .catch((error) => {
-  //     console.error("Error:", error);
-  //   });
-
   try {
     await fetch("/authentication", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
       },
-      body: JSON.stringify(idToken),
+      body: idToken,
     });
-    console.log("Sent ID token this si new :  " + idToken);
+    console.log("successfully sent the id token");
   } catch (error) {
     console.error("Error:", error);
   }
-
-  // .then((verify) => {
-
-  //   firebase.auth().currentUser.getIdToken(/* forceRefresh */ true).then(function(idToken) {
-
-  //     // Send token to your backend via HTTPS
-  //     // ...
-  //   }).catch(function(error) {
-  //     // Handle error
-  //   });
-  // })
-  // .catch((error) => {
-  //   console.log(error.message);
-  // });
 };
 
 export const onAuthStateChange = (callback) => {
