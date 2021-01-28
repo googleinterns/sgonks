@@ -26,11 +26,11 @@ public class UserCompetition {
     /** The name of competition */	
     private String competitionName;	
 
-    /** The name of the competition organiser */	
-    private String organiserName;	
+    /** The id of the competition organiser */	
+    private int organiserId;	
   
-    /** The idap of the organiser */	
-    private String organiserIdap;	
+    /** The Google email of the organiser */	
+    private String organiserEmail;	
   
     /** The unformatted start date (milliseconds)*/	
     private long startDate;	
@@ -44,15 +44,15 @@ public class UserCompetition {
     /** A ranked list of other competitors */
     private List<CompetitorInfo> competitors = new ArrayList<>();	
   
-    public UserCompetition(long id, String competitionName, String organiserName, String organiserIdap,	
+    public UserCompetition(long id, String competitionName, int organiserId, String organiserEmail,	
         long startDate, long endDate, CompetitorInfo user, List<CompetitorInfo> competitors) {	
       this.id = id;	
       this.competitionName = competitionName;	
-      this.organiserName = organiserName;	
-      this.organiserIdap = organiserIdap;	
+      this.organiserId = organiserId;	
+      this.organiserEmail = organiserEmail;	
       this.startDate = startDate;	
       this.endDate = endDate;	
       this.user = user;
       this.competitors = competitors;	
     }	
-  } 
+}

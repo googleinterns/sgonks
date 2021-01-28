@@ -20,7 +20,9 @@ import pandas as pd
 from pytrends.request import TrendReq
 pytrends = TrendReq(tz=0) #tz=0 puts us on UTC
 
-from dates import get_start_times, get_end_times
+from dates import get_start_times, get_end_times, date_to_epoch
+
+NUM_TRENDING = 10 # number of trending searches to return
 
 
 def get_updated_daily_data(search_term, investment_date):
@@ -65,11 +67,13 @@ def fetch_hourly_data(search_term, year_start, month_start, day_start, year_end,
 def aggregate_hourly_to_daily(hourly_df):
     """
     hourly_df : a dataframe of hourly search data
-    returns a dataframe of daily search data
+    returns a dictionary of aggregated data
     """
     search_term = hourly_df.columns[0]
-    date_list = []
-    new_data = {search_term: []}
+    new_data = {
+        "search_term": search_term,
+        "initial_date": date_to_epoch(hourly_df.index[0])
+    }
     count = 0
     day_total = 0
 
@@ -78,12 +82,25 @@ def aggregate_hourly_to_daily(hourly_df):
         count += 1
         if count % 24 == 0:
             #finished accumulating day data
-            date_list.append(datetime.date())
-            new_data[search_term].append(day_total)
+            epoch = date_to_epoch(datetime)
+            new_data[str(epoch)] = day_total
             #reset counters
             day_total = 0
             count = 0
 
-    #create new df indexed by dates
-    daily_df = pd.DataFrame(new_data, index=date_list)
-    return daily_df
+    return new_data
+
+
+def get_trending_searches():
+    """
+    Returns a dictionary of the top 10 trending searches, indexed by rank
+    """
+    df = pytrends.trending_searches()
+    data = {}
+
+    for index, row in df.iterrows():
+        if index >= 10:
+            break
+        data[str(index+1)] = row[0]
+
+    return data

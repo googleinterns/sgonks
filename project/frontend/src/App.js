@@ -7,6 +7,8 @@ import SelectCompetition from "./containers/SelectCompetition/SelectCompetition"
 
 import HeaderBar from "./components/HeaderBar/HeaderBar";
 import LandingPage from "./containers/LandingPage/LandingPage";
+import Dashboard from "./containers/SGonksPlatform/Dashboard/Dashboard";
+
 import Layout from "./hoc/Layout/Layout";
 import { AuthContext } from "./context/AuthContext";
 import { onAuthStateChange } from "./services/firebase";
@@ -22,6 +24,11 @@ function App() {
     return () => {
       unsubscribe();
     };
+  }, []);
+
+  React.useEffect(() => {
+    const parsedCompId = Number(localStorage.getItem("compId") || 0);
+    setCompId(parsedCompId);
   }, []);
 
   if (user.signedIn && !user.id) {
@@ -42,12 +49,22 @@ function App() {
     </Switch>
   ) : compId == NO_COMPETITION ? (
     <Switch>
-      <Route path="/compselect" component={SelectCompetition}></Route>
+      <Route
+        path="/compselect"
+        render={(props) => (
+          <SelectCompetition
+            {...props}
+            compIdChanged={setCompId}
+          ></SelectCompetition>
+        )}
+      ></Route>
       <Redirect to="/compselect"></Redirect>
     </Switch>
   ) : (
     <Switch>
+      <Route path="/dashboard" component={Dashboard}></Route>
       <Route path="/placeholder" component={Explanation}></Route>
+      <Redirect to="/dashboard"></Redirect>
     </Switch>
   );
 
@@ -58,6 +75,7 @@ function App() {
           <HeaderBar
             loggedIn={user.signedIn}
             innerNav={compId != 0}
+            compIdChanged={setCompId}
           ></HeaderBar>
           <Layout>{pageRoute}</Layout>
         </AuthContext>

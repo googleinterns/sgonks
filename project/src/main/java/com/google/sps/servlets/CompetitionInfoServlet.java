@@ -25,48 +25,125 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.Connection;
+import java.sql.SQLException;
+import javax.sql.DataSource;
+
+import java.util.logging.Level;
+import java.util.logging.Logger;
+
 @WebServlet("/competitionInfo")
 public class CompetitionInfoServlet extends HttpServlet {
 
+  private static final Logger LOGGER = Logger.getLogger(AuthServlet.class.getName());
+
   @Override
   public void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
-    Gson gson = new Gson();
-    response.setContentType("application/json");
-    String competitions = gson.toJson(getUserCompetitions());
-    response.getWriter().println(competitions);
+    DataSource pool = (DataSource) request.getServletContext().getAttribute("db-connection-pool");
+
+    try (Connection conn = pool.getConnection()) {
+      int userId = Integer.parseInt(request.getParameter("user"));
+      List<UserCompetition> competitions = getUserCompetitions(conn, userId);
+
+      Gson gson = new Gson();
+      response.setContentType("application/json");
+      response.getWriter().println(gson.toJson(competitions));
+    } catch (SQLException ex) {
+      LOGGER.log(Level.WARNING, "Error while attempting to fetch competitions.", ex);
+      response.setStatus(500);
+      response.getWriter().write("Unable to successfully fetch competitions.");
+    }
   }
 
   /**
-   * Return all competitions that the user is in. (Hard-coded for now)
+   * Return all competitions that the user is in.
    * @return -- all Competitions object that user is in.
    */
-  private List<UserCompetition> getUserCompetitions() {
-    //data for each of the user's competitions, including info about other competitors
-    List<UserCompetition> usersCompetitions = new ArrayList<>();
-    List<CompetitorInfo> competitors = new ArrayList<>();
-
-    CompetitorInfo user = getCompetitorInfo();
-
-    competitors.add(CompetitorInfo.create(1, 1, "Bob", "bobk@", 1000, 500));
-    competitors.add(CompetitorInfo.create(2, 2, "Jack", "jackm@", 800, 450));
-    UserCompetition compObj = new UserCompetition(1895, "Google-Clouds-Comp", "Emma Hogan", "emmahogan@",
-        new Date(2021, 1, 1).getTime(), new Date(2021, 1, 10).getTime(), user, competitors);
-
-    List<CompetitorInfo> competitors2 = new ArrayList<>();
-    competitors2.add(CompetitorInfo.create(1, 1, "Mary", "maryk@", 1000, 500));
-    competitors2.add(CompetitorInfo.create(2, 2, "Bell", "bellm@", 800, 450));
-    competitors2.add(CompetitorInfo.create(3, 3, "Bob", "bobk@", 700, 400));
-    UserCompetition compObj2 = new UserCompetition(1896, "Tide Pod", "Mercury Lin", "mercurylin@",
-        new Date(2021, 1, 1).getTime(), new Date(2021, 1, 10).getTime(), user, competitors2);
-
-    usersCompetitions.add(compObj);
-    usersCompetitions.add(compObj2);
-
-    return usersCompetitions;
+  private List<UserCompetition> getUserCompetitions(Connection conn, int userId) throws SQLException {
+    String stmt = "SELECT competitions.id, competitions.competition_name, competitions.creator, competitions.creator_email, competitions.start_date, " 
+    + "competitions.end_date FROM competitions, participants WHERE competitions.id=participants.id AND participants.user=" + userId + ";";
+    List<UserCompetition> competitions = new ArrayList<>();
+    try (PreparedStatement competitionsStmt = conn.prepareStatement(stmt);) {
+      // Execute the statement
+      ResultSet rs = competitionsStmt.executeQuery();
+      int competitionId;
+      String competitionName;
+      int creatorId;
+      String creatorEmail;
+      long startDate;
+      long endDate;
+      while (rs.next()) {
+        competitionId = rs.getInt(1);
+        competitionName = rs.getString(2);
+        creatorId = rs.getInt(3);
+        creatorEmail = rs.getString(4);
+        startDate = rs.getDate(5).getTime();
+        endDate = rs.getDate(6).getTime();
+        competitions.add(getUserCompetition(conn, userId, competitionId, startDate, endDate, competitionName, creatorId, creatorEmail));
+      }
+      return competitions;
+    }
   }
 
-  private CompetitorInfo getCompetitorInfo() {
-    //hard coded example for now. This is data specific to the logged in user
-    return CompetitorInfo.create(1, 1, "Emma", "emmahogan@", 100000, 10);
+  /**
+   * Construct a userCompetition object given data
+   * @return -- userCompetition object
+   */
+  private UserCompetition getUserCompetition(Connection conn, int userId, int competitionId, long start, long end, String competitionName, int creatorId, String creatorEmail) throws SQLException {
+    List<CompetitorInfo> participants = getCompetitionParticipants(conn, competitionId);
+    CompetitorInfo user = getCompetitorInfo(conn, userId, competitionId);
+
+    return new UserCompetition(competitionId, competitionName, creatorId, creatorEmail, start, end, user, participants);
+  }
+  
+  /**
+   * Return all list of info about participants in a given competition
+   * @return -- list of CompetitorInfo objects for competitors in given competition
+   */
+  private List<CompetitorInfo> getCompetitionParticipants(Connection conn, int competitionId) throws SQLException {
+    String stmt = "SELECT user FROM participants WHERE competition=" + competitionId + ";";
+    List<CompetitorInfo> competitors = new ArrayList<>();
+    try (PreparedStatement competitorsStmt = conn.prepareStatement(stmt);) {
+      // Execute the statement
+      ResultSet rs = competitorsStmt.executeQuery();
+      int userId;
+      int rank;
+      int rankYesterday;
+      while (rs.next()) {
+        userId = rs.getInt(1);
+        competitors.add(getCompetitorInfo(conn, userId, competitionId));
+      }
+      return competitors;
+    }
+  }
+
+  /**
+   * Get user competition data given user id and competition id
+   * @return -- CompetitorInfo object
+   */
+  private CompetitorInfo getCompetitorInfo(Connection conn, int userId, int competitionId) throws SQLException {
+    int NET_WORTH = 10000;
+
+    String stmt = "SELECT users.name, users.email, participants.amt_available, participants.rank, participants.rank_yesterday FROM users, participants where users.id=" + userId 
+    + " AND participants.user=" + userId + " AND participants.competition=" + competitionId + ";";
+    try (PreparedStatement competitorStmt = conn.prepareStatement(stmt);) {
+      // Execute the statement
+      ResultSet rs = competitorStmt.executeQuery();
+      String name = null;
+      String email = null;
+      int amtAvailable = 0;
+      int rank = 0;
+      Integer rankYesterday = null; //on first day of competition, there is no previous day's rank
+      while (rs.next()) {
+        name = rs.getString(1);
+        email = rs.getString(2);
+        amtAvailable = rs.getInt(3);
+        rank = rs.getInt(4);
+        rankYesterday = rs.getInt(5);
+      }
+      return CompetitorInfo.create(rank, rankYesterday, name, email, NET_WORTH, amtAvailable);
+    }
   }
 }
