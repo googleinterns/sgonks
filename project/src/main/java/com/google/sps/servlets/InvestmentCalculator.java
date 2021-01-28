@@ -104,7 +104,7 @@ public class InvestmentCalculator {
 
         //store dates as long to prevent y2k in 2038 but immediately convert to string for datastore reasons
         String startDate = (investDate / 1000L) + "";
-        String currentDate = getLatestDateAsString();
+        String currentDate = getLatestDate() + "";
 
         Entity trend;
         float startValue;
@@ -120,7 +120,7 @@ public class InvestmentCalculator {
         return (int) investmentValue;
     }
 
-    private String getLatestDateAsString() {
+    public long getLatestDate() {
         //get yesterday's epoch time UTC
         Calendar c = Calendar.getInstance(TimeZone.getTimeZone("GMT"));
         c.set(Calendar.HOUR_OF_DAY, 0);
@@ -128,6 +128,6 @@ public class InvestmentCalculator {
         c.set(Calendar.SECOND, 0);
         c.set(Calendar.MILLISECOND, 0);
         long unixTime = c.getTimeInMillis() / 1000 - ONE_DAY_SECONDS;
-        return unixTime + "";
+        return unixTime;
     }
 }
