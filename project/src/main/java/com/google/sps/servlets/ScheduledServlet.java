@@ -48,9 +48,7 @@ public class ScheduledServlet extends HttpServlet {
     public void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
         String password = request.getParameter("password");
         Config mySecrets = new Config();
-        LOGGER.log(Level.WARNING, password);
         if (password.equals(mySecrets.scheduledServletPassword)) {
-            LOGGER.log(Level.WARNING, "GOING");
             runUpdates(request);
         }
     } 
@@ -134,10 +132,9 @@ public class ScheduledServlet extends HttpServlet {
      * Update the user's information in the participants table
      */
     private void updateUser(Connection conn, int rank, BasicCompetitor competitor, long competitionId) throws SQLException {
-        LOGGER.log(Level.WARNING, "" + competitor.netWorth() + competitor.userId() + rank);
         String stmt = "UPDATE participants SET rank_yesterday=" + competitor.rankYesterday() 
-            + " AND rank=" + rank
-            + " AND net_worth=" + competitor.netWorth()
+            + ", rank=" + rank
+            + ", net_worth=" + competitor.netWorth()
             + " WHERE user=" + competitor.userId() + " AND competition=" + competitionId + ";";
         try (PreparedStatement preparedStmt = conn.prepareStatement(stmt);) {
             preparedStmt.executeUpdate();
