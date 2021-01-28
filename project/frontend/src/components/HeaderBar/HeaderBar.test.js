@@ -19,12 +19,12 @@ describe("<HeaderBar />", () => {
     expect(wrapper.exists()).toBeTruthy();
   });
 
-  it('should render "What is sGonks?" and "Sign in" buttins if not authenticated', () => {
+  it('should render "What is sGonks?" and "Sign in" buttons if not authenticated', () => {
     expect(wrapper.find(LoginButtonSet).exists()).toBeTruthy();
     expect(wrapper.find(SignOutButton).exists()).toBeFalsy();
   });
 
-  it('should render "Select competition" and "Sign out" buttins if authenticated', () => {
+  it('should render "Select competition" and "Sign out" buttons if authenticated', () => {
     wrapper.setProps({ loggedIn: true });
     expect(wrapper.find(SignOutButton).exists()).toBeTruthy();
     expect(wrapper.find(LoginButtonSet).exists()).toBeFalsy();
