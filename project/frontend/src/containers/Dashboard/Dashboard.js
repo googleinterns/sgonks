@@ -4,6 +4,7 @@ import classnames from "classnames";
 import LinkButton from "../../components/UI/LinkButton/LinkButton";
 import Block from "../../components/UI/Block/Block";
 import ShortSGonksList from "../../components/SGonksLists/ShortSGonksList/ShortSGonksList";
+import TrendingSearches from "../../components/TrendingSearches/TrendingSearches";
 
 const Dashboard = (props) => {
   const placeholderSGonks = [
@@ -54,6 +55,26 @@ const Dashboard = (props) => {
     },
   ];
 
+  const placeholderTrends = [
+    "Kellyanne Conway",
+    "Filibuster",
+    "Fultondale al",
+    "Ben Askren",
+    "Stock-market",
+    "Etsy stock",
+    "Elliot Page",
+    "Susan Rice",
+    "Raya and the Last Dragon",
+    "Starlink",
+  ];
+
+  //TODO put this in App.js
+  // fetch("./trending")
+  //   .then((response) => response.json())
+  //   .then((data) => {
+  //     console.log(data);
+  //   });
+
   return (
     <div className={classes.DashboardContainer}>
       <div className={classes.Column}>
@@ -93,7 +114,7 @@ const Dashboard = (props) => {
         <Block className={classes.TrendingSearches}>
           <h2>Trending searches</h2>
           <div className={classes.TrendingSearchListContainer}>
-            list container
+            <TrendingSearches></TrendingSearches>
           </div>
         </Block>
       </div>
