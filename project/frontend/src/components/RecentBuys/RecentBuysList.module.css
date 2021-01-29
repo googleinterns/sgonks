@@ -1,0 +1,17 @@
+.RecentBuysContainer {
+  width: 100%;
+  height: 100%;
+}
+
+.EachSlide {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-size: cover;
+  height: 100%;
+  width: 100%;
+}
+
+.SlideContainer {
+  height: 100%;
+}

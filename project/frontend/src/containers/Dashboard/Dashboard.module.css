@@ -42,9 +42,9 @@
 }
 
 .CompInfo h2 {
-  font-size: 1.4vw;
+  font-size: 1.3vw;
   text-align: left;
-  font-weight: 400;
+  font-weight: 300;
   line-height: 0;
 }
 
@@ -56,8 +56,8 @@
 }
 
 .Ranking {
-  font-size: 3vw;
-  line-height: 0;
+  font-size: 4.5vw;
+  line-height: 0.5;
   margin-top: 20px;
 }
 
@@ -90,7 +90,7 @@
   font-size: 1.4vw;
   line-height: 0;
   text-align: left;
-  font-weight: 600;
+  font-weight: 300;
 }
 
 .MoneyInfo p {
