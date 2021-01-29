@@ -4,6 +4,7 @@
   flex-direction: row;
   flex-wrap: nowrap;
   white-space: nowrap;
+  font-size: 1.1vw;
 }
 
 .Rank {
