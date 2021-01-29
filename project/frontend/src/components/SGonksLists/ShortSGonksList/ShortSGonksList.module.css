@@ -1,0 +1,20 @@
+.List {
+  padding-top: 1.5%;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  flex-wrap: nowrap;
+}
+
+.SeeAll {
+  height: 12%;
+  color: rgb(156, 156, 156);
+  text-decoration: none;
+  font-size: 1.1vw;
+}
+
+.SeeAll:hover {
+  color: #2f7de7;
+  text-decoration: underline;
+}

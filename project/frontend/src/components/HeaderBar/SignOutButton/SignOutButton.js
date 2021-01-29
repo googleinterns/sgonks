@@ -1,14 +1,18 @@
 import React, { useContext } from "react";
 import LinkButton from "../../../components/UI/LinkButton/LinkButton";
-import { AuthContext } from "../../../App";
+import Consumer from "../../../context/AuthContext";
 
 const SignOutButton = (props) => {
-  const authContext = useContext(AuthContext);
-
   return (
-    <LinkButton to="/signin" onClick={authContext.clearAuth} inverted="true">
-      Sign out
-    </LinkButton>
+    <Consumer>
+      {(context) => {
+        return (
+          <LinkButton to="/signin" onClick={context.clearAuth} inverted="true">
+            Sign out
+          </LinkButton>
+        );
+      }}
+    </Consumer>
   );
 };
 

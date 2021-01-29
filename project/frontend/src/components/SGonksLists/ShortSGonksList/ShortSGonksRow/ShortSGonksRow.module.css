@@ -1,0 +1,32 @@
+.Row {
+  height: 12.5%;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+}
+
+.ChangeArrow {
+  width: 12%;
+  text-align: center;
+}
+
+.SearchTerm {
+  width: 50%;
+  text-align: left;
+  white-space: nowrap;
+  overflow: hidden;
+  font-weight: 300;
+  font-size: 1.1vw;
+}
+
+.CurrentPrice {
+  width: 38%;
+  text-align: right;
+  font-size: 1.1vw;
+}
+
+.ChangeIndicator {
+  font-weight: 700;
+  font-size: 2vw;
+  margin-top: -2%;
+}

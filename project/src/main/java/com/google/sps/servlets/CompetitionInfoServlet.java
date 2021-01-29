@@ -103,7 +103,7 @@ public class CompetitionInfoServlet extends HttpServlet {
     int rank = getUserRank(participants, userId);
     return new UserCompetition(competitionId, competitionName, creatorId, creatorEmail, start, end, user, rank, participants);
   }
-
+  
   /**
    * Return all list of info about participants in a given competition
    * @return -- list of CompetitorInfo objects for competitors in given competition

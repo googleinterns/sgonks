@@ -1,6 +1,6 @@
 .ExplanationPageContent {
   width: 100%;
-  height: 100%;
+  height: 90%;
   display: flex;
   flex-direction: column;
   text-align: left;
@@ -16,7 +16,7 @@
 
 .ExplanationContainer h1 {
   font-weight: 500;
-  font-size: 3.5vw;
+  font-size: 2.5vw;
 }
 
 .BackButton {
