@@ -10,12 +10,8 @@ import LandingPage from "./containers/LandingPage/LandingPage";
 import Dashboard from "./containers/SGonksPlatform/Dashboard/Dashboard";
 
 import Layout from "./hoc/Layout/Layout";
-export const AuthContext = React.createContext();
-import {
-  signInWithGoogle,
-  signOut,
-  onAuthStateChange,
-} from "./services/firebase";
+import { AuthContext } from "./context/AuthContext";
+import { onAuthStateChange } from "./services/firebase";
 
 const NO_COMPETITION = 0;
 
@@ -46,12 +42,6 @@ function App() {
     });
   }
 
-  const auth = {
-    authedUser: user,
-    handleAuth: signInWithGoogle,
-    clearAuth: signOut,
-  };
-
   let pageRoute = !user.signedIn ? (
     <Switch>
       <Route path="/signin" component={LandingPage}></Route>
@@ -81,14 +71,14 @@ function App() {
   return (
     <BrowserRouter>
       <div className="App">
-        <AuthContext.Provider value={auth}>
+        <AuthContext>
           <HeaderBar
             loggedIn={user.signedIn}
             innerNav={compId != 0}
             compIdChanged={setCompId}
           ></HeaderBar>
           <Layout>{pageRoute}</Layout>
-        </AuthContext.Provider>
+        </AuthContext>
       </div>
     </BrowserRouter>
   );
