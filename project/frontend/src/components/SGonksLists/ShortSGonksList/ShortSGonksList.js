@@ -5,16 +5,18 @@ import ShortSGonksRow from "./ShortSGonksRow/ShortSGonksRow";
 import { Link } from "react-router-dom";
 
 const ShortSGonksList = (props) => {
-  const LIST_LIMIT = 7;
+  const MAX_ROWS_IN_SHORT_SGONKS_LIST = 7;
 
-  const sGonksList = props.sgonks.slice(0, 7).map((singularSGonk) => {
-    return (
-      <ShortSGonksRow
-        sgonk={singularSGonk}
-        key={singularSGonk.searchTerm}
-      ></ShortSGonksRow>
-    );
-  });
+  const sGonksList = props.sgonks
+    .slice(0, MAX_ROWS_IN_SHORT_SGONKS_LIST)
+    .map((singularSGonk) => {
+      return (
+        <ShortSGonksRow
+          sgonk={singularSGonk}
+          key={singularSGonk.searchTerm}
+        ></ShortSGonksRow>
+      );
+    });
 
   return (
     <div {...props} className={classes.List}>
