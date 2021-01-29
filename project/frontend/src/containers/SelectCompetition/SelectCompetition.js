@@ -16,7 +16,7 @@ const SelectCompetition = (props) => {
     props.compIdChanged(compId);
   };
 
-  const toLdap = (email) => {
+  const toUsername = (email) => {
     return email.split("@")[0];
   };
 
@@ -37,7 +37,7 @@ const SelectCompetition = (props) => {
             id={comp.id}
             name={comp.competitionName}
             organiser={comp.organiserName}
-            organiserLdap={toLdap(comp.organiserEmail)}
+            organiserLdap={toUsername(comp.organiserEmail)}
             startDate={comp.startDate}
             endDate={comp.endDate}
             rank={comp.user.rank}
