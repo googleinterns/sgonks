@@ -125,7 +125,7 @@ public class ScheduledServlet extends HttpServlet {
      * Sort the list of competitors by net worth
      */
     private void RankCompetitorsList(List<BasicCompetitor> competitors) {
-        Collections.sort(competitors, (c0, c1) -> Longs.compare(c0.netWorth(), c1.netWorth()));
+        Collections.sort(competitors, (c0, c1) -> Longs.compare(c1.netWorth(), c0.netWorth()));
     }
 
     /**
