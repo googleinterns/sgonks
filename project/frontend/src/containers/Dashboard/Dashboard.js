@@ -129,7 +129,7 @@ const Dashboard = (props) => {
           <p className={classes.Ranking}>2nd</p>
         </Block>
         <Block className={classes.TeammateBuys}>
-          <RecentBuys></RecentBuys>
+          <RecentBuys buys={placeholderRecentBuys}></RecentBuys>
         </Block>
       </div>
       <div className={classes.Column}>

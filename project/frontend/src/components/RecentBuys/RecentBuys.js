@@ -5,6 +5,8 @@ import "react-slideshow-image/dist/styles.css";
 import RecentBuy from "./RecentBuy/RecentBuy";
 
 const RecentBuys = (props) => {
+  console.log(props.buys);
+
   return (
     <div className={classes.RecentBuysContainer}>
       <Slide easing="ease" className={classes.SlideContainer}>
