@@ -6,16 +6,16 @@ const RecentBuy = (props) => {
     <div className={classes.RecentBuy}>
       <div className={classes.CardContainer}>
         <div className={classes.InvestorInfo}>
-          <p className={classes.Name}>Some Person</p>
+          <p className={classes.Name}>{props.buyer}</p>
           <p className={classes.FillerWords}>invested</p>
         </div>
         <div className={classes.InvestmentInfo}>
-          <p className={classes.Amount}>t$3213</p>
+          <p className={classes.Amount}>t${props.amount}</p>
           <p className={classes.FillerWords}>in</p>
-          <p className={classes.Term}>"bitcoin"</p>
+          <p className={classes.Term}>"{props.term}"</p>
         </div>
         <div className={classes.TimeBought}>
-          <p>time</p>
+          <p>{new Date(props.time).toLocaleString()}</p>
         </div>
       </div>
     </div>
