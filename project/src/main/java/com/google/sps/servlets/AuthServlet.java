@@ -63,6 +63,8 @@ public class AuthServlet extends HttpServlet {
 
   @Override
   public void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException {
+    //set up the SDK
+    //@TODO might be more efficient to set up the somewhere else
     FirebaseOptions options = FirebaseOptions.builder()
             .setCredentials(GoogleCredentials.getApplicationDefault())
             .setDatabaseUrl("https://<DATABASE_NAME>.firebaseio.com/")
@@ -81,7 +83,7 @@ public class AuthServlet extends HttpServlet {
     String idToken = buffer.toString();
     System.out.println(idToken);
 
-    //decoding and verify client ID token
+    //decode and verify client ID token
     FirebaseToken decodedToken = null;
     try {
       decodedToken = FirebaseAuth.getInstance().verifyIdToken(idToken);
