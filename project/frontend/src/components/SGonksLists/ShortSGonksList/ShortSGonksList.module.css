@@ -1,4 +1,5 @@
 .List {
+  padding-top: 1.5%;
   width: 100%;
   height: 100%;
   display: flex;
@@ -8,7 +9,6 @@
 
 .SeeAll {
   height: 12%;
-  padding-top: 3%;
   color: rgb(156, 156, 156);
   text-decoration: none;
 }
