@@ -63,8 +63,8 @@ public class SingleCompetitionServlet extends HttpServlet {
   }
 
   /**
-   * Return all competitions that the user is in.
-   * @return -- all Competitions object that user is in.
+   * Return details about this competition
+   * @return -- competition summary object
    */
   private CompetitionSummary getCompetitionDetails(Connection conn, int userId, int competitionId) throws SQLException {
     String stmt = "SELECT competitions.competition_name, competitions.creator, competitions.start_date, " 
