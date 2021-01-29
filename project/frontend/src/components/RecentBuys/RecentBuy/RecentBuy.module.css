@@ -1,17 +1,23 @@
 .RecentBuy {
   height: 31.5vh;
   width: 100%;
+}
+
+.CardContainer {
+  margin: auto;
+  height: 100%;
+  width: 80%;
   display: flex;
   flex-direction: column;
   flex-wrap: nowrap;
   justify-content: space-between;
   align-items: center;
+  background: rgb(248, 248, 248);
 }
 
 .InvestorInfo {
   height: 30%;
-  width: 80%;
-  background: rgb(248, 248, 248);
+  width: 100%;
 }
 
 .FillerWords {
@@ -26,9 +32,8 @@
 }
 
 .InvestmentInfo {
-  width: 80%;
+  width: 100%;
   height: 52%;
-  background: rgb(248, 248, 248);
 }
 
 .Amount {
@@ -44,9 +49,8 @@
 }
 
 .TimeBought {
-  width: 80%;
+  width: 100%;
   height: 18%;
-  background: rgb(248, 248, 248);
 }
 
 .TimeBought p {
