@@ -9,8 +9,16 @@ import HeaderBar from "./components/HeaderBar/HeaderBar";
 configure({ adapter: new Adapter() });
 
 describe("<App />", () => {
-  it("should render one HeaderBar element", () => {
-    const wrapper = shallow(<App />);
+  let wrapper;
+  beforeEach(() => {
+    wrapper = shallow(<App />);
+  });
+
+  it("should render", () => {
+    expect(wrapper.exists()).toBeTruthy();
+  });
+
+  it("should always render one HeaderBar element", () => {
     expect(wrapper.find(HeaderBar)).toHaveLength(1);
   });
 });
