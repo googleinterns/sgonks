@@ -107,13 +107,6 @@ const Dashboard = (props) => {
     },
   ];
 
-  //TODO put this in App.js
-  // fetch("./trending")
-  //   .then((response) => response.json())
-  //   .then((data) => {
-  //     console.log(data);
-  //   });
-
   return (
     <div className={classes.DashboardContainer}>
       <div className={classes.Column}>
