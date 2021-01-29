@@ -1,7 +1,6 @@
 .RecentBuy {
   height: 31.5vh;
   width: 100%;
-  background: lightgray;
   display: flex;
   flex-direction: column;
   flex-wrap: nowrap;
@@ -10,9 +9,9 @@
 }
 
 .InvestorInfo {
-  height: 32%;
+  height: 30%;
   width: 80%;
-  background: lightblue;
+  background: rgb(248, 248, 248);
 }
 
 .FillerWords {
@@ -28,12 +27,12 @@
 
 .InvestmentInfo {
   width: 80%;
-  height: 50%;
-  background: lightgreen;
+  height: 52%;
+  background: rgb(248, 248, 248);
 }
 
 .Amount {
-  font-size: 1.8vw;
+  font-size: 2vw;
   line-height: 0.2;
   font-weight: 500;
 }
@@ -47,7 +46,7 @@
 .TimeBought {
   width: 80%;
   height: 18%;
-  background: lightcoral;
+  background: rgb(248, 248, 248);
 }
 
 .TimeBought p {
