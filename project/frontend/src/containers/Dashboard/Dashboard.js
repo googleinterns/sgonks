@@ -5,7 +5,7 @@ import LinkButton from "../../components/UI/LinkButton/LinkButton";
 import Block from "../../components/UI/Block/Block";
 import ShortSGonksList from "../../components/SGonksLists/ShortSGonksList/ShortSGonksList";
 import TrendingSearches from "../../components/TrendingSearches/TrendingSearches";
-import RecentBuys from "../../components/RecentBuys/RecentBuys";
+import RecentBuysList from "../../components/RecentBuys/RecentBuysList";
 
 const Dashboard = (props) => {
   const placeholderSGonks = [
@@ -124,7 +124,7 @@ const Dashboard = (props) => {
           </p>
         </Block>
         <Block className={classes.TeammateBuys}>
-          <RecentBuys buys={placeholderRecentBuys}></RecentBuys>
+          <RecentBuysList buys={placeholderRecentBuys}></RecentBuysList>
         </Block>
       </div>
       <div className={classes.Column}>

@@ -1,5 +1,5 @@
 import React from "react";
-import classes from "./RecentBuys.module.css";
+import classes from "./RecentBuysList.module.css";
 import { Slide } from "react-slideshow-image";
 import "react-slideshow-image/dist/styles.css";
 import RecentBuy from "./RecentBuy/RecentBuy";
