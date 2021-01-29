@@ -37,7 +37,7 @@ import java.util.Collections;
 import com.google.common.primitives.Longs;
 
 /**
- * Returns a list of all the competitions the logged in user is in, including their rank and info about the competition
+ * Returns a ranked list of the competitors in a given competition
  */
 @WebServlet("/rankedCompetitors")
 public class CompetitorsServlet extends HttpServlet {
