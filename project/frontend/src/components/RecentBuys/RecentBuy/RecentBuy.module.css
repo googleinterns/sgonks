@@ -1,5 +1,56 @@
 .RecentBuy {
   height: 31.5vh;
   width: 100%;
-  background: lightpink;
+  background: lightgray;
+  display: flex;
+  flex-direction: column;
+  flex-wrap: nowrap;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.InvestorInfo {
+  height: 32%;
+  width: 80%;
+  background: lightblue;
+}
+
+.FillerWords {
+  line-height: 0.5;
+  font-size: 1.2vw;
+  font-weight: 300;
+}
+
+.Name {
+  font-weight: 400;
+  line-height: 0.5;
+}
+
+.InvestmentInfo {
+  width: 80%;
+  height: 50%;
+  background: lightgreen;
+}
+
+.Amount {
+  font-size: 1.8vw;
+  line-height: 0.2;
+  font-weight: 500;
+}
+
+.Term {
+  font-size: 1.5vw;
+  line-height: 0.5;
+  font-weight: 400;
+}
+
+.TimeBought {
+  width: 80%;
+  height: 18%;
+  background: lightcoral;
+}
+
+.TimeBought p {
+  line-height: 0;
+  font-weight: 300;
 }

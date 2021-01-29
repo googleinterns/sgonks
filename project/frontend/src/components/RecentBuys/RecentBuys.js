@@ -12,10 +12,7 @@ const RecentBuys = (props) => {
           <RecentBuy></RecentBuy>
         </div>
         <div className={classes.EachSlide}>
-          <p>one slide</p>
-        </div>
-        <div className={classes.EachSlide}>
-          <p>one slide</p>
+          <RecentBuy></RecentBuy>
         </div>
       </Slide>
     </div>
