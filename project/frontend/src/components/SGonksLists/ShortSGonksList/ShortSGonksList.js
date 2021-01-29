@@ -5,7 +5,8 @@ import ShortSGonksRow from "./ShortSGonksRow/ShortSGonksRow";
 import { Link } from "react-router-dom";
 
 const ShortSGonksList = (props) => {
-  console.log(props.sgonks);
+  const LIST_LIMIT = 7;
+
   const sGonksList = props.sgonks.slice(0, 7).map((singularSGonk) => {
     return (
       <ShortSGonksRow
@@ -18,7 +19,7 @@ const ShortSGonksList = (props) => {
   return (
     <div {...props} className={classes.List}>
       {sGonksList}
-      {props.sgonks.length > 7 ? (
+      {props.sgonks.length > LIST_LIMIT ? (
         <Link to="/toroutelater" className={classes.SeeAll}>
           ...more
         </Link>

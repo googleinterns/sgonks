@@ -3,8 +3,10 @@ import classes from "./TrendingSearches.module.css";
 import TrendingSearch from "./TrendingSearch/TrendingSearch";
 
 const TrendingSearches = (props) => {
+  const LIST_LIMIT = 8;
+
   const trends = props.searches.map((search, index) => {
-    while (index < 8) {
+    while (index < LIST_LIMIT) {
       return (
         <TrendingSearch
           term={search}
