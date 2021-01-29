@@ -101,8 +101,8 @@ const Dashboard = (props) => {
     {
       buyerName: "Leon Nemets",
       buyerEmail: "nemleon@google.com",
-      amountBought: 3921,
-      searchTerm: "pineapples",
+      amountBought: "777",
+      searchTerm: "rick roll",
       timeBought: 1580214808000,
     },
   ];

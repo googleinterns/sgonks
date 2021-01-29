@@ -21,7 +21,7 @@
 }
 
 .FillerWords {
-  line-height: 0.5;
+  line-height: 0;
   font-size: 1.2vw;
   font-weight: 300;
 }
@@ -38,13 +38,13 @@
 
 .Amount {
   font-size: 2vw;
-  line-height: 0.2;
-  font-weight: 500;
+  line-height: 0;
+  font-weight: 300;
 }
 
 .Term {
   font-size: 1.5vw;
-  line-height: 0.5;
+  line-height: 0;
   font-weight: 400;
 }
 
