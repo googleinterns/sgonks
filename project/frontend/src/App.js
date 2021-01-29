@@ -7,7 +7,7 @@ import SelectCompetition from "./containers/SelectCompetition/SelectCompetition"
 
 import HeaderBar from "./components/HeaderBar/HeaderBar";
 import LandingPage from "./containers/LandingPage/LandingPage";
-import Dashboard from "./containers/SGonksPlatform/Dashboard/Dashboard";
+import Dashboard from "./containers/Dashboard/Dashboard";
 
 import Layout from "./hoc/Layout/Layout";
 import { AuthContext } from "./context/AuthContext";
