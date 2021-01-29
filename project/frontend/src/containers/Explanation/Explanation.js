@@ -55,7 +55,10 @@ const Explanation = (props) => {
         </ol>
       </div>
       <div className={classes.BackButton}>
-        <LinkButton inverted="true"> Back </LinkButton>
+        <LinkButton to="/dashboard" inverted="true">
+          {" "}
+          Back{" "}
+        </LinkButton>
       </div>
     </div>
   );
