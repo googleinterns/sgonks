@@ -43,6 +43,22 @@ export const onAuthStateChange = (callback) => {
   });
 };
 
-export const signOut = () => {
+export const signOut = async () => {
+  //send a POST request to the same servlet
+  //clear the session that the uid is stored
+  let idToken = await auth.currentUser.getIdToken(true);
+
+  try {
+    await fetch("/authentication", {
+      method: "DELETE",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: idToken,
+    });
+    console.log("successfully signed out");
+  } catch (error) {
+    console.error("Error:", error);
+  }
   firebase.auth().signOut();
 };

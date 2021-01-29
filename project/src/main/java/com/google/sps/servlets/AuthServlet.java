@@ -67,7 +67,7 @@ public class AuthServlet extends HttpServlet {
     //@TODO might be more efficient to set up the somewhere else
     FirebaseOptions options = FirebaseOptions.builder()
             .setCredentials(GoogleCredentials.getApplicationDefault())
-            .setDatabaseUrl("https://<DATABASE_NAME>.firebaseio.com/")
+            .setDatabaseUrl("https://sgonks-step272.firebaseio.com/")
             .build();
 
     FirebaseApp.initializeApp(options);
@@ -80,18 +80,31 @@ public class AuthServlet extends HttpServlet {
       buffer.append(line);
       buffer.append(System.lineSeparator());
     }
-    String idToken = buffer.toString();
-    System.out.println(idToken);
+    String body = buffer.toString();
+    System.out.println(body);
+
+
 
     //decode and verify client ID token
     FirebaseToken decodedToken = null;
     try {
-      decodedToken = FirebaseAuth.getInstance().verifyIdToken(idToken);
+      decodedToken = FirebaseAuth.getInstance().verifyIdToken(body);
     } catch (FirebaseAuthException e) {
       e.printStackTrace();
     }
     String uid = decodedToken.getUid();
     System.out.println("This is the UID  " + uid);
+
+    //stored the user data in the session
+    request.getSession().setAttribute("uid",uid);
+
+    System.out.println("TESTING 123  :: " + request.getSession().getAttribute("uid"));
+  }
+
+  @Override
+  public void doDelete(HttpServletRequest request, HttpServletResponse response) throws IOException {
+    request.getSession().setAttribute("uid",null);
+    System.out.println("USER HAS SIGNED OUT " + request.getSession().getAttribute("uid"));
   }
 
   private User getUser(Connection conn, String email) throws SQLException {
