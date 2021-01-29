@@ -124,9 +124,11 @@ const Dashboard = (props) => {
         </div>
         <Block className={classes.CompInfo}>
           <h2>Time until end of competition:</h2>
-          <p className={classes.CountDown}>20 days 19 hours etc</p>
+          <p className={classes.CountDown}>20 Days 13 hours etc</p>
           <h2>Your current ranking:</h2>
-          <p className={classes.Ranking}>2nd</p>
+          <p>
+            <span className={classes.Ranking}>2</span>nd
+          </p>
         </Block>
         <Block className={classes.TeammateBuys}>
           <RecentBuys buys={placeholderRecentBuys}></RecentBuys>
