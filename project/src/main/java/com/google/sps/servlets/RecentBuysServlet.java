@@ -37,7 +37,7 @@ import java.util.Collections;
 import com.google.common.primitives.Longs;
 
 /**
- * Returns details about the current competition
+ * Returns recent purchases by competitors in this competition
  */
 @WebServlet("/recentBuys")
 public class RecentBuysServlet extends HttpServlet {
