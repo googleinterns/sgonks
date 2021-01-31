@@ -66,9 +66,17 @@ public class CompetitionsServlet extends HttpServlet {
    * @return -- all Competitions object that user is in.
    */
   private List<CompetitionSummary> getUserCompetitions(Connection conn, int userId) throws SQLException {
-    String stmt = "SELECT competitions.id, competitions.competition_name, competitions.creator, competitions.start_date, " 
-    + "competitions.end_date, participants.amt_available, participants.net_worth, participants.rank, participants.rank_yesterday "
-    + "FROM competitions, participants WHERE competitions.id=participants.id AND participants.user=" + userId + ";";
+    String stmt = "SELECT "
+      + "competitions.id, "
+      + "competitions.competition_name, "
+      + "competitions.creator, "
+      + "competitions.start_date, "
+      + "competitions.end_date, "
+      + "participants.amt_available, "
+      + "participants.net_worth, "
+      + "participants.rank, "
+      + "participants.rank_yesterday "
+      + "FROM competitions, participants WHERE competitions.id=participants.id AND participants.user=" + userId + ";";
     List<CompetitionSummary> competitions = new ArrayList<>();
     try (PreparedStatement competitionsStmt = conn.prepareStatement(stmt);) {
       // Execute the statement
