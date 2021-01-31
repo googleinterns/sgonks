@@ -99,12 +99,12 @@ public class CompetitorsServlet extends HttpServlet {
      * Returns the number of investments the user currently has
      */
     private int getNumberInvestments(Connection conn, long userId, long competitionId) throws SQLException {
-        String stmt = "SELECT * FROM investments WHERE user=" + userId + " AND competition=" + competitionId + ";";
+        String stmt = "SELECT COUNT(*) FROM investments WHERE user=" + userId + " AND competition=" + competitionId + ";";
         int num = 0;
         try (PreparedStatement competitorStmt = conn.prepareStatement(stmt);) {
             ResultSet rs = competitorStmt.executeQuery();
             while (rs.next()) {
-                num++;
+                return rs.getInt(1);
             }
         return num;
         }
