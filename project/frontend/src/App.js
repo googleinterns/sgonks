@@ -18,6 +18,7 @@ const NO_COMPETITION = 0;
 function App() {
   const [user, setUser] = useState({ signedIn: false });
   const [compId, setCompId] = useState(0);
+  const [competitionInfo, setCompetitionInfo] = useState({});
 
   React.useEffect(() => {
     const unsubscribe = onAuthStateChange(setUser);
@@ -49,6 +50,12 @@ function App() {
         .then((data) => {
           console.log("fetched competitionInfo:");
           console.log(data);
+          setCompetitionInfo((prevState) => {
+            return {
+              ...prevState,
+              generalInfo: data,
+            };
+          });
         });
 
       fetch("./recentBuys?competition=" + compId)
@@ -56,6 +63,12 @@ function App() {
         .then((data) => {
           console.log("fetched recentBuys:");
           console.log(data);
+          setCompetitionInfo((prevState) => {
+            return {
+              ...prevState,
+              recentBuys: data,
+            };
+          });
         });
 
       // fetch("./investments?user=" + user.id + "&competition=" + compId)
@@ -69,6 +82,12 @@ function App() {
         .then((data) => {
           console.log("fetched trending:");
           console.log(data);
+          setCompetitionInfo((prevState) => {
+            return {
+              ...prevState,
+              trending: data,
+            };
+          });
         });
     }
   }, [user.id]);
@@ -93,7 +112,7 @@ function App() {
     </Switch>
   ) : (
     <Switch>
-      <Route path="/dashboard" component={Dashboard}></Route>
+      <Route path="/dashboard" render={() => <Dashboard></Dashboard>}></Route>
       <Route path="/placeholder" component={Explanation}></Route>
       <Redirect to="/dashboard"></Redirect>
     </Switch>
