@@ -8,6 +8,7 @@ import TrendingSearches from "../../components/TrendingSearches/TrendingSearches
 import RecentBuysList from "../../components/RecentBuys/RecentBuysList";
 
 const Dashboard = (props) => {
+  console.log(props);
   const placeholderSGonks = [
     {
       searchTerm: "chicken wings",
