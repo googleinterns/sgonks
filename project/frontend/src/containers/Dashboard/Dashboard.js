@@ -57,19 +57,6 @@ const Dashboard = (props) => {
     },
   ];
 
-  const placeholderTrends = [
-    "Kellyanne Conway",
-    "Filibuster",
-    "Fultondale al",
-    "Ben Askren",
-    "Stock-market",
-    "Etsy stock",
-    "Elliot Page",
-    "Susan Rice",
-    "Raya and the Last Dragon",
-    "Starlink",
-  ];
-
   return (
     <div className={classes.DashboardContainer}>
       <div className={classes.Column}>
