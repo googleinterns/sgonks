@@ -83,7 +83,7 @@ public class ScheduledServlet extends HttpServlet {
                 id = rs.getLong(1);
                 ids.add(id);
             }
-        return ids;
+            return ids;
         }
     }
 
