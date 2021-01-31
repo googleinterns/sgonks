@@ -111,7 +111,9 @@ const Dashboard = (props) => {
         <Block className={classes.TrendingSearches}>
           <h2>Trending searches</h2>
           <div className={classes.TrendingSearchListContainer}>
-            <TrendingSearches searches={placeholderTrends}></TrendingSearches>
+            <TrendingSearches
+              searches={props.trendingSearches}
+            ></TrendingSearches>
           </div>
         </Block>
       </div>
