@@ -125,7 +125,7 @@ const Dashboard = (props) => {
           </p>
         </Block>
         <Block className={classes.TeammateBuys}>
-          <RecentBuysList buys={placeholderRecentBuys}></RecentBuysList>
+          <RecentBuysList buys={props.recentBuys}></RecentBuysList>
         </Block>
       </div>
       <div className={classes.Column}>
