@@ -37,10 +37,41 @@ function App() {
     setUser((prevState) => {
       return {
         ...prevState,
-        id: 123,
+        id: 1,
       };
     });
   }
+
+  React.useEffect(() => {
+    if (user.signedIn && user.id && compId) {
+      fetch("./competitionInfo?user=" + user.id + "&competition=" + compId)
+        .then((response) => response.json())
+        .then((data) => {
+          console.log("fetched competitionInfo:");
+          console.log(data);
+        });
+
+      fetch("./recentBuys?competition=" + compId)
+        .then((response) => response.json())
+        .then((data) => {
+          console.log("fetched recentBuys:");
+          console.log(data);
+        });
+
+      // fetch("./investments?user=" + user.id + "&competition=" + compId)
+      //   .then((response) => response.json())
+      //   .then((data) => {
+      //     console.log("fetched investments:");
+      //     console.log(data);
+      //   });
+      fetch("./trending")
+        .then((response) => response.json())
+        .then((data) => {
+          console.log("fetched trending:");
+          console.log(data);
+        });
+    }
+  }, [user.id]);
 
   let pageRoute = !user.signedIn ? (
     <Switch>
