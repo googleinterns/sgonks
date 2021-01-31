@@ -16,7 +16,7 @@ package com.google.sps.data;
 import com.google.auto.value.AutoValue;
 
 /**
- * Class representing each user object
+ * Class representing each recently purchased investment
  */
 @AutoValue
 public abstract class RecentBuy {
@@ -26,6 +26,8 @@ public abstract class RecentBuy {
     public abstract String name();
     public abstract String email();
     public abstract int amtInvested();
+    // The google search the user invested in
     public abstract String searchQuery();
+    // The date they purchased the investment (milliseconds, UTC)
     public abstract long dateInvested();
 }
