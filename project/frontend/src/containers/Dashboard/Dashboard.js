@@ -80,7 +80,7 @@ const Dashboard = (props) => {
   };
 
   const formatDHM = (dhm) => {
-    return dhm[0] + " Days " + dhm[1] + " Hours " + dhm[2] + " Minutes ";
+    return dhm[0] + "  Days  " + dhm[1] + "  Hours  " + dhm[2] + "  Minutes  ";
   };
 
   const getTimeRemaining = () => {
