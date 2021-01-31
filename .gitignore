@@ -45,6 +45,7 @@ project/.settings/
 # Ignore secrets
 firebaseConfig.js
 config/
+config.py
 
 # Ignore Python generated files
 __pycache__/

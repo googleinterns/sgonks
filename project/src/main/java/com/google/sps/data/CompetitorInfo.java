@@ -21,17 +21,22 @@ import com.google.auto.value.AutoValue;
  */
 @AutoValue
 public abstract class CompetitorInfo {
-  public static CompetitorInfo create(long id, String name, String email, long netWorth, long amountAvailable) {
-    return new AutoValue_CompetitorInfo(id, name, email, netWorth, amountAvailable);
+  public static CompetitorInfo create(String name, String email, int rank, int rankYesterday, long netWorth, 
+    long amountAvailable, int numInvestments) {
+    return new AutoValue_CompetitorInfo(name, email, rank, rankYesterday, netWorth, amountAvailable, numInvestments);
   }
-  /** The id of the competitor */
-  public abstract long id();
   /** The competitor's name */
   public abstract String name();
   /** The competitor's Google email */
   public abstract String email();
+  /** Competitor's rank */
+  public abstract int rank();
+  /** Competitor's rank yesterday */
+  public abstract int rankYesterday();
   /** The networth of the competitor */
   public abstract long netWorth();
   /** The amount the user has available for additional investments */
   public abstract long amountAvailable();
+  /** The number of investments owned by this competitor */
+  public abstract int numInvestments();
 }

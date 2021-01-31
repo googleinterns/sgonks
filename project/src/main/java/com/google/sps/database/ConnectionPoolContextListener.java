@@ -50,12 +50,12 @@ public class ConnectionPoolContextListener implements ServletContextListener {
   private static String CREATE_COMPETITIONS_TABLE = 
     "CREATE TABLE IF NOT EXISTS competitions ( "
     + "id SERIAL NOT NULL, start_date DATE NOT NULL, end_date DATE NOT NULL,"
-    + " competition_name VARCHAR(255) NOT NULL, creator INT NOT NULL, creator_email VARCHAR(255) NOT NULL,"
+    + " competition_name VARCHAR(255) NOT NULL, creator INT NOT NULL,"
     + " PRIMARY KEY (id) );";
 
   private static String CREATE_PARTICIPANTS_TABLE = 
     "CREATE TABLE IF NOT EXISTS participants ( "
-    + "id SERIAL NOT NULL, user INT NOT NULL, competition INT NOT NULL, amt_available INT NOT NULL, rank INT NOT NULL, rank_yesterday INT,"
+    + "id SERIAL NOT NULL, user INT NOT NULL, competition INT NOT NULL, amt_available INT NOT NULL, net_worth INT NOT NULL, rank INT NOT NULL, rank_yesterday INT,"
     + " PRIMARY KEY (id) );";
 
   private static String CREATE_INVESTMENTS_TABLE = 
@@ -70,6 +70,7 @@ public class ConnectionPoolContextListener implements ServletContextListener {
       justification = "Necessary for sample region tag.")
   public DataSource createConnectionPool() {
     HikariConfig config = new HikariConfig();
+
     Config mySecrets = new Config();
 
     config.setJdbcUrl(String.format("jdbc:mysql://localhost:3306/%s", "test"));
@@ -83,9 +84,9 @@ public class ConnectionPoolContextListener implements ServletContextListener {
     return new HikariDataSource(config);
   }
 
-  private void createTables(DataSource pool) throws SQLException {
+  //TODO(nemleon): deserves to be factored out.
+  public static void createTables(Connection conn) throws SQLException {
     // Safely attempt to create users table
-    try (Connection conn = pool.getConnection()) {
       try (PreparedStatement createUsersStatement = conn.prepareStatement(CREATE_USERS_TABLE);) {
         createUsersStatement.execute();
       } try (PreparedStatement createCompetitionsStatement = conn.prepareStatement(CREATE_COMPETITIONS_TABLE);) {
@@ -96,8 +97,7 @@ public class ConnectionPoolContextListener implements ServletContextListener {
         createInvestmentsStatement.execute();
       }
       //get rid of this when we no longer need hard coded data
-      //insertTestData(pool);
-    }
+      //insertTestData(conn);
   }
 
   @Override
@@ -120,7 +120,7 @@ public class ConnectionPoolContextListener implements ServletContextListener {
       servletContext.setAttribute("db-connection-pool", pool);
     }
     try {
-      createTables(pool);
+      createTables(pool.getConnection());
     } catch (SQLException ex) {
       throw new RuntimeException(
           "Unable to verify table schema. Please double check the steps"
@@ -133,7 +133,8 @@ public class ConnectionPoolContextListener implements ServletContextListener {
     }
   }
 
-  public void insertTestData(DataSource pool) throws SQLException {
+  //TODO(nemleon): deserves to be factored out
+  public static void insertTestData(Connection conn) throws SQLException {
     String[] stmts = new String[] {
       "INSERT INTO users (name, email) VALUES ('Emma', 'emmahogan@google.com');",
       "INSERT INTO users (name, email) VALUES ('Phoebe', 'phoebek@google.com');",
@@ -141,15 +142,15 @@ public class ConnectionPoolContextListener implements ServletContextListener {
       "INSERT INTO users (name, email) VALUES ('Tex', 'texm@google.com');",
       "INSERT INTO users (name, email) VALUES ('Leon', 'nemleon@google.com');",
 
-      "INSERT INTO competitions (start_date, end_date, competition_name, creator, creator_email) VALUES (DATE '2021-01-01', DATE '2021-03-01', 'TidePod', 1, 'emmahogan@google.com');",
-      "INSERT INTO competitions (start_date, end_date, competition_name, creator, creator_email) VALUES (DATE '2021-01-10', DATE '2021-03-10', 'Another Competition', 4, 'texm@google.com');",
+      "INSERT INTO competitions (start_date, end_date, competition_name, creator) VALUES (DATE '2021-01-01', DATE '2021-03-01', 'TidePod', 1);",
+      "INSERT INTO competitions (start_date, end_date, competition_name, creator) VALUES (DATE '2021-01-10', DATE '2021-03-10', 'Another Competition', 4);",
 
-      "INSERT INTO participants (user, competition, amt_available, rank, rank_yesterday) VALUES (1, 1, 100, 1, 6);",
-      "INSERT INTO participants (user, competition, amt_available, rank, rank_yesterday) VALUES (1, 2, 500, 2, 5);",
-      "INSERT INTO participants (user, competition, amt_available, rank, rank_yesterday) VALUES (2, 1, 200, 3, 4);",
-      "INSERT INTO participants (user, competition, amt_available, rank, rank_yesterday) VALUES (3, 2, 100, 4, 3);",
-      "INSERT INTO participants (user, competition, amt_available, rank, rank_yesterday) VALUES (4, 1, 200, 5, 2);",
-      "INSERT INTO participants (user, competition, amt_available, rank, rank_yesterday) VALUES (5, 1, 400, 6, 1);",
+      "INSERT INTO participants (user, competition, amt_available, net_worth, rank, rank_yesterday) VALUES (1, 1, 100, 0, 1, 6);",
+      "INSERT INTO participants (user, competition, amt_available, net_worth, rank, rank_yesterday) VALUES (1, 2, 500, 0, 2, 5);",
+      "INSERT INTO participants (user, competition, amt_available, net_worth, rank, rank_yesterday) VALUES (2, 1, 200, 0, 3, 4);",
+      "INSERT INTO participants (user, competition, amt_available, net_worth, rank, rank_yesterday) VALUES (3, 2, 100, 0, 4, 3);",
+      "INSERT INTO participants (user, competition, amt_available, net_worth, rank, rank_yesterday) VALUES (4, 1, 200, 0, 5, 2);",
+      "INSERT INTO participants (user, competition, amt_available, net_worth, rank, rank_yesterday) VALUES (5, 1, 400, 0, 6, 1);",
 
       "INSERT INTO investments (user, competition, google_search, invest_date, sell_date, amt_invested) VALUES (1, 1, 'giraffe', DATE '2021-01-21', NULL, 100);",
       "INSERT INTO investments (user, competition, google_search, invest_date, sell_date, amt_invested) VALUES (1, 1, 'pangolin', DATE '2021-01-24', DATE '2021-01-26', 50);",
@@ -160,11 +161,9 @@ public class ConnectionPoolContextListener implements ServletContextListener {
       "INSERT INTO investments (user, competition, google_search, invest_date, sell_date, amt_invested) VALUES (4, 1, 'coffee', DATE '2021-01-21', DATE '2021-01-24', 10);",
       "INSERT INTO investments (user, competition, google_search, invest_date, sell_date, amt_invested) VALUES (5, 1, 'sadness', DATE '2021-01-21', DATE '2021-01-24', 150);"
     };
-    try (Connection conn = pool.getConnection()) {
-      for (int i = 0; i < stmts.length; i++) {
-        try (PreparedStatement stmt = conn.prepareStatement(stmts[i]);) {
-          stmt.execute();
-        }
+    for (int i = 0; i < stmts.length; i++) {
+      try (PreparedStatement stmt = conn.prepareStatement(stmts[i]);) {
+        stmt.execute();
       }
     }
   }
