@@ -47,6 +47,7 @@ function App() {
   React.useEffect(() => {
     if (user.signedIn && user.id && compId) {
       Promise.all([
+        setLoading(true),
         fetch("./competitionInfo?user=" + user.id + "&competition=" + compId)
           .then((response) => response.json())
           .then((data) => {
@@ -87,6 +88,7 @@ function App() {
           }),
       ]).then(() => {
         console.log("done");
+        setLoading(false);
       });
     }
   }, [user.id]);
@@ -109,6 +111,8 @@ function App() {
       ></Route>
       <Redirect to="/compselect"></Redirect>
     </Switch>
+  ) : loading ? (
+    <div>Loading...</div>
   ) : (
     <Switch>
       <Route
