@@ -60,6 +60,8 @@ def update_trending_database(data, client):
 
 
 if __name__ == "__main__":
+    # Update data in Datastore:
+
     # Instantiates a client
     datastore_client = datastore.Client()
     # Retrieve relevant data from datastore
@@ -72,5 +74,12 @@ if __name__ == "__main__":
 
     trending_data = get_trending_searches()
     update_trending_database(trending_data, datastore_client)
-    # run the cron servlet
-    requests.get("http://localhost:8080/cron?password=" + Secret().password)
+
+    # Update data in Cloud SQL: 
+
+    # password prevents 3rd parties running the cron servlet at undesired times. Stored in a Secret() class
+    password = Secret().password
+    # create a connection request for the cron servlet, with password as a parameter
+    req = requests.get("http://localhost:8080/cron", params={"password" : password}) # replace this link with the googleplex link in prod
+    # close the request
+    req.close()
