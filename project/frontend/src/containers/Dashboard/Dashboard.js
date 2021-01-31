@@ -57,6 +57,38 @@ const Dashboard = (props) => {
     },
   ];
 
+  const toDayHourMinute = (totalTime) => {
+    let millisInDay = 24 * 60 * 60 * 1000,
+      millisInHour = 60 * 60 * 1000,
+      days = Math.floor(totalTime / millisInDay),
+      hours = Math.floor((totalTime - days * millisInDay) / millisInHour),
+      minutes = Math.round(
+        (totalTime - days * millisInDay - hours * millisInHour) / 60000
+      ),
+      pad = function (n) {
+        return n < 10 ? "0" + n : n;
+      };
+    if (minutes === 60) {
+      hours++;
+      minutes = 0;
+    }
+    if (hours === 24) {
+      days++;
+      hours = 0;
+    }
+    return [days, pad(hours), pad(minutes)];
+  };
+
+  const formatDHM = (dhm) => {
+    return dhm[0] + " Days " + dhm[1] + " Hours " + dhm[2] + " Minutes ";
+  };
+
+  const getTimeRemaining = () => {
+    const millisNow = Date.now();
+    const remainingTime = props.generalInfo.endDate - millisNow;
+    return formatDHM(toDayHourMinute(remainingTime));
+  };
+
   return (
     <div className={classes.DashboardContainer}>
       <div className={classes.Column}>
@@ -67,7 +99,7 @@ const Dashboard = (props) => {
         </div>
         <Block className={classes.CompInfo}>
           <h2>Time until end of competition:</h2>
-          <p className={classes.CountDown}>20 Days 13 hours etc</p>
+          <p className={classes.CountDown}>{getTimeRemaining()}</p>
           <h2>Your current ranking:</h2>
           <p>
             <span className={classes.Ranking}>2</span>nd
