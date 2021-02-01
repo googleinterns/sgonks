@@ -6,6 +6,7 @@ import Block from "../../components/UI/Block/Block";
 import ShortSGonksList from "../../components/SGonksLists/ShortSGonksList/ShortSGonksList";
 import TrendingSearches from "../../components/TrendingSearches/TrendingSearches";
 import RecentBuysList from "../../components/RecentBuys/RecentBuysList";
+import ChartCard from "../../components/ChartCard/ChartCard";
 
 const Dashboard = (props) => {
   const placeholderSGonks = [
@@ -107,6 +108,19 @@ const Dashboard = (props) => {
     },
   ];
 
+  const placeholderChartsData = {
+      haxis: "Date",
+      vaxis: "Popularity",
+      data: [ 
+        ['x', 'trend 1', 'trend 2', 'trend 3'],
+        [0, 1, 2, 90],
+        [1, 0, 6, 80],
+        [2, 34, 23, 23],
+        [3, 22, 43, 12],
+        [4, 34, 56, 91]
+      ]
+    };
+
   return (
     <div className={classes.DashboardContainer}>
       <div className={classes.Column}>
@@ -134,7 +148,9 @@ const Dashboard = (props) => {
             <ShortSGonksList sgonks={placeholderSGonks}></ShortSGonksList>
           </div>
         </Block>
-        <Block className={classes.ChartContainer}>chart here</Block>
+        <Block className={classes.ChartContainer}>
+          <ChartCard chartInfo={placeholderChartsData} ></ChartCard>
+        </Block>
         <LinkButton inverted="true">View my sGonks</LinkButton>
       </div>
       <div className={classes.Column}>
