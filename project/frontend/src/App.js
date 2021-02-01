@@ -58,7 +58,6 @@ function App() {
               };
             });
           }),
-
         fetch("./recentBuys?competition=" + compId)
           .then((response) => response.json())
           .then((data) => {
@@ -69,13 +68,16 @@ function App() {
               };
             });
           }),
-
         fetch("./investments?user=" + user.id + "&competition=" + compId)
           .then((response) => response.json())
           .then((data) => {
-            console.log("fetched investments:");
-            console.log(data);
-        }),
+            setCompetitionInfo((prevState) => {
+              return {
+                ...prevState,
+                investments: data,
+              };
+            });
+          }),
         fetch("./trending")
           .then((response) => response.json())
           .then((data) => {
@@ -122,6 +124,7 @@ function App() {
             generalInfo={competitionInfo.generalInfo}
             recentBuys={competitionInfo.recentBuys}
             trendingSearches={competitionInfo.trending}
+            investments={competitionInfo.investments}
           ></Dashboard>
         )}
       ></Route>
