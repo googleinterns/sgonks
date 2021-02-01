@@ -7,7 +7,7 @@ import { useHorizontalScroll } from "../../components/UI/UIActions/useHorizontal
 const SelectCompetition = (props) => {
   const scrollRef = useHorizontalScroll();
 
-  const userId = props.user;
+  const userId = 1;
   const [comps, setComps] = useState(null);
 
   const competitionSelectedHandler = (compId) => {
