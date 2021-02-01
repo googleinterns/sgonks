@@ -70,12 +70,12 @@ function App() {
             });
           }),
 
-        // fetch("./investments?user=" + user.id + "&competition=" + compId)
-        //   .then((response) => response.json())
-        //   .then((data) => {
-        //     console.log("fetched investments:");
-        //     console.log(data);
-        //   });
+        fetch("./investments?user=" + user.id + "&competition=" + compId)
+          .then((response) => response.json())
+          .then((data) => {
+            console.log("fetched investments:");
+            console.log(data);
+        }),
         fetch("./trending")
           .then((response) => response.json())
           .then((data) => {
