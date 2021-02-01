@@ -89,6 +89,12 @@ const Dashboard = (props) => {
     return formatDHM(toDayHourMinute(remainingTime));
   };
 
+  const getOrdinalOnly = (n) => {
+    const s = ["th", "st", "nd", "rd"],
+      v = n % 100;
+    return s[(v - 20) % 10] || s[v] || s[0];
+  };
+
   return (
     <div className={classes.DashboardContainer}>
       <div className={classes.Column}>
@@ -102,7 +108,8 @@ const Dashboard = (props) => {
           <p className={classes.CountDown}>{getTimeRemaining()}</p>
           <h2>Your current ranking:</h2>
           <p>
-            <span className={classes.Ranking}>2</span>nd
+            <span className={classes.Ranking}>{props.generalInfo.rank}</span>
+            {getOrdinalOnly(props.generalInfo.rank)}
           </p>
         </Block>
         <Block className={classes.TeammateBuys}>
