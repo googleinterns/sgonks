@@ -21,7 +21,7 @@ const ShortSGonksList = (props) => {
   return (
     <div {...props} className={classes.List}>
       {sGonksList}
-      {props.sgonks.length > LIST_LIMIT ? (
+      {props.sgonks.length > MAX_ROWS_IN_SHORT_SGONKS_LIST ? (
         <Link to="/toroutelater" className={classes.SeeAll}>
           ...more
         </Link>
