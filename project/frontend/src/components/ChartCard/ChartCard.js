@@ -4,25 +4,19 @@ import classes from "./ChartCard.module.css";
 
 
 const ChartCard = (props) => {
+    console.log("HELLO" + props.chartInfo.data)
     return (
         <div className={classes.ChartContainer}>
             <Chart
                 chartType="LineChart"
                 loader={<div>Loading Chart</div>}
-                data={[ // hard coded for now
-                    ['x', 'trend 1', 'trend 2', 'trend 3'],
-                    [0, 1, 2, 90],
-                    [1, 0, 6, 80],
-                    [2, 34, 23, 23],
-                    [3, 22, 43, 12],
-                    [4, 34, 56, 91]
-                ]}
+                data={props.chartInfo.data}
                 options={{
                     hAxis : {
-                        title : 'Date'
+                        title : props.chartInfo.haxis
                     },
                     vAxis : {
-                        title : 'Popularity',
+                        title : props.chartInfo.vaxis
                     }
                 }}
                 rootProps={{ 'data-testid' : '2' }}
