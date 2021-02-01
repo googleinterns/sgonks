@@ -6,6 +6,7 @@ import Block from "../../components/UI/Block/Block";
 import ShortSGonksList from "../../components/SGonksLists/ShortSGonksList/ShortSGonksList";
 import TrendingSearches from "../../components/TrendingSearches/TrendingSearches";
 import RecentBuysList from "../../components/RecentBuys/RecentBuysList";
+import ChartCard from "../../components/ChartCard/ChartCard";
 
 const Dashboard = (props) => {
   const placeholderSGonks = [
@@ -134,7 +135,9 @@ const Dashboard = (props) => {
             <ShortSGonksList sgonks={placeholderSGonks}></ShortSGonksList>
           </div>
         </Block>
-        <Block className={classes.ChartContainer}>chart here</Block>
+        <Block className={classes.ChartContainer}>
+          <ChartCard></ChartCard>
+        </Block>
         <LinkButton inverted="true">View my sGonks</LinkButton>
       </div>
       <div className={classes.Column}>
