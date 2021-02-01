@@ -134,14 +134,6 @@ public class InvestmentCalculator {
 
     //return date in milliseconds
     public long convertDateToEpochLong(Date d) {
-        LOGGER.log(Level.WARNING, d.toString());
-        int year = d.getYear();
-        int month = d.getMonth();
-        int day = d.getDay();
-        LOGGER.log(Level.WARNING, "year " + year + "");
-        LOGGER.log(Level.WARNING, "month " + month + "");
-        LOGGER.log(Level.WARNING, "day " + day + "");
-
         Calendar c = Calendar.getInstance(TimeZone.getTimeZone("GMT"));
         c.setTime(d);
         c.set(Calendar.HOUR_OF_DAY, 0);
