@@ -42,7 +42,15 @@ public class AuthServlet extends HttpServlet {
 
     try (Connection conn = pool.getConnection()) {
       String email = request.getParameter("email");
+      String name = request.getParameter("name");
+      LOGGER.log(Level.WARNING, name);
+      LOGGER.log(Level.WARNING, email);
       User user = getUser(conn, email);
+
+      if (user == null) {
+        // the user is not already in the database - create a new one
+        user = addUser(conn, name, email);
+      }
 
       Gson gson = new Gson();
       response.setContentType("application/json");
@@ -68,6 +76,26 @@ public class AuthServlet extends HttpServlet {
       while (rs.next()) {
         id = rs.getInt(1);
         name = rs.getString(2);
+        return User.create(id, name, email);
+      }
+      return null;
+    }
+  }
+
+  private User addUser(Connection conn, String name, String email) throws SQLException {
+    String stmt = "INSERT INTO users (name, email) VALUES ('" + name + "', '" + email + "');";
+    try (PreparedStatement userStmt = conn.prepareStatement(stmt);) {
+      // Execute the statement
+      userStmt.execute();
+      LOGGER.log(Level.INFO, "User " + name + " added to database.");
+
+    }
+    String getId = "SELECT LAST_INSERT_ID();";
+    try (PreparedStatement idStmt = conn.prepareStatement(getId);) {
+      ResultSet rs = idStmt.executeQuery();
+      int id;
+      while (rs.next()) {
+        id = rs.getInt(1);
         return User.create(id, name, email);
       }
       return null;
