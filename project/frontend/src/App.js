@@ -108,6 +108,7 @@ function App() {
           <SelectCompetition
             {...props}
             compIdChanged={setCompId}
+            user={user.id}
           ></SelectCompetition>
         )}
       ></Route>
