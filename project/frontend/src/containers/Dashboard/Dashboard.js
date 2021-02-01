@@ -8,6 +8,7 @@ import TrendingSearches from "../../components/TrendingSearches/TrendingSearches
 import RecentBuysList from "../../components/RecentBuys/RecentBuysList";
 
 const Dashboard = (props) => {
+  console.log(props);
   const placeholderSGonks = [
     {
       searchTerm: "chicken wings",
@@ -56,56 +57,43 @@ const Dashboard = (props) => {
     },
   ];
 
-  const placeholderTrends = [
-    "Kellyanne Conway",
-    "Filibuster",
-    "Fultondale al",
-    "Ben Askren",
-    "Stock-market",
-    "Etsy stock",
-    "Elliot Page",
-    "Susan Rice",
-    "Raya and the Last Dragon",
-    "Starlink",
-  ];
+  const toDayHourMinute = (totalTime) => {
+    let millisInDay = 24 * 60 * 60 * 1000,
+      millisInHour = 60 * 60 * 1000,
+      days = Math.floor(totalTime / millisInDay),
+      hours = Math.floor((totalTime - days * millisInDay) / millisInHour),
+      minutes = Math.round(
+        (totalTime - days * millisInDay - hours * millisInHour) / 60000
+      ),
+      pad = function (n) {
+        return n < 10 ? "0" + n : n;
+      };
+    if (minutes === 60) {
+      hours++;
+      minutes = 0;
+    }
+    if (hours === 24) {
+      days++;
+      hours = 0;
+    }
+    return [days, pad(hours), pad(minutes)];
+  };
 
-  const placeholderRecentBuys = [
-    {
-      buyerName: "Mercury Lin",
-      buyerEmail: "mercurylin@google.com",
-      amountBought: 3921,
-      searchTerm: "pineapples",
-      timeBought: 1580085733000,
-    },
-    {
-      buyerName: "Emma Hogan",
-      buyerEmail: "emmahogan@google.com",
-      amountBought: 64526,
-      searchTerm: "bitcoin",
-      timeBought: 1580129754000,
-    },
-    {
-      buyerName: "Phoebe Khokgawe",
-      buyerEmail: "phoebek@google.com",
-      amountBought: 4213,
-      searchTerm: "chicken wings",
-      timeBought: 1579664662000,
-    },
-    {
-      buyerName: "Tex Moran",
-      buyerEmail: "texm@google.com",
-      amountBought: 1,
-      searchTerm: "kangaroo",
-      timeBought: 1611877597799,
-    },
-    {
-      buyerName: "Leon Nemets",
-      buyerEmail: "nemleon@google.com",
-      amountBought: "777",
-      searchTerm: "rick roll",
-      timeBought: 1580214808000,
-    },
-  ];
+  const formatDHM = (dhm) => {
+    return dhm[0] + "  Days  " + dhm[1] + "  Hours  " + dhm[2] + "  Minutes  ";
+  };
+
+  const getTimeRemaining = () => {
+    const millisNow = Date.now();
+    const remainingTime = props.generalInfo.endDate - millisNow;
+    return formatDHM(toDayHourMinute(remainingTime));
+  };
+
+  const getOrdinalOnly = (n) => {
+    const s = ["th", "st", "nd", "rd"],
+      v = n % 100;
+    return s[(v - 20) % 10] || s[v] || s[0];
+  };
 
   return (
     <div className={classes.DashboardContainer}>
@@ -117,14 +105,15 @@ const Dashboard = (props) => {
         </div>
         <Block className={classes.CompInfo}>
           <h2>Time until end of competition:</h2>
-          <p className={classes.CountDown}>20 Days 13 hours etc</p>
+          <p className={classes.CountDown}>{getTimeRemaining()}</p>
           <h2>Your current ranking:</h2>
-          <p>
-            <span className={classes.Ranking}>2</span>nd
+          <p className={classes.RankOrdinal}>
+            <span className={classes.Ranking}>{props.generalInfo.rank}</span>
+            {getOrdinalOnly(props.generalInfo.rank)}
           </p>
         </Block>
         <Block className={classes.TeammateBuys}>
-          <RecentBuysList buys={placeholderRecentBuys}></RecentBuysList>
+          <RecentBuysList buys={props.recentBuys}></RecentBuysList>
         </Block>
       </div>
       <div className={classes.Column}>
@@ -140,15 +129,17 @@ const Dashboard = (props) => {
       <div className={classes.Column}>
         <Block className={classes.MoneyInfo}>
           <h2>Currently available:</h2>
-          <p>t${props.currentlyAvail}</p>
+          <p>t${props.generalInfo.amountAvailable}</p>
           <h2>Net worth:</h2>
-          <p>t${props.netWorth}</p>
+          <p>t${props.generalInfo.netWorth}</p>
         </Block>
         <LinkButton>Buy sGonks</LinkButton>
         <Block className={classes.TrendingSearches}>
           <h2>Trending searches</h2>
           <div className={classes.TrendingSearchListContainer}>
-            <TrendingSearches searches={placeholderTrends}></TrendingSearches>
+            <TrendingSearches
+              searches={props.trendingSearches}
+            ></TrendingSearches>
           </div>
         </Block>
       </div>

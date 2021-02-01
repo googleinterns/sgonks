@@ -18,6 +18,8 @@ const NO_COMPETITION = 0;
 function App() {
   const [user, setUser] = useState({ signedIn: false });
   const [compId, setCompId] = useState(0);
+  const [competitionInfo, setCompetitionInfo] = useState({});
+  const [loading, setLoading] = useState(false);
 
   React.useEffect(() => {
     const unsubscribe = onAuthStateChange(setUser);
@@ -37,10 +39,59 @@ function App() {
     setUser((prevState) => {
       return {
         ...prevState,
-        id: 123,
+        id: 1,
       };
     });
   }
+
+  React.useEffect(() => {
+    if (user.signedIn && user.id && compId) {
+      Promise.all([
+        setLoading(true),
+        fetch("./competitionInfo?user=" + user.id + "&competition=" + compId)
+          .then((response) => response.json())
+          .then((data) => {
+            setCompetitionInfo((prevState) => {
+              return {
+                ...prevState,
+                generalInfo: data,
+              };
+            });
+          }),
+
+        fetch("./recentBuys?competition=" + compId)
+          .then((response) => response.json())
+          .then((data) => {
+            setCompetitionInfo((prevState) => {
+              return {
+                ...prevState,
+                recentBuys: data,
+              };
+            });
+          }),
+
+        // fetch("./investments?user=" + user.id + "&competition=" + compId)
+        //   .then((response) => response.json())
+        //   .then((data) => {
+        //     console.log("fetched investments:");
+        //     console.log(data);
+        //   });
+        fetch("./trending")
+          .then((response) => response.json())
+          .then((data) => {
+            setCompetitionInfo((prevState) => {
+              return {
+                ...prevState,
+                trending: data,
+              };
+            });
+          }),
+      ]).then(() => {
+        console.log("done");
+        setLoading(false);
+      });
+    }
+  }, [user.id]);
 
   let pageRoute = !user.signedIn ? (
     <Switch>
@@ -60,9 +111,20 @@ function App() {
       ></Route>
       <Redirect to="/compselect"></Redirect>
     </Switch>
+  ) : loading ? (
+    <div>Loading...</div>
   ) : (
     <Switch>
-      <Route path="/dashboard" component={Dashboard}></Route>
+      <Route
+        path="/dashboard"
+        render={() => (
+          <Dashboard
+            generalInfo={competitionInfo.generalInfo}
+            recentBuys={competitionInfo.recentBuys}
+            trendingSearches={competitionInfo.trending}
+          ></Dashboard>
+        )}
+      ></Route>
       <Route path="/placeholder" component={Explanation}></Route>
       <Redirect to="/dashboard"></Redirect>
     </Switch>
