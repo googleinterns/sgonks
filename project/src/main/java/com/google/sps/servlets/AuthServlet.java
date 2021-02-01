@@ -14,9 +14,6 @@
 
 package com.google.sps.servlets;
 
-import com.google.auth.oauth2.GoogleCredentials;
-import com.google.firebase.FirebaseApp;
-import com.google.firebase.FirebaseOptions;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseAuthException;
 import com.google.firebase.auth.FirebaseToken;
@@ -63,15 +60,23 @@ public class AuthServlet extends HttpServlet {
 
   @Override
   public void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException {
-    //set up the SDK
-    //@TODO might be more efficient to set up the somewhere else
-    FirebaseOptions options = FirebaseOptions.builder()
-            .setCredentials(GoogleCredentials.getApplicationDefault())
-            .setDatabaseUrl("https://sgonks-step272.firebaseio.com/")
-            .build();
+    String uid = verifyIDToken(request);
+    //stored the user data in the session
+    request.getSession().setAttribute("uid",uid);
+  }
 
-    FirebaseApp.initializeApp(options);
+  @Override
+  public void doDelete(HttpServletRequest request, HttpServletResponse response) throws IOException {
+    request.getSession().setAttribute("uid",null);
+  }
 
+  /**
+   *  Get the ID Token that is passed though request, verify the user and return the decoded uid.
+   * @param request -- request
+   * @return decoded ID Token.
+   * @throws IOException
+   */
+  private String verifyIDToken(HttpServletRequest request) throws IOException{
     //get the client ID Token from the request body
     StringBuilder buffer = new StringBuilder();
     BufferedReader reader = request.getReader();
@@ -89,15 +94,8 @@ public class AuthServlet extends HttpServlet {
     } catch (FirebaseAuthException e) {
       e.printStackTrace();
     }
-    String uid = decodedToken.getUid();
 
-    //stored the user data in the session
-    request.getSession().setAttribute("uid",uid);
-  }
-
-  @Override
-  public void doDelete(HttpServletRequest request, HttpServletResponse response) throws IOException {
-    request.getSession().setAttribute("uid",null);
+    return decodedToken.getUid();
   }
 
   private User getUser(Connection conn, String email) throws SQLException {

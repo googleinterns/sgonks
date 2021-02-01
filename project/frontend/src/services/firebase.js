@@ -13,6 +13,7 @@ export const signInWithGoogle = async () => {
 
   let idToken = await auth.currentUser.getIdToken(true);
 
+  // sent the idToken POST function to verify the user.
   try {
     await fetch("/authentication", {
       method: "POST",
@@ -44,10 +45,9 @@ export const onAuthStateChange = (callback) => {
 };
 
 export const signOut = async () => {
-  //send a POST request to the same servlet
-  //clear the session that the uid is stored
   let idToken = await auth.currentUser.getIdToken(true);
 
+  //send a DELETE request to removed user's saved uid token.
   try {
     await fetch("/authentication", {
       method: "DELETE",
