@@ -50,6 +50,7 @@ public class CompetitionsServlet extends HttpServlet {
 
     try (Connection conn = pool.getConnection()) {
       int userId = Integer.parseInt(request.getParameter("user"));
+      LOGGER.log(Level.WARNING, Integer.toString(userId));
       List<CompetitionSummary> competitions = getUserCompetitions(conn, userId);
       Gson gson = new Gson();
       response.setContentType("application/json");
@@ -76,7 +77,7 @@ public class CompetitionsServlet extends HttpServlet {
       + "participants.net_worth, "
       + "participants.rank, "
       + "participants.rank_yesterday "
-      + "FROM competitions, participants WHERE competitions.id=participants.id AND participants.user=" + userId + ";";
+      + "FROM competitions, participants WHERE competitions.id=participants.competition AND participants.user=" + userId + ";";
     List<CompetitionSummary> competitions = new ArrayList<>();
     try (PreparedStatement competitionsStmt = conn.prepareStatement(stmt);) {
       // Execute the statement
