@@ -78,20 +78,21 @@ public class InvestmentServlet extends HttpServlet {
       ResultSet rs = investmentsStmt.executeQuery();
       // Convert a result into User object
       String googleSearch;
-      long investDate;
+      Long investDate;
       Date sellDateOrNull;
-      long sellDate;
+      Long sellDate;
       int amtInvested;
       int currentValue;
       ImmutableList<Long> dataPoints;
       while (rs.next()) {
         googleSearch = rs.getString(1);
-        investDate = rs.getDate(2).getTime();
+        investDate = calc.convertDateToEpochLong(rs.getDate(2));
+        LOGGER.log(Level.WARNING, investDate + "");
         sellDateOrNull = rs.getDate(3);
         if (sellDateOrNull == null) {
-          sellDate = 0;
+          sellDate = 0L;
         } else {
-          sellDate = sellDateOrNull.getTime();
+          sellDate = calc.convertDateToEpochLong(sellDateOrNull);
         }
         amtInvested = rs.getInt(4);
         currentValue = calc.getInvestmentValue(googleSearch, investDate, sellDate, amtInvested);
