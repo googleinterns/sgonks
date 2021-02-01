@@ -35,4 +35,13 @@
   width: 34%;
   height: 100%;
   background: lightyellow;
+  display: flex;
+  flex-direction: column;
+  flex-wrap: nowrap;
+  justify-content: space-between;
+  align-items: stretch;
+}
+
+.InfoBlock {
+  height: 38.5%;
 }
