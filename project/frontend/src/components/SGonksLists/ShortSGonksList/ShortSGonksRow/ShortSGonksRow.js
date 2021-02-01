@@ -2,11 +2,14 @@ import React from "react";
 import classes from "./ShortSGonksRow.module.css";
 
 const ShortSGonksRow = (props) => {
+  console.log(props);
   const getDiffIndicator = () => {
     const diff =
-      props.currentprice > props.priceYesterday
+      props.datapoints[props.datapoints.length - 1] >
+      props.datapoints[props.datapoints.length - 2]
         ? "+"
-        : props.currentprice < props.priceYesterday
+        : props.datapoints[props.datapoints.length - 1] <
+          props.datapoints[props.datapoints.length - 2]
         ? "-"
         : "=";
 
