@@ -129,9 +129,9 @@ const Dashboard = (props) => {
       <div className={classes.Column}>
         <Block className={classes.MoneyInfo}>
           <h2>Currently available:</h2>
-          <p>t${props.currentlyAvail}</p>
+          <p>t${props.generalInfo.amountAvailable}</p>
           <h2>Net worth:</h2>
-          <p>t${props.netWorth}</p>
+          <p>t${props.generalInfo.netWorth}</p>
         </Block>
         <LinkButton>Buy sGonks</LinkButton>
         <Block className={classes.TrendingSearches}>
