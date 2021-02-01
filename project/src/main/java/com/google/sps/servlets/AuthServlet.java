@@ -81,9 +81,6 @@ public class AuthServlet extends HttpServlet {
       buffer.append(System.lineSeparator());
     }
     String body = buffer.toString();
-    System.out.println(body);
-
-
 
     //decode and verify client ID token
     FirebaseToken decodedToken = null;
@@ -93,18 +90,14 @@ public class AuthServlet extends HttpServlet {
       e.printStackTrace();
     }
     String uid = decodedToken.getUid();
-    System.out.println("This is the UID  " + uid);
 
     //stored the user data in the session
     request.getSession().setAttribute("uid",uid);
-
-    System.out.println("TESTING 123  :: " + request.getSession().getAttribute("uid"));
   }
 
   @Override
   public void doDelete(HttpServletRequest request, HttpServletResponse response) throws IOException {
     request.getSession().setAttribute("uid",null);
-    System.out.println("USER HAS SIGNED OUT " + request.getSession().getAttribute("uid"));
   }
 
   private User getUser(Connection conn, String email) throws SQLException {

@@ -56,7 +56,7 @@ export const signOut = async () => {
       },
       body: idToken,
     });
-    console.log("successfully signed out");
+    console.log("user successfully signed out");
   } catch (error) {
     console.error("Error:", error);
   }
