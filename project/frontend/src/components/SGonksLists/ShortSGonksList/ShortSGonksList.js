@@ -12,8 +12,9 @@ const ShortSGonksList = (props) => {
     .map((singularSGonk) => {
       return (
         <ShortSGonksRow
-          sgonk={singularSGonk}
-          key={singularSGonk.searchTerm}
+          key={singularSGonk.searchItem}
+          searchterm={singularSGonk.searchItem}
+          currentprice={singularSGonk.currentValue}
         ></ShortSGonksRow>
       );
     });

@@ -120,7 +120,7 @@ const Dashboard = (props) => {
         <Block className={classes.YourSGonks}>
           <h2>Your sGonks</h2>
           <div className={classes.sGonksListContainer}>
-            <ShortSGonksList sgonks={placeholderSGonks}></ShortSGonksList>
+            <ShortSGonksList sgonks={props.investments}></ShortSGonksList>
           </div>
         </Block>
         <Block className={classes.ChartContainer}>chart here</Block>
