@@ -40,6 +40,7 @@ public class InvestmentCalculator {
 
     private static final Logger LOGGER = Logger.getLogger(AuthServlet.class.getName());
     private static final int ONE_DAY_SECONDS = 24 * 60 * 60;
+    private static final int ONE_DAY_MILLISECONDS = ONE_DAY_SECONDS * 1000;
 
     public int calculateNetWorth(Connection conn, long userId, long competitionId) throws SQLException{
         int investmentsValue = sumInvestmentValues(conn, userId, competitionId);
@@ -128,6 +129,26 @@ public class InvestmentCalculator {
         c.set(Calendar.SECOND, 0);
         c.set(Calendar.MILLISECOND, 0);
         long unixTime = c.getTimeInMillis() / 1000 - ONE_DAY_SECONDS;
+        return unixTime;
+    }
+
+    //return date in milliseconds
+    public long convertDateToEpochLong(Date d) {
+        LOGGER.log(Level.WARNING, d.toString());
+        int year = d.getYear();
+        int month = d.getMonth();
+        int day = d.getDay();
+        LOGGER.log(Level.WARNING, "year " + year + "");
+        LOGGER.log(Level.WARNING, "month " + month + "");
+        LOGGER.log(Level.WARNING, "day " + day + "");
+
+        Calendar c = Calendar.getInstance(TimeZone.getTimeZone("GMT"));
+        c.setTime(d);
+        c.set(Calendar.HOUR_OF_DAY, 0);
+        c.set(Calendar.MINUTE, 0);
+        c.set(Calendar.SECOND, 0);
+        c.set(Calendar.MILLISECOND, 0);
+        long unixTime = c.getTimeInMillis() - ONE_DAY_MILLISECONDS;
         return unixTime;
     }
 }
