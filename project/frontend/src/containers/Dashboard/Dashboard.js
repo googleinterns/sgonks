@@ -107,7 +107,7 @@ const Dashboard = (props) => {
           <h2>Time until end of competition:</h2>
           <p className={classes.CountDown}>{getTimeRemaining()}</p>
           <h2>Your current ranking:</h2>
-          <p>
+          <p className={classes.RankOrdinal}>
             <span className={classes.Ranking}>{props.generalInfo.rank}</span>
             {getOrdinalOnly(props.generalInfo.rank)}
           </p>
