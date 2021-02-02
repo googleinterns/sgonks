@@ -9,6 +9,55 @@ import RecentBuysList from "../../components/RecentBuys/RecentBuysList";
 import Rank from "../../components/Rank/Rank";
 
 const Dashboard = (props) => {
+  console.log(props);
+  const placeholderSGonks = [
+    {
+      searchTerm: "chicken wings",
+      currentPrice: "39122",
+      priceYesterday: "29319",
+    },
+    {
+      searchTerm: "chicken nuggets",
+      currentPrice: "4214",
+      priceYesterday: "321442",
+    },
+    {
+      searchTerm: "random term",
+      currentPrice: "321",
+      priceYesterday: "4155",
+    },
+    {
+      searchTerm: "spite zero",
+      currentPrice: "2313",
+      priceYesterday: "2313",
+    },
+    {
+      searchTerm: "escher",
+      currentPrice: "321",
+      priceYesterday: "654",
+    },
+    {
+      searchTerm: "react donut",
+      currentPrice: "32145",
+      priceYesterday: "532578",
+    },
+    {
+      searchTerm: "asdfdsagsafwg qweqrqewqe",
+      currentPrice: "61512",
+      priceYesterday: "76522",
+    },
+    {
+      searchTerm: "unicorns",
+      currentPrice: "321809",
+      priceYesterday: "321321",
+    },
+    {
+      searchTerm: "eek",
+      currentPrice: "321",
+      priceYesterday: "321521",
+    },
+  ];
+
   const toDayHourMinute = (totalTime) => {
     let millisInDay = 24 * 60 * 60 * 1000,
       millisInHour = 60 * 60 * 1000,

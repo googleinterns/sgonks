@@ -10,10 +10,11 @@ const ShortSGonksList = (props) => {
   console.log(props);
   const sGonksList = props.sgonks
     .slice(0, MAX_ROWS_IN_SHORT_SGONKS_LIST)
-    .map((singularSGonk) => {
+    .map((singularSGonk, i) => {
       return (
         <ShortSGonksRow
-          key={singularSGonk.searchItem}
+          //TODO replace key with investment ID once it's ready
+          key={i}
           searchterm={singularSGonk.searchItem}
           currentprice={singularSGonk.currentValue}
           datapoints={singularSGonk.dataPoints}
