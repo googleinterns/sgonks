@@ -4,14 +4,10 @@ import classes from "./ShortSGonksRow.module.css";
 const ShortSGonksRow = (props) => {
   console.log(props);
   const getDiffIndicator = () => {
-    const diff =
-      props.datapoints[props.datapoints.length - 1] >
-      props.datapoints[props.datapoints.length - 2]
-        ? "+"
-        : props.datapoints[props.datapoints.length - 1] <
-          props.datapoints[props.datapoints.length - 2]
-        ? "-"
-        : "=";
+    const priceDelta =
+      props.datapoints[props.datapoints.length - 1] -
+      props.datapoints[props.datapoints.length - 2];
+    const diff = priceDelta > 0 ? "+" : priceDelta < 0 ? "-" : "=";
 
     const style =
       diff == "+"
