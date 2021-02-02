@@ -32,7 +32,6 @@ import javax.servlet.http.HttpServletResponse;
 import javax.sql.DataSource;
 import java.sql.Date;
 
-
 import com.google.common.collect.ImmutableList;
 
 import com.google.cloud.pubsub.v1.Publisher;
@@ -41,7 +40,8 @@ import com.google.pubsub.v1.PubsubMessage;
 import com.google.protobuf.ByteString;
 import java.util.HashMap;
 import java.nio.charset.StandardCharsets;
-import java.util.concurrent.ExecutionException;
+
+import java.util.concurrent.*;
 
 
 @WebServlet("/newInvestment")
@@ -75,20 +75,26 @@ public class NewInvestmentServlet extends HttpServlet {
                 PubsubMessage pubsubApiMessage = PubsubMessage.newBuilder().setData(byteStr).build();
                 Publisher publisher = Publisher.newBuilder(
                     ProjectTopicName.of("google.com:sgonks-step272", "trendData")).build();
-            
-                // Attempt to publish the message
+                
                 try {
+                    // Attempt to publish the message
                     publisher.publish(pubsubApiMessage).get();
+                    // listen for data to be added to db
+                    data = listenForDataOrTimeout(calc, data, googleSearch);
                 } catch (InterruptedException | ExecutionException e) {
                     LOGGER.log(Level.SEVERE, "Error publishing Pub/Sub message: " + e.getMessage(), e);
                 }
             }
-            while (data == null) {
-                // wait until data is available (TODO : Add timeout)
-                data = calc.getInvestmentDataIfExists(googleSearch);
+            if (data == null) {
+                // we still have no data - send timeout notice
+                LOGGER.log(Level.WARNING, "Timeout fetching investment data");
+                response.setContentType("application/html");
+                response.getWriter().println("<p>We were unable to fetch this data right now<p>");
+            } else {
+                // data retrieved from datastore, return data in json form
+                response.setContentType("application/json");
+                response.getWriter().println(gson.toJson(data));
             }
-            response.setContentType("application/json");
-            response.getWriter().println(gson.toJson(data));
         } catch (SQLException ex) {
             LOGGER.log(Level.WARNING, "Error while attempting to fetch investment data.", ex);
             response.setStatus(500);
@@ -96,10 +102,10 @@ public class NewInvestmentServlet extends HttpServlet {
         }
     }
 
-  /**
-   * Add new investment to Investments table
-   */
-    private void addUserInvestment(
+    /**
+     * Add new investment to Investments table
+     */
+    private void addUserInvestment (
         Connection conn, 
         int userId, 
         int competitionId, 
@@ -114,5 +120,17 @@ public class NewInvestmentServlet extends HttpServlet {
             investmentStmt.execute();
             LOGGER.log(Level.INFO, "Investment added to database.");
         }
+    }
+
+    /** 
+     * Check for data in datastore every 0.1 seconds until data exists or 15 seconds have elapsed
+     */
+    private ImmutableList<Long> listenForDataOrTimeout(InvestmentCalculator calc, ImmutableList<Long> data, String googleSearch) throws InterruptedException {
+        long startTime = System.currentTimeMillis(); //fetch starting time
+        while (data == null && (System.currentTimeMillis() - startTime) < 15000) {
+            data = calc.getInvestmentDataIfExists(googleSearch);
+            TimeUnit.MILLISECONDS.sleep(100);
+        }
+        return data;
     }
 }
