@@ -14,6 +14,8 @@ import Layout from "./hoc/Layout/Layout";
 import { AuthContext } from "./context/AuthContext";
 import { onAuthStateChange } from "./services/firebase";
 
+// import 'babel-polyfill'
+
 const NO_COMPETITION = 0;
 
 function App() {
@@ -45,53 +47,40 @@ function App() {
     });
   }
 
+  const fetchAndUpdateCompetitionInfo = async (fetchCall, stateKey) => {
+    return fetch(fetchCall)
+      .then((response) => response.json())
+      .then((data) => {
+        setCompetitionInfo((prevState) => {
+          return {
+            ...prevState,
+            [stateKey]: data,
+          };
+        });
+      });
+  };
+
   React.useEffect(() => {
     if (user.signedIn && user.id && compId) {
       Promise.all([
         setLoading(true),
-        fetch("./competitionInfo?user=" + user.id + "&competition=" + compId)
-          .then((response) => response.json())
-          .then((data) => {
-            setCompetitionInfo((prevState) => {
-              return {
-                ...prevState,
-                generalInfo: data,
-              };
-            });
-          }),
-        fetch("./recentBuys?competition=" + compId)
-          .then((response) => response.json())
-          .then((data) => {
-            setCompetitionInfo((prevState) => {
-              return {
-                ...prevState,
-                recentBuys: data,
-              };
-            });
-          }),
-        fetch("./investments?user=" + user.id + "&competition=" + compId)
-          .then((response) => response.json())
-          .then((data) => {
-            setCompetitionInfo((prevState) => {
-              return {
-                ...prevState,
-                investments: data,
-              };
-            });
-          }),
-        fetch("./trending")
-          .then((response) => response.json())
-          .then((data) => {
-            setCompetitionInfo((prevState) => {
-              return {
-                ...prevState,
-                trending: data,
-              };
-            });
-          }),
+        fetchAndUpdateCompetitionInfo(
+          "./competitionInfo?user=" + user.id + "&competition=" + compId,
+          "generalInfo"
+        ),
+        fetchAndUpdateCompetitionInfo(
+          "./recentBuys?competition=" + compId,
+          "recentBuys"
+        ),
+        fetchAndUpdateCompetitionInfo(
+          "./investments?user=" + user.id + "&competition=" + compId,
+          "investments"
+        ),
+        fetchAndUpdateCompetitionInfo("./trending", "trending"),
       ]).then(() => {
         console.log("done");
         setLoading(false);
+        console.log(competitionInfo);
       });
     }
   }, [user.id]);

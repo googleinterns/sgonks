@@ -1,0 +1,9 @@
+.Rank {
+  font-size: 1.3vw;
+}
+
+.RankNumber {
+  font-size: 4.5vw;
+  line-height: 0.5;
+  margin-top: 20px;
+}

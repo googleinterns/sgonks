@@ -6,57 +6,12 @@ import Block from "../../components/UI/Block/Block";
 import ShortSGonksList from "../../components/SGonksLists/ShortSGonksList/ShortSGonksList";
 import TrendingSearches from "../../components/TrendingSearches/TrendingSearches";
 import RecentBuysList from "../../components/RecentBuys/RecentBuysList";
+import Rank from "../../components/Rank/Rank";
+import ChartCard from "../../components/ChartCard/ChartCard";
+
 
 const Dashboard = (props) => {
   console.log(props);
-  const placeholderSGonks = [
-    {
-      searchTerm: "chicken wings",
-      currentPrice: "39122",
-      priceYesterday: "29319",
-    },
-    {
-      searchTerm: "chicken nuggets",
-      currentPrice: "4214",
-      priceYesterday: "321442",
-    },
-    {
-      searchTerm: "random term",
-      currentPrice: "321",
-      priceYesterday: "4155",
-    },
-    {
-      searchTerm: "spite zero",
-      currentPrice: "2313",
-      priceYesterday: "2313",
-    },
-    {
-      searchTerm: "escher",
-      currentPrice: "321",
-      priceYesterday: "654",
-    },
-    {
-      searchTerm: "react donut",
-      currentPrice: "32145",
-      priceYesterday: "532578",
-    },
-    {
-      searchTerm: "asdfdsagsafwg qweqrqewqe",
-      currentPrice: "61512",
-      priceYesterday: "76522",
-    },
-    {
-      searchTerm: "unicorns",
-      currentPrice: "321809",
-      priceYesterday: "321321",
-    },
-    {
-      searchTerm: "eek",
-      currentPrice: "321",
-      priceYesterday: "321521",
-    },
-  ];
-
   const toDayHourMinute = (totalTime) => {
     let millisInDay = 24 * 60 * 60 * 1000,
       millisInHour = 60 * 60 * 1000,
@@ -89,11 +44,18 @@ const Dashboard = (props) => {
     return formatDHM(toDayHourMinute(remainingTime));
   };
 
-  const getOrdinalOnly = (n) => {
-    const s = ["th", "st", "nd", "rd"],
-      v = n % 100;
-    return s[(v - 20) % 10] || s[v] || s[0];
-  };
+  const placeholderChartsData = {
+      haxis: "Date",
+      vaxis: "Popularity",
+      data: [ 
+        ['x', 'trend 1', 'trend 2', 'trend 3'],
+        [0, 1, 2, 90],
+        [1, 0, 6, 80],
+        [2, 34, 23, 23],
+        [3, 22, 43, 12],
+        [4, 34, 56, 91]
+      ]
+    };
 
   return (
     <div className={classes.DashboardContainer}>
@@ -107,10 +69,7 @@ const Dashboard = (props) => {
           <h2>Time until end of competition:</h2>
           <p className={classes.CountDown}>{getTimeRemaining()}</p>
           <h2>Your current ranking:</h2>
-          <p className={classes.RankOrdinal}>
-            <span className={classes.Ranking}>{props.generalInfo.rank}</span>
-            {getOrdinalOnly(props.generalInfo.rank)}
-          </p>
+          <Rank>{props.generalInfo.rank}</Rank>
         </Block>
         <Block className={classes.TeammateBuys}>
           <RecentBuysList buys={props.recentBuys}></RecentBuysList>
@@ -123,7 +82,9 @@ const Dashboard = (props) => {
             <ShortSGonksList sgonks={props.investments}></ShortSGonksList>
           </div>
         </Block>
-        <Block className={classes.ChartContainer}>chart here</Block>
+        <Block className={classes.ChartContainer}>
+          <ChartCard chartInfo={placeholderChartsData} ></ChartCard>
+        </Block>
         <LinkButton inverted="true">View my sGonks</LinkButton>
       </div>
       <div className={classes.Column}>
