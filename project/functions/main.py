@@ -14,6 +14,11 @@
 
 #!/usr/bin/env python3
 
+"""
+This is the entry point for the Cloud function for getting context data 
+on new investments.
+"""
+
 import base64, json
 from google.cloud import datastore
 from fetch_trends import get_updated_daily_data
