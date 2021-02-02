@@ -64,11 +64,6 @@ public class NewInvestmentServlet extends HttpServlet {
 
         ImmutableList<Long> data = calc.getInvestmentDataIfExists(googleSearch);
         if (data == null) {
-            //this is a new investment - run python script
-            //TODO : FIGURE OUT HOW TO RUN SCRIPT
-
-            //Process process = Runtime.getRuntime().exec(
-            //new String[]{"/usr/bin/python3", "../classes/scripts/get_context_data.py", calc.oneWeekBefore(calc.getLatestDate()) + "", googleSearch});
             String date = calc.oneWeekBefore(calc.getLatestDate()) + "";
 
             HashMap<String, String> arguments = new HashMap<>();
