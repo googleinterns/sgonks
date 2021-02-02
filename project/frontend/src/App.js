@@ -67,55 +67,15 @@ function App() {
           "./competitionInfo?user=" + user.id + "&competition=" + compId,
           "generalInfo"
         ),
-        // fetch("./competitionInfo?user=" + user.id + "&competition=" + compId)
-        //   .then((response) => response.json())
-        //   .then((data) => {
-        //     setCompetitionInfo((prevState) => {
-        //       return {
-        //         ...prevState,
-        //         generalInfo: data,
-        //       };
-        //     });
-        //   }),
         fetchAndUpdateCompetitionInfo(
           "./recentBuys?competition=" + compId,
           "recentBuys"
         ),
-        // fetch("./recentBuys?competition=" + compId)
-        //   .then((response) => response.json())
-        //   .then((data) => {
-        //     setCompetitionInfo((prevState) => {
-        //       return {
-        //         ...prevState,
-        //         recentBuys: data,
-        //       };
-        //     });
-        //   }),
         fetchAndUpdateCompetitionInfo(
           "./investments?user=" + user.id + "&competition=" + compId,
           "investments"
         ),
-        // fetch("./investments?user=" + user.id + "&competition=" + compId)
-        //   .then((response) => response.json())
-        //   .then((data) => {
-        //     setCompetitionInfo((prevState) => {
-        //       return {
-        //         ...prevState,
-        //         investments: data,
-        //       };
-        //     });
-        //   }),
         fetchAndUpdateCompetitionInfo("./trending", "trending"),
-        // fetch("./trending")
-        //   .then((response) => response.json())
-        //   .then((data) => {
-        //     setCompetitionInfo((prevState) => {
-        //       return {
-        //         ...prevState,
-        //         trending: data,
-        //       };
-        //     });
-        //   }),
       ]).then(() => {
         console.log("done");
         setLoading(false);
