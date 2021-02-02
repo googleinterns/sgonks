@@ -7,6 +7,8 @@ import ShortSGonksList from "../../components/SGonksLists/ShortSGonksList/ShortS
 import TrendingSearches from "../../components/TrendingSearches/TrendingSearches";
 import RecentBuysList from "../../components/RecentBuys/RecentBuysList";
 import Rank from "../../components/Rank/Rank";
+import ChartCard from "../../components/ChartCard/ChartCard";
+
 
 const Dashboard = (props) => {
   const toDayHourMinute = (totalTime) => {
@@ -41,6 +43,19 @@ const Dashboard = (props) => {
     return formatDHM(toDayHourMinute(remainingTime));
   };
 
+  const placeholderChartsData = {
+      haxis: "Date",
+      vaxis: "Popularity",
+      data: [ 
+        ['x', 'trend 1', 'trend 2', 'trend 3'],
+        [0, 1, 2, 90],
+        [1, 0, 6, 80],
+        [2, 34, 23, 23],
+        [3, 22, 43, 12],
+        [4, 34, 56, 91]
+      ]
+    };
+
   return (
     <div className={classes.DashboardContainer}>
       <div className={classes.Column}>
@@ -66,7 +81,9 @@ const Dashboard = (props) => {
             <ShortSGonksList sgonks={props.investments}></ShortSGonksList>
           </div>
         </Block>
-        <Block className={classes.ChartContainer}>chart here</Block>
+        <Block className={classes.ChartContainer}>
+          <ChartCard chartInfo={placeholderChartsData} ></ChartCard>
+        </Block>
         <LinkButton inverted="true">View my sGonks</LinkButton>
       </div>
       <div className={classes.Column}>
