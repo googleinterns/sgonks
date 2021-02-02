@@ -17,46 +17,13 @@
 
 # Imports the method for fetching formatted data from google trends
 from fetch_trends import get_trending_searches, get_updated_daily_data
+from database_updates import get_investment_data, update_investment_database, update_trending_database
 from config import Secret
 
 # Imports the Google Cloud client library
 from google.cloud import datastore
 
 import requests
-
-
-def get_investment_data(client):
-    """
-    Fetch investment data from database.
-    returns a list of ("search_term", "investment_date") tuples
-    """
-    search_terms = []
-    investment_dates = []
-
-    query = client.query(kind="TrendsData")
-    results = list(query.fetch()) # a list of every entry of kind TrendsData
-    for entity in results:
-        search_terms.append(entity['search_term'])
-        investment_dates.append(entity['initial_date'])
-    return zip(search_terms, investment_dates)
-
-
-def update_investment_database(data, client):
-    """
-    Add daily search data for term to Datastore db, overwriting old data for given search term
-    """
-    search_query = datastore.Entity(client.key("TrendsData", data["search_term"]))
-    search_query.update(data)
-    client.put(search_query)
-
-
-def update_trending_database(data, client):
-    """
-    Add today's trending searches to datastore, overwriting yesterday's trends
-    """
-    trending = datastore.Entity(client.key("TopTrends", "trending_today"))
-    trending.update(data)
-    client.put(trending)
 
 
 if __name__ == "__main__":
