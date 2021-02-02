@@ -170,6 +170,19 @@
       <scope>test</scope>
     </dependency>
 
+    <dependency>
+      <groupId>com.google.cloud</groupId>
+      <artifactId>google-cloud-pubsub</artifactId>
+    </dependency>
+
+    <!-- Required for Function primitives -->
+    <dependency>
+      <groupId>com.google.cloud.functions</groupId>
+      <artifactId>functions-framework-api</artifactId>
+      <version>1.0.3</version>
+      <scope>provided</scope>
+    </dependency>
+
   </dependencies>
 
   <build>

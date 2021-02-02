@@ -32,12 +32,17 @@ import javax.servlet.http.HttpServletResponse;
 import javax.sql.DataSource;
 import java.sql.Date;
 
+
 import com.google.common.collect.ImmutableList;
 
-
-//DELETE THSI
-import java.io.*;
+import com.google.cloud.pubsub.v1.Publisher;
+import com.google.pubsub.v1.ProjectTopicName;
+import com.google.pubsub.v1.PubsubMessage;
+import com.google.protobuf.ByteString;
+import java.util.HashMap;
 import java.nio.charset.StandardCharsets;
+import java.util.concurrent.ExecutionException;
+
 
 @WebServlet("/newInvestment")
 public class NewInvestmentServlet extends HttpServlet {
@@ -45,6 +50,7 @@ public class NewInvestmentServlet extends HttpServlet {
 
   @Override
   public void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
+    Gson gson = new Gson();
     DataSource pool = (DataSource) request.getServletContext().getAttribute("db-connection-pool");
     InvestmentCalculator calc = new InvestmentCalculator();
 
@@ -61,23 +67,31 @@ public class NewInvestmentServlet extends HttpServlet {
             //this is a new investment - run python script
             //TODO : FIGURE OUT HOW TO RUN SCRIPT
 
-            Process process = Runtime.getRuntime().exec(
-                new String[]{"/usr/bin/python3", "../classes/scripts/get_context_data.py", calc.oneWeekBefore(calc.getLatestDate()) + "", googleSearch});
-            
-            LOGGER.log(Level.WARNING, "GOING IN JAVA");
-            InputStream stdout = process.getInputStream();
-            BufferedReader reader = new BufferedReader(new InputStreamReader(stdout,StandardCharsets.UTF_8));
-            String line;
-            while((line = reader.readLine()) != null){
-               System.out.println("stdout: "+ line);
+            //Process process = Runtime.getRuntime().exec(
+            //new String[]{"/usr/bin/python3", "../classes/scripts/get_context_data.py", calc.oneWeekBefore(calc.getLatestDate()) + "", googleSearch});
+            String date = calc.oneWeekBefore(calc.getLatestDate()) + "";
+
+            HashMap<String, String> arguments = new HashMap<>();
+            arguments.put("search", googleSearch);
+            arguments.put("date", date);
+
+            ByteString byteStr = ByteString.copyFrom(gson.toJson(arguments), StandardCharsets.UTF_8);
+
+            PubsubMessage pubsubApiMessage = PubsubMessage.newBuilder().setData(byteStr).build();
+            Publisher publisher = Publisher.newBuilder(
+                ProjectTopicName.of("google.com:sgonks-step272", "trendData")).build();
+        
+            // Attempt to publish the message
+            try {
+                publisher.publish(pubsubApiMessage).get();
+            } catch (InterruptedException | ExecutionException e) {
+                LOGGER.log(Level.SEVERE, "Error publishing Pub/Sub message: " + e.getMessage(), e);
             }
         }
         while (data == null) {
-            // wait until data is available
+            // wait until data is available (TODO : Add timeout)
             data = calc.getInvestmentDataIfExists(googleSearch);
         }
-
-        Gson gson = new Gson();
         response.setContentType("application/json");
         response.getWriter().println(gson.toJson(data));
     } catch (SQLException ex) {
