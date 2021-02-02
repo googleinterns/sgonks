@@ -110,3 +110,9 @@ input[type="date"] {
   flex-direction: row;
   justify-content: space-evenly;
 }
+
+.DisplayParticipants {
+  height: 200px;
+  margin-bottom: 20px;
+  overflow-y: auto;
+}

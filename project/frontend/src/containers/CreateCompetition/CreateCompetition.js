@@ -1,10 +1,19 @@
-import React from "react";
+import React, { useState } from "react";
 import classes from "./CreateCompetition.module.css";
 import { Link } from "react-router-dom";
 import LinkButton from "../../components/UI/LinkButton/LinkButton";
 import ParticipantCard from "../../components/ParticipantCard/ParticipantCard";
 
 const CreateCompetition = (props) => {
+  let [participant, setParticipant] = useState("");
+  let [participantList, setParticipantList] = useState([]);
+
+  function onAddParticipant() {
+    if (participant === "") return;
+    setParticipantList([participant, ...participantList]);
+    setParticipant("");
+  }
+
   return (
     <div className={classes.CreateCompetitionContainer}>
       <p>Create a competition</p>
@@ -26,9 +35,22 @@ const CreateCompetition = (props) => {
           <div className={classes.AddParticipants}>
             <p>
               {" "}
-              Add Participants: <input type="text" />{" "}
-              <LinkButton inverted="true">Add</LinkButton>
+              Add Participants:{" "}
+              <input
+                type="text"
+                placeholder="example@google.com"
+                value={participant}
+                onChange={(e) => setParticipant(e.target.value)}
+              />{" "}
+              <LinkButton inverted="true" onClick={onAddParticipant}>
+                Add
+              </LinkButton>
             </p>
+            <div className={classes.DisplayParticipants}>
+              {participantList.map((val, i) => (
+                <ParticipantCard key={i} participant={{ email: val }} />
+              ))}
+            </div>
           </div>
         </div>
       </div>
