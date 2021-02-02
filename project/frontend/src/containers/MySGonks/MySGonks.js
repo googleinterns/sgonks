@@ -2,6 +2,7 @@ import React from "react";
 import classes from "./MySGonks.module.css";
 import Block from "../../components/UI/Block/Block";
 import LinkButton from "../../components/UI/LinkButton/LinkButton";
+import LongSGonksList from "../../components/SGonksLists/LongSGonksList/LongSGonksList";
 
 const MySGonks = (props) => {
   return (
@@ -29,7 +30,9 @@ const MySGonks = (props) => {
           <LinkButton to="/toroutelater">Buy sGonks</LinkButton>
         </div>
       </div>
-      <div className={classes.SGonksListContainer}>sgonks list</div>
+      <div className={classes.SGonksListContainer}>
+        <LongSGonksList></LongSGonksList>
+      </div>
     </div>
   );
 };

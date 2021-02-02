@@ -1,0 +1,11 @@
+.ListWrapper {
+  height: 100%;
+  width: 100%;
+}
+
+.List {
+  overflow-y: scroll;
+  overflow-x: none;
+  height: 90%;
+  width: 100%;
+}
