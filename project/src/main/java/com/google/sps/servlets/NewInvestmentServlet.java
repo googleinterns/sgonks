@@ -48,71 +48,71 @@ import java.util.concurrent.ExecutionException;
 public class NewInvestmentServlet extends HttpServlet {
   private static final Logger LOGGER = Logger.getLogger(NewInvestmentServlet.class.getName());
 
-  @Override
-  public void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
-    Gson gson = new Gson();
-    DataSource pool = (DataSource) request.getServletContext().getAttribute("db-connection-pool");
-    InvestmentCalculator calc = new InvestmentCalculator();
+    @Override
+    public void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
+        Gson gson = new Gson();
+        DataSource pool = (DataSource) request.getServletContext().getAttribute("db-connection-pool");
+        InvestmentCalculator calc = new InvestmentCalculator();
 
-    try (Connection conn = pool.getConnection()) {
-        String googleSearch = request.getParameter("search_term");
-        int competitionId = Integer.parseInt(request.getParameter("competition"));
-        int userId = Integer.parseInt(request.getParameter("user"));
-        int amtInvested = Integer.parseInt(request.getParameter("amount_invested"));
+        try (Connection conn = pool.getConnection()) {
+            String googleSearch = request.getParameter("search_term");
+            int competitionId = Integer.parseInt(request.getParameter("competition"));
+            int userId = Integer.parseInt(request.getParameter("user"));
+            int amtInvested = Integer.parseInt(request.getParameter("amount_invested"));
 
-        addUserInvestment(conn, userId, competitionId, googleSearch, amtInvested, calc.getLatestDate());
+            addUserInvestment(conn, userId, competitionId, googleSearch, amtInvested, calc.getLatestDate());
 
-        ImmutableList<Long> data = calc.getInvestmentDataIfExists(googleSearch);
-        if (data == null) {
-            String date = calc.oneWeekBefore(calc.getLatestDate()) + "";
+            ImmutableList<Long> data = calc.getInvestmentDataIfExists(googleSearch);
+            if (data == null) {
+                String date = calc.oneWeekBefore(calc.getLatestDate()) + "";
 
-            HashMap<String, String> arguments = new HashMap<>();
-            arguments.put("search", googleSearch);
-            arguments.put("date", date);
+                HashMap<String, String> arguments = new HashMap<>();
+                arguments.put("search", googleSearch);
+                arguments.put("date", date);
 
-            ByteString byteStr = ByteString.copyFrom(gson.toJson(arguments), StandardCharsets.UTF_8);
+                ByteString byteStr = ByteString.copyFrom(gson.toJson(arguments), StandardCharsets.UTF_8);
 
-            PubsubMessage pubsubApiMessage = PubsubMessage.newBuilder().setData(byteStr).build();
-            Publisher publisher = Publisher.newBuilder(
-                ProjectTopicName.of("google.com:sgonks-step272", "trendData")).build();
-        
-            // Attempt to publish the message
-            try {
-                publisher.publish(pubsubApiMessage).get();
-            } catch (InterruptedException | ExecutionException e) {
-                LOGGER.log(Level.SEVERE, "Error publishing Pub/Sub message: " + e.getMessage(), e);
+                PubsubMessage pubsubApiMessage = PubsubMessage.newBuilder().setData(byteStr).build();
+                Publisher publisher = Publisher.newBuilder(
+                    ProjectTopicName.of("google.com:sgonks-step272", "trendData")).build();
+            
+                // Attempt to publish the message
+                try {
+                    publisher.publish(pubsubApiMessage).get();
+                } catch (InterruptedException | ExecutionException e) {
+                    LOGGER.log(Level.SEVERE, "Error publishing Pub/Sub message: " + e.getMessage(), e);
+                }
             }
+            while (data == null) {
+                // wait until data is available (TODO : Add timeout)
+                data = calc.getInvestmentDataIfExists(googleSearch);
+            }
+            response.setContentType("application/json");
+            response.getWriter().println(gson.toJson(data));
+        } catch (SQLException ex) {
+            LOGGER.log(Level.WARNING, "Error while attempting to fetch investment data.", ex);
+            response.setStatus(500);
+            response.getWriter().write("Unable to successfully fetch investment data");
         }
-        while (data == null) {
-            // wait until data is available (TODO : Add timeout)
-            data = calc.getInvestmentDataIfExists(googleSearch);
-        }
-        response.setContentType("application/json");
-        response.getWriter().println(gson.toJson(data));
-    } catch (SQLException ex) {
-      LOGGER.log(Level.WARNING, "Error while attempting to fetch investment data.", ex);
-      response.setStatus(500);
-      response.getWriter().write("Unable to successfully fetch investment data");
     }
-  }
 
   /**
    * Add new investment to Investments table
    */
-  private void addUserInvestment(
-      Connection conn, 
-      int userId, 
-      int competitionId, 
-      String googleSearch, 
-      int amtInvested, 
-      Long investDate) throws SQLException {
-    Date date = new Date(investDate * 1000);
-    String stmt = "INSERT INTO investments (user, competition, google_search, invest_date, sell_date, amt_invested) VALUES "
-    + " (" + userId + ", " + competitionId + ", '" + googleSearch + "', DATE '" + date + "', NULL, " + amtInvested + ");";
-    try (PreparedStatement investmentStmt = conn.prepareStatement(stmt);) {
-      // Execute the statement
-      investmentStmt.execute();
-      LOGGER.log(Level.INFO, "Investment added to database.");
+    private void addUserInvestment(
+        Connection conn, 
+        int userId, 
+        int competitionId, 
+        String googleSearch, 
+        int amtInvested, 
+        Long investDate) throws SQLException {
+        Date date = new Date(investDate * 1000);
+        String stmt = String.format("INSERT INTO investments (user, competition, google_search, invest_date, sell_date, amt_invested) VALUES "
+          + "(%d, %d, '%s', DATE '%tF', NULL, %d);", userId, competitionId, googleSearch, date, amtInvested);
+        try (PreparedStatement investmentStmt = conn.prepareStatement(stmt);) {
+            // Execute the statement
+            investmentStmt.execute();
+            LOGGER.log(Level.INFO, "Investment added to database.");
+        }
     }
-  }
 }
