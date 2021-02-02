@@ -195,7 +195,7 @@ public class InvestmentCalculator {
     /**
      * Return epoch exactly one week before given date
      */
-    private Long oneWeekBefore(long date) {
+    public Long oneWeekBefore(long date) {
         return date - ONE_WEEK_SECONDS;
     }
 
