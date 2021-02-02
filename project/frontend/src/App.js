@@ -44,20 +44,37 @@ function App() {
     });
   }
 
+  const fetchAndUpdateCompetitionInfo = (fetchCall, stateKey) => {
+    fetch(fetchCall)
+      .then((response) => response.json())
+      .then((data) => {
+        setCompetitionInfo((prevState) => {
+          return {
+            ...prevState,
+            [stateKey]: data,
+          };
+        });
+      });
+  };
+
   React.useEffect(() => {
     if (user.signedIn && user.id && compId) {
       Promise.all([
         setLoading(true),
-        fetch("./competitionInfo?user=" + user.id + "&competition=" + compId)
-          .then((response) => response.json())
-          .then((data) => {
-            setCompetitionInfo((prevState) => {
-              return {
-                ...prevState,
-                generalInfo: data,
-              };
-            });
-          }),
+        fetchAndUpdateCompetitionInfo(
+          "./competitionInfo?user=" + user.id + "&competition=" + compId,
+          "generalInfo"
+        ),
+        // fetch("./competitionInfo?user=" + user.id + "&competition=" + compId)
+        //   .then((response) => response.json())
+        //   .then((data) => {
+        //     setCompetitionInfo((prevState) => {
+        //       return {
+        //         ...prevState,
+        //         generalInfo: data,
+        //       };
+        //     });
+        //   }),
         fetch("./recentBuys?competition=" + compId)
           .then((response) => response.json())
           .then((data) => {
@@ -91,6 +108,7 @@ function App() {
       ]).then(() => {
         console.log("done");
         setLoading(false);
+        console.log(competitionInfo);
       });
     }
   }, [user.id]);

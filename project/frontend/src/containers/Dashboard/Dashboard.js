@@ -9,6 +9,7 @@ import RecentBuysList from "../../components/RecentBuys/RecentBuysList";
 import Rank from "../../components/Rank/Rank";
 
 const Dashboard = (props) => {
+  console.log(props);
   const toDayHourMinute = (totalTime) => {
     let millisInDay = 24 * 60 * 60 * 1000,
       millisInHour = 60 * 60 * 1000,
