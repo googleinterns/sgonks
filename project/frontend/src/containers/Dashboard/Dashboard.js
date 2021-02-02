@@ -6,6 +6,7 @@ import Block from "../../components/UI/Block/Block";
 import ShortSGonksList from "../../components/SGonksLists/ShortSGonksList/ShortSGonksList";
 import TrendingSearches from "../../components/TrendingSearches/TrendingSearches";
 import RecentBuysList from "../../components/RecentBuys/RecentBuysList";
+import Rank from "../../components/Rank/Rank";
 
 const Dashboard = (props) => {
   console.log(props);
@@ -107,10 +108,7 @@ const Dashboard = (props) => {
           <h2>Time until end of competition:</h2>
           <p className={classes.CountDown}>{getTimeRemaining()}</p>
           <h2>Your current ranking:</h2>
-          <p className={classes.RankOrdinal}>
-            <span className={classes.Ranking}>{props.generalInfo.rank}</span>
-            {getOrdinalOnly(props.generalInfo.rank)}
-          </p>
+          <Rank>{props.generalInfo.rank}</Rank>
         </Block>
         <Block className={classes.TeammateBuys}>
           <RecentBuysList buys={props.recentBuys}></RecentBuysList>

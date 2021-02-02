@@ -8,8 +8,8 @@ const Rank = (props) => {
     return s[(v - 20) % 10] || s[v] || s[0];
   };
   return (
-    <p>
-      <span>{props.children}</span>
+    <p className={classes.Rank}>
+      <span className={classes.RankNumber}>{props.children}</span>
       {getOrdinal(props.children)}
     </p>
   );
