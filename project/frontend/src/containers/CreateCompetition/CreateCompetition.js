@@ -2,7 +2,7 @@ import React from "react";
 import classes from "./CreateCompetition.module.css";
 import { Link } from "react-router-dom";
 import LinkButton from "../../components/UI/LinkButton/LinkButton";
-import ParticipantCard from "../../components/ParticipantCard/ParticipantCard";
+import { RiAddCircleLine } from "react-icons/ri";
 
 const CreateCompetition = (props) => {
   return (
@@ -27,7 +27,7 @@ const CreateCompetition = (props) => {
             <p>
               {" "}
               Add Participants: <input type="text" />{" "}
-              <LinkButton inverted="true">Add</LinkButton>
+              <RiAddCircleLine className={classes.icons} />
             </p>
           </div>
         </div>
