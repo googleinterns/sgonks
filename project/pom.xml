@@ -191,5 +191,10 @@
         <version>1.9.9</version>
       </plugin>
     </plugins>
+    <resources>
+      <resource>
+        <directory>src/main</directory>
+      </resource>
+    </resources>
   </build>
 </project>
