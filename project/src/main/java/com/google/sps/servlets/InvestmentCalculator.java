@@ -35,10 +35,13 @@ import com.google.cloud.datastore.*;
 import java.util.Calendar; 
 import java.util.TimeZone;
 
+import com.google.common.collect.ImmutableList;
+
 
 public class InvestmentCalculator {
 
     private static final Logger LOGGER = Logger.getLogger(AuthServlet.class.getName());
+    private static final int ONE_WEEK_SECONDS = 7 * 24 * 60 * 60;
     private static final int ONE_DAY_SECONDS = 24 * 60 * 60;
 
     public int calculateNetWorth(Connection conn, long userId, long competitionId) throws SQLException{
@@ -120,6 +123,64 @@ public class InvestmentCalculator {
         return (int) investmentValue;
     }
 
+    /**
+     * Return an ArrayList of dates between the invest date and sell date (or current date) with context dates
+     * formatted as strings in epoch form.
+     */
+    public List<String> getListOfDates(long investDate, long sellDate) {
+        Long startDateEpoch = oneWeekBefore(investDate / 1000L);
+        Long endDateEpoch;
+        if (sellDate == 0) {
+            // haven't sold investment yet, get data up to latest datapoint
+            endDateEpoch = getLatestDate();
+        } else {
+            endDateEpoch = sellDate / 1000L;
+        }
+
+        List<String> dates = new ArrayList();
+        Long currentDateLong = startDateEpoch;
+        String currentDateString = startDateEpoch + "";
+
+        while (currentDateLong < endDateEpoch) {
+            dates.add(currentDateString);
+            currentDateLong = addOneDay(currentDateLong);
+            currentDateString = currentDateLong + "";
+        }
+        dates.add(currentDateString);
+        return dates;
+    }
+
+    /**
+     * Check if a search term exists in the database, and return context data for it if so
+     * Otherwise return null
+     */
+    public ImmutableList<Long> getInvestmentDataIfExists(String googleSearch) throws SQLException {
+        Datastore datastore = DatastoreOptions.getDefaultInstance().getService();
+        Long currentDate = getLatestDate() * 1000;
+    
+        Query<Entity> query = Query.newEntityQueryBuilder()
+          .setKind("TrendsData")
+          .setFilter(PropertyFilter.eq("search_term", googleSearch))
+          .build();
+        QueryResults<Entity> trends = datastore.run(query);
+    
+        Entity trend;
+        Long value;
+        List<Long> values = new ArrayList();
+        List<String> dates = new ArrayList();
+    
+        while (trends.hasNext()) {
+            trend = trends.next();
+            dates = getListOfDates(currentDate, currentDate);
+            for (String date : dates) {
+                value = trend.getLong(date);
+                values.add(value);
+            }
+            return ImmutableList.copyOf(values);
+        }
+        return null;
+    }
+
     public long getLatestDate() {
         //get yesterday's epoch time UTC
         Calendar c = Calendar.getInstance(TimeZone.getTimeZone("GMT"));
@@ -129,5 +190,19 @@ public class InvestmentCalculator {
         c.set(Calendar.MILLISECOND, 0);
         long unixTime = c.getTimeInMillis() / 1000 - ONE_DAY_SECONDS;
         return unixTime;
+    }
+
+    /**
+     * Return epoch exactly one week before given date
+     */
+    private Long oneWeekBefore(long date) {
+        return date - ONE_WEEK_SECONDS;
+    }
+
+    /**
+     * Return epoch exactly one day after given date
+     */
+    private Long addOneDay(long date) {
+        return date + ONE_DAY_SECONDS;
     }
 }
