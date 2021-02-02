@@ -14,6 +14,9 @@ const CreateCompetition = (props) => {
     setParticipant("");
   }
 
+  const onParticipantDelete = (participant) =>
+    setParticipantList(participantList.filter((v) => v !== participant?.email));
+
   return (
     <div className={classes.CreateCompetitionContainer}>
       <p>Create a competition</p>
@@ -48,7 +51,11 @@ const CreateCompetition = (props) => {
             </p>
             <div className={classes.DisplayParticipants}>
               {participantList.map((val, i) => (
-                <ParticipantCard key={i} participant={{ email: val }} />
+                <ParticipantCard
+                  key={i}
+                  participant={{ email: val }}
+                  onDelete={onParticipantDelete}
+                />
               ))}
             </div>
           </div>
@@ -56,10 +63,12 @@ const CreateCompetition = (props) => {
       </div>
 
       <div className={classes.ButtonContainer}>
-        <LinkButton width="275px" inverted="true">
+        <LinkButton width="275px" inverted="true" to="/compselect">
           Cancel
         </LinkButton>
-        <LinkButton width="275px">Confirm creation</LinkButton>
+        <LinkButton width="275px" to="/dashboard">
+          Confirm creation
+        </LinkButton>
       </div>
     </div>
   );

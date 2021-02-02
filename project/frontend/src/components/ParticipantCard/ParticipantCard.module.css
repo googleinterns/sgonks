@@ -1,4 +1,12 @@
 .ParticipantsObject {
+  display: flex;
+  flex-direction: row;
+  border: 1px solid lightgray;
+  width: 93%;
+  justify-content: space-between;
+}
+
+.TextBox {
   font-family: "Open Sans";
   font-weight: 500;
   letter-spacing: 0.5px;
@@ -7,5 +15,12 @@
   font-size: 16px;
   white-space: nowrap;
   width: 80%;
-  border: 1px solid lightgray;
+}
+
+.icons {
+  margin: auto;
+  width: max-content;
+  display: flex;
+  font-size: 30px;
+  cursor: pointer;
 }
