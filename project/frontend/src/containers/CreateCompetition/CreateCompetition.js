@@ -2,6 +2,7 @@ import React from "react";
 import classes from "./CreateCompetition.module.css";
 import { Link } from "react-router-dom";
 import LinkButton from "../../components/UI/LinkButton/LinkButton";
+import ParticipantCard from "../../components/ParticipantCard/ParticipantCard";
 
 const CreateCompetition = (props) => {
   return (
@@ -33,8 +34,10 @@ const CreateCompetition = (props) => {
       </div>
 
       <div className={classes.ButtonContainer}>
-        <LinkButton inverted="true">Cancel</LinkButton>
-        <LinkButton>Confirm creation</LinkButton>
+        <LinkButton width="275px" inverted="true">
+          Cancel
+        </LinkButton>
+        <LinkButton width="275px">Confirm creation</LinkButton>
       </div>
     </div>
   );
