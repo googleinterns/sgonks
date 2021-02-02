@@ -154,7 +154,7 @@ public class InvestmentCalculator {
      * Check if a search term exists in the database, and return context data for it if so
      * Otherwise return null
      */
-    public ImmutableList<Long> getInvestmentDataIfExists(String googleSearch) throws SQLException {
+    public ImmutableList<Long> getInvestmentDataIfExists(String googleSearch) {
         Datastore datastore = DatastoreOptions.getDefaultInstance().getService();
         Long currentDate = getLatestDate() * 1000;
     
