@@ -86,12 +86,10 @@ public class NewInvestmentServlet extends HttpServlet {
     Date date = new Date(investDate * 1000);
     String stmt = "INSERT INTO investments (user, competition, google_search, invest_date, sell_date, amt_invested) VALUES "
     + " (" + userId + ", " + competitionId + ", '" + googleSearch + "', DATE '" + date + "', NULL, " + amtInvested + ");";
-    LOGGER.log(Level.WARNING, stmt);
     try (PreparedStatement investmentStmt = conn.prepareStatement(stmt);) {
       // Execute the statement
       investmentStmt.execute();
       LOGGER.log(Level.INFO, "Investment added to database.");
-
     }
   }
 }
