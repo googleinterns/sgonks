@@ -13,6 +13,8 @@ import Layout from "./hoc/Layout/Layout";
 import { AuthContext } from "./context/AuthContext";
 import { onAuthStateChange } from "./services/firebase";
 
+// import 'babel-polyfill'
+
 const NO_COMPETITION = 0;
 
 function App() {
@@ -44,8 +46,8 @@ function App() {
     });
   }
 
-  const fetchAndUpdateCompetitionInfo = (fetchCall, stateKey) => {
-    fetch(fetchCall)
+  const fetchAndUpdateCompetitionInfo = async (fetchCall, stateKey) => {
+    return fetch(fetchCall)
       .then((response) => response.json())
       .then((data) => {
         setCompetitionInfo((prevState) => {
@@ -75,36 +77,45 @@ function App() {
         //       };
         //     });
         //   }),
-        fetch("./recentBuys?competition=" + compId)
-          .then((response) => response.json())
-          .then((data) => {
-            setCompetitionInfo((prevState) => {
-              return {
-                ...prevState,
-                recentBuys: data,
-              };
-            });
-          }),
-        fetch("./investments?user=" + user.id + "&competition=" + compId)
-          .then((response) => response.json())
-          .then((data) => {
-            setCompetitionInfo((prevState) => {
-              return {
-                ...prevState,
-                investments: data,
-              };
-            });
-          }),
-        fetch("./trending")
-          .then((response) => response.json())
-          .then((data) => {
-            setCompetitionInfo((prevState) => {
-              return {
-                ...prevState,
-                trending: data,
-              };
-            });
-          }),
+        fetchAndUpdateCompetitionInfo(
+          "./recentBuys?competition=" + compId,
+          "recentBuys"
+        ),
+        // fetch("./recentBuys?competition=" + compId)
+        //   .then((response) => response.json())
+        //   .then((data) => {
+        //     setCompetitionInfo((prevState) => {
+        //       return {
+        //         ...prevState,
+        //         recentBuys: data,
+        //       };
+        //     });
+        //   }),
+        fetchAndUpdateCompetitionInfo(
+          "./investments?user=" + user.id + "&competition=" + compId,
+          "investments"
+        ),
+        // fetch("./investments?user=" + user.id + "&competition=" + compId)
+        //   .then((response) => response.json())
+        //   .then((data) => {
+        //     setCompetitionInfo((prevState) => {
+        //       return {
+        //         ...prevState,
+        //         investments: data,
+        //       };
+        //     });
+        //   }),
+        fetchAndUpdateCompetitionInfo("./trending", "trending"),
+        // fetch("./trending")
+        //   .then((response) => response.json())
+        //   .then((data) => {
+        //     setCompetitionInfo((prevState) => {
+        //       return {
+        //         ...prevState,
+        //         trending: data,
+        //       };
+        //     });
+        //   }),
       ]).then(() => {
         console.log("done");
         setLoading(false);
