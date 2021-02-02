@@ -13,8 +13,6 @@ import Layout from "./hoc/Layout/Layout";
 import { AuthContext } from "./context/AuthContext";
 import { onAuthStateChange } from "./services/firebase";
 
-// import 'babel-polyfill'
-
 const NO_COMPETITION = 0;
 
 function App() {
