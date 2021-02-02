@@ -34,6 +34,11 @@ import java.sql.Date;
 
 import com.google.common.collect.ImmutableList;
 
+
+//DELETE THSI
+import java.io.*;
+import java.nio.charset.StandardCharsets;
+
 @WebServlet("/newInvestment")
 public class NewInvestmentServlet extends HttpServlet {
   private static final Logger LOGGER = Logger.getLogger(NewInvestmentServlet.class.getName());
@@ -55,8 +60,17 @@ public class NewInvestmentServlet extends HttpServlet {
         if (data == null) {
             //this is a new investment - run python script
             //TODO : FIGURE OUT HOW TO RUN SCRIPT
-            //Process process = Runtime.getRuntime().exec(
-                //new String[]{"../../../../../../../scripts/get_context_data.py", calc.getLatestDate() + "", googleSearch});
+
+            Process process = Runtime.getRuntime().exec(
+                new String[]{"/usr/bin/python3", "../classes/scripts/get_context_data.py", calc.oneWeekBefore(calc.getLatestDate()) + "", googleSearch});
+            
+            LOGGER.log(Level.WARNING, "GOING IN JAVA");
+            InputStream stdout = process.getInputStream();
+            BufferedReader reader = new BufferedReader(new InputStreamReader(stdout,StandardCharsets.UTF_8));
+            String line;
+            while((line = reader.readLine()) != null){
+               System.out.println("stdout: "+ line);
+            }
         }
         while (data == null) {
             // wait until data is available
