@@ -25,3 +25,22 @@
 .ButtonCell {
   width: 7%;
 }
+
+.SellButton {
+  font-family: "Open Sans";
+  font-weight: 500;
+  letter-spacing: 0.5px;
+  padding: 2px 15px;
+  border-radius: 4px;
+  font-size: 12px;
+  white-space: nowrap;
+  background-color: #2f7de7;
+  border: 1.5px solid #1a73e8;
+  color: white;
+}
+
+.SellButton:hover {
+  background-color: #fff;
+  border: 1.5px solid #e9e9e9;
+  color: #2f7de7;
+}
