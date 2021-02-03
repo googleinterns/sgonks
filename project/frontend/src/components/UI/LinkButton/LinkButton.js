@@ -1,7 +1,7 @@
-import React from "react"
-import { withRouter } from "react-router"
-import classes from "./LinkButton.module.css"
-import classnames from "classnames"
+import React from "react";
+import { withRouter } from "react-router";
+import classes from "./LinkButton.module.css";
+import classnames from "classnames";
 
 const LinkButton = (props) => {
   const buttonStyle = props.inverted ? classes.White : classes.Blue;
@@ -13,19 +13,21 @@ const LinkButton = (props) => {
     staticContext,
     to,
     onClick,
+    width,
     ...rest
-  } = props
+  } = props;
 
   return (
     <button
       className={classnames(classes.Button, buttonStyle)}
+      style={{ width: width ?? "auto" }}
       {...rest}
       onClick={(event) => {
-        onClick && onClick(event)
-        history.push(to)
+        onClick && onClick(event);
+        history.push(to);
       }}
     />
-  )
-}
+  );
+};
 
-export default withRouter(LinkButton)
+export default withRouter(LinkButton);

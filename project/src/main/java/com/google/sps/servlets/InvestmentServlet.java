@@ -46,7 +46,7 @@ import com.google.common.collect.ImmutableList;
 public class InvestmentServlet extends HttpServlet {
 
   private static final Logger LOGGER = Logger.getLogger(AuthServlet.class.getName());
-  private static final int ONE_WEEK_SECONDS = 7 * 24 * 60 * 60;
+  private static final int LAST_THREE_DAYS_SECONDS = 3 * 24 * 60 * 60;
   private static final int ONE_DAY_SECONDS = 24 * 60 * 60;
 
   @Override
@@ -82,20 +82,20 @@ public class InvestmentServlet extends HttpServlet {
       ResultSet rs = investmentsStmt.executeQuery();
       // Convert a result into User object
       String googleSearch;
-      long investDate;
+      Long investDate;
       Date sellDateOrNull;
-      long sellDate;
+      Long sellDate;
       int amtInvested;
       int currentValue;
       ImmutableList<Long> dataPoints;
       while (rs.next()) {
         googleSearch = rs.getString(1);
-        investDate = rs.getDate(2).getTime();
+        investDate = calc.convertDateToEpochLong(rs.getDate(2));
         sellDateOrNull = rs.getDate(3);
         if (sellDateOrNull == null) {
-          sellDate = 0;
+          sellDate = 0L;
         } else {
-          sellDate = sellDateOrNull.getTime();
+          sellDate = calc.convertDateToEpochLong(sellDateOrNull);
         }
         amtInvested = rs.getInt(4);
         currentValue = calc.getInvestmentValue(googleSearch, investDate, sellDate, amtInvested);
@@ -133,10 +133,10 @@ public class InvestmentServlet extends HttpServlet {
   }
 
   /**
-   * Return epoch exactly one week before given date
+   * Return epoch exactly 3 days before given date
    */
-  private Long oneWeekBefore(long date) {
-    return date - ONE_WEEK_SECONDS;
+  private Long threeDaysBefore(long date) {
+    return date - LAST_THREE_DAYS_SECONDS;
   }
 
   /**
