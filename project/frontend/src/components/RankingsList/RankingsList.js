@@ -1,7 +1,9 @@
 import React from "react";
 import classes from "./RankingsList.module.css";
 
-import RankingsListRow from "./RankingsList/RankingsListRow";
+import RankingsListRow from "./RankingsListRow/RankingsListRow";
+import RankingsListTitleRow from "./RankingsListTitleRow/RankingsListTitleRow";
+
 import { Link } from "react-router-dom";
 
 const RankingsList = (props) => {
@@ -18,7 +20,8 @@ const RankingsList = (props) => {
 
   return (
     <div className={classes.List}>
-      {competitorList}
+        <RankingsListTitleRow></RankingsListTitleRow>
+        {competitorList}
     </div>
   );
 };
