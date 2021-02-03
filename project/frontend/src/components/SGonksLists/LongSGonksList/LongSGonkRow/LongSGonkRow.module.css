@@ -7,34 +7,21 @@
   justify-content: space-between;
   align-items: center;
   text-align: left;
+  font-weight: 300;
 }
 
-.SearchQuery {
+.SearchQueryCell {
   width: 35%;
-  background: pink;
 }
 
-.BuyIn {
+.BuyInCell {
   width: 13%;
-  background: lightblue;
 }
 
-.AmountInvested {
+.AmountCell {
   width: 15%;
-  background: lightgray;
 }
 
-.CurrentVal {
-  width: 15%;
-  background: lightgoldenrodyellow;
-}
-
-.NetDiff {
-  width: 15%;
-  background: lightgreen;
-}
-
-.ButtonContainer {
+.ButtonCell {
   width: 7%;
-  background: lightsalmon;
 }

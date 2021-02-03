@@ -6,12 +6,12 @@ const LongSGonksList = (props) => {
   return (
     <div className={classes.ListWrapper}>
       <div className={classes.TitleRow}>
-        {/* <div>search query</div>
-        <div>31-12-2020</div>
-        <div>t$32141</div>
-        <div>t$13125</div>
-        <div>-t$9318</div>
-        <div></div> */}
+        <div className={classes.SQTitle}>Search Term</div>
+        <div className={classes.DateTitle}>Buy-in Date</div>
+        <div className={classes.AmountTitle}>Amount Invested</div>
+        <div className={classes.AmountTitle}>Current Value</div>
+        <div className={classes.AmountTitle}>Net Difference</div>
+        <div className={classes.ButtonTitle}></div>
       </div>
       <div className={classes.List}>
         <LongSGonkRow></LongSGonkRow>
