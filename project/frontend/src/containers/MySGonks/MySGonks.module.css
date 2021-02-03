@@ -1,0 +1,74 @@
+.MySGonksContainer {
+  height: 93%;
+  width: 95%;
+  display: flex;
+  flex-direction: column;
+  flex-wrap: nowrap;
+  justify-content: space-between;
+  align-items: stretch;
+}
+
+.ChartAndInfoContainer {
+  height: 60%;
+  width: 100%;
+  display: flex;
+  flex-direction: row;
+  flex-wrap: nowrap;
+  justify-content: space-between;
+  align-items: stretch;
+}
+
+.SGonksListContainer {
+  height: 37%;
+  width: 100%;
+  background: rgba(255, 255, 255, 0.54);
+}
+
+.ChartContainer {
+  height: 100%;
+  width: 64%;
+}
+
+.InfoContainer {
+  width: 34%;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  flex-wrap: nowrap;
+  justify-content: space-between;
+  align-items: stretch;
+}
+
+.InfoBlock {
+  height: 38.5%;
+}
+
+.InfoBlock h3 {
+  line-height: 0;
+  font-size: 1.4vw;
+  font-weight: 500;
+}
+
+.MonetaryInfo p {
+  align-self: flex-start;
+  width: 80%;
+  display: flex;
+  flex-direction: row;
+  flex-wrap: nowrap;
+  justify-content: space-between;
+  align-items: stretch;
+  text-align: left;
+  font-size: 1.3vw;
+  font-weight: 300;
+}
+
+.TrendBucks {
+  width: 40%;
+  font-weight: 400;
+}
+
+.CurrentAvail {
+  font-size: 2.5vw;
+  line-height: 0;
+  margin-bottom: 13%;
+}

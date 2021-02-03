@@ -75,7 +75,7 @@ public class SingleCompetitionServlet extends HttpServlet {
   private CompetitionSummary getCompetitionDetails(Connection conn, int userId, int competitionId) throws SQLException {
     String stmt = "SELECT competitions.competition_name, competitions.creator, competitions.start_date, " 
     + "competitions.end_date, participants.amt_available, participants.net_worth, participants.rank, participants.rank_yesterday "
-    + "FROM competitions, participants WHERE competitions.id=participants.id AND competitions.id=" + competitionId 
+    + "FROM competitions, participants WHERE competitions.id=participants.competition AND competitions.id=" + competitionId 
     + " AND participants.user=" + userId + ";";
     try (PreparedStatement competitionsStmt = conn.prepareStatement(stmt);) {
       // Execute the statement

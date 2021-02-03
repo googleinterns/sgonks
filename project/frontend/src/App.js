@@ -8,6 +8,7 @@ import SelectCompetition from "./containers/SelectCompetition/SelectCompetition"
 import HeaderBar from "./components/HeaderBar/HeaderBar";
 import LandingPage from "./containers/LandingPage/LandingPage";
 import Dashboard from "./containers/Dashboard/Dashboard";
+import MySGonks from "./containers/MySGonks/MySGonks";
 
 import Layout from "./hoc/Layout/Layout";
 import { AuthContext } from "./context/AuthContext";
@@ -18,6 +19,8 @@ const NO_COMPETITION = 0;
 function App() {
   const [user, setUser] = useState({ signedIn: false });
   const [compId, setCompId] = useState(0);
+  const [competitionInfo, setCompetitionInfo] = useState({});
+  const [loading, setLoading] = useState(false);
 
   React.useEffect(() => {
     const unsubscribe = onAuthStateChange(setUser);
@@ -37,10 +40,48 @@ function App() {
     setUser((prevState) => {
       return {
         ...prevState,
-        id: 123,
+        id: 1,
       };
     });
   }
+
+  const fetchAndUpdateCompetitionInfo = async (fetchCall, stateKey) => {
+    return fetch(fetchCall)
+      .then((response) => response.json())
+      .then((data) => {
+        setCompetitionInfo((prevState) => {
+          return {
+            ...prevState,
+            [stateKey]: data,
+          };
+        });
+      });
+  };
+
+  React.useEffect(() => {
+    if (user.signedIn && user.id && compId) {
+      Promise.all([
+        setLoading(true),
+        fetchAndUpdateCompetitionInfo(
+          "./competitionInfo?user=" + user.id + "&competition=" + compId,
+          "generalInfo"
+        ),
+        fetchAndUpdateCompetitionInfo(
+          "./recentBuys?competition=" + compId,
+          "recentBuys"
+        ),
+        fetchAndUpdateCompetitionInfo(
+          "./investments?user=" + user.id + "&competition=" + compId,
+          "investments"
+        ),
+        fetchAndUpdateCompetitionInfo("./trending", "trending"),
+      ]).then(() => {
+        console.log("done");
+        setLoading(false);
+        console.log(competitionInfo);
+      });
+    }
+  }, [user.id]);
 
   let pageRoute = !user.signedIn ? (
     <Switch>
@@ -60,11 +101,34 @@ function App() {
       ></Route>
       <Redirect to="/compselect"></Redirect>
     </Switch>
+  ) : loading ? (
+    <div>Loading...</div>
   ) : (
     <Switch>
-      <Route path="/dashboard" component={Dashboard}></Route>
+      <Route
+        path="/dashboard"
+        render={() => (
+          <Dashboard
+            generalInfo={competitionInfo.generalInfo}
+            recentBuys={competitionInfo.recentBuys}
+            trendingSearches={competitionInfo.trending}
+            investments={competitionInfo.investments}
+          ></Dashboard>
+        )}
+      ></Route>
+      <Route
+        path="/mysgonks"
+        render={() => (
+          <MySGonks
+            generalInfo={competitionInfo.generalInfo}
+            recentBuys={competitionInfo.recentBuys}
+            trendingSearches={competitionInfo.trending}
+            investments={competitionInfo.investments}
+          ></MySGonks>
+        )}
+      ></Route>
       <Route path="/placeholder" component={Explanation}></Route>
-      <Redirect to="/dashboard"></Redirect>
+      <Redirect to="/mysgonks"></Redirect>
     </Switch>
   );
 
