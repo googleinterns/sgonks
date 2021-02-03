@@ -1,68 +1,45 @@
-import React from "react"
-import classes from "./CreateCompetition.module.css"
-import {Link} from "react-router-dom"
+import React from "react";
+import classes from "./CreateCompetition.module.css";
+import { Link } from "react-router-dom";
+import LinkButton from "../../components/UI/LinkButton/LinkButton";
+import { RiAddCircleLine } from "react-icons/ri";
 
 const CreateCompetition = (props) => {
   return (
-    <div className={classes.CreateCompetitionPage}>
-      <div className={classes.Title}>
-        <p>Create a competition</p>
-        <br></br>
-      </div>
+    <div className={classes.CreateCompetitionContainer}>
+      <p>Create a competition</p>
       <div className={classes.MainBox}>
         <div className={classes.CompetitionInfoLeft}>
           <div className={classes.TextColumnContainer}>
-            <div>
-              <span>Competition Name</span>
-              <br></br>
-              <br></br>
-            </div>
-            <div>
-              <span>Start Date</span>
-              <br></br>
-              <br></br>
-              <br></br>
-              <br></br>
-            </div>
-            <div>
-              <span>End Date</span>
-              <br></br>
-              <br></br>
-              <br></br>
-              <br></br>
-            </div>
+            <span>Competition Name</span>
+            <span>Start Date</span>
+            <span>End Date</span>
           </div>
           <div className={classes.BoxColumnContainer}>
-            <br></br>
-            <br></br>
             <input type="text" />
-            <br></br>
-            <br></br>
             <input type="date" />
-            <br></br>
-            <br></br>
-            <br></br>
-            <br></br>
             <input type="date" />
-            <br></br>
-            <br></br>
-            <br></br>
-            <br></br>
           </div>
         </div>
-        <div className={classes.CompetitiomInfoRight}>
+        <div className={classes.CompetitionInfoRight}>
           <p>Participants</p>
+          <div className={classes.AddParticipants}>
+            <p>
+              {" "}
+              Add Participants: <input type="text" />{" "}
+              <RiAddCircleLine className={classes.icons} />
+            </p>
+          </div>
         </div>
       </div>
+
       <div className={classes.ButtonContainer}>
-        <div className={[classes.Button, classes.White].join(" ")}>
-          <Link to="/switchComp">Cancel</Link>
-        </div>
-        <div className={[classes.Button, classes.Blue].join(" ")}>
-          <Link to="/sgonks-platform">Confirm creation</Link>
-        </div>
+        <LinkButton width="275px" inverted="true">
+          Cancel
+        </LinkButton>
+        <LinkButton width="275px">Confirm creation</LinkButton>
       </div>
     </div>
-  )
-}
-export default CreateCompetition
+  );
+};
+export default CreateCompetition;
