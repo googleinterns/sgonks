@@ -34,11 +34,26 @@ const Competition = (props) => {
     },
   ];
 
+  const placeholderChartsData = {
+    haxis: "Time",
+    vaxis: "Net Worth",
+    data: [
+      ["x", "emmahogan@", "mercurylin@", "phoebek@"],
+      [0, 124, 423, 294],
+      [1, 432, 543, 324],
+      [2, 234, 234, 123],
+      [3, 654, 876, 123]
+    ],
+  };
+
   return (
     <div className={classes.CompetitionContainer}>
       <div className={classes.Column}>
         <Block className={classes.Rankings}>
             <RankingsList competitors={placeholderCompetitors}></RankingsList>
+        </Block>
+        <Block className={classes.RankingsChart}>
+            <ChartCard chartInfo={placeholderChartsData}></ChartCard>
         </Block>
       </div>
     </div>

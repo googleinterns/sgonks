@@ -19,4 +19,10 @@
 
 .Rankings {
     height: 50%;
+    margin : 2%;
+}
+
+.RankingsChart {
+    margin : 2%;
+    height: 50%;
 }
