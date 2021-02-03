@@ -133,9 +133,6 @@ public class InvestmentServlet extends HttpServlet {
   }
 
   /**
-<<<<<<< HEAD
-   * Return epoch exactly one week before given date
-=======
    * Return an ArrayList of dates between the invest date and sell date (or current date) inclusive
    * formatted as strings in epoch form.
    */
@@ -165,7 +162,6 @@ public class InvestmentServlet extends HttpServlet {
 
   /**
    * Return epoch exactly 3 days before given date
->>>>>>> 2d92b302de36f9c1011e1ada5c3c2d400b2b45fd
    */
   private Long threeDaysBefore(long date) {
     return date - LAST_THREE_DAYS_SECONDS;

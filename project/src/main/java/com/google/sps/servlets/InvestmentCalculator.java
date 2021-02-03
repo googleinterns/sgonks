@@ -193,6 +193,19 @@ public class InvestmentCalculator {
         return unixTime;
     }
 
+
+    //return date in milliseconds
+    public long convertDateToEpochLong(Date d) {
+        Calendar c = Calendar.getInstance(TimeZone.getTimeZone("GMT"));
+        c.setTime(d);
+        c.set(Calendar.HOUR_OF_DAY, 0);
+        c.set(Calendar.MINUTE, 0);
+        c.set(Calendar.SECOND, 0);
+        c.set(Calendar.MILLISECOND, 0);
+        long unixTime = c.getTimeInMillis() - ONE_DAY_MILLISECONDS;
+        return unixTime;
+    }
+  
     /**
      * Return epoch exactly one week before given date
      */
