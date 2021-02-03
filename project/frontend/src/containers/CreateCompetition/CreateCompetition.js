@@ -3,6 +3,7 @@ import classes from "./CreateCompetition.module.css";
 import { Link } from "react-router-dom";
 import LinkButton from "../../components/UI/LinkButton/LinkButton";
 import ParticipantCard from "../../components/ParticipantCard/ParticipantCard";
+import { RiAddCircleLine } from "react-icons/ri";
 
 const CreateCompetition = (props) => {
   let [participant, setParticipant] = useState("");
@@ -45,19 +46,20 @@ const CreateCompetition = (props) => {
                 value={participant}
                 onChange={(e) => setParticipant(e.target.value)}
               />{" "}
-              <LinkButton inverted="true" onClick={onAddParticipant}>
-                Add
-              </LinkButton>
+              <RiAddCircleLine
+                className={classes.icons}
+                onClick={onAddParticipant}
+              />
             </p>
-            <div className={classes.DisplayParticipants}>
-              {participantList.map((val, i) => (
-                <ParticipantCard
-                  key={i}
-                  participant={{ email: val }}
-                  onDelete={onParticipantDelete}
-                />
-              ))}
-            </div>
+          </div>
+          <div className={classes.DisplayParticipants}>
+            {participantList.map((val, i) => (
+              <ParticipantCard
+                key={i}
+                participant={{ email: val }}
+                onDelete={onParticipantDelete}
+              />
+            ))}
           </div>
         </div>
       </div>

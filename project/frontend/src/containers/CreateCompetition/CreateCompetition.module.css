@@ -88,11 +88,15 @@ input[type="date"] {
 }
 
 .AddParticipants {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  height: 20%;
+  justify-content: space-around;
 }
 
 .AddParticipants input[type="text"] {
   margin-left: 10px;
-  margin-right: 20px;
   border: 1px solid lightgray;
   padding: 7px;
   width: 50%;
@@ -112,7 +116,17 @@ input[type="date"] {
 }
 
 .DisplayParticipants {
-  height: 200px;
-  margin-bottom: 20px;
+  height: 275px;
+  margin-top: 20px;
+  width: 87%;
   overflow-y: auto;
+}
+
+.icons {
+  position: absolute;
+  top: 34.5%;
+  margin: auto;
+  width: 4%;
+  height: 4.35%;
+  cursor: pointer;
 }
