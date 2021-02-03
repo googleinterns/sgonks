@@ -4,8 +4,17 @@ import LongSGonkRow from "./LongSGonkRow/LongSGonkRow";
 
 const LongSGonksList = (props) => {
   console.log(props);
-  const investmentRows = props.investments.map((investment) => {
-    return <LongSGonkRow></LongSGonkRow>;
+  const investmentRows = props.investments.map((investment, i) => {
+    return (
+      <LongSGonkRow
+        //TODO replace key with investment id
+        key={i}
+        searchTerm={investment.searchItem}
+        buyInDate={investment.dateInvestedMillliSeconds}
+        amountInvested={investment.amtInvested}
+        currentValue={investment.currentValue}
+      ></LongSGonkRow>
+    );
   });
   return (
     <div className={classes.ListWrapper}>
