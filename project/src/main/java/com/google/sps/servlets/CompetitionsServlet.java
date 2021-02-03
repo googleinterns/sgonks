@@ -82,7 +82,7 @@ public class CompetitionsServlet extends HttpServlet {
       + "participants.net_worth, "
       + "participants.rank, "
       + "participants.rank_yesterday "
-      + "FROM competitions, participants WHERE competitions.id=participants.id AND participants.user=" + userId + ";";
+      + "FROM competitions, participants WHERE competitions.id=participants.competition AND participants.user=" + userId + ";";
     List<CompetitionSummary> competitions = new ArrayList<>();
     try (PreparedStatement competitionsStmt = conn.prepareStatement(stmt);) {
       // Execute the statement

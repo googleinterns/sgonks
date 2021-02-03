@@ -9,10 +9,10 @@ const RecentBuys = (props) => {
     return (
       <div className={classes.EachSlide} key={i}>
         <RecentBuy
-          buyer={buy.buyerName}
-          amount={buy.amountBought}
-          term={buy.searchTerm}
-          time={buy.timeBought}
+          buyer={buy.name}
+          amount={buy.amtInvested}
+          term={buy.searchQuery}
+          time={buy.dateInvested}
         ></RecentBuy>
       </div>
     );
