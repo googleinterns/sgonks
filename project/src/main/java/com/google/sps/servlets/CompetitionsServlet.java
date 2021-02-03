@@ -16,6 +16,8 @@ package com.google.sps.servlets;
 
 import com.google.gson.Gson;
 import com.google.sps.data.*;
+
+import java.io.BufferedReader;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Date;
@@ -65,6 +67,20 @@ public class CompetitionsServlet extends HttpServlet {
       response.setStatus(500);
       response.getWriter().write("Unable to successfully fetch competitions.");
     }
+  }
+
+  @Override
+  public void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException {
+    StringBuilder buffer = new StringBuilder();
+    BufferedReader reader = request.getReader();
+    String line;
+    while ((line = reader.readLine()) != null) {
+      buffer.append(line);
+      buffer.append(System.lineSeparator());
+    }
+    String body = buffer.toString();
+    System.out.println("THIS IS THE BODY OF THE TEXT!! " + body);
+
   }
 
   /**
