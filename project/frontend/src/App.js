@@ -121,8 +121,6 @@ function App() {
         render={() => (
           <MySGonks
             generalInfo={competitionInfo.generalInfo}
-            recentBuys={competitionInfo.recentBuys}
-            trendingSearches={competitionInfo.trending}
             investments={competitionInfo.investments}
           ></MySGonks>
         )}

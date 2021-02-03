@@ -5,6 +5,7 @@ import LinkButton from "../../components/UI/LinkButton/LinkButton";
 import LongSGonksList from "../../components/SGonksLists/LongSGonksList/LongSGonksList";
 
 const MySGonks = (props) => {
+  console.log(props);
   return (
     <div className={classes.MySGonksContainer}>
       <div className={classes.ChartAndInfoContainer}>
@@ -31,7 +32,7 @@ const MySGonks = (props) => {
         </div>
       </div>
       <div className={classes.SGonksListContainer}>
-        <LongSGonksList></LongSGonksList>
+        <LongSGonksList investments={props.investments}></LongSGonksList>
       </div>
     </div>
   );
