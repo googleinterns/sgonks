@@ -13,7 +13,10 @@ const LongSGonkRow = (props) => {
       </div>
       <div className={classes.AmountCell}>t${props.amountInvested}</div>
       <div className={classes.AmountCell}>t${props.currentValue}</div>
-      <div className={classes.AmountCell}>
+      <div
+        className={classes.AmountCell}
+        style={priceDelta >= 0 ? { color: "green" } : { color: "red" }}
+      >
         {priceDelta >= 0 ? "+" : "-"}t${Math.abs(priceDelta)}
       </div>
       <div className={classes.ButtonCell}>

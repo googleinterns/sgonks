@@ -8,6 +8,7 @@
   align-items: center;
   text-align: left;
   font-weight: 300;
+  border-bottom: 1px solid rgb(243, 243, 243);
 }
 
 .SearchQueryCell {
