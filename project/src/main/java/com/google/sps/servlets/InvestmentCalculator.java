@@ -204,6 +204,7 @@ public class InvestmentCalculator {
         c.set(Calendar.MILLISECOND, 0);
         long unixTime = c.getTimeInMillis() - ONE_DAY_MILLISECONDS;
         return unixTime;
+    }
   
     /**
      * Return epoch exactly one week before given date
