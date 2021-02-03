@@ -2,6 +2,7 @@ import React from "react";
 import classes from "./Marketplace.module.css";
 import Block from "../../components/UI/Block/Block";
 import TrendingSearches from "../../components/TrendingSearches/TrendingSearches";
+import RecentBuys from "../../components/RecentBuys/RecentBuysList";
 
 const Marketplace = (props) => {
   return (
@@ -18,7 +19,9 @@ const Marketplace = (props) => {
         </div>
         <div className={classes.TeammateBuysContainer}>
           <h1>What your team is buying:</h1>
-          <Block className={classes.Block}>teammate buys</Block>
+          <Block className={classes.Block}>
+            <RecentBuys buys={props.recentBuys}></RecentBuys>
+          </Block>
         </div>
       </div>
     </div>
