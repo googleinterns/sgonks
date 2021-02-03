@@ -1,5 +1,6 @@
 import React from "react";
 import classes from "./Marketplace.module.css";
+import Block from "../../components/UI/Block/Block";
 
 const Marketplace = (props) => {
   return (
@@ -7,9 +8,13 @@ const Marketplace = (props) => {
       <div className={classes.BuyContainer}>buy container</div>
       <div className={classes.BuySuggestions}>
         <div className={classes.TrendingInvestmentsContainer}>
-          trending cnotainer
+          <h1>Trending searches</h1>
+          <Block className={classes.Block}>trending searches</Block>
         </div>
-        <div className={classes.TeammateBuysContainer}>teammates buy</div>
+        <div className={classes.TeammateBuysContainer}>
+          <h1>What your teammates are buying</h1>
+          <Block className={classes.Block}>teammate buys</Block>
+        </div>
       </div>
     </div>
   );

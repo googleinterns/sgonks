@@ -34,3 +34,14 @@
   height: 50%;
   background: lightyellow;
 }
+
+.BuySuggestions h1 {
+  font-size: 1.5vw;
+  text-align: left;
+  font-weight: 500;
+  line-height: 0.5;
+}
+
+.Block {
+  height: 82%;
+}
