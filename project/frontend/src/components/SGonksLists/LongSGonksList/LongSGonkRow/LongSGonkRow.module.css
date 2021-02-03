@@ -1,0 +1,40 @@
+.Row {
+  height: 17%;
+  display: flex;
+  flex-direction: row;
+  flex-wrap: nowrap;
+  white-space: nowrap;
+  justify-content: space-between;
+  align-items: center;
+  text-align: left;
+}
+
+.SearchQuery {
+  width: 35%;
+  background: pink;
+}
+
+.BuyIn {
+  width: 13%;
+  background: lightblue;
+}
+
+.AmountInvested {
+  width: 15%;
+  background: lightgray;
+}
+
+.CurrentVal {
+  width: 15%;
+  background: lightgoldenrodyellow;
+}
+
+.NetDiff {
+  width: 15%;
+  background: lightgreen;
+}
+
+.ButtonContainer {
+  width: 7%;
+  background: lightsalmon;
+}

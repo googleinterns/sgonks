@@ -6,6 +6,25 @@
 .List {
   overflow-y: scroll;
   overflow-x: none;
-  height: 90%;
+  height: 80%;
   width: 100%;
+}
+
+.TitleRow {
+  height: 20%;
+  display: flex;
+  flex-direction: row;
+  flex-wrap: nowrap;
+  white-space: nowrap;
+  justify-content: space-between;
+  align-items: center;
+  overflow: hidden;
+  overflow-y: scroll;
+  scrollbar-width: none; /* Firefox */
+  -ms-overflow-style: none; /* Internet Explorer 10+ */
+  font-weight: 600;
+}
+
+.TitleRow::-webkit-scrollbar {
+  visibility: hidden;
 }
