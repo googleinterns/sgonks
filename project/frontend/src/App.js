@@ -121,7 +121,81 @@ function App() {
         render={() => (
           <MySGonks
             generalInfo={competitionInfo.generalInfo}
-            investments={competitionInfo.investments}
+            // investments={competitionInfo.investments}
+            investments={[
+              {
+                amtInvested: 400,
+                currentValue: 0,
+                dataPoints: [162, 152, 150, 158, 1087],
+                dateInvestedMilliSeconds: 1611705600000,
+                dateSoldMilliSeconds: 1611792000000,
+                searchItem: "feadas",
+              },
+              {
+                amtInvested: 321,
+                currentValue: 421,
+                dataPoints: [162, 152, 150, 1528, 11],
+                dateInvestedMilliSeconds: 1611705600000,
+                dateSoldMilliSeconds: 0,
+                searchItem: "france",
+              },
+              {
+                amtInvested: 111,
+                currentValue: 222,
+                dataPoints: [162, 152, 150, 12, 13],
+                dateInvestedMilliSeconds: 1611705600000,
+                dateSoldMilliSeconds: 1611792000000,
+                searchItem: "gfsdgfs",
+              },
+              {
+                amtInvested: 321,
+                currentValue: 421,
+                dataPoints: [162, 152, 150, 158, 1087],
+                dateInvestedMilliSeconds: 1611705600000,
+                dateSoldMilliSeconds: 0,
+                searchItem: "dddddd",
+              },
+              {
+                amtInvested: 1,
+                currentValue: 8,
+                dataPoints: [162, 152, 150, 1321, 13213],
+                dateInvestedMilliSeconds: 1611705600000,
+                dateSoldMilliSeconds: 0,
+                searchItem: "ccccccc",
+              },
+              {
+                amtInvested: 1,
+                currentValue: 8,
+                dataPoints: [162, 152, 150, 1321, 13213],
+                dateInvestedMilliSeconds: 1611705600000,
+                dateSoldMilliSeconds: 0,
+                searchItem: "bbbbbbbb",
+              },
+              {
+                amtInvested: 1,
+                currentValue: 8,
+                dataPoints: [162, 152, 150, 1321, 13213],
+                dateInvestedMilliSeconds: 1611705600000,
+                dateSoldMilliSeconds: 0,
+                searchItem: "aaaaaaaa",
+              },
+              {
+                amtInvested: 13,
+                currentValue: 82,
+                dataPoints: [162, 152, 150, 1321, 13213],
+                dateInvestedMilliSeconds: 1611705600000,
+                dateSoldMilliSeconds: 0,
+                searchItem: "zzzzzz",
+              },
+              {
+                amtInvested: 213,
+                currentValue: 321,
+                dataPoints: [162, 152, 150, 1321, 13213],
+                dateInvestedMilliSeconds: 1611705600000,
+                dateSoldMilliSeconds: 0,
+                searchItem: "fadfsdafsdfdas",
+              },
+            ]}
           ></MySGonks>
         )}
       ></Route>

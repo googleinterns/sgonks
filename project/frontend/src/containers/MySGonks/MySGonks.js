@@ -6,6 +6,11 @@ import LongSGonksList from "../../components/SGonksLists/LongSGonksList/LongSGon
 
 const MySGonks = (props) => {
   console.log(props);
+  const unsoldInvestments = props.investments.filter(
+    (investment) => investment.dateSoldMilliSeconds == 0
+  );
+  console.log(unsoldInvestments);
+
   return (
     <div className={classes.MySGonksContainer}>
       <div className={classes.ChartAndInfoContainer}>
@@ -32,7 +37,7 @@ const MySGonks = (props) => {
         </div>
       </div>
       <div className={classes.SGonksListContainer}>
-        <LongSGonksList investments={props.investments}></LongSGonksList>
+        <LongSGonksList investments={unsoldInvestments}></LongSGonksList>
       </div>
     </div>
   );

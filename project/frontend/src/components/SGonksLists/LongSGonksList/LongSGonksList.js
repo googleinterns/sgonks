@@ -3,6 +3,10 @@ import classes from "./LongSGonksList.module.css";
 import LongSGonkRow from "./LongSGonkRow/LongSGonkRow";
 
 const LongSGonksList = (props) => {
+  console.log(props);
+  const investmentRows = props.investments.map((investment) => {
+    return <LongSGonkRow></LongSGonkRow>;
+  });
   return (
     <div className={classes.ListWrapper}>
       <div className={classes.TitleRow}>
@@ -13,11 +17,7 @@ const LongSGonksList = (props) => {
         <div className={classes.AmountTitle}>Net Difference</div>
         <div className={classes.ButtonTitle}></div>
       </div>
-      <div className={classes.List}>
-        <LongSGonkRow></LongSGonkRow>
-        <LongSGonkRow></LongSGonkRow>
-        <LongSGonkRow></LongSGonkRow>
-      </div>
+      <div className={classes.List}>{investmentRows}</div>
     </div>
   );
 };
