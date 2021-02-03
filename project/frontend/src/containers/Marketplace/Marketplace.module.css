@@ -11,13 +11,11 @@
 .BuyContainer {
   height: 100%;
   width: 64%;
-  background: lightblue;
 }
 
 .BuySuggestions {
   height: 100%;
   width: 34%;
-  background: lightgoldenrodyellow;
   display: flex;
   flex-direction: column;
   flex-wrap: nowrap;
@@ -27,12 +25,10 @@
 
 .TrendingInvestmentsContainer {
   height: 50%;
-  background: lightgreen;
 }
 
 .TeammateBuysContainer {
   height: 50%;
-  background: lightyellow;
 }
 
 .BuySuggestions h1 {
