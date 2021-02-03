@@ -10,7 +10,7 @@ const LongSGonksList = (props) => {
         //TODO replace key with investment id
         key={i}
         searchTerm={investment.searchItem}
-        buyInDate={investment.dateInvestedMillliSeconds}
+        buyInDate={investment.dateInvestedMilliSeconds}
         amountInvested={investment.amtInvested}
         currentValue={investment.currentValue}
       ></LongSGonkRow>
