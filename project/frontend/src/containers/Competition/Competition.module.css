@@ -6,8 +6,17 @@
     flex-wrap: nowrap;
     justify-content: space-between;
     align-items: stretch;
-  }
+}
 
-  .Rankings {
-      
-  }
+.Column {
+    height: 100%;
+    width: 60%;
+    display: flex;
+    flex-direction: column;
+    flex-wrap: nowrap;
+    justify-content: space-between;
+}
+
+.Rankings {
+    height: 50%;
+}
