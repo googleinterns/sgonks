@@ -5,11 +5,9 @@ import LinkButton from "../../components/UI/LinkButton/LinkButton";
 import LongSGonksList from "../../components/SGonksLists/LongSGonksList/LongSGonksList";
 
 const MySGonks = (props) => {
-  console.log(props);
   const unsoldInvestments = props.investments.filter(
     (investment) => investment.dateSoldMilliSeconds == 0
   );
-  console.log(unsoldInvestments);
 
   return (
     <div className={classes.MySGonksContainer}>

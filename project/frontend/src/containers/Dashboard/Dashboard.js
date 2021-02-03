@@ -9,9 +9,7 @@ import RecentBuysList from "../../components/RecentBuys/RecentBuysList";
 import Rank from "../../components/Rank/Rank";
 import ChartCard from "../../components/ChartCard/ChartCard";
 
-
 const Dashboard = (props) => {
-  console.log(props);
   const toDayHourMinute = (totalTime) => {
     let millisInDay = 24 * 60 * 60 * 1000,
       millisInHour = 60 * 60 * 1000,
@@ -45,17 +43,17 @@ const Dashboard = (props) => {
   };
 
   const placeholderChartsData = {
-      haxis: "Date",
-      vaxis: "Popularity",
-      data: [ 
-        ['x', 'trend 1', 'trend 2', 'trend 3'],
-        [0, 1, 2, 90],
-        [1, 0, 6, 80],
-        [2, 34, 23, 23],
-        [3, 22, 43, 12],
-        [4, 34, 56, 91]
-      ]
-    };
+    haxis: "Date",
+    vaxis: "Popularity",
+    data: [
+      ["x", "trend 1", "trend 2", "trend 3"],
+      [0, 1, 2, 90],
+      [1, 0, 6, 80],
+      [2, 34, 23, 23],
+      [3, 22, 43, 12],
+      [4, 34, 56, 91],
+    ],
+  };
 
   return (
     <div className={classes.DashboardContainer}>
@@ -83,7 +81,7 @@ const Dashboard = (props) => {
           </div>
         </Block>
         <Block className={classes.ChartContainer}>
-          <ChartCard chartInfo={placeholderChartsData} ></ChartCard>
+          <ChartCard chartInfo={placeholderChartsData}></ChartCard>
         </Block>
         <LinkButton inverted="true">View my sGonks</LinkButton>
       </div>

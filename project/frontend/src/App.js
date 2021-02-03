@@ -76,9 +76,7 @@ function App() {
         ),
         fetchAndUpdateCompetitionInfo("./trending", "trending"),
       ]).then(() => {
-        console.log("done");
         setLoading(false);
-        console.log(competitionInfo);
       });
     }
   }, [user.id]);

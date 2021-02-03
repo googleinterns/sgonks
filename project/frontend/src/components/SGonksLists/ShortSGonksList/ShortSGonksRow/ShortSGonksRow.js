@@ -2,7 +2,6 @@ import React from "react";
 import classes from "./ShortSGonksRow.module.css";
 
 const ShortSGonksRow = (props) => {
-  console.log(props);
   const getDiffIndicator = () => {
     const priceDelta =
       props.datapoints[props.datapoints.length - 1] -

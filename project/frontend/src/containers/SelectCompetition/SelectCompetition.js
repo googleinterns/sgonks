@@ -11,7 +11,6 @@ const SelectCompetition = (props) => {
   const [comps, setComps] = useState(null);
 
   const competitionSelectedHandler = (compId) => {
-    console.log("Storing" + compId);
     localStorage.setItem("compId", compId);
     props.compIdChanged(compId);
   };
@@ -55,7 +54,6 @@ const SelectCompetition = (props) => {
     fetch("./competitionList?user=" + userId)
       .then((response) => response.json())
       .then((data) => {
-        console.log(data);
         renderCompCards(data);
       });
   }, [userId]);
