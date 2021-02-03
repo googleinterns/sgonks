@@ -13,6 +13,7 @@ import MySGonks from "./containers/MySGonks/MySGonks";
 import Layout from "./hoc/Layout/Layout";
 import { AuthContext } from "./context/AuthContext";
 import { onAuthStateChange } from "./services/firebase";
+import Marketplace from "./containers/Marketplace/Marketplace";
 
 const NO_COMPETITION = 0;
 
@@ -201,8 +202,19 @@ function App() {
           ></MySGonks>
         )}
       ></Route>
+      <Route
+        path="/marketplace"
+        render={() => (
+          <Marketplace
+            generalInfo={competitionInfo.generalInfo}
+            recentBuys={competitionInfo.recentBuys}
+            trendingSearches={competitionInfo.trending}
+            investments={competitionInfo.investments}
+          ></Marketplace>
+        )}
+      ></Route>
       <Route path="/placeholder" component={Explanation}></Route>
-      <Redirect to="/mysgonks"></Redirect>
+      <Redirect to="/marketplace"></Redirect>
     </Switch>
   );
 

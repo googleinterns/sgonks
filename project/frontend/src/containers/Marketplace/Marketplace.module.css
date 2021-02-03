@@ -1,0 +1,36 @@
+.MarketplaceContainer {
+  height: 93%;
+  width: 95%;
+  display: flex;
+  flex-direction: row;
+  flex-wrap: nowrap;
+  justify-content: space-between;
+  align-items: stretch;
+}
+
+.BuyContainer {
+  height: 100%;
+  width: 64%;
+  background: lightblue;
+}
+
+.BuySuggestions {
+  height: 100%;
+  width: 34%;
+  background: lightgoldenrodyellow;
+  display: flex;
+  flex-direction: column;
+  flex-wrap: nowrap;
+  justify-content: space-between;
+  align-items: stretch;
+}
+
+.TrendingInvestmentsContainer {
+  height: 50%;
+  background: lightgreen;
+}
+
+.TeammateBuysContainer {
+  height: 50%;
+  background: lightyellow;
+}
