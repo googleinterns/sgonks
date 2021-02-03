@@ -2,7 +2,6 @@ import React from "react";
 import classes from "./LongSGonkRow.module.css";
 
 const LongSGonkRow = (props) => {
-  console.log(props);
   const priceDelta = props.currentValue - props.amountInvested;
 
   return (

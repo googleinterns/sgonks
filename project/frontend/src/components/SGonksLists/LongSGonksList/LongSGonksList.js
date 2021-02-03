@@ -3,11 +3,10 @@ import classes from "./LongSGonksList.module.css";
 import LongSGonkRow from "./LongSGonkRow/LongSGonkRow";
 
 const LongSGonksList = (props) => {
-  console.log(props);
   const investmentRows = props.investments.map((investment, i) => {
     return (
       <LongSGonkRow
-        //TODO replace key with investment id
+        //TODO replace key with investment id once it's ready
         key={i}
         searchTerm={investment.searchItem}
         buyInDate={investment.dateInvestedMilliSeconds}
