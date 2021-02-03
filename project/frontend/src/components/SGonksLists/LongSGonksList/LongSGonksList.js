@@ -17,17 +17,6 @@ const LongSGonksList = (props) => {
         <LongSGonkRow></LongSGonkRow>
         <LongSGonkRow></LongSGonkRow>
         <LongSGonkRow></LongSGonkRow>
-        <LongSGonkRow></LongSGonkRow>
-        <LongSGonkRow></LongSGonkRow>
-        <LongSGonkRow></LongSGonkRow>
-        <LongSGonkRow></LongSGonkRow>
-        <LongSGonkRow></LongSGonkRow>
-        <LongSGonkRow></LongSGonkRow>
-        <LongSGonkRow></LongSGonkRow>
-        <LongSGonkRow></LongSGonkRow>
-        <LongSGonkRow></LongSGonkRow>
-        <LongSGonkRow></LongSGonkRow>
-        <LongSGonkRow></LongSGonkRow>
       </div>
     </div>
   );
