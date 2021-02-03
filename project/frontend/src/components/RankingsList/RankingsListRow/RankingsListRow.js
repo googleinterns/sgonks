@@ -26,7 +26,7 @@ const RankingsListRow = (props) => {
     <div className={classes.RankingsListRow}>
         {getDiffIndicator()}
         <div className={classes.Rank}>{props.competitor.rank}</div>
-        <div className={classes.TextColumn}>{props.competitor.investor} </div>
+        <div className={classes.TextColumn}>{props.competitor.name} </div>
         <div className={classes.TextColumn}>$t{props.competitor.available} </div>
         <div className={classes.TextColumn}>$t{props.competitor.net_worth} </div>
         <div className={classes.TextColumn}>{props.competitor.num_searches} </div>
