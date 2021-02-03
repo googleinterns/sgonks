@@ -10,7 +10,11 @@
     "enzyme": "^3.11.0",
     "firebase": "^8.2.3",
     "react": "^16.14.0",
+<<<<<<< HEAD
     "react-icons": "^4.1.0",
+=======
+    "react-google-charts": "^3.0.15",
+>>>>>>> cc9ac1ba05ab765b4524c2cde32c5c4a8eca3746
     "react-router-dom": "^5.2.0",
     "react-scripts": "4.0.1",
     "react-slideshow-image": "^3.4.3",

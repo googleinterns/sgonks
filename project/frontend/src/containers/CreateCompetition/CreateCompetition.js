@@ -2,7 +2,10 @@ import React, { useState } from "react";
 import classes from "./CreateCompetition.module.css";
 import { Link } from "react-router-dom";
 import LinkButton from "../../components/UI/LinkButton/LinkButton";
+<<<<<<< HEAD
 import ParticipantCard from "../../components/ParticipantCard/ParticipantCard";
+=======
+>>>>>>> cc9ac1ba05ab765b4524c2cde32c5c4a8eca3746
 import { RiAddCircleLine } from "react-icons/ri";
 
 const CreateCompetition = (props) => {
@@ -39,6 +42,7 @@ const CreateCompetition = (props) => {
           <div className={classes.AddParticipants}>
             <p>
               {" "}
+<<<<<<< HEAD
               Add Participants:{" "}
               <input
                 type="text"
@@ -50,6 +54,10 @@ const CreateCompetition = (props) => {
                 className={classes.icons}
                 onClick={onAddParticipant}
               />
+=======
+              Add Participants: <input type="text" />{" "}
+              <RiAddCircleLine className={classes.icons} />
+>>>>>>> cc9ac1ba05ab765b4524c2cde32c5c4a8eca3746
             </p>
           </div>
           <div className={classes.DisplayParticipants}>

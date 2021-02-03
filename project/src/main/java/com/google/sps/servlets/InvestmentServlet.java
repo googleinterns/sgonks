@@ -54,14 +54,18 @@ public class InvestmentServlet extends HttpServlet {
     DataSource pool = (DataSource) request.getServletContext().getAttribute("db-connection-pool");
 
     try (Connection conn = pool.getConnection()) {
-      int userId = Integer.parseInt(request.getParameter("user"));
-      int competitionId = Integer.parseInt(request.getParameter("competition"));
-
-      List<Investment> investments = getUserInvestments(conn, userId, competitionId);
-
-      Gson gson = new Gson();
-      response.setContentType("application/json");
-      response.getWriter().println(gson.toJson(investments));
+      try {
+        int userId = Integer.parseInt(request.getParameter("user"));
+        int competitionId = Integer.parseInt(request.getParameter("competition"));
+        List<Investment> investments = getUserInvestments(conn, userId, competitionId);
+        Gson gson = new Gson();
+        response.setContentType("application/json");
+        response.getWriter().println(gson.toJson(investments));
+      } catch (NumberFormatException nfe) {
+        LOGGER.log(Level.WARNING, "ID supplied was not int");
+        response.getWriter().print(HttpServletResponse.SC_BAD_REQUEST + " Invalid ID");
+        response.setStatus(HttpServletResponse.SC_BAD_REQUEST); //Send 400 error
+      }
     } catch (SQLException ex) {
       LOGGER.log(Level.WARNING, "Error while attempting to fetch investments.", ex);
       response.setStatus(500);
@@ -103,7 +107,8 @@ public class InvestmentServlet extends HttpServlet {
   }
 
   private ImmutableList<Long> getInvestmentDataPoints(String searchQuery, long investDate, long sellDate) {
-    List<String> dates = getListOfDates(investDate, sellDate);
+    InvestmentCalculator calc = new InvestmentCalculator();
+    List<String> dates = calc.getListOfDates(investDate, sellDate);
     Datastore datastore = DatastoreOptions.getDefaultInstance().getService();
 
     Query<Entity> query = Query.newEntityQueryBuilder()
@@ -125,34 +130,6 @@ public class InvestmentServlet extends HttpServlet {
       return ImmutableList.copyOf(values);
     }
     return ImmutableList.copyOf(values);
-  }
-
-  /**
-   * Return an ArrayList of dates between the invest date and sell date (or current date) inclusive
-   * formatted as strings in epoch form.
-   */
-  private List<String> getListOfDates(long investDate, long sellDate) {
-    InvestmentCalculator calc = new InvestmentCalculator();
-    Long startDateEpoch = oneWeekBefore(investDate / 1000L);
-    Long endDateEpoch;
-    if (sellDate == 0) {
-      // haven't sold investment yet, get data up to latest datapoint
-      endDateEpoch = calc.getLatestDate();
-    } else {
-      endDateEpoch = sellDate / 1000L;
-    }
-
-    List<String> dates = new ArrayList();
-    Long currentDateLong = startDateEpoch;
-    String currentDateString = startDateEpoch + "";
-
-    while (currentDateLong < endDateEpoch) {
-      dates.add(currentDateString);
-      currentDateLong = addOneDay(currentDateLong);
-      currentDateString = currentDateLong + "";
-    }
-    dates.add(currentDateString);
-    return dates;
   }
 
   /**

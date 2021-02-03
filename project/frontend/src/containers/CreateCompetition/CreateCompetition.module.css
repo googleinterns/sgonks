@@ -106,6 +106,15 @@ input[type="date"] {
   font-size: 1.2vw;
 }
 
+.icons {
+  position: absolute;
+  top: 34.5%;
+  margin: auto;
+  width: 4%;
+  height: 4.35%;
+  cursor: pointer;
+}
+
 .ButtonContainer {
   width: 70%;
   height: 15%;
