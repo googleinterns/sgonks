@@ -49,12 +49,17 @@ public class CompetitionsServlet extends HttpServlet {
     DataSource pool = (DataSource) request.getServletContext().getAttribute("db-connection-pool");
 
     try (Connection conn = pool.getConnection()) {
-      int userId = Integer.parseInt(request.getParameter("user"));
-      LOGGER.log(Level.WARNING, Integer.toString(userId));
-      List<CompetitionSummary> competitions = getUserCompetitions(conn, userId);
-      Gson gson = new Gson();
-      response.setContentType("application/json");
-      response.getWriter().println(gson.toJson(competitions));
+      try {
+        int userId = Integer.parseInt(request.getParameter("user"));
+        List<CompetitionSummary> competitions = getUserCompetitions(conn, userId);
+        Gson gson = new Gson();
+        response.setContentType("application/json");
+        response.getWriter().println(gson.toJson(competitions));
+      } catch (NumberFormatException nfe) {
+        LOGGER.log(Level.WARNING, "ID supplied was not int");
+        response.getWriter().print(HttpServletResponse.SC_BAD_REQUEST + " Invalid ID");
+        response.setStatus(HttpServletResponse.SC_BAD_REQUEST); //Send 400 error
+      }
     } catch (SQLException ex) {
       LOGGER.log(Level.WARNING, "Error while attempting to fetch competitions.", ex);
       response.setStatus(500);
