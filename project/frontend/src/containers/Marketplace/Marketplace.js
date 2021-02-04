@@ -22,16 +22,15 @@ const Marketplace = (props) => {
         <Block className={classes.ChartContainer}>chart here </Block>
         <div className={classes.PurchaseSection}>
           <h2>"search query"</h2>
-          <div className={classes.AmountToPurchase}>
-            <span>Amount to purchase:</span>
+          <div className={classes.BuyInfo}>
+            Amount to purchase:
             <span>
-              t$<input></input>
+              t$ <input></input>
             </span>
           </div>
-          <div className={classes.CurrentlyAvailable}>
-            <span>Currenly available:</span>
+          <div className={classes.BuyInfo}>
+            Currently available:
             <span>t$1234</span>
-            <span></span>
           </div>
           <Button>Confirm Purchase</Button>
         </div>

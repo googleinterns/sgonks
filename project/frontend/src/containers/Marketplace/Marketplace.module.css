@@ -103,29 +103,22 @@
   line-height: 0;
 }
 
-.AmountToPurchase {
-  background: lightblue;
-  width: 60%;
+.BuyInfo {
+  width: 70%;
   display: flex;
   flex-direction: row;
   flex-wrap: nowrap;
   justify-content: space-between;
+  font-size: 1.3vw;
+  margin: -1% 0;
 }
 
-.AmountToPurchase span {
-  width: 50%;
+.BuyInfo span {
+  width: 55%;
 }
 
-.CurrentlyAvailable {
-  background: lightgreen;
-
-  width: 90%;
-  display: flex;
-  flex-direction: row;
-  flex-wrap: nowrap;
-  justify-content: space-between;
-}
-
-.CurrentlyAvailable span {
-  width: calc(100% / 3);
+.BuyInfo span input {
+  border: 1px solid lightgray;
+  border-radius: 4px;
+  height: 100%;
 }
