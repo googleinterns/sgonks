@@ -108,7 +108,7 @@ public class InvestmentCalculator {
 
         //store dates as long to prevent y2k in 2038 but immediately convert to string for datastore reasons
         String startDate = (investDate / 1000L) + "";
-        String currentDate = getLatestUpdatedDateForSearch(googleSearch).toString();
+        String latestAvailableDate = getLatestUpdatedDateForSearch(googleSearch).toString();
 
         Entity trend;
         float startValue;
@@ -118,7 +118,7 @@ public class InvestmentCalculator {
         while (trends.hasNext()) {
             trend = trends.next();
             startValue = (float) trend.getLong(startDate);
-            endValue = (float) trend.getLong(currentDate);
+            endValue = (float) trend.getLong(latestAvailableDate);
             investmentValue = amtInvested * (endValue / startValue);
         }
         return (int) investmentValue;
