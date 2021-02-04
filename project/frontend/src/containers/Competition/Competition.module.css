@@ -8,9 +8,18 @@
     align-items: stretch;
 }
 
-.Column {
+.LargeColumn {
     height: 100%;
-    width: 60%;
+    width: 63%;
+    display: flex;
+    flex-direction: column;
+    flex-wrap: nowrap;
+    justify-content: space-between;
+}
+
+.SmallColumn {
+    height: 100%;
+    width: 33%;
     display: flex;
     flex-direction: column;
     flex-wrap: nowrap;
@@ -18,11 +27,31 @@
 }
 
 .Rankings {
-    height: 50%;
-    margin : 2%;
+    height: 48%;
+}
+
+h2 {
+    text-align: left;
+    font-size: 1.4vw;
+    font-weight: 600;
 }
 
 .RankingsChart {
-    margin : 2%;
-    height: 50%;
+    height: 48%;
 }
+
+.RankingSummary {
+    height : 38%;
+}
+
+.CompetitionSummary {
+    height : 58%;
+    text-align: left;
+}
+
+.CountDown {
+    font-size: 1.5vw;
+    font-weight: 400;
+    line-height: 0;
+    padding-bottom: 15px;
+  }
