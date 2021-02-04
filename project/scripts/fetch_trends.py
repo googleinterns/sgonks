@@ -73,7 +73,7 @@ def aggregate_hourly_to_daily(hourly_df):
     new_data = {
         "search_term": search_term,
         "initial_date": date_to_epoch(hourly_df.index[0]),
-        "latest_date": date_to_epoch(hourly_df.index[1])
+        "latest_date": date_to_epoch(hourly_df.index[-1])
     }
     count = 0
     day_total = 0
