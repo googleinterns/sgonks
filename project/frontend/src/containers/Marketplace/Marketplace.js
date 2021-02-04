@@ -3,6 +3,7 @@ import classes from "./Marketplace.module.css";
 import Block from "../../components/UI/Block/Block";
 import TrendingSearches from "../../components/TrendingSearches/TrendingSearches";
 import RecentBuys from "../../components/RecentBuys/RecentBuysList";
+import Button from "../../components/UI/Button/Button";
 
 const Marketplace = (props) => {
   console.log(props);
@@ -14,14 +15,16 @@ const Marketplace = (props) => {
             className={classes.SearchInput}
             placeholder="Google search here"
           ></input>
-          <button className={classes.SearchButton}>Search</button>
+          <Button inverted className={classes.SearchButton}>
+            Search
+          </Button>
         </div>
         <Block className={classes.ChartContainer}>chart here </Block>
         <div className={classes.PurchaseSection}>
           <h2>"search query"</h2>
           <div>amount to purchase</div>
           <div>currently avail</div>
-          <button>confirm purchase</button>
+          <Button padding="10px 40px">confirm purchase</Button>
         </div>
       </div>
       <div className={classes.BuySuggestions}>
