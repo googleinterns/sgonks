@@ -6,7 +6,7 @@ const RankingsListRow = (props) => {
         const diff =
           props.competitor.rank < props.competitor.rankYesterday
             ? "+"
-            : props.competitor.rank > props.competitor.rankYesterda
+            : props.competitor.rank > props.competitor.rankYesterday
             ? "-"
             : "=";
     
