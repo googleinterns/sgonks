@@ -23,6 +23,7 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.text.SimpleDateFormat;
 import java.util.*;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -79,17 +80,30 @@ public class CompetitionsServlet extends HttpServlet {
     try {
       jsonObj = new JSONObject(body);
       String compName = jsonObj.getString("name");
-      String startDate = jsonObj.getString("startdate");
-      String endDate = jsonObj.getString("enddate");
+      SimpleDateFormat formatter = new SimpleDateFormat("dd-MMM-yyyy");
+      Date startDate = formatter.parse(jsonObj.getString("startdate"));
+      Date endDate = formatter.parse(jsonObj.getString("enddate"));
       JSONArray participants = (JSONArray) jsonObj.getJSONArray("list");
+      System.out.println(compName + "  " + startDate + "  " + endDate + "  " + participants);
+
+      // insert into database
+      String stmt = String.format(
+          "INSERT INTO competitions (start_date, end_date, competition_name, creator) VALUES "
+              + "(DATE, DATE, '%s', %d);",
+          startDate, endDate, compName, 0);
       for (int i = 0; i < participants.length(); i++) {
         System.out.println(participants.get(i));
       }
 
-      System.out.println(compName + "  " + startDate + "  " + endDate + "  " + participants);
-    } catch (Exception e) {
-      // TODO: handle exception
-    }
+      //      try (PreparedStatement investmentStmt = conn.prepareStatement(stmt);) {
+      //        // Execute the statement
+      //        investmentStmt.execute();
+      //        LOGGER.log(Level.INFO, "Investment added to database.");
+      //      }
+          } catch (Exception e) {
+            // TODO: handle exception
+          }
+
   }
 
   /**
