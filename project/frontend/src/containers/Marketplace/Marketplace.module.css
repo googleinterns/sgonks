@@ -87,10 +87,45 @@
 
 .PurchaseSection {
   height: 35%;
+  width: 100%;
   display: flex;
   flex-direction: column;
   flex-wrap: nowrap;
   justify-content: space-between;
   align-items: flex-start;
   text-align: left;
+}
+
+.PurchaseSection h2 {
+  font-size: 1.9vw;
+  text-align: left;
+  font-weight: 600;
+  line-height: 0;
+}
+
+.AmountToPurchase {
+  background: lightblue;
+  width: 60%;
+  display: flex;
+  flex-direction: row;
+  flex-wrap: nowrap;
+  justify-content: space-between;
+}
+
+.AmountToPurchase span {
+  width: 50%;
+}
+
+.CurrentlyAvailable {
+  background: lightgreen;
+
+  width: 90%;
+  display: flex;
+  flex-direction: row;
+  flex-wrap: nowrap;
+  justify-content: space-between;
+}
+
+.CurrentlyAvailable span {
+  width: calc(100% / 3);
 }
