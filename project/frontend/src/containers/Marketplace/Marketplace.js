@@ -5,9 +5,18 @@ import TrendingSearches from "../../components/TrendingSearches/TrendingSearches
 import RecentBuys from "../../components/RecentBuys/RecentBuysList";
 
 const Marketplace = (props) => {
+  console.log(props);
   return (
     <div className={classes.MarketplaceContainer}>
-      <div className={classes.BuyContainer}>buy container</div>
+      <div className={classes.BuyContainer}>
+        <div className={classes.SearchContainer}>
+          <input
+            className={classes.SearchInput}
+            placeholder="Google search here"
+          ></input>
+          <button>Search</button>
+        </div>
+      </div>
       <div className={classes.BuySuggestions}>
         <div className={classes.TrendingInvestmentsContainer}>
           <h1>Trending searches</h1>

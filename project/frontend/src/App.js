@@ -76,9 +76,14 @@ function App() {
           "investments"
         ),
         fetchAndUpdateCompetitionInfo("./trending", "trending"),
-      ]).then(() => {
-        setLoading(false);
-      });
+      ])
+        .then(() => {
+          setLoading(false);
+          console.log(competitionInfo);
+        })
+        .catch(() => {
+          setLoading(false);
+        });
     }
   }, [user.id]);
 

@@ -11,6 +11,10 @@
 .BuyContainer {
   height: 100%;
   width: 64%;
+  display: flex;
+  flex-direction: column;
+  flex-wrap: nowrap;
+  justify-content: space-between;
 }
 
 .BuySuggestions {
@@ -32,7 +36,7 @@
 }
 
 .BuySuggestions h1 {
-  font-size: 1.5vw;
+  font-size: 1.3vw;
   text-align: left;
   font-weight: 500;
   line-height: 0.5;
@@ -40,4 +44,30 @@
 
 .Block {
   height: 82%;
+}
+
+.SearchInput {
+  border: none;
+  border-bottom: 2px solid rgb(228, 228, 228);
+  font-size: 2vw;
+  color: rgb(218, 218, 218);
+  width: 87%;
+}
+
+.SearchInput:focus {
+  outline: none;
+  color: rgb(171, 171, 171);
+
+  border-bottom: 2px solid rgb(208, 208, 208);
+}
+
+.SearchInput::placeholder {
+  color: rgb(228, 228, 228);
+}
+
+.SearchContainer {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: nowrap;
+  justify-content: space-between;
 }
