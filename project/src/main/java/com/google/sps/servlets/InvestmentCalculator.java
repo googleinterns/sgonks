@@ -197,7 +197,7 @@ public class InvestmentCalculator {
     
         while (trends.hasNext()) {
             trend = trends.next();
-            latestDateSeconds = Long.parseLong(trend.getString("latest_date"));
+            latestDateSeconds = trend.getLong("latest_date");
             return latestDateSeconds;
         }
         return null;
