@@ -24,33 +24,24 @@ const CreateCompetition = (props) => {
     setParticipantList(participantList.filter((v) => v !== participant?.email));
 
   const sendInfo = async () => {
-    var sendInfo =
-      "Competition name: " +
-      compName +
-      "Start date: " +
-      startDate +
-      "endDate: " +
-      endDate +
-      "Participants list: " +
-      participantList;
-    var jsonFormat = JSON.stringify(sendInfo);
+    const postBody = {
+      name: compName,
+      startdate: startDate,
+      enddate: endDate,
+      list: participantList,
+    };
     try {
       await fetch("/competitionList", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
         },
-        body: jsonFormat,
+        body: JSON.stringify(postBody),
       });
       console.log("successfully send to back end: \n " + sendInfo);
     } catch (error) {
       console.error("Error:", error);
     }
-  };
-
-  const clearCompId = () => {
-    localStorage.setItem("compId", 0);
-    props.compIdChanged(0);
   };
 
   return (
@@ -115,9 +106,10 @@ const CreateCompetition = (props) => {
         <LinkButton
           width="275px"
           inverted="true"
-          to="/compselect"
-          onClick={clearCompId}
-          activeclassname={classes.active}
+          onClick={() => {
+            props.compIdChanged(0);
+            console.log("This function is called ");
+          }}
         >
           Cancel
         </LinkButton>

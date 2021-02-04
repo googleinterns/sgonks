@@ -14,36 +14,32 @@
 
 package com.google.sps.servlets;
 
+import com.google.common.primitives.Longs;
 import com.google.gson.Gson;
 import com.google.sps.data.*;
-
 import java.io.BufferedReader;
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.util.*;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.Connection;
-import java.sql.SQLException;
 import javax.sql.DataSource;
-
-import java.util.logging.Level;
-import java.util.logging.Logger;
-import java.util.Collections;
-import com.google.common.primitives.Longs;
+import org.json.JSONArray;
+import org.json.JSONObject;
 
 /**
- * Returns a list of all the competitions the logged in user is in, including their rank and info about the competition
+ * Returns a list of all the competitions the logged in user is in, including their rank and info
+ * about the competition
  */
 @WebServlet("/competitionList")
 public class CompetitionsServlet extends HttpServlet {
-
   private static final Logger LOGGER = Logger.getLogger(CompetitionsServlet.class.getName());
 
   @Override
@@ -60,7 +56,7 @@ public class CompetitionsServlet extends HttpServlet {
       } catch (NumberFormatException nfe) {
         LOGGER.log(Level.WARNING, "ID supplied was not int");
         response.getWriter().print(HttpServletResponse.SC_BAD_REQUEST + " Invalid ID");
-        response.setStatus(HttpServletResponse.SC_BAD_REQUEST); //Send 400 error
+        response.setStatus(HttpServletResponse.SC_BAD_REQUEST); // Send 400 error
       }
     } catch (SQLException ex) {
       LOGGER.log(Level.WARNING, "Error while attempting to fetch competitions.", ex);
@@ -79,26 +75,41 @@ public class CompetitionsServlet extends HttpServlet {
       buffer.append(System.lineSeparator());
     }
     String body = buffer.toString();
-    System.out.println("THIS IS THE BODY OF THE TEXT!! " + body);
+    JSONObject jsonObj = null;
+    try {
+      jsonObj = new JSONObject(body);
+      String compName = jsonObj.getString("name");
+      String startDate = jsonObj.getString("startdate");
+      String endDate = jsonObj.getString("enddate");
+      JSONArray participants = (JSONArray) jsonObj.getJSONArray("list");
+      for (int i = 0; i < participants.length(); i++) {
+        System.out.println(participants.get(i));
+      }
 
+      System.out.println(compName + "  " + startDate + "  " + endDate + "  " + participants);
+    } catch (Exception e) {
+      // TODO: handle exception
+    }
   }
 
   /**
    * Return all competitions that the user is in.
    * @return -- all Competitions object that user is in.
    */
-  private List<CompetitionSummary> getUserCompetitions(Connection conn, int userId) throws SQLException {
+  private List<CompetitionSummary> getUserCompetitions(Connection conn, int userId)
+      throws SQLException {
     String stmt = "SELECT "
-      + "competitions.id, "
-      + "competitions.competition_name, "
-      + "competitions.creator, "
-      + "competitions.start_date, "
-      + "competitions.end_date, "
-      + "participants.amt_available, "
-      + "participants.net_worth, "
-      + "participants.rank, "
-      + "participants.rank_yesterday "
-      + "FROM competitions, participants WHERE competitions.id=participants.id AND participants.user=" + userId + ";";
+        + "competitions.id, "
+        + "competitions.competition_name, "
+        + "competitions.creator, "
+        + "competitions.start_date, "
+        + "competitions.end_date, "
+        + "participants.amt_available, "
+        + "participants.net_worth, "
+        + "participants.rank, "
+        + "participants.rank_yesterday "
+        + "FROM competitions, participants WHERE competitions.id=participants.id AND participants.user="
+        + userId + ";";
     List<CompetitionSummary> competitions = new ArrayList<>();
     try (PreparedStatement competitionsStmt = conn.prepareStatement(stmt);) {
       // Execute the statement
@@ -122,8 +133,8 @@ public class CompetitionsServlet extends HttpServlet {
         netWorth = rs.getInt(7);
         rank = rs.getInt(8);
         rankYesterday = rs.getInt(9);
-        competitions.add(getCompetitionSummary(conn, competitionId, competitionName, creatorId, startDate, endDate,
-          amtAvailable, netWorth, rank, rankYesterday));
+        competitions.add(getCompetitionSummary(conn, competitionId, competitionName, creatorId,
+            startDate, endDate, amtAvailable, netWorth, rank, rankYesterday));
       }
       return competitions;
     }
@@ -133,11 +144,12 @@ public class CompetitionsServlet extends HttpServlet {
    * Construct a CompetitionSummary object given data
    * @return -- CompetitionSummary object
    */
-  private CompetitionSummary getCompetitionSummary(Connection conn, long competitionId, String competitionName, long creatorId, 
-    long start, long end, int amtAvailable, int netWorth, int rank, int rankYesterday) throws SQLException {
+  private CompetitionSummary getCompetitionSummary(Connection conn, long competitionId,
+      String competitionName, long creatorId, long start, long end, int amtAvailable, int netWorth,
+      int rank, int rankYesterday) throws SQLException {
     User creator = getCreatorDetails(conn, creatorId);
-    return CompetitionSummary.create(competitionId, competitionName, creator.name(), creator.email(), start, end, rank,
-      rankYesterday, netWorth, amtAvailable);
+    return CompetitionSummary.create(competitionId, competitionName, creator.name(),
+        creator.email(), start, end, rank, rankYesterday, netWorth, amtAvailable);
   }
 
   /**
