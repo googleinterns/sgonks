@@ -108,7 +108,7 @@ public class InvestmentServlet extends HttpServlet {
 
   private ImmutableList<Long> getInvestmentDataPoints(String searchQuery, long investDate, long sellDate) {
     InvestmentCalculator calc = new InvestmentCalculator();
-    List<String> dates = calc.getListOfDates(investDate, sellDate);
+    List<String> dates = calc.getListOfDates(investDate, sellDate, searchQuery);
     Datastore datastore = DatastoreOptions.getDefaultInstance().getService();
 
     Query<Entity> query = Query.newEntityQueryBuilder()
