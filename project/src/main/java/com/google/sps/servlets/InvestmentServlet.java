@@ -108,7 +108,7 @@ public class InvestmentServlet extends HttpServlet {
 
   private ImmutableList<Long> getInvestmentDataPoints(String searchQuery, long investDate, long sellDate) {
     InvestmentCalculator calc = new InvestmentCalculator();
-    List<String> dates = calc.getListOfDates(investDate, sellDate);
+    List<String> dates = calc.getListOfDates(investDate, sellDate, searchQuery);
     Datastore datastore = DatastoreOptions.getDefaultInstance().getService();
 
     Query<Entity> query = Query.newEntityQueryBuilder()
@@ -130,19 +130,5 @@ public class InvestmentServlet extends HttpServlet {
       return ImmutableList.copyOf(values);
     }
     return ImmutableList.copyOf(values);
-  }
-
-  /**
-   * Return epoch exactly 3 days before given date
-   */
-  private Long threeDaysBefore(long date) {
-    return date - LAST_THREE_DAYS_SECONDS;
-  }
-
-  /**
-   * Return epoch exactly one day after given date
-   */
-  private Long addOneDay(long date) {
-    return date + ONE_DAY_SECONDS;
   }
 }

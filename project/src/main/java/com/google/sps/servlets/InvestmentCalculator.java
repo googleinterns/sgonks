@@ -108,7 +108,7 @@ public class InvestmentCalculator {
 
         //store dates as long to prevent y2k in 2038 but immediately convert to string for datastore reasons
         String startDate = (investDate / 1000L) + "";
-        String currentDate = getLatestDate() + "";
+        String currentDate = getLatestUpdatedDateForSearch(googleSearch).toString();
 
         Entity trend;
         float startValue;
@@ -128,12 +128,12 @@ public class InvestmentCalculator {
      * Return an ArrayList of dates between the invest date and sell date (or current date) with context dates
      * formatted as strings in epoch form.
      */
-    public List<String> getListOfDates(long investDate, long sellDate) {
+    public List<String> getListOfDates(long investDate, long sellDate, String googleSearch) {
         Long startDateEpoch = oneWeekBefore(investDate / 1000L);
         Long endDateEpoch;
         if (sellDate == 0) {
             // haven't sold investment yet, get data up to latest datapoint
-            endDateEpoch = getLatestDate();
+            endDateEpoch = getLatestUpdatedDateForSearch(googleSearch);
         } else {
             endDateEpoch = sellDate / 1000L;
         }
@@ -157,7 +157,7 @@ public class InvestmentCalculator {
      */
     public ImmutableList<Long> getInvestmentDataIfExists(String googleSearch) {
         Datastore datastore = DatastoreOptions.getDefaultInstance().getService();
-        Long currentDate = getLatestDate() * 1000;
+        Long currentDate = getLatestUpdatedDateForSearch(googleSearch);
     
         Query<Entity> query = Query.newEntityQueryBuilder()
           .setKind("TrendsData")
@@ -172,12 +172,33 @@ public class InvestmentCalculator {
     
         while (trends.hasNext()) {
             trend = trends.next();
-            dates = getListOfDates(currentDate, currentDate);
+            dates = getListOfDates(currentDate, currentDate, googleSearch);
             for (String date : dates) {
                 value = trend.getLong(date);
                 values.add(value);
             }
             return ImmutableList.copyOf(values);
+        }
+        return null;
+    }
+
+    public Long getLatestUpdatedDateForSearch(String googleSearch) {
+        //returns the latest date for which data exists is an epoch in seconds
+        Datastore datastore = DatastoreOptions.getDefaultInstance().getService();
+    
+        Query<Entity> query = Query.newEntityQueryBuilder()
+          .setKind("TrendsData")
+          .setFilter(PropertyFilter.eq("search_term", googleSearch))
+          .build();
+        QueryResults<Entity> trends = datastore.run(query);
+    
+        Entity trend;
+        Long latestDateSeconds;
+    
+        while (trends.hasNext()) {
+            trend = trends.next();
+            latestDateSeconds = Long.parseLong(trend.getString("latest_date"));
+            return latestDateSeconds;
         }
         return null;
     }
