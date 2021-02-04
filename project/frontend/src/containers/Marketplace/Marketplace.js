@@ -15,7 +15,7 @@ const Marketplace = (props) => {
             className={classes.SearchInput}
             placeholder="Google search here"
           ></input>
-          <Button inverted className={classes.SearchButton}>
+          <Button inverted padding="3px 20px">
             Search
           </Button>
         </div>
@@ -24,7 +24,7 @@ const Marketplace = (props) => {
           <h2>"search query"</h2>
           <div>amount to purchase</div>
           <div>currently avail</div>
-          <Button padding="10px 40px">confirm purchase</Button>
+          <Button>confirm purchase</Button>
         </div>
       </div>
       <div className={classes.BuySuggestions}>

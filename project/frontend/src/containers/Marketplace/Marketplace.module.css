@@ -28,11 +28,19 @@
 }
 
 .TrendingInvestmentsContainer {
-  height: 50%;
+  height: 48%;
+  display: flex;
+  flex-direction: column;
+  flex-wrap: nowrap;
+  justify-content: space-between;
 }
 
 .TeammateBuysContainer {
-  height: 50%;
+  height: 48%;
+  display: flex;
+  flex-direction: column;
+  flex-wrap: nowrap;
+  justify-content: space-between;
 }
 
 .BuySuggestions h1 {
@@ -43,7 +51,7 @@
 }
 
 .Block {
-  height: 82%;
+  height: 85%;
 }
 
 .SearchInput {
