@@ -11,7 +11,6 @@ const SelectCompetition = (props) => {
   const [comps, setComps] = useState(null);
 
   const competitionSelectedHandler = (compId) => {
-    console.log("Storing" + compId);
     localStorage.setItem("compId", compId);
     props.compIdChanged(compId);
   };
@@ -40,10 +39,10 @@ const SelectCompetition = (props) => {
             organiserLdap={toUsername(comp.organiserEmail)}
             startDate={comp.startDate}
             endDate={comp.endDate}
-            rank={comp.user.rank}
-            rankYesterday={comp.user.rankYesterday}
-            netWorth={comp.user.netWorth}
-            currentlyAvailable={comp.user.amountAvailable}
+            rank={comp.rank}
+            rankYesterday={comp.rankYesterday}
+            netWorth={comp.netWorth}
+            currentlyAvailable={comp.amountAvailable}
             onCompSelect={competitionSelectedHandler}
           ></CompetitionCard>
         );
@@ -52,10 +51,9 @@ const SelectCompetition = (props) => {
   };
 
   useEffect(() => {
-    fetch("./competitionInfo?user=" + userId)
+    fetch("./competitionList?user=" + userId)
       .then((response) => response.json())
       .then((data) => {
-        console.log(data);
         renderCompCards(data);
       });
   }, [userId]);

@@ -46,7 +46,7 @@ import com.google.common.collect.ImmutableList;
 public class InvestmentServlet extends HttpServlet {
 
   private static final Logger LOGGER = Logger.getLogger(AuthServlet.class.getName());
-  private static final int ONE_WEEK_SECONDS = 7 * 24 * 60 * 60;
+  private static final int LAST_THREE_DAYS_SECONDS = 3 * 24 * 60 * 60;
   private static final int ONE_DAY_SECONDS = 24 * 60 * 60;
 
   @Override
@@ -82,20 +82,20 @@ public class InvestmentServlet extends HttpServlet {
       ResultSet rs = investmentsStmt.executeQuery();
       // Convert a result into User object
       String googleSearch;
-      long investDate;
+      Long investDate;
       Date sellDateOrNull;
-      long sellDate;
+      Long sellDate;
       int amtInvested;
       int currentValue;
       ImmutableList<Long> dataPoints;
       while (rs.next()) {
         googleSearch = rs.getString(1);
-        investDate = rs.getDate(2).getTime();
+        investDate = calc.convertDateToEpochLong(rs.getDate(2));
         sellDateOrNull = rs.getDate(3);
         if (sellDateOrNull == null) {
-          sellDate = 0;
+          sellDate = 0L;
         } else {
-          sellDate = sellDateOrNull.getTime();
+          sellDate = calc.convertDateToEpochLong(sellDateOrNull);
         }
         amtInvested = rs.getInt(4);
         currentValue = calc.getInvestmentValue(googleSearch, investDate, sellDate, amtInvested);
@@ -108,7 +108,7 @@ public class InvestmentServlet extends HttpServlet {
 
   private ImmutableList<Long> getInvestmentDataPoints(String searchQuery, long investDate, long sellDate) {
     InvestmentCalculator calc = new InvestmentCalculator();
-    List<String> dates = calc.getListOfDates(investDate, sellDate);
+    List<String> dates = calc.getListOfDates(investDate, sellDate, searchQuery);
     Datastore datastore = DatastoreOptions.getDefaultInstance().getService();
 
     Query<Entity> query = Query.newEntityQueryBuilder()
@@ -130,19 +130,5 @@ public class InvestmentServlet extends HttpServlet {
       return ImmutableList.copyOf(values);
     }
     return ImmutableList.copyOf(values);
-  }
-
-  /**
-   * Return epoch exactly one week before given date
-   */
-  private Long oneWeekBefore(long date) {
-    return date - ONE_WEEK_SECONDS;
-  }
-
-  /**
-   * Return epoch exactly one day after given date
-   */
-  private Long addOneDay(long date) {
-    return date + ONE_DAY_SECONDS;
   }
 }

@@ -100,10 +100,9 @@ public class CompetitionsServlet extends HttpServlet {
       //        investmentStmt.execute();
       //        LOGGER.log(Level.INFO, "Investment added to database.");
       //      }
-          } catch (Exception e) {
-            // TODO: handle exception
-          }
-
+    } catch (Exception e) {
+      // TODO: handle exception
+    }
   }
 
   /**
@@ -122,7 +121,7 @@ public class CompetitionsServlet extends HttpServlet {
         + "participants.net_worth, "
         + "participants.rank, "
         + "participants.rank_yesterday "
-        + "FROM competitions, participants WHERE competitions.id=participants.id AND participants.user="
+        + "FROM competitions, participants WHERE competitions.id=participants.competition AND participants.user="
         + userId + ";";
     List<CompetitionSummary> competitions = new ArrayList<>();
     try (PreparedStatement competitionsStmt = conn.prepareStatement(stmt);) {

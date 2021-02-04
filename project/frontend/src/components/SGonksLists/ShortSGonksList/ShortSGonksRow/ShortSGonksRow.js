@@ -3,12 +3,10 @@ import classes from "./ShortSGonksRow.module.css";
 
 const ShortSGonksRow = (props) => {
   const getDiffIndicator = () => {
-    const diff =
-      props.sgonk.currentPrice > props.sgonk.priceYesterday
-        ? "+"
-        : props.sgonk.currentPrice < props.sgonk.priceYesterday
-        ? "-"
-        : "=";
+    const priceDelta =
+      props.datapoints[props.datapoints.length - 1] -
+      props.datapoints[props.datapoints.length - 2];
+    const diff = priceDelta > 0 ? "+" : priceDelta < 0 ? "-" : "=";
 
     const style =
       diff == "+"
@@ -25,8 +23,8 @@ const ShortSGonksRow = (props) => {
   return (
     <div {...props} className={classes.Row}>
       {getDiffIndicator()}
-      <div className={classes.SearchTerm}>{props.sgonk.searchTerm}</div>
-      <div className={classes.CurrentPrice}>$t{props.sgonk.currentPrice}</div>
+      <div className={classes.SearchTerm}>{props.searchterm}</div>
+      <div className={classes.CurrentPrice}>$t{props.currentprice}</div>
     </div>
   );
 };

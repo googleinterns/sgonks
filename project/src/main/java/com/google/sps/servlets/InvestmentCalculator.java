@@ -43,6 +43,7 @@ public class InvestmentCalculator {
     private static final Logger LOGGER = Logger.getLogger(AuthServlet.class.getName());
     private static final int ONE_WEEK_SECONDS = 7 * 24 * 60 * 60;
     private static final int ONE_DAY_SECONDS = 24 * 60 * 60;
+    private static final int ONE_DAY_MILLISECONDS = ONE_DAY_SECONDS * 1000;
 
     public int calculateNetWorth(Connection conn, long userId, long competitionId) throws SQLException{
         int investmentsValue = sumInvestmentValues(conn, userId, competitionId);
@@ -107,7 +108,7 @@ public class InvestmentCalculator {
 
         //store dates as long to prevent y2k in 2038 but immediately convert to string for datastore reasons
         String startDate = (investDate / 1000L) + "";
-        String currentDate = getLatestDate() + "";
+        String latestAvailableDate = getLatestUpdatedDateForSearch(googleSearch).toString();
 
         Entity trend;
         float startValue;
@@ -117,7 +118,7 @@ public class InvestmentCalculator {
         while (trends.hasNext()) {
             trend = trends.next();
             startValue = (float) trend.getLong(startDate);
-            endValue = (float) trend.getLong(currentDate);
+            endValue = (float) trend.getLong(latestAvailableDate);
             investmentValue = amtInvested * (endValue / startValue);
         }
         return (int) investmentValue;
@@ -127,12 +128,12 @@ public class InvestmentCalculator {
      * Return an ArrayList of dates between the invest date and sell date (or current date) with context dates
      * formatted as strings in epoch form.
      */
-    public List<String> getListOfDates(long investDate, long sellDate) {
+    public List<String> getListOfDates(long investDate, long sellDate, String googleSearch) {
         Long startDateEpoch = oneWeekBefore(investDate / 1000L);
         Long endDateEpoch;
         if (sellDate == 0) {
             // haven't sold investment yet, get data up to latest datapoint
-            endDateEpoch = getLatestDate();
+            endDateEpoch = getLatestUpdatedDateForSearch(googleSearch);
         } else {
             endDateEpoch = sellDate / 1000L;
         }
@@ -156,7 +157,7 @@ public class InvestmentCalculator {
      */
     public ImmutableList<Long> getInvestmentDataIfExists(String googleSearch) {
         Datastore datastore = DatastoreOptions.getDefaultInstance().getService();
-        Long currentDate = getLatestDate() * 1000;
+        Long currentDate = getLatestUpdatedDateForSearch(googleSearch);
     
         Query<Entity> query = Query.newEntityQueryBuilder()
           .setKind("TrendsData")
@@ -171,12 +172,33 @@ public class InvestmentCalculator {
     
         while (trends.hasNext()) {
             trend = trends.next();
-            dates = getListOfDates(currentDate, currentDate);
+            dates = getListOfDates(currentDate, currentDate, googleSearch);
             for (String date : dates) {
                 value = trend.getLong(date);
                 values.add(value);
             }
             return ImmutableList.copyOf(values);
+        }
+        return null;
+    }
+
+    public Long getLatestUpdatedDateForSearch(String googleSearch) {
+        //returns the latest date for which data exists is an epoch in seconds
+        Datastore datastore = DatastoreOptions.getDefaultInstance().getService();
+    
+        Query<Entity> query = Query.newEntityQueryBuilder()
+          .setKind("TrendsData")
+          .setFilter(PropertyFilter.eq("search_term", googleSearch))
+          .build();
+        QueryResults<Entity> trends = datastore.run(query);
+    
+        Entity trend;
+        Long latestDateSeconds;
+    
+        while (trends.hasNext()) {
+            trend = trends.next();
+            latestDateSeconds = Long.parseLong(trend.getString("latest_date"));
+            return latestDateSeconds;
         }
         return null;
     }
@@ -192,6 +214,19 @@ public class InvestmentCalculator {
         return unixTime;
     }
 
+
+    //return date in milliseconds
+    public long convertDateToEpochLong(Date d) {
+        Calendar c = Calendar.getInstance(TimeZone.getTimeZone("GMT"));
+        c.setTime(d);
+        c.set(Calendar.HOUR_OF_DAY, 0);
+        c.set(Calendar.MINUTE, 0);
+        c.set(Calendar.SECOND, 0);
+        c.set(Calendar.MILLISECOND, 0);
+        long unixTime = c.getTimeInMillis() - ONE_DAY_MILLISECONDS;
+        return unixTime;
+    }
+  
     /**
      * Return epoch exactly one week before given date
      */
