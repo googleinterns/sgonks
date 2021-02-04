@@ -127,15 +127,16 @@ public class InvestmentCalculator {
     /**
      * Return an ArrayList of dates between the invest date and sell date (or current date) with context dates
      * formatted as strings in epoch form.
+     * Dates all in seconds.
      */
     public List<String> getListOfDates(long investDate, long sellDate, String googleSearch) {
-        Long startDateEpoch = oneWeekBefore(investDate / 1000L);
+        Long startDateEpoch = oneWeekBefore(investDate);
         Long endDateEpoch;
         if (sellDate == 0) {
             // haven't sold investment yet, get data up to latest datapoint
             endDateEpoch = getLatestUpdatedDateForSearch(googleSearch);
         } else {
-            endDateEpoch = sellDate / 1000L;
+            endDateEpoch = sellDate;
         }
 
         List<String> dates = new ArrayList();
@@ -197,7 +198,7 @@ public class InvestmentCalculator {
     
         while (trends.hasNext()) {
             trend = trends.next();
-            latestDateSeconds = Long.parseLong(trend.getString("latest_date"));
+            latestDateSeconds = trend.getLong("latest_date");
             return latestDateSeconds;
         }
         return null;
@@ -213,7 +214,6 @@ public class InvestmentCalculator {
         long unixTime = c.getTimeInMillis() / 1000 - ONE_DAY_SECONDS;
         return unixTime;
     }
-
 
     //return date in milliseconds
     public long convertDateToEpochLong(Date d) {
