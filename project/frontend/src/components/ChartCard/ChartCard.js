@@ -21,12 +21,10 @@ const ChartCard = (props) => {
                         // leave room for y-axis labels
                         left: 50,
                         right: 150,
-                        bottom: 10,
+                        bottom: 20,
                         top: 10,
                         width: '100%',
-                        height: '100%'
                     },
-                    height: '100%',
                     width: '100%'
                 }}
                 rootProps={{ 'data-testid' : '2' }}
