@@ -24,6 +24,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.*;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -68,6 +69,7 @@ public class CompetitionsServlet extends HttpServlet {
 
   @Override
   public void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException {
+    //get information from the frontend body
     StringBuilder buffer = new StringBuilder();
     BufferedReader reader = request.getReader();
     String line;
@@ -76,32 +78,43 @@ public class CompetitionsServlet extends HttpServlet {
       buffer.append(System.lineSeparator());
     }
     String body = buffer.toString();
-    JSONObject jsonObj = null;
+
+
     try {
-      jsonObj = new JSONObject(body);
+      //get specific information from json object
+      JSONObject jsonObj = new JSONObject(body);
       String compName = jsonObj.getString("name");
-      SimpleDateFormat formatter = new SimpleDateFormat("dd-MMM-yyyy");
-      Date startDate = formatter.parse(jsonObj.getString("startdate"));
-      Date endDate = formatter.parse(jsonObj.getString("enddate"));
-      JSONArray participants = (JSONArray) jsonObj.getJSONArray("list");
-      System.out.println(compName + "  " + startDate + "  " + endDate + "  " + participants);
+      SimpleDateFormat formatter = new SimpleDateFormat("dd-MM-yyyy");
+      Date  startDate = formatter.parse(jsonObj.getString("startdate"));
+      Date  endDate = formatter.parse(jsonObj.getString("enddate"));
+      JSONArray participants = jsonObj.getJSONArray("list");
 
-      // insert into database
-      String stmt = String.format(
-          "INSERT INTO competitions (start_date, end_date, competition_name, creator) VALUES "
-              + "(DATE, DATE, '%s', %d);",
-          startDate, endDate, compName, 0);
-      for (int i = 0; i < participants.length(); i++) {
-        System.out.println(participants.get(i));
-      }
+      String competitionStmt = String.format(
+              "INSERT INTO competitions (start_date, end_date, competition_name, creator) VALUES "
+                      + "(DATE '%tF', DATE '%tF', '%s', %d);",
+              startDate, endDate, compName, 0);
 
-      //      try (PreparedStatement investmentStmt = conn.prepareStatement(stmt);) {
-      //        // Execute the statement
-      //        investmentStmt.execute();
-      //        LOGGER.log(Level.INFO, "Investment added to database.");
-      //      }
+      addStatementToDataBase(request,competitionStmt);
+
     } catch (Exception e) {
-      // TODO: handle exception
+      System.out.println("ERROR!!" + e);
+    }
+  }
+
+  /**
+   * Add the given statement to SQL database.
+   * @param request -- HTTP servlet request.
+   * @param statement -- statement to add to SQL database.
+   * @throws SQLException
+   */
+  private void addStatementToDataBase(HttpServletRequest request,String statement) throws SQLException {
+    DataSource pool = (DataSource) request.getServletContext().getAttribute("db-connection-pool");
+    try (Connection conn = pool.getConnection()) {
+      try (PreparedStatement competitionstmt = conn.prepareStatement(statement);) {
+        // Execute the statement
+        competitionstmt.execute();
+        LOGGER.log(Level.INFO, "Added " + statement+ "to database.");
+      }
     }
   }
 
