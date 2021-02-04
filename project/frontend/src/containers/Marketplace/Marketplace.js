@@ -14,8 +14,10 @@ const Marketplace = (props) => {
             className={classes.SearchInput}
             placeholder="Google search here"
           ></input>
-          <button>Search</button>
+          <button className={classes.SearchButton}>Search</button>
         </div>
+        <Block className={classes.ChartContainer}>chart here </Block>
+        <div className={classes.PurchaseSection}>h</div>
       </div>
       <div className={classes.BuySuggestions}>
         <div className={classes.TrendingInvestmentsContainer}>
