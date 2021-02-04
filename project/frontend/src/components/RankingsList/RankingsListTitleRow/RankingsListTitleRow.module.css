@@ -5,16 +5,18 @@
     flex-wrap: nowrap;
     white-space: nowrap;
     font-size: 1.2vw;
+    text-align: left;
 }
 
 .RankTitle {
-    width: 10%;
-    text-align: center;
+    width: 15%;
+    white-space: nowrap;
+    overflow: hidden;
     font-weight: 600;
 }
 
 .Title {
-    width: 80%;
+    width: 30%;
     white-space: nowrap;
     overflow: hidden;
     font-weight: 600;
