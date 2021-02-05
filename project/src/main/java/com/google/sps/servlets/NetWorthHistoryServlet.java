@@ -42,6 +42,10 @@ import java.util.Collections;
 
 import com.google.common.collect.ImmutableList;
 
+/**
+ * This servlet returns the networth histories of every user in a given competition, in JSON form
+ * along with each user's email for identification purposes
+ */
 @WebServlet("/networths")
 public class NetWorthHistoryServlet extends HttpServlet {
 
