@@ -6,8 +6,8 @@ import ParticipantCard from "../../components/ParticipantCard/ParticipantCard";
 import { RiAddCircleLine } from "react-icons/ri";
 
 const CreateCompetition = (props) => {
-  let [participant, setParticipant] = useState("");
-  let [participantList, setParticipantList] = useState([]);
+  const [participant, setParticipant] = useState("");
+  const [participantList, setParticipantList] = useState([]);
 
   function onAddParticipant() {
     if (participant === "") return;
@@ -38,14 +38,13 @@ const CreateCompetition = (props) => {
           <p>Participants</p>
           <div className={classes.AddParticipants}>
             <p>
-              {" "}
-              Add Participants:{" "}
+              Add Participants:
               <input
                 type="text"
                 placeholder="example@google.com"
                 value={participant}
                 onChange={(e) => setParticipant(e.target.value)}
-              />{" "}
+              />
               <RiAddCircleLine
                 className={classes.icons}
                 onClick={onAddParticipant}
