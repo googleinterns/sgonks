@@ -237,7 +237,7 @@ public class InvestmentCalculator {
     /**
      * Return epoch exactly one day after given date
      */
-    private Long addOneDay(long date) {
+    public Long addOneDay(long date) {
         return date + ONE_DAY_SECONDS;
     }
 }
