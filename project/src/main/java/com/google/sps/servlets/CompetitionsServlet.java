@@ -78,53 +78,51 @@ public class CompetitionsServlet extends HttpServlet {
       JSONObject jsonObj = new JSONObject(frontEndInfo);
       int userId = jsonObj.getInt("userId");
       String compName = jsonObj.getString("name");
-      SimpleDateFormat formatter = new SimpleDateFormat("dd-MM-yyyy");
+      SimpleDateFormat formatter = new SimpleDateFormat("yyyy-mm-dd");
       Date startDate = formatter.parse(jsonObj.getString("startdate"));
       Date endDate = formatter.parse(jsonObj.getString("enddate"));
       JSONArray participants = jsonObj.getJSONArray("list");
+      System.out.println("Date Received from frontend: start " + jsonObj.getString("startdate") + " end: " + jsonObj.getString("enddate"));
 
       String competitionStmt = String.format(
           "INSERT INTO competitions (start_date, end_date, competition_name, creator) VALUES "
-              + "(DATE '%tF', DATE '%tF', '%s', %d);",
-          startDate, endDate, compName, userId);
+              + "(DATE '%tF', DATE '%tF', '%s', %d);", startDate, endDate, compName, userId);
 
       DataSource pool = (DataSource) request.getServletContext().getAttribute("db-connection-pool");
       try (Connection conn = pool.getConnection()) {
 
         //add competition to database
-        addStatementToDataBase(competitionStmt, conn);
-        int competitionId = getLatestInsertedID(conn);
+        executePreparedStatement(competitionStmt, conn);
+        long competitionId = getLatestInsertedID(conn);
 
         //add participants to database
         for (int i = 0; i < participants.length(); i++) {
           String email = participants.get(i).toString();
-          String findUserStmt = "SELECT name,id FROM users WHERE email=\"" + email + "\";";
+          String findUserStmt = "SELECT name,id FROM users WHERE email='" + email + "';";
 
           //check if the user is already in the database or not
-          try (PreparedStatement stmt = conn.prepareStatement(findUserStmt)) {
-            ResultSet rs = stmt.executeQuery();
-            String name = null;
-            int id = -1;
-            while (rs.next()) {
-              name = rs.getString(1);
-              id = rs.getInt(2);
-            }
+          ResultSet rs = executePreparedStatement(findUserStmt, conn);
+          String name = null;
+          long id = -1;
+          while (rs.next()) {
+            name = rs.getString(1);
+            id = rs.getLong(2);
+          }
 
-            if (name == null) {
-              //add user to database
-              String userStmt =
-                  "INSERT INTO users (name,email) VALUES ('" + null + "', '" + email + "');";
-              addStatementToDataBase(userStmt, conn);
-              id = getLatestInsertedID(conn);
-            }
+          if (name == null) {
+            //add user to database
+            String userStmt =
+                "INSERT INTO users (name,email) VALUES ('" + null + "', '" + email + "');";
+            executePreparedStatement(userStmt, conn);
+            id = getLatestInsertedID(conn);
 
             //insert participants to database
             String participantsStmt = String.format(
                 "INSERT INTO participants (user, competition, amt_available, net_worth, rank, rank_yesterday) VALUES "
-                    + "(%d,%d,%d,%d,%d,%d);",
+                    + "( %d , %d , %d , %d , %d , %d );",
                 id, competitionId, 500, 500, 1, null);
 
-            addStatementToDataBase(participantsStmt, conn);
+            executePreparedStatement(participantsStmt, conn);
           }
         }
       }
@@ -135,6 +133,7 @@ public class CompetitionsServlet extends HttpServlet {
 
   /**
    * Return the body information of the given request.
+   *
    * @param request -- HTTP Servlet request
    * @return request body
    * @throws IOException
@@ -152,18 +151,16 @@ public class CompetitionsServlet extends HttpServlet {
 
   /**
    * Retunr the latest ID of the object that's added to the database.
+   *
    * @param conn -- database connection
    * @return ID of the latest object
    * @throws SQLException
    */
   private int getLatestInsertedID(Connection conn) throws SQLException {
-    try (PreparedStatement stmt = conn.prepareStatement("SELECT LAST_INSERT_ID();")) {
-      // Execute the statement
-      ResultSet rs = stmt.executeQuery();
+      ResultSet rs = executePreparedStatement("SELECT LAST_INSERT_ID();",conn);
       while (rs.next()) {
         return rs.getInt(1);
       }
-    }
     return -1;
   }
 
@@ -173,11 +170,13 @@ public class CompetitionsServlet extends HttpServlet {
    * @param statement -- statement to add to SQL database.
    * @throws SQLException
    */
-  private void addStatementToDataBase(String statement, Connection conn) throws SQLException {
-    try (PreparedStatement competitionstmt = conn.prepareStatement(statement)) {
+  private ResultSet executePreparedStatement(String statement, Connection conn)
+      throws SQLException {
+    try (PreparedStatement stmt = conn.prepareStatement(statement)) {
       // Execute the statement
-      competitionstmt.execute();
+      stmt.execute();
       LOGGER.log(Level.INFO, "Added " + statement + "to database.");
+      return stmt.executeQuery();
     }
   }
 
