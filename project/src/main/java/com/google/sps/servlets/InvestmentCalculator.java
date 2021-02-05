@@ -180,7 +180,8 @@ public class InvestmentCalculator {
             }
             return ImmutableList.copyOf(values);
         }
-        return null;
+        // no data was found
+        return ImmutableList.of(); //return empty array
     }
 
     public Long getLatestUpdatedDateForSearch(String googleSearch) {

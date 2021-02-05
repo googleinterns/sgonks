@@ -48,11 +48,10 @@ public class ContextDataServlet extends HttpServlet {
     public void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
         Gson gson = new Gson();
         InvestmentCalculator calc = new InvestmentCalculator();
-
         String googleSearch = request.getParameter("search_term");
 
         ImmutableList<Long> data = calc.getInvestmentDataIfExists(googleSearch);
-        if (data == null) {
+        if (data.isEmpty()) {
             String date = calc.oneWeekBefore(calc.getLatestDate()).toString();
 
             HashMap<String, String> arguments = new HashMap<>();
@@ -60,7 +59,6 @@ public class ContextDataServlet extends HttpServlet {
             arguments.put("date", date);
 
             ByteString byteStr = ByteString.copyFrom(gson.toJson(arguments), StandardCharsets.UTF_8);
-
             PubsubMessage pubsubApiMessage = PubsubMessage.newBuilder().setData(byteStr).build();
             Publisher publisher = Publisher.newBuilder(
                 ProjectTopicName.of("google.com:sgonks-step272", "trendData")).build();
@@ -74,8 +72,8 @@ public class ContextDataServlet extends HttpServlet {
                 LOGGER.log(Level.SEVERE, "Error publishing Pub/Sub message: " + e.getMessage(), e);
             }
         }
-        
-        if (data == null) {
+
+        if (data.isEmpty()) {
             // we still have no data - send timeout notice
             LOGGER.log(Level.WARNING, "Timeout fetching investment data");
             response.setContentType("application/html");
@@ -89,10 +87,11 @@ public class ContextDataServlet extends HttpServlet {
 
     /** 
      * Check for data in datastore every 0.1 seconds until data exists or 15 seconds have elapsed
+     * Run this instead of waiting on cloud function return due to slight delay in datastore
      */
     private ImmutableList<Long> listenForDataOrTimeout(InvestmentCalculator calc, ImmutableList<Long> data, String googleSearch) throws InterruptedException {
         long startTime = System.currentTimeMillis(); //fetch starting time
-        while (data == null && (System.currentTimeMillis() - startTime) < 15000) {
+        while (data.isEmpty() && (System.currentTimeMillis() - startTime) < 15000) {
             data = calc.getInvestmentDataIfExists(googleSearch);
             TimeUnit.MILLISECONDS.sleep(100);
         }
