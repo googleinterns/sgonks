@@ -152,14 +152,14 @@ public class ConnectionPoolContextListener implements ServletContextListener {
       "INSERT INTO participants (user, competition, amt_available, net_worth, rank, rank_yesterday) VALUES (4, 1, 200, 0, 5, 2);",
       "INSERT INTO participants (user, competition, amt_available, net_worth, rank, rank_yesterday) VALUES (5, 1, 400, 0, 6, 1);",
 
-      "INSERT INTO investments (user, competition, google_search, invest_date, sell_date, amt_invested) VALUES (1, 1, 'giraffe', DATE '2021-01-29', NULL, 100);",
-      "INSERT INTO investments (user, competition, google_search, invest_date, sell_date, amt_invested) VALUES (1, 1, 'pangolin', DATE '2021-01-29', DATE '2021-01-30', 50);",
-      "INSERT INTO investments (user, competition, google_search, invest_date, sell_date, amt_invested) VALUES (1, 2, 'france', DATE '2021-01-29', DATE '2021-01-30', 400);",
-      "INSERT INTO investments (user, competition, google_search, invest_date, sell_date, amt_invested) VALUES (2, 1, 'pancake', DATE '2021-01-29', NULL, 300);",
-      "INSERT INTO investments (user, competition, google_search, invest_date, sell_date, amt_invested) VALUES (2, 1, 'sandwich', DATE '2021-01-29', DATE '2021-01-30', 100);",
-      "INSERT INTO investments (user, competition, google_search, invest_date, sell_date, amt_invested) VALUES (3, 2, 'olympics', DATE '2021-01-29', DATE '2021-01-30', 60);",
-      "INSERT INTO investments (user, competition, google_search, invest_date, sell_date, amt_invested) VALUES (4, 1, 'coffee', DATE '2021-01-29', DATE '2021-01-30', 10);",
-      "INSERT INTO investments (user, competition, google_search, invest_date, sell_date, amt_invested) VALUES (5, 1, 'sadness', DATE '2021-01-29', DATE '2021-01-30', 150);"
+      "INSERT INTO investments (user, competition, google_search, invest_date, sell_date, amt_invested) VALUES (1, 1, 'giraffe', DATE '2021-01-31', NULL, 100);",
+      "INSERT INTO investments (user, competition, google_search, invest_date, sell_date, amt_invested) VALUES (1, 1, 'pangolin', DATE '2021-01-31', DATE '2021-02-02', 50);",
+      "INSERT INTO investments (user, competition, google_search, invest_date, sell_date, amt_invested) VALUES (1, 2, 'france', DATE '2021-01-31', DATE '2021-02-02', 400);",
+      "INSERT INTO investments (user, competition, google_search, invest_date, sell_date, amt_invested) VALUES (2, 1, 'pancake', DATE '2021-01-31', NULL, 300);",
+      "INSERT INTO investments (user, competition, google_search, invest_date, sell_date, amt_invested) VALUES (2, 1, 'sandwich', DATE '2021-01-31', DATE '2021-02-02', 100);",
+      "INSERT INTO investments (user, competition, google_search, invest_date, sell_date, amt_invested) VALUES (3, 2, 'olympics', DATE '2021-01-31', DATE '2021-02-02', 60);",
+      "INSERT INTO investments (user, competition, google_search, invest_date, sell_date, amt_invested) VALUES (4, 1, 'coffee', DATE '2021-01-31', DATE '2021-02-02', 10);",
+      "INSERT INTO investments (user, competition, google_search, invest_date, sell_date, amt_invested) VALUES (5, 1, 'sadness', DATE '2021-01-31', DATE '2021-02-02', 150);"
     };
     for (int i = 0; i < stmts.length; i++) {
       try (PreparedStatement stmt = conn.prepareStatement(stmts[i]);) {

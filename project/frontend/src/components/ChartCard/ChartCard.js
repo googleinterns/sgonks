@@ -2,9 +2,8 @@ import React from "react";
 import Chart from "react-google-charts";
 import classes from "./ChartCard.module.css";
 
-
+//TODO: consider adding options as it's own parameter for more display flexibility
 const ChartCard = (props) => {
-    console.log("HELLO" + props.chartInfo.data)
     return (
         <div className={classes.ChartContainer}>
             <Chart
@@ -17,7 +16,16 @@ const ChartCard = (props) => {
                     },
                     vAxis : {
                         title : props.chartInfo.vaxis
-                    }
+                    },
+                    chartArea: {
+                        // leave room for y-axis labels
+                        left: 50,
+                        right: 150,
+                        bottom: 20,
+                        top: 10,
+                        width: '100%',
+                    },
+                    width: '100%'
                 }}
                 rootProps={{ 'data-testid' : '2' }}
             />

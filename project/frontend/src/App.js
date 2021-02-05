@@ -8,6 +8,7 @@ import SelectCompetition from "./containers/SelectCompetition/SelectCompetition"
 import HeaderBar from "./components/HeaderBar/HeaderBar";
 import LandingPage from "./containers/LandingPage/LandingPage";
 import Dashboard from "./containers/Dashboard/Dashboard";
+import Competition from "./containers/Competition/Competition";
 import MySGonks from "./containers/MySGonks/MySGonks";
 
 import Layout from "./hoc/Layout/Layout";
@@ -121,6 +122,13 @@ function App() {
         )}
       ></Route>
       <Route
+        path="/competition"
+        render={() => (
+          <Competition
+          ></Competition>
+        )}
+      ></Route>
+      <Route
         path="/mysgonks"
         render={() => (
           <MySGonks
@@ -219,7 +227,8 @@ function App() {
         )}
       ></Route>
       <Route path="/placeholder" component={Explanation}></Route>
-      <Redirect to="/marketplace"></Redirect>
+      <Redirect to="/competition"></Redirect>
+
     </Switch>
   );
 
