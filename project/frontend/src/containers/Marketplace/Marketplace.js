@@ -13,7 +13,7 @@ const Marketplace = (props) => {
         <div className={classes.SearchContainer}>
           <input
             className={classes.SearchInput}
-            placeholder="Google search here"
+            placeholder="Search a trend"
           ></input>
           <Button inverted padding="3px 20px">
             Search
