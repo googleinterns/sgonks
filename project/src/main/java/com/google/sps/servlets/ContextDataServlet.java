@@ -51,7 +51,7 @@ public class ContextDataServlet extends HttpServlet {
         String googleSearch = request.getParameter("search_term");
 
         ImmutableList<Long> data = calc.getInvestmentDataIfExists(googleSearch);
-        if (data == null) {
+        if (data.isEmpty()) {
             String date = calc.oneWeekBefore(calc.getLatestDate()).toString();
 
             HashMap<String, String> arguments = new HashMap<>();
@@ -73,7 +73,7 @@ public class ContextDataServlet extends HttpServlet {
             }
         }
 
-        if (data == null) {
+        if (data.isEmpty()) {
             // we still have no data - send timeout notice
             LOGGER.log(Level.WARNING, "Timeout fetching investment data");
             response.setContentType("application/html");
@@ -91,7 +91,7 @@ public class ContextDataServlet extends HttpServlet {
      */
     private ImmutableList<Long> listenForDataOrTimeout(InvestmentCalculator calc, ImmutableList<Long> data, String googleSearch) throws InterruptedException {
         long startTime = System.currentTimeMillis(); //fetch starting time
-        while (data == null && (System.currentTimeMillis() - startTime) < 15000) {
+        while (data.isEmpty() && (System.currentTimeMillis() - startTime) < 15000) {
             data = calc.getInvestmentDataIfExists(googleSearch);
             TimeUnit.MILLISECONDS.sleep(100);
         }
