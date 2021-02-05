@@ -59,7 +59,6 @@ public class ContextDataServlet extends HttpServlet {
             arguments.put("date", date);
 
             ByteString byteStr = ByteString.copyFrom(gson.toJson(arguments), StandardCharsets.UTF_8);
-
             PubsubMessage pubsubApiMessage = PubsubMessage.newBuilder().setData(byteStr).build();
             Publisher publisher = Publisher.newBuilder(
                 ProjectTopicName.of("google.com:sgonks-step272", "trendData")).build();
@@ -88,7 +87,7 @@ public class ContextDataServlet extends HttpServlet {
 
     /** 
      * Check for data in datastore every 0.1 seconds until data exists or 15 seconds have elapsed
-     * Run this instead of waiting on cloud function return due to slight delay in datastore query
+     * Run this instead of waiting on cloud function return due to slight delay in datastore
      */
     private ImmutableList<Long> listenForDataOrTimeout(InvestmentCalculator calc, ImmutableList<Long> data, String googleSearch) throws InterruptedException {
         long startTime = System.currentTimeMillis(); //fetch starting time
