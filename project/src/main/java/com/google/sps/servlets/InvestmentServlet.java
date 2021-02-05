@@ -99,7 +99,7 @@ public class InvestmentServlet extends HttpServlet {
         }
         amtInvested = rs.getInt(4);
         currentValue = calc.getInvestmentValue(googleSearch, investDate, sellDate, amtInvested);
-        dataPoints = getInvestmentDataPoints(googleSearch, investDate, sellDate);
+        dataPoints = getInvestmentDataPoints(googleSearch, investDate / 1000L, sellDate / 1000L);
         investments.add(Investment.create(googleSearch, investDate, sellDate, amtInvested, currentValue, dataPoints));
       }
       return investments;
