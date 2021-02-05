@@ -14,9 +14,9 @@
 
 package com.google.sps.servlets;
 
-import com.google.common.primitives.Longs;
 import com.google.gson.Gson;
-import com.google.sps.data.*;
+import com.google.sps.data.CompetitionSummary;
+import com.google.sps.data.User;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.sql.Connection;
@@ -24,8 +24,9 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
-import java.util.*;
+import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.servlet.annotation.WebServlet;
@@ -42,6 +43,7 @@ import org.json.JSONObject;
  */
 @WebServlet("/competitionList")
 public class CompetitionsServlet extends HttpServlet {
+
   private static final Logger LOGGER = Logger.getLogger(CompetitionsServlet.class.getName());
 
   @Override
@@ -69,7 +71,75 @@ public class CompetitionsServlet extends HttpServlet {
 
   @Override
   public void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException {
-    //get information from the frontend body
+    String frontEndInfo = getInformationFromFrontEnd(request);
+
+    try {
+      //get specific information from json object
+      JSONObject jsonObj = new JSONObject(frontEndInfo);
+      int userId = jsonObj.getInt("userId");
+      String compName = jsonObj.getString("name");
+      SimpleDateFormat formatter = new SimpleDateFormat("dd-MM-yyyy");
+      Date startDate = formatter.parse(jsonObj.getString("startdate"));
+      Date endDate = formatter.parse(jsonObj.getString("enddate"));
+      JSONArray participants = jsonObj.getJSONArray("list");
+
+      String competitionStmt = String.format(
+          "INSERT INTO competitions (start_date, end_date, competition_name, creator) VALUES "
+              + "(DATE '%tF', DATE '%tF', '%s', %d);",
+          startDate, endDate, compName, userId);
+
+      DataSource pool = (DataSource) request.getServletContext().getAttribute("db-connection-pool");
+      try (Connection conn = pool.getConnection()) {
+
+        //add competition to database
+        addStatementToDataBase(competitionStmt, conn);
+        int competitionId = getLatestInsertedID(conn);
+
+        //add participants to database
+        for (int i = 0; i < participants.length(); i++) {
+          String email = participants.get(i).toString();
+          String findUserStmt = "SELECT name,id FROM users WHERE email=\"" + email + "\";";
+
+          //check if the user is already in the database or not
+          try (PreparedStatement stmt = conn.prepareStatement(findUserStmt)) {
+            ResultSet rs = stmt.executeQuery();
+            String name = null;
+            int id = -1;
+            while (rs.next()) {
+              name = rs.getString(1);
+              id = rs.getInt(2);
+            }
+
+            if (name == null) {
+              //add user to database
+              String userStmt =
+                  "INSERT INTO users (name,email) VALUES ('" + null + "', '" + email + "');";
+              addStatementToDataBase(userStmt, conn);
+              id = getLatestInsertedID(conn);
+            }
+
+            //insert participants to database
+            String participantsStmt = String.format(
+                "INSERT INTO participants (user, competition, amt_available, net_worth, rank, rank_yesterday) VALUES "
+                    + "(%d,%d,%d,%d,%d,%d);",
+                id, competitionId, 500, 500, 1, null);
+
+            addStatementToDataBase(participantsStmt, conn);
+          }
+        }
+      }
+    } catch (Exception e) {
+      System.out.println("ERROR!!" + e);
+    }
+  }
+
+  /**
+   * Return the body information of the given request.
+   * @param request -- HTTP Servlet request
+   * @return request body
+   * @throws IOException
+   */
+  private String getInformationFromFrontEnd(HttpServletRequest request) throws IOException {
     StringBuilder buffer = new StringBuilder();
     BufferedReader reader = request.getReader();
     String line;
@@ -77,49 +147,43 @@ public class CompetitionsServlet extends HttpServlet {
       buffer.append(line);
       buffer.append(System.lineSeparator());
     }
-    String body = buffer.toString();
+    return buffer.toString();
+  }
 
-
-    try {
-      //get specific information from json object
-      JSONObject jsonObj = new JSONObject(body);
-      String compName = jsonObj.getString("name");
-      SimpleDateFormat formatter = new SimpleDateFormat("dd-MM-yyyy");
-      Date  startDate = formatter.parse(jsonObj.getString("startdate"));
-      Date  endDate = formatter.parse(jsonObj.getString("enddate"));
-      JSONArray participants = jsonObj.getJSONArray("list");
-
-      String competitionStmt = String.format(
-              "INSERT INTO competitions (start_date, end_date, competition_name, creator) VALUES "
-                      + "(DATE '%tF', DATE '%tF', '%s', %d);",
-              startDate, endDate, compName, 0);
-
-      addStatementToDataBase(request,competitionStmt);
-
-    } catch (Exception e) {
-      System.out.println("ERROR!!" + e);
+  /**
+   * Retunr the latest ID of the object that's added to the database.
+   * @param conn -- database connection
+   * @return ID of the latest object
+   * @throws SQLException
+   */
+  private int getLatestInsertedID(Connection conn) throws SQLException {
+    try (PreparedStatement stmt = conn.prepareStatement("SELECT LAST_INSERT_ID();")) {
+      // Execute the statement
+      ResultSet rs = stmt.executeQuery();
+      while (rs.next()) {
+        return rs.getInt(1);
+      }
     }
+    return -1;
   }
 
   /**
    * Add the given statement to SQL database.
-   * @param request -- HTTP servlet request.
+   *
    * @param statement -- statement to add to SQL database.
    * @throws SQLException
    */
-  private void addStatementToDataBase(HttpServletRequest request,String statement) throws SQLException {
-    DataSource pool = (DataSource) request.getServletContext().getAttribute("db-connection-pool");
-    try (Connection conn = pool.getConnection()) {
-      try (PreparedStatement competitionstmt = conn.prepareStatement(statement);) {
-        // Execute the statement
-        competitionstmt.execute();
-        LOGGER.log(Level.INFO, "Added " + statement+ "to database.");
-      }
+  private void addStatementToDataBase(String statement, Connection conn) throws SQLException {
+    try (PreparedStatement competitionstmt = conn.prepareStatement(statement)) {
+      // Execute the statement
+      competitionstmt.execute();
+      LOGGER.log(Level.INFO, "Added " + statement + "to database.");
     }
   }
 
   /**
    * Return all competitions that the user is in.
+   *
    * @return -- all Competitions object that user is in.
    */
   private List<CompetitionSummary> getUserCompetitions(Connection conn, int userId)
@@ -137,7 +201,7 @@ public class CompetitionsServlet extends HttpServlet {
         + "FROM competitions, participants WHERE competitions.id=participants.competition AND participants.user="
         + userId + ";";
     List<CompetitionSummary> competitions = new ArrayList<>();
-    try (PreparedStatement competitionsStmt = conn.prepareStatement(stmt);) {
+    try (PreparedStatement competitionsStmt = conn.prepareStatement(stmt)) {
       // Execute the statement
       ResultSet rs = competitionsStmt.executeQuery();
       long competitionId;
@@ -168,6 +232,7 @@ public class CompetitionsServlet extends HttpServlet {
 
   /**
    * Construct a CompetitionSummary object given data
+   *
    * @return -- CompetitionSummary object
    */
   private CompetitionSummary getCompetitionSummary(Connection conn, long competitionId,
@@ -179,12 +244,11 @@ public class CompetitionsServlet extends HttpServlet {
   }
 
   /**
-   * Retrieve the name and email of the competition creator given their id
-   * return as a user object
+   * Retrieve the name and email of the competition creator given their id return as a user object
    */
   private User getCreatorDetails(Connection conn, long creatorId) throws SQLException {
     String stmt = "SELECT name, email FROM users WHERE id=" + creatorId + ";";
-    try (PreparedStatement competitionsStmt = conn.prepareStatement(stmt);) {
+    try (PreparedStatement competitionsStmt = conn.prepareStatement(stmt)) {
       // Execute the statement
       ResultSet rs = competitionsStmt.executeQuery();
       String name;

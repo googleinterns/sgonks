@@ -13,6 +13,7 @@ const CreateCompetition = (props) => {
   let [compName, setCompName] = useState("");
   let [startDate, setStartDate] = useState("");
   let [endDate, setEndDate] = useState("");
+  const userid = 1;
 
   function onAddParticipant() {
     if (participant === "") return;
@@ -25,6 +26,7 @@ const CreateCompetition = (props) => {
 
   const sendInfo = async () => {
     const postBody = {
+      userId: userid,
       name: compName,
       startdate: startDate,
       enddate: endDate,
