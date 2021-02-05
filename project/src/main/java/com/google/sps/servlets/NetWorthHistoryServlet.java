@@ -45,72 +45,87 @@ import com.google.common.collect.ImmutableList;
 @WebServlet("/networths")
 public class NetWorthHistoryServlet extends HttpServlet {
 
-  private static final Logger LOGGER = Logger.getLogger(NetWorthHistoryServlet.class.getName());
+    private static final Logger LOGGER = Logger.getLogger(NetWorthHistoryServlet.class.getName());
 
-  @Override
-  public void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
-    DataSource pool = (DataSource) request.getServletContext().getAttribute("db-connection-pool");
+    @Override
+    public void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
+        DataSource pool = (DataSource) request.getServletContext().getAttribute("db-connection-pool");
 
-    try (Connection conn = pool.getConnection()) {
-      try {
-        int competitionId = Integer.parseInt(request.getParameter("competition"));
-        List<NetWorth> netWorths = getUserNetWorths(conn, competitionId);
-        Gson gson = new Gson();
-        response.setContentType("application/json");
-        response.getWriter().println(gson.toJson(netWorths));
-      } catch (NumberFormatException nfe) {
-        LOGGER.log(Level.WARNING, "ID supplied was not int");
-        response.getWriter().print(HttpServletResponse.SC_BAD_REQUEST + " Invalid ID");
-        response.setStatus(HttpServletResponse.SC_BAD_REQUEST); //Send 400 error
-      }
-    } catch (SQLException ex) {
-      LOGGER.log(Level.WARNING, "Error while attempting to fetch networths.", ex);
-      response.setStatus(500);
-      response.getWriter().write("Unable to successfully fetch networths");
+        try (Connection conn = pool.getConnection()) {
+            try {
+                int competitionId = Integer.parseInt(request.getParameter("competition"));
+                List<NetWorth> netWorths = getUserNetWorths(conn, competitionId);
+                Gson gson = new Gson();
+                response.setContentType("application/json");
+                response.getWriter().println(gson.toJson(netWorths));
+            } catch (NumberFormatException nfe) {
+                LOGGER.log(Level.WARNING, "ID supplied was not int");
+                response.getWriter().print(HttpServletResponse.SC_BAD_REQUEST + " Invalid ID");
+                response.setStatus(HttpServletResponse.SC_BAD_REQUEST); //Send 400 error
+            }
+        } catch (SQLException ex) {
+            LOGGER.log(Level.WARNING, "Error while attempting to fetch networths.", ex);
+            response.setStatus(500);
+            response.getWriter().write("Unable to successfully fetch networths");
+        }
     }
-  }
 
-  public List<NetWorth> getUserNetWorths(Connection conn, int competitionId) throws SQLException {
-    String stmt = "SELECT user FROM participants WHERE competition=" + competitionId + ";";
-    List<NetWorth> netWorths = new ArrayList<>();
-    try (PreparedStatement netWorthsStmt = conn.prepareStatement(stmt);) {
-      // Execute the statement
-      ResultSet rs = investmentsStmt.executeQuery();
-      // Convert a result into User object
-      Long userId;
-      ImmutableList<Long> dataPoints;
-      while (rs.next()) {
-        userId = rs.getLong(1);
-        dataPoints = getInvestmentDataPoints(googleSearch, investDate, sellDate);
-        investments.add(Investment.create(googleSearch, investDate, sellDate, amtInvested, currentValue, dataPoints));
-      }
-      return investments;
+    public List<NetWorth> getUserNetWorths(Connection conn, int competitionId) throws SQLException {
+        InvestmentCalculator calc = new InvestmentCalculator();
+        String stmt = "SELECT participants.user, users.email, competitions.start_date FROM participants, users, competitions " 
+        + "WHERE participants.competition=" + competitionId 
+        + " AND competitions.id=" + competitionId 
+        + " AND users.id=participants.user;";
+        List<NetWorth> netWorths = new ArrayList<>();
+        try (PreparedStatement netWorthsStmt = conn.prepareStatement(stmt);) {
+            // Execute the statement
+            ResultSet rs = netWorthsStmt.executeQuery();
+            // Convert a result into NetWorth object
+            Long userId;
+            String userEmail;
+            Long startDate;
+            ImmutableList<Long> dataPoints;
+            while (rs.next()) {
+                userId = rs.getLong(1);
+                userEmail = rs.getString(2);
+                startDate = calc.convertDateToEpochLong(rs.getDate(3)) / 1000L;
+                dataPoints = getNetWorthDataPoints(userId, competitionId, 1612396800);
+                netWorths.add(NetWorth.create(userEmail, dataPoints));
+            }
+            return netWorths;
+        }
     }
-  }
 
-  private ImmutableList<Long> getInvestmentDataPoints(String searchQuery, long investDate, long sellDate) {
-    InvestmentCalculator calc = new InvestmentCalculator();
-    List<String> dates = calc.getListOfDates(investDate, sellDate, searchQuery);
-    Datastore datastore = DatastoreOptions.getDefaultInstance().getService();
+    private ImmutableList<Long> getNetWorthDataPoints(long userId, long competitionId, long startDate) {
+        InvestmentCalculator calc = new InvestmentCalculator();
+        Datastore datastore = DatastoreOptions.getDefaultInstance().getService();
 
-    Query<Entity> query = Query.newEntityQueryBuilder()
-      .setKind("TrendsData")
-      .setFilter(PropertyFilter.eq("search_term", searchQuery))
-      .build();
-    QueryResults<Entity> trends = datastore.run(query);
+        // format the key id of the entity in datastore
+        String entityId = String.format("id=%dcompetition=%d", userId, competitionId);
 
-    Entity trend;
-    Long value;
-    List<Long> values = new ArrayList();
+        // query the entity by key
+        Key key = datastore.newKeyFactory()
+            .setKind("NetWorths")
+            .newKey(entityId);
+        Entity entity = datastore.get(key);
 
-    while (trends.hasNext()) {
-      trend = trends.next();
-      for (String date : dates) {
-        value = trend.getLong(date);
-        values.add(value);
-      }
-      return ImmutableList.copyOf(values);
+        Long value;
+        List<Long> values = new ArrayList();
+        long date = startDate;
+        long currentDate = calc.getLatestDate();
+
+        // attempt to retrieve all historical rank data
+        try {
+            while (date <= currentDate) {
+                value = entity.getLong(Long.toString(date));
+                values.add(value);
+                date = calc.addOneDay(date);
+            }
+        } catch (DatastoreException e) {
+            // the script failed to run at least once recently
+            LOGGER.log(Level.WARNING, "Database is not up to date");
+        }
+        // return what data we do have
+        return ImmutableList.copyOf(values);
     }
-    return ImmutableList.copyOf(values);
-  }
 }
