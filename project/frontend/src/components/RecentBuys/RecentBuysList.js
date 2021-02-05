@@ -5,18 +5,22 @@ import "react-slideshow-image/dist/styles.css";
 import RecentBuy from "./RecentBuy/RecentBuy";
 
 const RecentBuys = (props) => {
-  const buySlides = props.buys.map((buy, i) => {
-    return (
-      <div className={classes.EachSlide} key={i}>
-        <RecentBuy
-          buyer={buy.name}
-          amount={buy.amtInvested}
-          term={buy.searchQuery}
-          time={buy.dateInvested}
-        ></RecentBuy>
-      </div>
-    );
-  });
+  const buySlides = props.buys ? (
+    props.buys.map((buy, i) => {
+      return (
+        <div className={classes.EachSlide} key={i}>
+          <RecentBuy
+            buyer={buy.name}
+            amount={buy.amtInvested}
+            term={buy.searchQuery}
+            time={buy.dateInvested}
+          ></RecentBuy>
+        </div>
+      );
+    })
+  ) : (
+    <div>Loading...</div>
+  );
 
   return (
     <div className={classes.RecentBuysContainer}>
