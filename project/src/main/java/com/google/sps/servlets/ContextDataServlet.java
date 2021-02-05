@@ -48,7 +48,6 @@ public class ContextDataServlet extends HttpServlet {
     public void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
         Gson gson = new Gson();
         InvestmentCalculator calc = new InvestmentCalculator();
-
         String googleSearch = request.getParameter("search_term");
 
         ImmutableList<Long> data = calc.getInvestmentDataIfExists(googleSearch);
@@ -74,7 +73,7 @@ public class ContextDataServlet extends HttpServlet {
                 LOGGER.log(Level.SEVERE, "Error publishing Pub/Sub message: " + e.getMessage(), e);
             }
         }
-        
+
         if (data == null) {
             // we still have no data - send timeout notice
             LOGGER.log(Level.WARNING, "Timeout fetching investment data");
@@ -89,6 +88,7 @@ public class ContextDataServlet extends HttpServlet {
 
     /** 
      * Check for data in datastore every 0.1 seconds until data exists or 15 seconds have elapsed
+     * Run this instead of waiting on cloud function return due to slight delay in datastore query
      */
     private ImmutableList<Long> listenForDataOrTimeout(InvestmentCalculator calc, ImmutableList<Long> data, String googleSearch) throws InterruptedException {
         long startTime = System.currentTimeMillis(); //fetch starting time
