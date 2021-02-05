@@ -123,3 +123,19 @@ input[type="date"] {
   flex-direction: row;
   justify-content: space-evenly;
 }
+
+.DisplayParticipants {
+  height: 275px;
+  margin-top: 20px;
+  width: 87%;
+  overflow-y: auto;
+}
+
+.icons {
+  position: absolute;
+  top: 34.5%;
+  margin: auto;
+  width: 4%;
+  height: 4.35%;
+  cursor: pointer;
+}

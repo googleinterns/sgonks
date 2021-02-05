@@ -1,10 +1,23 @@
-import React from "react";
+import React, { useState } from "react";
 import classes from "./CreateCompetition.module.css";
 import { Link } from "react-router-dom";
 import LinkButton from "../../components/UI/LinkButton/LinkButton";
+import ParticipantCard from "../../components/ParticipantCard/ParticipantCard";
 import { RiAddCircleLine } from "react-icons/ri";
 
 const CreateCompetition = (props) => {
+  const [participant, setParticipant] = useState("");
+  const [participantList, setParticipantList] = useState([]);
+
+  function onAddParticipant() {
+    if (participant === "") return;
+    setParticipantList([participant, ...participantList]);
+    setParticipant("");
+  }
+
+  const onParticipantDelete = (participant) =>
+    setParticipantList(participantList.filter((v) => v !== participant?.email));
+
   return (
     <div className={classes.CreateCompetitionContainer}>
       <p>Create a competition</p>
@@ -25,19 +38,38 @@ const CreateCompetition = (props) => {
           <p>Participants</p>
           <div className={classes.AddParticipants}>
             <p>
-              {" "}
-              Add Participants: <input type="text" />{" "}
-              <RiAddCircleLine className={classes.icons} />
+              Add Participants:
+              <input
+                type="text"
+                placeholder="example@google.com"
+                value={participant}
+                onChange={(e) => setParticipant(e.target.value)}
+              />
+              <RiAddCircleLine
+                className={classes.icons}
+                onClick={onAddParticipant}
+              />
             </p>
+          </div>
+          <div className={classes.DisplayParticipants}>
+            {participantList.map((val, i) => (
+              <ParticipantCard
+                key={i}
+                participant={{ email: val }}
+                onDelete={onParticipantDelete}
+              />
+            ))}
           </div>
         </div>
       </div>
 
       <div className={classes.ButtonContainer}>
-        <LinkButton width="275px" inverted="true">
+        <LinkButton width="275px" inverted="true" to="/compselect">
           Cancel
         </LinkButton>
-        <LinkButton width="275px">Confirm creation</LinkButton>
+        <LinkButton width="275px" to="/dashboard">
+          Confirm creation
+        </LinkButton>
       </div>
     </div>
   );
