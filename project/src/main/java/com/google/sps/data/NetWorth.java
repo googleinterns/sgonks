@@ -21,9 +21,9 @@ import com.google.common.collect.ImmutableList;
  */
 @AutoValue
 public abstract class NetWorth {
-  public static InvesNetWorth create(
+  public static NetWorth create(
     String competitorEmail, ImmutableList<Long> dataPoints) {
-    return new AutoValue_Investment(competitorEmail, dataPoints);
+    return new AutoValue_NetWorth(competitorEmail, dataPoints);
   }
   /** The email of the user who's networth is being returned */
   public abstract String competitorEmail();
