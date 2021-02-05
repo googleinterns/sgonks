@@ -36,6 +36,11 @@ import java.util.List;
 import java.util.Collections;
 import com.google.common.primitives.Longs;
 
+import com.google.cloud.datastore.StructuredQuery.PropertyFilter;
+import com.google.cloud.datastore.*;
+import com.google.appengine.api.datastore.EntityNotFoundException;
+
+
 /**
  * Servlet to update the networths and ranks of each competitor on a cronjob each day
  */
@@ -92,8 +97,11 @@ public class ScheduledServlet extends HttpServlet {
      */
     private void updateAllCompetitors(Connection conn, long competitionId) throws SQLException {
         List<BasicCompetitor> rankedCompetitors = getRankedCompetitors(conn, competitionId);
+        BasicCompetitor competitor;
         for (int i = 1; i <= rankedCompetitors.size(); i++) {
-            updateUser(conn, i, rankedCompetitors.get(i-1), competitionId);
+            competitor = rankedCompetitors.get(i-1);
+            updateUser(conn, i, competitor, competitionId);
+            updateUserNetWorthHistory(competitionId, competitor);
         }
     }
 
@@ -139,5 +147,28 @@ public class ScheduledServlet extends HttpServlet {
         try (PreparedStatement preparedStmt = conn.prepareStatement(stmt);) {
             preparedStmt.executeUpdate();
         }
+    }
+
+    private void updateUserNetWorthHistory(long competitionId, BasicCompetitor competitor) {
+        Datastore datastore = DatastoreOptions.getDefaultInstance().getService();
+        InvestmentCalculator calc = new InvestmentCalculator();
+
+        long userId = competitor.userId();
+        long netWorth = competitor.netWorth();
+        String currentDate = Long.toString(calc.getLatestDate());
+        String entityId = String.format("id=%dcompetition=%d", userId, competitionId);
+
+        Entity netWorthEntity;
+        Key key = datastore.newKeyFactory()
+                .setKind("NetWorths")
+                .newKey(entityId);
+        try {
+            Entity oldNetWorthEntity = datastore.get(key);
+            netWorthEntity = Entity.newBuilder(oldNetWorthEntity).set(currentDate, netWorth).build();;
+        } catch (NullPointerException e) {
+            netWorthEntity = Entity.newBuilder(key).set(currentDate, netWorth).build();
+        }
+        //upsert the entity to the datastore (will create a new entity if not already existing)
+        datastore.put(netWorthEntity);
     }
 }
