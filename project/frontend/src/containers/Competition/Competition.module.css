@@ -1,0 +1,57 @@
+.CompetitionContainer {
+    height: 93%;
+    width: 95%;
+    display: flex;
+    flex-direction: row;
+    flex-wrap: nowrap;
+    justify-content: space-between;
+    align-items: stretch;
+}
+
+.LargeColumn {
+    height: 100%;
+    width: 63%;
+    display: flex;
+    flex-direction: column;
+    flex-wrap: nowrap;
+    justify-content: space-between;
+}
+
+.SmallColumn {
+    height: 100%;
+    width: 33%;
+    display: flex;
+    flex-direction: column;
+    flex-wrap: nowrap;
+    justify-content: space-between;
+}
+
+.Rankings {
+    height: 48%;
+}
+
+h2 {
+    text-align: left;
+    font-size: 1.4vw;
+    font-weight: 600;
+}
+
+.RankingsChart {
+    height: 48%;
+}
+
+.RankingSummary {
+    height : 38%;
+}
+
+.CompetitionSummary {
+    height : 58%;
+    text-align: left;
+}
+
+.CountDown {
+    font-size: 1.5vw;
+    font-weight: 400;
+    line-height: 0;
+    padding-bottom: 15px;
+  }

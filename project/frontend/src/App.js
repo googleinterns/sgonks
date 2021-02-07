@@ -8,11 +8,13 @@ import SelectCompetition from "./containers/SelectCompetition/SelectCompetition"
 import HeaderBar from "./components/HeaderBar/HeaderBar";
 import LandingPage from "./containers/LandingPage/LandingPage";
 import Dashboard from "./containers/Dashboard/Dashboard";
+import Competition from "./containers/Competition/Competition";
 import MySGonks from "./containers/MySGonks/MySGonks";
 
 import Layout from "./hoc/Layout/Layout";
 import { AuthContext } from "./context/AuthContext";
 import { onAuthStateChange } from "./services/firebase";
+import Marketplace from "./containers/Marketplace/Marketplace";
 
 const NO_COMPETITION = 0;
 
@@ -75,9 +77,14 @@ function App() {
           "investments"
         ),
         fetchAndUpdateCompetitionInfo("./trending", "trending"),
-      ]).then(() => {
-        setLoading(false);
-      });
+      ])
+        .then(() => {
+          setLoading(false);
+          console.log(competitionInfo);
+        })
+        .catch(() => {
+          setLoading(false);
+        });
     }
   }, [user.id]);
 
@@ -112,6 +119,13 @@ function App() {
             trendingSearches={competitionInfo.trending}
             investments={competitionInfo.investments}
           ></Dashboard>
+        )}
+      ></Route>
+      <Route
+        path="/competition"
+        render={() => (
+          <Competition
+          ></Competition>
         )}
       ></Route>
       <Route
@@ -201,8 +215,20 @@ function App() {
           ></MySGonks>
         )}
       ></Route>
+      <Route
+        path="/marketplace"
+        render={() => (
+          <Marketplace
+            generalInfo={competitionInfo.generalInfo}
+            recentBuys={competitionInfo.recentBuys}
+            trendingSearches={competitionInfo.trending}
+            investments={competitionInfo.investments}
+          ></Marketplace>
+        )}
+      ></Route>
       <Route path="/placeholder" component={Explanation}></Route>
-      <Redirect to="/mysgonks"></Redirect>
+      <Redirect to="/competition"></Redirect>
+
     </Switch>
   );
 

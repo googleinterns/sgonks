@@ -8,11 +8,11 @@ import regeneratorRuntime from "regenerator-runtime";
 import { onCompSelect } from "../../containers/SelectCompetition/SelectCompetition.js";
 
 const CreateCompetition = (props) => {
-  let [participant, setParticipant] = useState("");
-  let [participantList, setParticipantList] = useState([]);
-  let [compName, setCompName] = useState("");
-  let [startDate, setStartDate] = useState("");
-  let [endDate, setEndDate] = useState("");
+  const [participant, setParticipant] = useState("");
+  const [participantList, setParticipantList] = useState([]);
+  const [compName, setCompName] = useState("");
+  const [startDate, setStartDate] = useState("");
+  const [endDate, setEndDate] = useState("");
   const userid = 1;
 
   function onAddParticipant() {
@@ -78,14 +78,13 @@ const CreateCompetition = (props) => {
           <p>Participants</p>
           <div className={classes.AddParticipants}>
             <p>
-              {" "}
-              Add Participants:{" "}
+              Add Participants:
               <input
                 type="text"
                 placeholder="example@google.com"
                 value={participant}
                 onChange={(e) => setParticipant(e.target.value)}
-              />{" "}
+              />
               <RiAddCircleLine
                 className={classes.icons}
                 onClick={onAddParticipant}
