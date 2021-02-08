@@ -95,21 +95,18 @@ function App() {
 
   let pageRoute = !user.signedIn ? (
     <Switch>
-      <Route path="/signin" component={LandingPage}></Route>
-      <Redirect to="/signin"></Redirect>
+      <Route path="/signin" component={LandingPage} />
+      <Redirect to="/signin" />
     </Switch>
   ) : compId == NO_COMPETITION ? (
     <Switch>
       <Route
         path="/compselect"
         render={(props) => (
-          <SelectCompetition
-            {...props}
-            compIdChanged={setCompId}
-          ></SelectCompetition>
+          <SelectCompetition {...props} compIdChanged={setCompId} />
         )}
-      ></Route>
-      <Redirect to="/compselect"></Redirect>
+      />
+      <Redirect to="/compselect" />
     </Switch>
   ) : !competitionInfo.generalInfo || loading ? (
     <div>Loading...</div>
@@ -123,22 +120,19 @@ function App() {
             recentBuys={competitionInfo.recentBuys}
             trendingSearches={competitionInfo.trending}
             investments={competitionInfo.investments}
-          ></Dashboard>
+          />
         )}
-      ></Route>
-      <Route
-        path="/competition"
-        render={() => <Competition></Competition>}
-      ></Route>
+      />
+      <Route path="/competition" render={() => <Competition />} />
       <Route
         path="/mysgonks"
         render={() => (
           <MySGonks
             generalInfo={competitionInfo.generalInfo}
             investments={competitionInfo.investments}
-          ></MySGonks>
+          />
         )}
-      ></Route>
+      />
       <Route
         path="/marketplace"
         render={() => (
@@ -147,11 +141,11 @@ function App() {
             recentBuys={competitionInfo.recentBuys}
             trendingSearches={competitionInfo.trending}
             investments={competitionInfo.investments}
-          ></Marketplace>
+          />
         )}
-      ></Route>
-      <Route path="/placeholder" component={Explanation}></Route>
-      <Redirect to="/dashboard"></Redirect>
+      />
+      <Route path="/placeholder" component={Explanation} />
+      <Redirect to="/dashboard" />
     </Switch>
   );
 
@@ -163,7 +157,7 @@ function App() {
             loggedIn={user.signedIn}
             innerNav={compId != 0}
             compIdChanged={setCompId}
-          ></HeaderBar>
+          />
           {!authStateReceived ? (
             <div>Signing in...</div>
           ) : (
