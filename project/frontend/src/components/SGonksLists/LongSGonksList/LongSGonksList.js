@@ -3,6 +3,7 @@ import classes from "./LongSGonksList.module.css";
 import LongSGonkRow from "./LongSGonkRow/LongSGonkRow";
 
 const LongSGonksList = (props) => {
+  //TODO: Change this ternary to something more readable
   const investmentRows = !props.investments ? (
     <div>undefined</div>
   ) : (
