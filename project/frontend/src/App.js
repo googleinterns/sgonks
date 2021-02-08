@@ -1,21 +1,13 @@
 import "./App.css";
 import React, { useState, useEffect } from "react";
-import { Route, Switch, Redirect, BrowserRouter } from "react-router-dom";
-
-import Explanation from "./containers/Explanation/Explanation";
-import SelectCompetition from "./containers/SelectCompetition/SelectCompetition";
+import { BrowserRouter } from "react-router-dom";
 
 import HeaderBar from "./components/HeaderBar/HeaderBar";
-import LandingPage from "./containers/LandingPage/LandingPage";
-import Dashboard from "./containers/Dashboard/Dashboard";
-import Competition from "./containers/Competition/Competition";
-import MySGonks from "./containers/MySGonks/MySGonks";
-
 import Layout from "./hoc/Layout/Layout";
+import PageRouter from "./hoc/PageRouter/PageRouter";
+
 import { AuthContext } from "./context/AuthContext";
 import { onAuthStateChange } from "./services/firebase";
-import Marketplace from "./containers/Marketplace/Marketplace";
-import PageRouter from "./hoc/PageRouter/PageRouter";
 
 export const NO_COMPETITION = 0;
 
