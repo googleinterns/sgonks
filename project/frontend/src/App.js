@@ -109,62 +109,6 @@ function App() {
     />
   );
 
-  // !user.signedIn ? (
-  //   <Switch>
-  //     <Route path="/signin" component={LandingPage} />
-  //     <Redirect to="/signin" />
-  //   </Switch>
-  // ) : compId == NO_COMPETITION ? (
-  //   <Switch>
-  //     <Route
-  //       path="/compselect"
-  //       render={(props) => (
-  //         <SelectCompetition {...props} compIdChanged={setCompId} />
-  //       )}
-  //     />
-  //     <Redirect to="/compselect" />
-  //   </Switch>
-  // ) : !competitionInfo.generalInfo || loading ? (
-  //   <div>Loading...</div>
-  // ) : (
-  //   <Switch>
-  //     <Route
-  //       path="/dashboard"
-  //       render={() => (
-  //         <Dashboard
-  //           generalInfo={competitionInfo.generalInfo}
-  //           recentBuys={competitionInfo.recentBuys}
-  //           trendingSearches={competitionInfo.trending}
-  //           investments={competitionInfo.investments}
-  //         />
-  //       )}
-  //     />
-  //     <Route path="/competition" render={() => <Competition />} />
-  //     <Route
-  //       path="/mysgonks"
-  //       render={() => (
-  //         <MySGonks
-  //           generalInfo={competitionInfo.generalInfo}
-  //           investments={competitionInfo.investments}
-  //         />
-  //       )}
-  //     />
-  //     <Route
-  //       path="/marketplace"
-  //       render={() => (
-  //         <Marketplace
-  //           generalInfo={competitionInfo.generalInfo}
-  //           recentBuys={competitionInfo.recentBuys}
-  //           trendingSearches={competitionInfo.trending}
-  //           investments={competitionInfo.investments}
-  //         />
-  //       )}
-  //     />
-  //     <Route path="/placeholder" component={Explanation} />
-  //     <Redirect to="/dashboard" />
-  //   </Switch>
-  // );
-
   return (
     <BrowserRouter>
       <div className="App">
