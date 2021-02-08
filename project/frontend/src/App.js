@@ -1,5 +1,5 @@
 import "./App.css";
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { Route, Switch, Redirect, BrowserRouter } from "react-router-dom";
 
 import Explanation from "./containers/Explanation/Explanation";
@@ -25,7 +25,7 @@ function App() {
   const [competitionInfo, setCompetitionInfo] = useState({});
   const [loading, setLoading] = useState(false);
 
-  React.useEffect(() => {
+  useEffect(() => {
     const unsubscribe = onAuthStateChange((userData) => {
       setUser(userData);
       setAuthStateReceived(true);
@@ -36,7 +36,7 @@ function App() {
     };
   }, []);
 
-  React.useEffect(() => {
+  useEffect(() => {
     const parsedCompId = Number(localStorage.getItem("compId") || 0);
     setCompId(parsedCompId);
   }, []);
@@ -55,7 +55,7 @@ function App() {
     }
   };
 
-  React.useEffect(() => {
+  useEffect(() => {
     if (!authStateReceived) {
       return;
     }
