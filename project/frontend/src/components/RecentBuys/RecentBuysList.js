@@ -3,12 +3,13 @@ import classes from "./RecentBuysList.module.css";
 import { Slide } from "react-slideshow-image";
 import "react-slideshow-image/dist/styles.css";
 import RecentBuy from "./RecentBuy/RecentBuy";
+import ErrorMessage from "../ErrorMessage/ErrorMessage";
 
 const RecentBuys = (props) => {
   if (props.buys === undefined) {
     return (
       <div className={classes.FailedContainer}>
-        <p>Failed to load recent buys :(</p>
+        <ErrorMessage>recent buys</ErrorMessage>
       </div>
     );
   }
