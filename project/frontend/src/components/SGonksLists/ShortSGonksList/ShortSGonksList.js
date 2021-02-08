@@ -7,7 +7,11 @@ import { Link } from "react-router-dom";
 
 const ShortSGonksList = (props) => {
   if (props.sgonks === undefined) {
-    return <ErrorMessage>investments</ErrorMessage>;
+    return (
+      <div className={classes.ErrorContainer}>
+        <ErrorMessage>investments</ErrorMessage>
+      </div>
+    );
   }
 
   const MAX_ROWS_IN_SHORT_SGONKS_LIST = 7;

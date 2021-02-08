@@ -18,3 +18,10 @@
   color: #2f7de7;
   text-decoration: underline;
 }
+
+.ErrorContainer {
+  height: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
