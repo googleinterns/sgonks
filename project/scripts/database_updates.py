@@ -22,17 +22,11 @@ from google.cloud import datastore
 def get_investment_data(client):
     """
     Fetch investment data from database.
-    returns a list of ("search_term", "investment_date") tuples
+    returns a list of datastore entities.
     """
-    search_terms = []
-    investment_dates = []
-
     query = client.query(kind="TrendsData")
-    results = list(query.fetch()) # a list of every entry of kind TrendsData
-    for entity in results:
-        search_terms.append(entity['search_term'])
-        investment_dates.append(entity['initial_date'])
-    return zip(search_terms, investment_dates)
+    entities = list(query.fetch()) # a list of every entry of kind TrendsData
+    return entities
 
 
 def update_investment_database(data, client):
