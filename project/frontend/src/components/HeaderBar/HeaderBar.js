@@ -31,7 +31,7 @@ const HeaderBar = (props) => {
 
   const clearCompId = () => {
     localStorage.setItem("compId", 0);
-    props.compIdChanged(0);
+    props.updateCompId(0);
   };
 
   let buttonSet = props.loggedIn ? (

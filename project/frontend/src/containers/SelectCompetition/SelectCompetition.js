@@ -12,7 +12,7 @@ const SelectCompetition = (props) => {
 
   const competitionSelectedHandler = (compId) => {
     localStorage.setItem("compId", compId);
-    props.compIdChanged(compId);
+    props.updateCompId(compId);
   };
 
   const toUsername = (email) => {
