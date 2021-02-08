@@ -3,18 +3,22 @@ import classes from "./LongSGonksList.module.css";
 import LongSGonkRow from "./LongSGonkRow/LongSGonkRow";
 
 const LongSGonksList = (props) => {
-  const investmentRows = props.investments.map((investment, i) => {
-    return (
-      <LongSGonkRow
-        //TODO replace key with investment id once it's ready
-        key={i}
-        searchTerm={investment.searchItem}
-        buyInDate={investment.dateInvestedMilliSeconds}
-        amountInvested={investment.amtInvested}
-        currentValue={investment.currentValue}
-      ></LongSGonkRow>
-    );
-  });
+  const investmentRows = !props.investments ? (
+    <div>undefined</div>
+  ) : (
+    props.investments.map((investment, i) => {
+      return (
+        <LongSGonkRow
+          //TODO replace key with investment id once it's ready
+          key={i}
+          searchTerm={investment.searchItem}
+          buyInDate={investment.dateInvestedMilliSeconds}
+          amountInvested={investment.amtInvested}
+          currentValue={investment.currentValue}
+        ></LongSGonkRow>
+      );
+    })
+  );
   return (
     <div className={classes.ListWrapper}>
       <div className={classes.TitleRow}>

@@ -35,6 +35,7 @@ export const onAuthStateChange = (callback) => {
         signedIn: true,
         name: user.displayName,
         email: user.email,
+        id: 1,
       });
     } else {
       callback({

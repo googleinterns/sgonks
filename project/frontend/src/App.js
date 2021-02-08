@@ -20,12 +20,17 @@ const NO_COMPETITION = 0;
 
 function App() {
   const [user, setUser] = useState({ signedIn: false });
+  const [authStateReceived, setAuthStateReceived] = useState(false);
   const [compId, setCompId] = useState(0);
   const [competitionInfo, setCompetitionInfo] = useState({});
   const [loading, setLoading] = useState(false);
 
   React.useEffect(() => {
-    const unsubscribe = onAuthStateChange(setUser);
+    const unsubscribe = onAuthStateChange((userData) => {
+      setUser(userData);
+      setAuthStateReceived(true);
+    });
+
     return () => {
       unsubscribe();
     };
@@ -36,57 +41,57 @@ function App() {
     setCompId(parsedCompId);
   }, []);
 
-  if (user.signedIn && !user.id) {
-    //TODO: fetch for id... with useremail param... once backend is ready
-    //for now id hardcoded to 123
-    setUser((prevState) => {
-      return {
-        ...prevState,
-        id: 1,
-      };
-    });
-  }
+  const fetchCompetitionInfo = async (fetchCall, stateKey) => {
+    try {
+      const data = await fetch(fetchCall).then((response) => response.json());
 
-  const fetchAndUpdateCompetitionInfo = async (fetchCall, stateKey) => {
-    return fetch(fetchCall)
-      .then((response) => response.json())
-      .then((data) => {
-        setCompetitionInfo((prevState) => {
-          return {
-            ...prevState,
-            [stateKey]: data,
-          };
-        });
-      });
+      return {
+        [stateKey]: data,
+      };
+    } catch (e) {
+      return {
+        [stateKey]: undefined,
+      };
+    }
   };
 
   React.useEffect(() => {
+    if (!authStateReceived) {
+      return;
+    }
+
     if (user.signedIn && user.id && compId) {
-      Promise.all([
-        setLoading(true),
-        fetchAndUpdateCompetitionInfo(
-          "./competitionInfo?user=" + user.id + "&competition=" + compId,
-          "generalInfo"
-        ),
-        fetchAndUpdateCompetitionInfo(
-          "./recentBuys?competition=" + compId,
-          "recentBuys"
-        ),
-        fetchAndUpdateCompetitionInfo(
-          "./investments?user=" + user.id + "&competition=" + compId,
-          "investments"
-        ),
-        fetchAndUpdateCompetitionInfo("./trending", "trending"),
-      ])
-        .then(() => {
+      setLoading(true),
+        Promise.all([
+          fetchCompetitionInfo(
+            "./competitionInfo?user=" + user.id + "&competition=" + compId,
+            "generalInfo"
+          ),
+          fetchCompetitionInfo(
+            "./recentBuys?competition=" + compId,
+            "recentBuys"
+          ),
+          fetchCompetitionInfo(
+            "./investments?user=" + user.id + "&competition=" + compId,
+            "investments"
+          ),
+          fetchCompetitionInfo("./trending", "trending"),
+        ]).then((resolvedData) => {
           setLoading(false);
+          console.log(resolvedData);
           console.log(competitionInfo);
-        })
-        .catch(() => {
-          setLoading(false);
+          let newCompInfo = {};
+          for (const response of resolvedData) {
+            newCompInfo = {
+              ...newCompInfo,
+              ...response,
+            };
+          }
+
+          setCompetitionInfo(newCompInfo);
         });
     }
-  }, [user.id]);
+  }, [user.id, authStateReceived]);
 
   let pageRoute = !user.signedIn ? (
     <Switch>
@@ -106,7 +111,7 @@ function App() {
       ></Route>
       <Redirect to="/compselect"></Redirect>
     </Switch>
-  ) : loading ? (
+  ) : !competitionInfo.generalInfo || loading ? (
     <div>Loading...</div>
   ) : (
     <Switch>
@@ -123,10 +128,7 @@ function App() {
       ></Route>
       <Route
         path="/competition"
-        render={() => (
-          <Competition
-          ></Competition>
-        )}
+        render={() => <Competition></Competition>}
       ></Route>
       <Route
         path="/mysgonks"
@@ -228,7 +230,6 @@ function App() {
       ></Route>
       <Route path="/placeholder" component={Explanation}></Route>
       <Redirect to="/competition"></Redirect>
-
     </Switch>
   );
 
@@ -241,7 +242,11 @@ function App() {
             innerNav={compId != 0}
             compIdChanged={setCompId}
           ></HeaderBar>
-          <Layout>{pageRoute}</Layout>
+          {!authStateReceived ? (
+            <div>Signing in...</div>
+          ) : (
+            <Layout>{pageRoute}</Layout>
+          )}
         </AuthContext>
       </div>
     </BrowserRouter>
