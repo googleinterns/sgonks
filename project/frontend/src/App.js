@@ -7,7 +7,7 @@ import Layout from "./hoc/Layout/Layout";
 import PageRouter from "./hoc/PageRouter/PageRouter";
 
 import { AuthContext } from "./context/AuthContext";
-import { onAuthStateChange } from "./services/firebase";
+import { auth, onAuthStateChange } from "./services/firebase";
 
 export const NO_COMPETITION = 0;
 
@@ -29,7 +29,9 @@ function App() {
   }, []);
 
   useEffect(() => {
-    const parsedCompId = Number(localStorage.getItem("compId") || 0);
+    const parsedCompId = Number(
+      localStorage.getItem("compId") || NO_COMPETITION
+    );
     setCompId(parsedCompId);
   }, []);
 
@@ -49,7 +51,7 @@ function App() {
   const isReadyForDataFetch = () => {
     if (!user.signedIn) return false;
     if (user.id === undefined || user.id === 0) return false;
-    if (compId === 0) return false;
+    if (compId === NO_COMPETITION) return false;
     return true;
   };
 
@@ -97,20 +99,16 @@ function App() {
             innerNav={compId != 0}
             compIdChanged={setCompId}
           />
-          {!authStateReceived ? (
-            <div>Signing in...</div>
-          ) : (
-            <Layout>
-              <PageRouter
-                signedIn={user.signedIn}
-                compId={compId}
-                loading={loading}
-                compIdChanged={setCompId}
-                competitionInfo={competitionInfo}
-                updateCompId={setCompId}
-              />
-            </Layout>
-          )}
+          <Layout>
+            <PageRouter
+              authStateReceived={authStateReceived}
+              signedIn={user.signedIn}
+              compId={compId}
+              loading={loading}
+              competitionInfo={competitionInfo}
+              updateCompId={setCompId}
+            />
+          </Layout>
         </AuthContext>
       </div>
     </BrowserRouter>

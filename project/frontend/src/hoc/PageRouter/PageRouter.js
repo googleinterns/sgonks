@@ -12,6 +12,10 @@ import { NO_COMPETITION } from "../../App";
 
 const PageRouter = (props) => {
   console.log(props);
+
+  if (!props.authStateReceived) {
+    return <div>Signing in...</div>;
+  }
   if (!props.signedIn) {
     return (
       <Switch>
@@ -27,7 +31,7 @@ const PageRouter = (props) => {
         <Route
           path="/compselect"
           render={(props) => (
-            <SelectCompetition {...props} compIdChanged={setCompId} />
+            <SelectCompetition {...props} compIdChanged={props.updateCompId} />
           )}
         />
         <Redirect to="/compselect" />
