@@ -4,11 +4,7 @@ import LongSGonkRow from "./LongSGonkRow/LongSGonkRow";
 
 const LongSGonksList = (props) => {
   if (props.investments === undefined) {
-    return (
-      <div>
-        <p>Failed to load investments :(</p>
-      </div>
-    );
+    return <p>Failed to load investments :(</p>;
   }
 
   const investmentRows = props.investments.map((investment, i) => {
