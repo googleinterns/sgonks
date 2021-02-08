@@ -15,8 +15,9 @@ import Layout from "./hoc/Layout/Layout";
 import { AuthContext } from "./context/AuthContext";
 import { onAuthStateChange } from "./services/firebase";
 import Marketplace from "./containers/Marketplace/Marketplace";
+import PageRouter from "./hoc/PageRouter/PageRouter";
 
-const NO_COMPETITION = 0;
+export const NO_COMPETITION = 0;
 
 function App() {
   const [user, setUser] = useState({ signedIn: false });
@@ -74,93 +75,103 @@ function App() {
     }
 
     if (isReadyForDataFetch()) {
-      setLoading(true),
-        Promise.all([
-          fetchCompetitionInfo(
-            `./competitionInfo?user=${user.id}&competition=${compId}`,
-            "generalInfo"
-          ),
-          fetchCompetitionInfo(
-            `./recentBuys?competition=${compId}`,
-            "recentBuys"
-          ),
-          fetchCompetitionInfo(
-            `./investments?user=${user.id}&competition=${compId}`,
-            "investments"
-          ),
-          fetchCompetitionInfo("./trending", "trending"),
-        ]).then((resolvedData) => {
-          setLoading(false);
-          console.log(resolvedData);
-          console.log(competitionInfo);
-          let newCompInfo = {};
-          for (const response of resolvedData) {
-            newCompInfo = {
-              ...newCompInfo,
-              ...response,
-            };
-          }
-
-          setCompetitionInfo(newCompInfo);
-        });
+      setLoading(true);
+      Promise.all([
+        fetchCompetitionInfo(
+          `./competitionInfo?user=${user.id}&competition=${compId}`,
+          "generalInfo"
+        ),
+        fetchCompetitionInfo(
+          `./recentBuys?competition=${compId}`,
+          "recentBuys"
+        ),
+        fetchCompetitionInfo(
+          `./investments?user=${user.id}&competition=${compId}`,
+          "investments"
+        ),
+        fetchCompetitionInfo("./trending", "trending"),
+      ]).then((resolvedData) => {
+        setLoading(false);
+        console.log(resolvedData);
+        console.log(competitionInfo);
+        let newCompInfo = {};
+        for (const response of resolvedData) {
+          newCompInfo = {
+            ...newCompInfo,
+            ...response,
+          };
+        }
+        setCompetitionInfo(newCompInfo);
+      });
     }
   }, [user.id, authStateReceived]);
 
-  let pageRoute = !user.signedIn ? (
-    <Switch>
-      <Route path="/signin" component={LandingPage} />
-      <Redirect to="/signin" />
-    </Switch>
-  ) : compId == NO_COMPETITION ? (
-    <Switch>
-      <Route
-        path="/compselect"
-        render={(props) => (
-          <SelectCompetition {...props} compIdChanged={setCompId} />
-        )}
-      />
-      <Redirect to="/compselect" />
-    </Switch>
-  ) : !competitionInfo.generalInfo || loading ? (
-    <div>Loading...</div>
-  ) : (
-    <Switch>
-      <Route
-        path="/dashboard"
-        render={() => (
-          <Dashboard
-            generalInfo={competitionInfo.generalInfo}
-            recentBuys={competitionInfo.recentBuys}
-            trendingSearches={competitionInfo.trending}
-            investments={competitionInfo.investments}
-          />
-        )}
-      />
-      <Route path="/competition" render={() => <Competition />} />
-      <Route
-        path="/mysgonks"
-        render={() => (
-          <MySGonks
-            generalInfo={competitionInfo.generalInfo}
-            investments={competitionInfo.investments}
-          />
-        )}
-      />
-      <Route
-        path="/marketplace"
-        render={() => (
-          <Marketplace
-            generalInfo={competitionInfo.generalInfo}
-            recentBuys={competitionInfo.recentBuys}
-            trendingSearches={competitionInfo.trending}
-            investments={competitionInfo.investments}
-          />
-        )}
-      />
-      <Route path="/placeholder" component={Explanation} />
-      <Redirect to="/dashboard" />
-    </Switch>
+  let pageRoute = (
+    <PageRouter
+      signedIn={user.signedIn}
+      compId={compId}
+      loading={loading}
+      compIdChanged={setCompId}
+      competitionInfo={competitionInfo}
+      updateCompId={setCompId}
+    />
   );
+
+  // !user.signedIn ? (
+  //   <Switch>
+  //     <Route path="/signin" component={LandingPage} />
+  //     <Redirect to="/signin" />
+  //   </Switch>
+  // ) : compId == NO_COMPETITION ? (
+  //   <Switch>
+  //     <Route
+  //       path="/compselect"
+  //       render={(props) => (
+  //         <SelectCompetition {...props} compIdChanged={setCompId} />
+  //       )}
+  //     />
+  //     <Redirect to="/compselect" />
+  //   </Switch>
+  // ) : !competitionInfo.generalInfo || loading ? (
+  //   <div>Loading...</div>
+  // ) : (
+  //   <Switch>
+  //     <Route
+  //       path="/dashboard"
+  //       render={() => (
+  //         <Dashboard
+  //           generalInfo={competitionInfo.generalInfo}
+  //           recentBuys={competitionInfo.recentBuys}
+  //           trendingSearches={competitionInfo.trending}
+  //           investments={competitionInfo.investments}
+  //         />
+  //       )}
+  //     />
+  //     <Route path="/competition" render={() => <Competition />} />
+  //     <Route
+  //       path="/mysgonks"
+  //       render={() => (
+  //         <MySGonks
+  //           generalInfo={competitionInfo.generalInfo}
+  //           investments={competitionInfo.investments}
+  //         />
+  //       )}
+  //     />
+  //     <Route
+  //       path="/marketplace"
+  //       render={() => (
+  //         <Marketplace
+  //           generalInfo={competitionInfo.generalInfo}
+  //           recentBuys={competitionInfo.recentBuys}
+  //           trendingSearches={competitionInfo.trending}
+  //           investments={competitionInfo.investments}
+  //         />
+  //       )}
+  //     />
+  //     <Route path="/placeholder" component={Explanation} />
+  //     <Redirect to="/dashboard" />
+  //   </Switch>
+  // );
 
   return (
     <BrowserRouter>
