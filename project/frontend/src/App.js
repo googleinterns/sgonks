@@ -48,7 +48,7 @@ function App() {
 
   const isReadyForDataFetch = () => {
     if (!user.signedIn) return false;
-    if (user.id === undefined) return false;
+    if (user.id === undefined || user.id === 0) return false;
     if (compId === 0) return false;
     return true;
   };
