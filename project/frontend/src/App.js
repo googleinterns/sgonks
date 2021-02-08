@@ -49,15 +49,9 @@ function App() {
   };
 
   const isReadyForDataFetch = () => {
-    if (!user.signedIn) {
-      return false;
-    }
-    if (user.id === undefined) {
-      return false;
-    }
-    if (compId === 0) {
-      return false;
-    }
+    if (!user.signedIn) return false;
+    if (user.id === undefined) return false;
+    if (compId === 0) return false;
     return true;
   };
 
@@ -84,8 +78,6 @@ function App() {
         fetchCompetitionInfo("./trending", "trending"),
       ]).then((resolvedData) => {
         setLoading(false);
-        console.log(resolvedData);
-        console.log(competitionInfo);
         let newCompInfo = {};
         for (const response of resolvedData) {
           newCompInfo = {
@@ -97,17 +89,6 @@ function App() {
       });
     }
   }, [user.id, authStateReceived]);
-
-  let pageRoute = (
-    <PageRouter
-      signedIn={user.signedIn}
-      compId={compId}
-      loading={loading}
-      compIdChanged={setCompId}
-      competitionInfo={competitionInfo}
-      updateCompId={setCompId}
-    />
-  );
 
   return (
     <BrowserRouter>
@@ -121,7 +102,16 @@ function App() {
           {!authStateReceived ? (
             <div>Signing in...</div>
           ) : (
-            <Layout>{pageRoute}</Layout>
+            <Layout>
+              <PageRouter
+                signedIn={user.signedIn}
+                compId={compId}
+                loading={loading}
+                compIdChanged={setCompId}
+                competitionInfo={competitionInfo}
+                updateCompId={setCompId}
+              />
+            </Layout>
           )}
         </AuthContext>
       </div>
