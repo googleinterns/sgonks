@@ -33,7 +33,7 @@ def get_updated_daily_data(entity):
     investment_date: the date to start fetching data from as an int since epoch
     returns a pandas dataframe of daily data for the query from the investment date to today
     """
-    investment_date = 1611360000
+    investment_date = entity['initial_date']
     search_term = entity['search_term']
     start = get_start_times(investment_date)
     end = get_end_times()
@@ -100,7 +100,7 @@ def verify_data_complete(daily_data, entity):
     Verify that we have a complete data set for the required dates. If not, fill in the blanks
     with old potentially outdated data or worst case scenario, random data
     """
-    required_dates = get_all_dates(1611360000)
+    required_dates = get_all_dates(entity['initial_date'])
     for date in required_dates:
         # convert date to string for datastore indexing purposes
         date_str = str(date)
@@ -115,8 +115,8 @@ def verify_data_complete(daily_data, entity):
             val = get_missing_data_point(required_dates, daily_data, date)
             daily_data[date_str] = val
 
-    daily_data['initial_date'] = 1611360000
-    daily_data['latest_date'] = str(required_dates[-1])
+    daily_data['initial_date'] = entity['initial_date']
+    daily_data['latest_date'] = required_dates[-1]
 
     return daily_data
 
