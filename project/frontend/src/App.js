@@ -64,15 +64,15 @@ function App() {
       setLoading(true),
         Promise.all([
           fetchCompetitionInfo(
-            "./competitionInfo?user=" + user.id + "&competition=" + compId,
+            `./competitionInfo?user=${user.id}&competition=${compId}`,
             "generalInfo"
           ),
           fetchCompetitionInfo(
-            "./recentBuys?competition=" + compId,
+            `./recentBuys?competition=${compId}`,
             "recentBuys"
           ),
           fetchCompetitionInfo(
-            "./investments?user=" + user.id + "&competition=" + compId,
+            `./investments?user=${user.id}&competition=${compId}`,
             "investments"
           ),
           fetchCompetitionInfo("./trending", "trending"),
