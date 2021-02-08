@@ -23,7 +23,6 @@ function App() {
       setUser(userData);
       setAuthStateReceived(true);
     });
-
     return () => {
       unsubscribe();
     };
@@ -37,7 +36,6 @@ function App() {
   const fetchCompetitionInfo = async (fetchCall, stateKey) => {
     try {
       const data = await fetch(fetchCall).then((response) => response.json());
-
       return {
         [stateKey]: data,
       };
