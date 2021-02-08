@@ -96,7 +96,7 @@ function App() {
         <AuthContext>
           <HeaderBar
             loggedIn={user.signedIn}
-            innerNav={compId != 0}
+            innerNav={compId != NO_COMPETITION}
             compIdChanged={setCompId}
           />
           <Layout>
