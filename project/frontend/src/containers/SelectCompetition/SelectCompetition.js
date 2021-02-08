@@ -20,6 +20,14 @@ const SelectCompetition = (props) => {
   };
 
   const renderCompCards = (compsList) => {
+    if (compsList === undefined) {
+      setComps(
+        <p className={classes.NoCompetition}>
+          Something's gone wrong... Please refresh or wait a moment :)
+        </p>
+      );
+      return;
+    }
     if (compsList.length === 0) {
       setComps(
         <p className={classes.NoCompetition}>

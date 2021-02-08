@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React from "react";
 import classes from "./CompetitionCard.module.css";
 import LinkButton from "../UI/LinkButton/LinkButton";
 import Rank from "../Rank/Rank";
