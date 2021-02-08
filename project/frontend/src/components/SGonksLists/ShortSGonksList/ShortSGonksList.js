@@ -2,15 +2,14 @@ import React from "react";
 import classes from "./ShortSGonksList.module.css";
 
 import ShortSGonksRow from "./ShortSGonksRow/ShortSGonksRow";
+import ErrorMessage from "../../ErrorMessage/ErrorMessage";
 import { Link } from "react-router-dom";
 
 const ShortSGonksList = (props) => {
   const MAX_ROWS_IN_SHORT_SGONKS_LIST = 7;
 
   if (props.sgonks === undefined) {
-    return (
-      <p className={classes.FailureMessage}>Failed to load investments :(</p>
-    );
+    return <ErrorMessage>investments</ErrorMessage>;
   }
 
   const sGonksList = props.sgonks
