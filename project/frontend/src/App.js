@@ -55,12 +55,25 @@ function App() {
     }
   };
 
+  const isReadyForDataFetch = () => {
+    if (!user.signedIn) {
+      return false;
+    }
+    if (user.id === undefined) {
+      return false;
+    }
+    if (compId === 0) {
+      return false;
+    }
+    return true;
+  };
+
   useEffect(() => {
     if (!authStateReceived) {
       return;
     }
 
-    if (user.signedIn && user.id && compId) {
+    if (isReadyForDataFetch()) {
       setLoading(true),
         Promise.all([
           fetchCompetitionInfo(
