@@ -1,10 +1,11 @@
 import React from "react";
 import classes from "./LongSGonksList.module.css";
 import LongSGonkRow from "./LongSGonkRow/LongSGonkRow";
+import ErrorMessage from "../../ErrorMessage/ErrorMessage";
 
 const LongSGonksList = (props) => {
   if (props.investments === undefined) {
-    return <p>Failed to load investments :(</p>;
+    return <ErrorMessage>investments</ErrorMessage>;
   }
 
   const investmentRows = props.investments.map((investment, i) => {

@@ -6,11 +6,11 @@ import ErrorMessage from "../../ErrorMessage/ErrorMessage";
 import { Link } from "react-router-dom";
 
 const ShortSGonksList = (props) => {
-  const MAX_ROWS_IN_SHORT_SGONKS_LIST = 7;
-
   if (props.sgonks === undefined) {
     return <ErrorMessage>investments</ErrorMessage>;
   }
+
+  const MAX_ROWS_IN_SHORT_SGONKS_LIST = 7;
 
   const sGonksList = props.sgonks
     .slice(0, MAX_ROWS_IN_SHORT_SGONKS_LIST)
