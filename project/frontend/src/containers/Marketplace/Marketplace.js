@@ -6,7 +6,6 @@ import RecentBuys from "../../components/RecentBuys/RecentBuysList";
 import Button from "../../components/UI/Button/Button";
 
 const Marketplace = (props) => {
-  console.log(props);
   return (
     <div className={classes.MarketplaceContainer}>
       <div className={classes.BuyContainer}>
