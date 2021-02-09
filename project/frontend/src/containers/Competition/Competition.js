@@ -45,26 +45,41 @@ const Competition = (props) => {
     };
 
     const usernameFromEmail = (email) => {
-        var username = email.split('@') + '@';
+        var username = email.split('@')[0] + '@';
         return username;
+    }
+
+    const formatChartData = () => {
+        const networths = props.networths;
+        var data = [];
+        var first_row = ["x"];
+        // add name row to data
+        for (var i = 0; i < networths.length; i++) {
+            var email = networths[i].competitorEmail;
+            first_row.push(usernameFromEmail(email));
+        }
+        data.push(first_row);
+
+        // add networth data
+        const numDays = networths[0].dataPoints.length;
+        for (i = 0; i < numDays; i++) {
+            var row = [i];
+            for (var j = 0; j < networths.length; j++) {
+                row.push(networths[j].dataPoints[i]);
+            }
+            data.push(row);
+        }
+        return data;
     }
 
     const competitors = props.rankings;
     const generalInfo = props.generalInfo;
     console.log(generalInfo);
-    const netWorths = props.networths;
-    console.log(netWorths);
 
-    const placeholderChartsData = {
+    const chartsData = {
         haxis: "Time",
         vaxis: "Net Worth",
-        data: [
-            ["x", "emmahogan@", "mercurylin@", "phoebek@"],
-            [0, 124, 423, 294],
-            [1, 432, 543, 324],
-            [2, 234, 234, 123],
-            [3, 654, 876, 123]
-        ],
+        data: formatChartData(),
     };
 
     const myCurrentRank = props.generalInfo.rank;
@@ -87,7 +102,7 @@ const Competition = (props) => {
                     <RankingsList competitors={competitors}></RankingsList>
                 </Block>
                 <Block className={classes.RankingsChart}>
-                    <ChartCard chartInfo={placeholderChartsData}></ChartCard>
+                    <ChartCard chartInfo={chartsData}></ChartCard>
                 </Block>
             </div>
             <div className={classes.SmallColumn}>
