@@ -44,8 +44,16 @@ const Competition = (props) => {
         return formatDHM(toDayHourMinute(remainingTime));
     };
 
+    const usernameFromEmail = (email) => {
+        var username = email.split('@') + '@';
+        return username;
+    }
+
     const competitors = props.rankings;
-    console.log(competitors);
+    const generalInfo = props.generalInfo;
+    console.log(generalInfo);
+    const netWorths = props.networths;
+    console.log(netWorths);
 
     const placeholderChartsData = {
         haxis: "Time",
@@ -59,8 +67,8 @@ const Competition = (props) => {
         ],
     };
 
-    const myCurrentRank = 1;
-    const myRankYesterday = 2;
+    const myCurrentRank = props.generalInfo.rank;
+    const myRankYesterday = props.generalInfo.rankYesterday;
     const rankDiff = myRankYesterday - myCurrentRank;
     const rankString = 
         rankDiff > 0
