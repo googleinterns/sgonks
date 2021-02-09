@@ -44,47 +44,45 @@ const Competition = (props) => {
         return formatDHM(toDayHourMinute(remainingTime));
     };
 
-    const placeholderCompetitors = [
-        {
-            rank : 1,
-            rankYesterday : 2,
-            name : "emmahogan@",
-            available : 100,
-            net_worth : 250,
-            num_searches : 5,
-        },
-        {
-            rank : 2,
-            rankYesterday : 1,
-            name : "mercurylin@",
-            available : 55,
-            net_worth : 220,
-            num_searches : 4,
-        },
-        {
-            rank : 3,
-            rankYesterday : 3,
-            name : "phoebek@",
-            available : 120,
-            net_worth : 120,
-            num_searches : 0,
-        },
-    ];
+    const usernameFromEmail = (email) => {
+        var username = email.split('@')[0] + '@';
+        return username;
+    }
 
-    const placeholderChartsData = {
+    const formatChartData = () => {
+        const networths = props.networths;
+        var data = [];
+        var first_row = ["x"];
+        // add name row to data
+        for (var i = 0; i < networths.length; i++) {
+            var email = networths[i].competitorEmail;
+            first_row.push(usernameFromEmail(email));
+        }
+        data.push(first_row);
+
+        // add networth data
+        const numDays = networths[0].dataPoints.length;
+        for (i = 0; i < numDays; i++) {
+            var row = [i];
+            for (var j = 0; j < networths.length; j++) {
+                row.push(networths[j].dataPoints[i]);
+            }
+            data.push(row);
+        }
+        return data;
+    }
+
+    const chartsData = {
         haxis: "Time",
         vaxis: "Net Worth",
-        data: [
-            ["x", "emmahogan@", "mercurylin@", "phoebek@"],
-            [0, 124, 423, 294],
-            [1, 432, 543, 324],
-            [2, 234, 234, 123],
-            [3, 654, 876, 123]
-        ],
+        data: formatChartData(),
     };
 
-    const myCurrentRank = 1;
-    const myRankYesterday = 2;
+    const competitionStartDate = props.generalInfo.startDate;
+    const competitionEndDate = props.generalInfo.endDate;
+    const myCurrentRank = props.generalInfo.rank;
+    const myRankYesterday = props.generalInfo.rankYesterday;
+
     const rankDiff = myRankYesterday - myCurrentRank;
     const rankString = 
         rankDiff > 0
@@ -93,17 +91,14 @@ const Competition = (props) => {
     ? "- " + (-1 * rankDiff) + " from yesterday."
     : "Same rank as yesterday."
 
-    const competitionStartDate = 1611187200000;
-    const competitionEndDate = 1615310400000;
-
     return (
         <div className={classes.CompetitionContainer}>
             <div className={classes.LargeColumn}>
                 <Block className={classes.Rankings}>
-                    <RankingsList competitors={placeholderCompetitors}></RankingsList>
+                    <RankingsList competitors={props.rankings}></RankingsList>
                 </Block>
                 <Block className={classes.RankingsChart}>
-                    <ChartCard chartInfo={placeholderChartsData}></ChartCard>
+                    <ChartCard chartInfo={chartsData}></ChartCard>
                 </Block>
             </div>
             <div className={classes.SmallColumn}>
