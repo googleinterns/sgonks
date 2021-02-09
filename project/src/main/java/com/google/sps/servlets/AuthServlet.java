@@ -53,8 +53,6 @@ public class AuthServlet extends HttpServlet {
       Gson gson = new Gson();
       response.setContentType("application/json");
       response.getWriter().println(gson.toJson(user));
-      //response.setContentType("text/html;");
-      //response.getWriter().println("<h1>" + user + "</h1>");
     } catch (SQLException ex) {
       LOGGER.log(Level.WARNING, "Error while attempting to find user.", ex);
       response.setStatus(500);
