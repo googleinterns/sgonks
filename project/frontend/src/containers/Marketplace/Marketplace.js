@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import classes from "./Marketplace.module.css";
 import Block from "../../components/UI/Block/Block";
 import TrendingSearches from "../../components/TrendingSearches/TrendingSearches";
@@ -6,6 +6,20 @@ import RecentBuys from "../../components/RecentBuys/RecentBuysList";
 import Button from "../../components/UI/Button/Button";
 
 const Marketplace = (props) => {
+  const [searchEntry, setSearchEntry] = useState("");
+  const [purchaseAmount, setPurchaseAmount] = useState(0);
+
+  const onSearchChange = (e) => {
+    console.log(e.target.value);
+  };
+  const onSearchEntered = () => {
+    if (searchEntry.trim() === "") {
+      console.log("empty");
+      return;
+    }
+    console.log("called");
+  };
+
   return (
     <div className={classes.MarketplaceContainer}>
       <div className={classes.BuyContainer}>
@@ -13,12 +27,13 @@ const Marketplace = (props) => {
           <input
             className={classes.SearchInput}
             placeholder="Search a trend"
+            onChange={(e) => onSearchChange(e)}
           ></input>
-          <Button inverted padding="3px 20px">
+          <Button inverted padding="3px 20px" onClick={onSearchEntered}>
             Search
           </Button>
         </div>
-        <Block className={classes.ChartContainer}>chart here </Block>
+        <Block className={classes.ChartContainer}>chart here</Block>
         <div className={classes.PurchaseSection}>
           <h2>"search query"</h2>
           <div className={classes.BuyInfo}>
