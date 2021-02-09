@@ -276,8 +276,8 @@ public class CompetitionsServlet extends HttpServlet {
     Datastore datastore = DatastoreOptions.getDefaultInstance().getService();
     InvestmentCalculator calc = new InvestmentCalculator();
 
-    /** This might be before the comp starts but that's not a problem, the UI will just show
-      constant net worths until after the start date */
+    /** This might be a bit before the comp starts but that's not a problem as we only query 
+     * the dates we want anyway. */
     String currentDate = Long.toString(calc.getLatestDate());
     String entityId = String.format("id=%dcompetition=%d", user, competition);
 
