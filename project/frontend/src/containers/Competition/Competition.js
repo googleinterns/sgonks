@@ -72,17 +72,17 @@ const Competition = (props) => {
         return data;
     }
 
-    const competitors = props.rankings;
-    const generalInfo = props.generalInfo;
-
     const chartsData = {
         haxis: "Time",
         vaxis: "Net Worth",
         data: formatChartData(),
     };
 
+    const competitionStartDate = props.generalInfo.startDate;
+    const competitionEndDate = props.generalInfo.endDate;
     const myCurrentRank = props.generalInfo.rank;
     const myRankYesterday = props.generalInfo.rankYesterday;
+
     const rankDiff = myRankYesterday - myCurrentRank;
     const rankString = 
         rankDiff > 0
@@ -91,14 +91,11 @@ const Competition = (props) => {
     ? "- " + (-1 * rankDiff) + " from yesterday."
     : "Same rank as yesterday."
 
-    const competitionStartDate = generalInfo.startDate;
-    const competitionEndDate = generalInfo.endDate;
-
     return (
         <div className={classes.CompetitionContainer}>
             <div className={classes.LargeColumn}>
                 <Block className={classes.Rankings}>
-                    <RankingsList competitors={competitors}></RankingsList>
+                    <RankingsList competitors={props.rankings}></RankingsList>
                 </Block>
                 <Block className={classes.RankingsChart}>
                     <ChartCard chartInfo={chartsData}></ChartCard>
