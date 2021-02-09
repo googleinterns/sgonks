@@ -81,7 +81,11 @@ function App() {
         ),
         fetchCompetitionInfo(
           `./networths?competition=${compId}`,
-          `networths`
+          "networths"
+        ),
+        fetchCompetitionInfo(
+          `./rankedCompetitors?competition=${compId}`,
+          "rankings"
         ),
       ]).then((resolvedData) => {
         setLoading(false);
