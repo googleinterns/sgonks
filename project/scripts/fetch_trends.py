@@ -22,15 +22,14 @@ from pytrends.request import TrendReq
 pytrends = TrendReq(tz=0) #tz=0 puts us on UTC
 
 from dates import get_start_times, get_end_times, date_to_epoch, get_all_dates
-from data_generator import backfill_missing_data_as_necessary
+from data_generator import get_missing_data_point
 
 NUM_TRENDING = 10 # number of trending searches to return
 
 
 def get_updated_daily_data(entity):
     """
-    search_term: a search to retrieve data for
-    investment_date: the date to start fetching data from as an int since epoch
+    entity : the datastore entity for this investment
     returns a pandas dataframe of daily data for the query from the investment date to today
     """
     investment_date = entity['initial_date']
@@ -95,7 +94,7 @@ def aggregate_hourly_to_daily(hourly_df):
     return new_data
 
 
-def verify_data_complete(daily_data, entity):
+def backfill_missing_data_as_necessary(daily_data, entity):
     """
     Verify that we have a complete data set for the required dates. If not, fill in the blanks
     with old potentially outdated data or worst case scenario, random data
