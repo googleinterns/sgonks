@@ -36,6 +36,9 @@ import javax.servlet.http.HttpServletResponse;
 import javax.sql.DataSource;
 import org.json.JSONArray;
 import org.json.JSONObject;
+import com.google.cloud.datastore.StructuredQuery.PropertyFilter;
+import com.google.cloud.datastore.*;
+import com.google.appengine.api.datastore.EntityNotFoundException;
 
 /**
  * Returns a list of all the competitions the logged in user is in, including their rank and info
@@ -45,6 +48,7 @@ import org.json.JSONObject;
 public class CompetitionsServlet extends HttpServlet {
 
   private static final Logger LOGGER = Logger.getLogger(CompetitionsServlet.class.getName());
+  private static int INITIAL_NETWORTH = 500;
 
   @Override
   public void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
@@ -132,13 +136,14 @@ public class CompetitionsServlet extends HttpServlet {
             String participantsStmt = String.format(
                 "INSERT INTO participants (user, competition, amt_available, net_worth, rank, rank_yesterday) VALUES "
                     + "(%d , %d , %d , %d , %d , %d);",
-                id, competitionId, 500, 500, 1, null);
+                id, competitionId, INITIAL_NETWORTH, INITIAL_NETWORTH, 1, null);
             try (PreparedStatement statement = conn.prepareStatement(participantsStmt)) {
               // Execute the statement
               statement.execute();
               LOGGER.log(Level.INFO, "Added user id: " + id + " competition id: " + competitionId
                   + " to participants database.");
             }
+            insertIntoDatastore(id, competitionId, INITIAL_NETWORTH);
           }
         }
       }
@@ -262,5 +267,32 @@ public class CompetitionsServlet extends HttpServlet {
       }
       return User.create(creatorId, null, null);
     }
+  }
+
+  /**
+   * Insert the initial networth of each user into the networth history datastore
+   */
+  private void insertIntoDatastore(long user, long competition, int netWorth) {
+    Datastore datastore = DatastoreOptions.getDefaultInstance().getService();
+    InvestmentCalculator calc = new InvestmentCalculator();
+
+    /** This might be before the comp starts but that's not a problem, the UI will just show
+      constant net worths until after the start date */
+    String currentDate = Long.toString(calc.getLatestDate());
+    String entityId = String.format("id=%dcompetition=%d", user, competition);
+
+    Entity netWorthEntity;
+    Key key = datastore.newKeyFactory()
+      .setKind("NetWorths")
+      .newKey(entityId);
+    try {
+      // This shouldn't trigger unless something goes wrong and we try to insert the same entity twice
+      Entity oldNetWorthEntity = datastore.get(key);
+      netWorthEntity = Entity.newBuilder(oldNetWorthEntity).set(currentDate, netWorth).build();;
+    } catch (NullPointerException e) {
+      netWorthEntity = Entity.newBuilder(key).set(currentDate, netWorth).build();
+    }
+    //upsert the entity to the datastore (will create a new entity if not already existing)
+    datastore.put(netWorthEntity);
   }
 }
