@@ -94,7 +94,7 @@ public class CompetitionsServlet extends HttpServlet {
         try (PreparedStatement competitionstmt = conn.prepareStatement(competitionStmt)) {
           // Execute the statement
           competitionstmt.execute();
-          LOGGER.log(Level.INFO, "Added " + competitionstmt + "to database.");
+          LOGGER.log(Level.INFO, "Added start date: " + startDate + "end date: " + endDate + "name: " + compName + "user id: " + userId + " to competitions database.");
         }
         long competitionId = getLatestInsertedID(conn);
 
@@ -120,7 +120,7 @@ public class CompetitionsServlet extends HttpServlet {
               try (PreparedStatement statement = conn.prepareStatement(userStmt)) {
                 // Execute the statement
                 statement.execute();
-                LOGGER.log(Level.INFO, "Added " + statement + "to database.");
+                LOGGER.log(Level.INFO, "Added name: " + name + " email: " + email + " to users database.");
               }
               id = getLatestInsertedID(conn);
             }
@@ -133,7 +133,7 @@ public class CompetitionsServlet extends HttpServlet {
             try (PreparedStatement statement = conn.prepareStatement(participantsStmt)) {
               // Execute the statement
               statement.execute();
-              LOGGER.log(Level.INFO, "Added " + statement + "to database.");
+              LOGGER.log(Level.INFO, "Added user id: " + id + " competition id: " + competitionId + " to participants database.");
             }
           }
         }
