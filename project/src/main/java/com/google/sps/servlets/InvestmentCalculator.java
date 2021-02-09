@@ -79,7 +79,7 @@ public class InvestmentCalculator {
             int amtInvested;
             while (rs.next()) {
                 googleSearch = rs.getString(1);
-                investDate = rs.getDate(2).getTime();
+                investDate = convertDateToEpochLong(rs.getDate(2));
                 sellDateOrNull = rs.getDate(3);
                 if (sellDateOrNull == null) {
                     sellDate = 0;
