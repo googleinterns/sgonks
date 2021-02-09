@@ -45,7 +45,7 @@ def get_gaussian_random(time_range):
     lower = 0
     upper = 2400
     mean = 1200
-    chance_of_extremity = 1 / (time_range * 24)
+    chance_of_extremity = (1 / (time_range * 24)) ** 24
     f = 1 - chance_of_extremity
     num_standard_devs = special.erfinv(f) * math.sqrt(2)
     standard_dev = (upper - mean) / num_standard_devs
