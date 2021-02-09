@@ -8,9 +8,9 @@ import Aux from "../../hoc/Auxiliary";
 
 const HeaderBar = (props) => {
   let innerNavLinks = [
-    { linkTo: "/", display: "My sGonks", key: "mysgonks" },
-    { linkTo: "/", display: "Competition", key: "competition" },
-    { linkTo: "/", display: "Marketplace", key: "marketplace" },
+    { linkTo: "/mysgonks", display: "My sGonks", key: "mysgonks" },
+    { linkTo: "/competition", display: "Competition", key: "competition" },
+    { linkTo: "/marketplace", display: "Marketplace", key: "marketplace" },
   ];
 
   let innerNav = props.innerNav ? (
