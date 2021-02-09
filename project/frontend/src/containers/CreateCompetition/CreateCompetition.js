@@ -32,13 +32,15 @@ const CreateCompetition = (props) => {
     const end = new Date(endDate);
     const now = new Date();
     const today = new Date(now.getFullYear(), now.getMonth(), now.getDate());
-    if (end < start) setValidDate(-1);
-    else if (start < today) setValidDate(-2);
-    else setValidDate(1);
+    if (end < start) {
+      setValidDate(-1);
+    } else if (start < today) {
+      setValidDate(-2);
+    } else {
+      setValidDate(1);
+    }
     return end > start && start >= today;
   }
-
-  console.log("Date validation " + dateIsValid);
 
   const sendInfo = async () => {
     if (!checkValidDate()) return;
