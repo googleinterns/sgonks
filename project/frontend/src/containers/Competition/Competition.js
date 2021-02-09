@@ -74,7 +74,6 @@ const Competition = (props) => {
 
     const competitors = props.rankings;
     const generalInfo = props.generalInfo;
-    console.log(generalInfo);
 
     const chartsData = {
         haxis: "Time",
@@ -92,8 +91,8 @@ const Competition = (props) => {
     ? "- " + (-1 * rankDiff) + " from yesterday."
     : "Same rank as yesterday."
 
-    const competitionStartDate = 1611187200000;
-    const competitionEndDate = 1615310400000;
+    const competitionStartDate = generalInfo.startDate;
+    const competitionEndDate = generalInfo.endDate;
 
     return (
         <div className={classes.CompetitionContainer}>
