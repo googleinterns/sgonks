@@ -43,12 +43,12 @@ def get_gaussian_random(time_range):
     # so over a larger time range, the probability of this specific entry being high or low
     # decreases. We adjust the standard deviation accordingly to generate reasonable values.
     lower = 0
-    upper = 100
-    mean = 50
-    chance_of_extremity = 1 / time_range
+    upper = 2400
+    mean = 1200
+    chance_of_extremity = 1 / (time_range * 24)
     f = 1 - chance_of_extremity
     num_standard_devs = special.erfinv(f) * math.sqrt(2)
-    standard_dev = 50 / num_standard_devs
+    standard_dev = (upper - mean) / num_standard_devs
     value = gauss(mean, standard_dev)
 
     while value < lower or value > upper:
