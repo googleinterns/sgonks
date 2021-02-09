@@ -44,32 +44,8 @@ const Competition = (props) => {
         return formatDHM(toDayHourMinute(remainingTime));
     };
 
-    const placeholderCompetitors = [
-        {
-            rank : 1,
-            rankYesterday : 2,
-            name : "emmahogan@",
-            available : 100,
-            net_worth : 250,
-            num_searches : 5,
-        },
-        {
-            rank : 2,
-            rankYesterday : 1,
-            name : "mercurylin@",
-            available : 55,
-            net_worth : 220,
-            num_searches : 4,
-        },
-        {
-            rank : 3,
-            rankYesterday : 3,
-            name : "phoebek@",
-            available : 120,
-            net_worth : 120,
-            num_searches : 0,
-        },
-    ];
+    const competitors = props.rankings;
+    console.log(competitors);
 
     const placeholderChartsData = {
         haxis: "Time",
@@ -100,7 +76,7 @@ const Competition = (props) => {
         <div className={classes.CompetitionContainer}>
             <div className={classes.LargeColumn}>
                 <Block className={classes.Rankings}>
-                    <RankingsList competitors={placeholderCompetitors}></RankingsList>
+                    <RankingsList competitors={competitors}></RankingsList>
                 </Block>
                 <Block className={classes.RankingsChart}>
                     <ChartCard chartInfo={placeholderChartsData}></ChartCard>
