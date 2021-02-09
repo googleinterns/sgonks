@@ -22,7 +22,7 @@ from pytrends.request import TrendReq
 pytrends = TrendReq(tz=0) #tz=0 puts us on UTC
 
 from dates import get_start_times, get_end_times, date_to_epoch, get_all_dates
-from data_generator import get_missing_data_point
+from data_generator import backfill_missing_data_as_necessary
 
 NUM_TRENDING = 10 # number of trending searches to return
 
@@ -40,9 +40,9 @@ def get_updated_daily_data(entity):
 
     hourly_data = fetch_hourly_data(search_term, *start, *end)
     daily_data = aggregate_hourly_to_daily(hourly_data)
-    verified_data = verify_data_complete(daily_data, entity)
+    complete_data = backfill_missing_data_as_necessary(daily_data, entity)
 
-    return verified_data
+    return complete_data
 
 
 def fetch_hourly_data(search_term, year_start, month_start, day_start, year_end, month_end, day_end):

@@ -22,7 +22,7 @@ from scipy import special
 from dates import get_previous_day, get_next_day
 
 
-def get_missing_data_point(required_dates, daily_data, date):
+def backfill_missing_data_as_necessary(required_dates, daily_data, date):
     """
     Calculate a suitable data point with relevant probability from known info
     """
