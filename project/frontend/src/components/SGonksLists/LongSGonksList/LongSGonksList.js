@@ -1,25 +1,25 @@
 import React from "react";
 import classes from "./LongSGonksList.module.css";
 import LongSGonkRow from "./LongSGonkRow/LongSGonkRow";
+import ErrorMessage from "../../ErrorMessage/ErrorMessage";
 
 const LongSGonksList = (props) => {
-  //TODO: Change this ternary to something more readable
-  const investmentRows = !props.investments ? (
-    <div>undefined</div>
-  ) : (
-    props.investments.map((investment, i) => {
-      return (
-        <LongSGonkRow
-          //TODO replace key with investment id once it's ready
-          key={i}
-          searchTerm={investment.searchItem}
-          buyInDate={investment.dateInvestedMilliSeconds}
-          amountInvested={investment.amtInvested}
-          currentValue={investment.currentValue}
-        ></LongSGonkRow>
-      );
-    })
-  );
+  if (props.investments === undefined) {
+    return <ErrorMessage>investments</ErrorMessage>;
+  }
+
+  const investmentRows = props.investments.map((investment, i) => {
+    return (
+      <LongSGonkRow
+        //TODO replace key with investment id once it's ready
+        key={i}
+        searchTerm={investment.searchItem}
+        buyInDate={investment.dateInvestedMilliSeconds}
+        amountInvested={investment.amtInvested}
+        currentValue={investment.currentValue}
+      ></LongSGonkRow>
+    );
+  });
   return (
     <div className={classes.ListWrapper}>
       <div className={classes.TitleRow}>

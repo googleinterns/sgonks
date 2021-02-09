@@ -30,9 +30,7 @@ const PageRouter = (props) => {
       <Switch>
         <Route
           path="/compselect"
-          render={(props) => (
-            <SelectCompetition {...props} compIdChanged={props.updateCompId} />
-          )}
+          render={() => <SelectCompetition updateCompId={props.updateCompId} />}
         />
         <Redirect to="/compselect" />
       </Switch>

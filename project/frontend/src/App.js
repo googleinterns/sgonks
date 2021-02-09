@@ -14,7 +14,7 @@ export const NO_COMPETITION = 0;
 function App() {
   const [user, setUser] = useState({ signedIn: false });
   const [authStateReceived, setAuthStateReceived] = useState(false);
-  const [compId, setCompId] = useState(0);
+  const [compId, setCompId] = useState(NO_COMPETITION);
   const [competitionInfo, setCompetitionInfo] = useState({});
   const [loading, setLoading] = useState(false);
 
@@ -97,7 +97,7 @@ function App() {
           <HeaderBar
             loggedIn={user.signedIn}
             innerNav={compId != NO_COMPETITION}
-            compIdChanged={setCompId}
+            updateCompId={setCompId}
           />
           <Layout>
             <PageRouter
