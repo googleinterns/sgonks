@@ -18,26 +18,30 @@
 
 import pandas as pd
 from pytrends.request import TrendReq
+
 pytrends = TrendReq(tz=0) #tz=0 puts us on UTC
 
-from dates import get_start_times, get_end_times, date_to_epoch
+from dates import get_start_times, get_end_times, date_to_epoch, get_all_dates
+from data_generator import get_missing_data_point
 
 NUM_TRENDING = 10 # number of trending searches to return
 
 
-def get_updated_daily_data(search_term, investment_date):
+def get_updated_daily_data(entity):
     """
-    search_term: a search to retrieve data for
-    investment_date: the date to start fetching data from as an int since epoch
+    entity : the datastore entity for this investment
     returns a pandas dataframe of daily data for the query from the investment date to today
     """
+    investment_date = entity['initial_date']
+    search_term = entity['search_term']
     start = get_start_times(investment_date)
     end = get_end_times()
 
     hourly_data = fetch_hourly_data(search_term, *start, *end)
     daily_data = aggregate_hourly_to_daily(hourly_data)
+    complete_data = backfill_missing_data_as_necessary(daily_data, entity)
 
-    return daily_data
+    return complete_data
 
 
 def fetch_hourly_data(search_term, year_start, month_start, day_start, year_end, month_end, day_end):
@@ -71,9 +75,7 @@ def aggregate_hourly_to_daily(hourly_df):
     """
     search_term = hourly_df.columns[0]
     new_data = {
-        "search_term": search_term,
-        "initial_date": date_to_epoch(hourly_df.index[0]),
-        "latest_date": date_to_epoch(hourly_df.index[-1])
+        "search_term": search_term
     }
     count = 0
     day_total = 0
@@ -90,6 +92,32 @@ def aggregate_hourly_to_daily(hourly_df):
             count = 0
 
     return new_data
+
+
+def backfill_missing_data_as_necessary(daily_data, entity):
+    """
+    Verify that we have a complete data set for the required dates. If not, fill in the blanks
+    with old potentially outdated data or worst case scenario, random data
+    """
+    required_dates = get_all_dates(entity['initial_date'])
+    for date in required_dates:
+        # convert date to string for datastore indexing purposes
+        date_str = str(date)
+        if date_str in daily_data:
+            # we have successfully retrieved data for this date
+            continue
+        elif hasattr(entity, date_str):
+            # we have old data in the database. default to this
+            daily_data[date_str] = entity[date_str]
+        else:
+            # we have no data anywhere for this date. This *shouldn't* happen often.
+            val = get_missing_data_point(required_dates, daily_data, date)
+            daily_data[date_str] = val
+
+    daily_data['initial_date'] = entity['initial_date']
+    daily_data['latest_date'] = required_dates[-1]
+
+    return daily_data
 
 
 def get_trending_searches():

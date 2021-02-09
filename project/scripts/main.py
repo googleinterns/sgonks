@@ -37,10 +37,10 @@ if __name__ == "__main__":
     # Instantiates a client
     datastore_client = datastore.Client()
     # Retrieve relevant data from datastore
-    investments = get_investment_data(datastore_client)
-    for investment in investments:
+    entities = get_investment_data(datastore_client)
+    for entity in entities:
         # Retrieve up to date trends data for each search term
-        daily_data = get_updated_daily_data(*investment)
+        daily_data = get_updated_daily_data(entity)
         # Add up to date data do datastore
         update_investment_database(daily_data, datastore_client)
 
