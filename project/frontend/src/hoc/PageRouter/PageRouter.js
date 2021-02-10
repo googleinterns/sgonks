@@ -70,6 +70,7 @@ const PageRouter = (props) => {
           <MySGonks
             generalInfo={props.competitionInfo.generalInfo}
             investments={props.competitionInfo.investments}
+            rankings={props.competitionInfo.rankings}
           />
         )}
       />
