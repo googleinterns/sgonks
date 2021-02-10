@@ -6,14 +6,15 @@ import LongSGonksList from "../../components/SGonksLists/LongSGonksList/LongSGon
 import ChartCard from "../../components/ChartCard/ChartCard";
 
 const MySGonks = (props) => {
+  const ONE_WEEK_MILLISECONDS = 7 * 24 * 60 * 60 * 1000;
+  const ONE_DAY_MILLISECONDS = 24 * 60 * 60 * 1000;
+  const INITIAL_WORTH = 500;
+
   const unsoldInvestments = !props.investments
     ? undefined
     : props.investments.filter(
         (investment) => investment.dateSoldMilliSeconds === 0
       );
-
-  const ONE_WEEK_MILLISECONDS = 7 * 24 * 60 * 60 * 1000;
-  const ONE_DAY_MILLISECONDS = 24 * 60 * 60 * 1000;
 
   const getEarliestDate = (investments) => {
     var currentEarliest = Infinity;
@@ -32,28 +33,15 @@ const MySGonks = (props) => {
     return titleRow;
   }
 
-  const formatChartData = () => {
-    const investments = props.investments;
-    console.log(investments);
-    var data = [getTitleChartRow(investments)];
-    const earliestDate = getEarliestDate(investments);
-    const currentDate = Date.now();
-    // add every required date point to chart
-    var i = 0; // start at second row 
-    var date = earliestDate;
-    while (date <= currentDate) {
-      var row = [i];
-      data.push(row);
-      date += ONE_DAY_MILLISECONDS;
-      i++;
-    }
+  const populateInvestmentData = (investments, data, earliestDate, currentDate) => {
     // add each investment's datapoints to correct chart indices
-    for (i = 0; i < investments.length; i++) {
+    for (var i = 0; i < investments.length; i++) {
       var firstDateWithData = investments[i].dateInvestedMilliSeconds - ONE_WEEK_MILLISECONDS;
       var lastDateWithData = investments[i].dateSoldMilliseconds;
       var rowCount = 1; // start at second row
       var dataCount = 0;
-      date = earliestDate;
+      var date = earliestDate;
+      var row;
       while (date <= currentDate) {
         if (date < firstDateWithData || date > lastDateWithData) {
           row = data[rowCount];
@@ -69,6 +57,25 @@ const MySGonks = (props) => {
         rowCount++;
       }
     }
+    return data;
+  }
+
+  const formatChartData = () => {
+    const investments = props.investments;
+    console.log(investments);
+    var data = [getTitleChartRow(investments)];
+    const earliestDate = getEarliestDate(investments);
+    const currentDate = Date.now();
+    // add every required date point to chart
+    var i = 0; // start at second row 
+    var date = earliestDate;
+    while (date <= currentDate) {
+      var row = [i];
+      data.push(row);
+      date += ONE_DAY_MILLISECONDS;
+      i++;
+    }
+    populateInvestmentData(investments, data, earliestDate, currentDate);
     return data;
   }
 
@@ -90,7 +97,7 @@ const MySGonks = (props) => {
             <div className={classes.MonetaryInfo}>
               <p>
                 <span>Initial worth:</span>
-                <span className={classes.TrendBucks}>t$500</span>
+                <span className={classes.TrendBucks}>t${INITIAL_WORTH}</span>
               </p>
               <p>
                 <span>Net worth:</span>
