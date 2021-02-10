@@ -118,8 +118,7 @@ public class BuyServlet extends HttpServlet {
     private void updateAmountAvailable(Connection conn, long user, long competition, int amtInvested) 
         throws SQLException {
         String stmt = "UPDATE participants SET amt_available=amt_available - " + amtInvested 
-         + ", net_worth=net_worth + " + amtInvested 
-         + " WHERE user=" + user + " AND competition=" + competition + ";";
+         + ", net_worth=net_worth + " + amtInvested;
         try (PreparedStatement updateStmt = conn.prepareStatement(stmt);) {
             // Execute the statement
             updateStmt.execute();
