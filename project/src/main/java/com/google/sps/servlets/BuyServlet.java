@@ -103,9 +103,8 @@ public class BuyServlet extends HttpServlet {
             while (rs.next()) {
                 id = rs.getInt(1);
                 LOGGER.log(Level.INFO, "Investment " + id + " added to database.");
-                // TODO ADD ID WHEN ID CHANGE MERGED
                 updateAmountAvailable(conn, user, competition, amtInvested);
-                Investment investment = Investment.create(searchQuery, currentDateSeconds * 1000,
+                Investment investment = Investment.create(id, searchQuery, currentDateSeconds * 1000,
                     0L, amtInvested, amtInvested, data);
                 return investment;
             }
