@@ -90,8 +90,6 @@ const MySGonks = (props) => {
     data: formatChartData(),
   };
 
-  
-
   return (
     <div className={classes.MySGonksContainer}>
       <div className={classes.ChartAndInfoContainer}>
@@ -120,7 +118,7 @@ const MySGonks = (props) => {
               t${props.generalInfo.amountAvailable}
             </p>
           </Block>
-          <LinkButton to="/toroutelater">Buy sGonks</LinkButton>
+          <LinkButton to="/marketplace">Buy sGonks</LinkButton>
         </div>
       </div>
       <div className={classes.SGonksListContainer}>
