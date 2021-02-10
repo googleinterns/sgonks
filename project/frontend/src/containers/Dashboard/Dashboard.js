@@ -42,6 +42,12 @@ const Dashboard = (props) => {
     return formatDHM(toDayHourMinute(remainingTime));
   };
 
+  const unsoldInvestments = !props.investments
+    ? undefined
+    : props.investments.filter(
+        (investment) => investment.dateSoldMilliSeconds === 0
+      );
+
   const placeholderChartsData = {
     haxis: "Date",
     vaxis: "Popularity",
@@ -77,7 +83,7 @@ const Dashboard = (props) => {
         <Block className={classes.YourSGonks}>
           <h2>Your sGonks</h2>
           <div className={classes.sGonksListContainer}>
-            <ShortSGonksList sgonks={props.investments}></ShortSGonksList>
+            <ShortSGonksList sgonks={unsoldInvestments}></ShortSGonksList>
           </div>
         </Block>
         <Block className={classes.ChartContainer}>
