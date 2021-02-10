@@ -5,9 +5,6 @@ import LinkButton from "../../components/UI/LinkButton/LinkButton";
 import ParticipantCard from "../../components/ParticipantCard/ParticipantCard";
 import { RiAddCircleLine } from "react-icons/ri";
 import regeneratorRuntime from "regenerator-runtime";
-import Popup from "reactjs-popup";
-
-import PopUpMessage from "../../components/PopUpMessage/Popup";
 
 const CreateCompetition = (props) => {
   const [participant, setParticipant] = useState("");
@@ -15,7 +12,7 @@ const CreateCompetition = (props) => {
   const [compName, setCompName] = useState("");
   const [startDate, setStartDate] = useState("");
   const [endDate, setEndDate] = useState("");
-  const [dateIsValid, setValidDate] = useState(0);
+  const [dateErrorMessage, setDateErrorMessage] = useState("undefined");
   const userid = 1;
 
   function onAddParticipant() {
@@ -33,11 +30,15 @@ const CreateCompetition = (props) => {
     const now = new Date();
     const today = new Date(now.getFullYear(), now.getMonth(), now.getDate());
     if (end < start) {
-      setValidDate(-1);
+      setDateErrorMessage(
+        "Invalid date selection! start date cannot be after end date."
+      );
     } else if (start < today) {
-      setValidDate(-2);
+      setDateErrorMessage(
+        "Invalid date selection! start date cannot be before today."
+      );
     } else {
-      setValidDate(1);
+      setDateErrorMessage("");
     }
     return end > start && start >= today;
   }
@@ -137,12 +138,7 @@ const CreateCompetition = (props) => {
           Confirm creation
         </LinkButton>
       </div>
-      {dateIsValid === -1 && (
-        <p>Invalid date selection! start date cannot be after end date.</p>
-      )}
-      {dateIsValid === -2 && (
-        <p>Invalid date selection! start date cannot be before today.</p>
-      )}
+      {dateErrorMessage !== "undefined" && <p>{dateErrorMessage}</p>}
     </div>
   );
 };
