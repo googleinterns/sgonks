@@ -74,13 +74,14 @@ public class InvestmentServlet extends HttpServlet {
   }
 
   public List<Investment> getUserInvestments(Connection conn, int userId, int competitionId) throws SQLException {
-    String stmt = "SELECT google_search, invest_date, sell_date, amt_invested FROM investments WHERE user=" + userId + " AND competition=" + competitionId + ";";
+    String stmt = "SELECT id, google_search, invest_date, sell_date, amt_invested FROM investments WHERE user=" + userId + " AND competition=" + competitionId + ";";
     List<Investment> investments = new ArrayList<>();
     InvestmentCalculator calc = new InvestmentCalculator();
     try (PreparedStatement investmentsStmt = conn.prepareStatement(stmt);) {
       // Execute the statement
       ResultSet rs = investmentsStmt.executeQuery();
-      // Convert a result into User object
+      // Convert a result into Investment object
+      Long id;
       String googleSearch;
       Long investDate;
       Date sellDateOrNull;
@@ -89,18 +90,19 @@ public class InvestmentServlet extends HttpServlet {
       int currentValue;
       ImmutableList<Long> dataPoints;
       while (rs.next()) {
-        googleSearch = rs.getString(1);
-        investDate = calc.convertDateToEpochLong(rs.getDate(2));
-        sellDateOrNull = rs.getDate(3);
+        id = rs.getLong(1);
+        googleSearch = rs.getString(2);
+        investDate = calc.convertDateToEpochLong(rs.getDate(3));
+        sellDateOrNull = rs.getDate(4);
         if (sellDateOrNull == null) {
           sellDate = 0L;
         } else {
           sellDate = calc.convertDateToEpochLong(sellDateOrNull);
         }
-        amtInvested = rs.getInt(4);
+        amtInvested = rs.getInt(5);
         currentValue = calc.getInvestmentValue(googleSearch, investDate, sellDate, amtInvested);
         dataPoints = getInvestmentDataPoints(googleSearch, investDate / 1000L, sellDate / 1000L);
-        investments.add(Investment.create(googleSearch, investDate, sellDate, amtInvested, currentValue, dataPoints));
+        investments.add(Investment.create(id, googleSearch, investDate, sellDate, amtInvested, currentValue, dataPoints));
       }
       return investments;
     }
