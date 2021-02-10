@@ -30,7 +30,7 @@ import javax.servlet.http.HttpServletResponse;
 import javax.sql.DataSource;
 
 /**
- *
+ * Receive data when an investment is sold and updated the investments and participants database.
  */
 @WebServlet("/sellInvestment")
 public class SellInvestmentServlet extends HttpServlet {
