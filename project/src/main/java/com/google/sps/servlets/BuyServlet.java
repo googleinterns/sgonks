@@ -47,8 +47,11 @@ public class BuyServlet extends HttpServlet {
     @Override
     public void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
         DataSource pool = (DataSource) request.getServletContext().getAttribute("db-connection-pool");
+        Connection conn = null;
 
-        try (Connection conn = pool.getConnection()) {
+        try {
+            conn = pool.getConnection();
+            conn.setAutoCommit(false); //prevent statements from being executed immediately
             long user = Long.parseLong(request.getParameter("user"));
             long competition = Long.parseLong(request.getParameter("competition"));
             String searchQuery = request.getParameter("search");
@@ -58,14 +61,25 @@ public class BuyServlet extends HttpServlet {
                 response.setStatus(500);
                 response.getWriter().write("Timeout while fetching investment. Try again later.");
             } else {
+                //transaction succesful - commit to db
+                conn.commit();
                 Gson gson = new Gson();
                 response.setContentType("application/json");
                 response.getWriter().println(gson.toJson(investment));
             }
         } catch (SQLException ex) {
-            LOGGER.log(Level.WARNING, "Error while attempting to buy investment.", ex);
-            response.setStatus(500);
-            response.getWriter().write("Unable to successfully add investment");
+            // roll back the transaction
+            try{
+                if (conn != null) {
+                    conn.rollback();
+                }
+            } catch(SQLException e) {
+                LOGGER.log(Level.WARNING, "Something went wrong cancelling a transaction");
+            } finally {
+                LOGGER.log(Level.WARNING, "Error while attempting to buy investment.", ex);
+                response.setStatus(500);
+                response.getWriter().write("Unable to successfully add investment");
+            }
         }
     }
 
