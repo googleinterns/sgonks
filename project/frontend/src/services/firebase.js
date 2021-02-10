@@ -8,25 +8,25 @@ firebase.initializeApp(firebaseConfig);
 export const auth = firebase.auth();
 
 const googleProvider = new firebase.auth.GoogleAuthProvider();
-export const signInWithGoogle = async () => {
-  let verify = await auth.signInWithPopup(googleProvider);
+// export const signInWithGoogle = async () => {
+//   let verify = await auth.signInWithPopup(googleProvider);
 
-  let idToken = await auth.currentUser.getIdToken(true);
+//   let idToken = await auth.currentUser.getIdToken(true);
 
-  // sent the idToken POST function to verify the user.
-  try {
-    await fetch("/authentication", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: idToken,
-    });
-    console.log("successfully sent the id token");
-  } catch (error) {
-    console.error("Error:", error);
-  }
-};
+//   // sent the idToken POST function to verify the user.
+//   try {
+//     await fetch("/authentication", {
+//       method: "POST",
+//       headers: {
+//         "Content-Type": "application/json",
+//       },
+//       body: idToken,
+//     });
+//     console.log("successfully sent the id token");
+//   } catch (error) {
+//     console.error("Error:", error);
+//   }
+// };
 
 export const onAuthStateChange = (callback) => {
   return firebase.auth().onAuthStateChanged((user) => {
@@ -43,6 +43,47 @@ export const onAuthStateChange = (callback) => {
       });
     }
   });
+};
+
+export const signIn = (callback) => {
+  firebase
+    .auth()
+    .signInWithPopup(googleProvider)
+    .then((result) => {
+      let credential = result.credential;
+      let token = credential.accessToken;
+
+      let user = result.user;
+
+      user.getIdToken(true).then((tokenResult) => {
+        console.log(tokenResult);
+        try {
+          fetch("/authentication", {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json",
+            },
+            body: JSON.stringify({
+              token: tokenResult,
+              email: user.email,
+              name: user.displayName,
+            }),
+          })
+            .then((response) => response.json())
+            .then((data) => {
+              callback({
+                signedIn: true,
+                name: user.displayName,
+                email: user.email,
+                id: data.userid,
+              });
+            });
+          console.log("successfully sent the id token");
+        } catch (error) {
+          console.error("Error:", error);
+        }
+      });
+    });
 };
 
 export const signOut = async () => {

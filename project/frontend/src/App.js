@@ -75,18 +75,7 @@ function App() {
           `./investments?user=${user.id}&competition=${compId}`,
           "investments"
         ),
-        fetchCompetitionInfo(
-          "./trending", 
-          "trending"
-        ),
-        fetchCompetitionInfo(
-          `./networths?competition=${compId}`,
-          "networths"
-        ),
-        fetchCompetitionInfo(
-          `./rankedCompetitors?competition=${compId}`,
-          "rankings"
-        ),
+        fetchCompetitionInfo("./trending", "trending"),
       ]).then((resolvedData) => {
         setLoading(false);
         let newCompInfo = {};
