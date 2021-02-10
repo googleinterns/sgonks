@@ -154,7 +154,7 @@ public class CompetitionsServlet extends HttpServlet {
    * @return request body
    * @throws IOException
    */
-  private String getInformationFromFrontEnd(HttpServletRequest request) throws IOException {
+  public static String getInformationFromFrontEnd(HttpServletRequest request) throws IOException {
     StringBuilder buffer = new StringBuilder();
     BufferedReader reader = request.getReader();
     String line;

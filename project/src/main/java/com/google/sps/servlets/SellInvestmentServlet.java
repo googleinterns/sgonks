@@ -44,7 +44,7 @@ public class SellInvestmentServlet extends HttpServlet {
     long userID = -1;
     long compID = -1;
 
-    String frontEndInfo = getInformationFromFrontEnd(request);
+    String frontEndInfo = CompetitionsServlet.getInformationFromFrontEnd(request);
 
     /**
      * This part of code need to received a json obj from the front end to work
@@ -53,7 +53,6 @@ public class SellInvestmentServlet extends HttpServlet {
      //get specific information from json object
      JSONObject jsonObj = new JSONObject(frontEndInfo);
      investmentID = jsonObj.getLong("investmentID");
-     priceSold = jsonObj.getLong("priceSold");
      } catch (JSONException e) {
      e.printStackTrace();
      }
@@ -69,19 +68,21 @@ public class SellInvestmentServlet extends HttpServlet {
         ResultSet rs = statement.executeQuery();
         while (rs.next()) {
           userID = rs.getLong(1);
-          compID = rs.getLong(1);
+          compID = rs.getLong(2);
         }
       }
 
       //the investment doesn't exist in the database
       if (userID == -1) {
-        LOGGER.log(Level.WARNING, "This investments doesn't exist");
+        LOGGER.log(Level.WARNING,
+            "This investment id: " + investmentID + " doesn't exist in the database.\n"
+                + "Data received from front end: " + frontEndInfo);
         return;
       }
 
       //add today as the sell date to the investment
       String updateSellDateStmt = String.format(
-          "UPDATE investments\nSET sell_date=DATE '%tF'\nWHERE id=%d;",
+          "UPDATE investments SET sell_date=DATE '%tF' WHERE id=%d;",
           today, investmentID);
       try (PreparedStatement statement = conn.prepareStatement(updateSellDateStmt)) {
         statement.execute();
@@ -89,7 +90,7 @@ public class SellInvestmentServlet extends HttpServlet {
 
       //update user's amount available
       String updateStmt = String.format(
-          "UPDATE participants\nSET amt_available = amt_available + %d\nWHERE user=%d\nAND competition=%d;",
+          "UPDATE participants SET amt_available = amt_available + %d WHERE user=%d AND competition=%d;",
           priceSold, userID, compID);
       try (PreparedStatement statement = conn.prepareStatement(updateStmt)) {
         statement.execute();
@@ -100,24 +101,6 @@ public class SellInvestmentServlet extends HttpServlet {
       response.setStatus(500);
       response.getWriter().write("Unable to sold the given investment.");
     }
-  }
-
-  /**
-   * Return the body information of the given request.
-   *
-   * @param request -- HTTP Servlet request
-   * @return request body
-   * @throws IOException
-   */
-  private String getInformationFromFrontEnd(HttpServletRequest request) throws IOException {
-    StringBuilder buffer = new StringBuilder();
-    BufferedReader reader = request.getReader();
-    String line;
-    while ((line = reader.readLine()) != null) {
-      buffer.append(line);
-      buffer.append(System.lineSeparator());
-    }
-    return buffer.toString();
   }
 }
 
