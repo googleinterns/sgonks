@@ -50,7 +50,7 @@ const MySGonks = (props) => {
       while (date <= currentDate) {
         if (date < firstDateWithData || date > lastDateWithData) {
           row = data[rowCount];
-          row.push(0);
+          row.push(null);
           data[rowCount] = row;
         } else {
           row = data[rowCount];
