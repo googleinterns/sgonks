@@ -22,9 +22,11 @@ import com.google.common.collect.ImmutableList;
 @AutoValue
 public abstract class Investment {
   public static Investment create(
-    String searchItem, long dateInvestedMilliSeconds, long dateSoldMilliSeconds, int amtInvested, int currentValue, ImmutableList<Long> dataPoints) {
-    return new AutoValue_Investment(searchItem, dateInvestedMilliSeconds, dateSoldMilliSeconds, amtInvested, currentValue, dataPoints);
+    Long id, String searchItem, long dateInvestedMilliSeconds, long dateSoldMilliSeconds, int amtInvested, int currentValue, ImmutableList<Long> dataPoints) {
+    return new AutoValue_Investment(id, searchItem, dateInvestedMilliSeconds, dateSoldMilliSeconds, amtInvested, currentValue, dataPoints);
   }
+  /** The id of the investment in investments table */
+  public abstract long id();
   /** The search query that is invested */
   public abstract String searchItem();
   /** The date that this investment is made stored in a millisecond type*/

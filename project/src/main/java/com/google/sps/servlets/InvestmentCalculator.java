@@ -37,6 +37,15 @@ import java.util.TimeZone;
 
 import com.google.common.collect.ImmutableList;
 
+import com.google.cloud.pubsub.v1.Publisher;
+import com.google.pubsub.v1.ProjectTopicName;
+import com.google.pubsub.v1.PubsubMessage;
+import com.google.protobuf.ByteString;
+import java.util.HashMap;
+import java.nio.charset.StandardCharsets;
+
+import java.util.concurrent.*;
+
 
 public class InvestmentCalculator {
 
@@ -79,7 +88,7 @@ public class InvestmentCalculator {
             int amtInvested;
             while (rs.next()) {
                 googleSearch = rs.getString(1);
-                investDate = rs.getDate(2).getTime();
+                investDate = convertDateToEpochLong(rs.getDate(2));
                 sellDateOrNull = rs.getDate(3);
                 if (sellDateOrNull == null) {
                     sellDate = 0;
@@ -159,6 +168,10 @@ public class InvestmentCalculator {
     public ImmutableList<Long> getInvestmentDataIfExists(String googleSearch) {
         Datastore datastore = DatastoreOptions.getDefaultInstance().getService();
         Long currentDate = getLatestUpdatedDateForSearch(googleSearch);
+        if (currentDate == null) {
+            // this search hasn't got any data yet, return early
+            return ImmutableList.of();
+        }
     
         Query<Entity> query = Query.newEntityQueryBuilder()
           .setKind("TrendsData")
@@ -180,8 +193,46 @@ public class InvestmentCalculator {
             }
             return ImmutableList.copyOf(values);
         }
-        // no data was found
+        // no data was found for some reason
         return ImmutableList.of(); //return empty array
+    }
+
+    public ImmutableList<Long> createAndFetchInvestmentData(String googleSearch, ImmutableList<Long> data) 
+        throws IOException {
+        Gson gson = new Gson();
+        String date = oneWeekBefore(getLatestDate()).toString();
+
+        HashMap<String, String> arguments = new HashMap<>();
+        arguments.put("search", googleSearch);
+        arguments.put("date", date);
+
+        ByteString byteStr = ByteString.copyFrom(gson.toJson(arguments), StandardCharsets.UTF_8);
+        PubsubMessage pubsubApiMessage = PubsubMessage.newBuilder().setData(byteStr).build();
+        Publisher publisher = Publisher.newBuilder(
+            ProjectTopicName.of("google.com:sgonks-step272", "trendData")).build();
+        
+        try {
+            // Attempt to publish the message
+            publisher.publish(pubsubApiMessage).get();
+            // listen for data to be added to db
+            data = listenForDataOrTimeout(data, googleSearch);
+        } catch (InterruptedException | ExecutionException e) {
+            LOGGER.log(Level.SEVERE, "Error publishing Pub/Sub message: " + e.getMessage(), e);
+        }
+        return data;
+    }
+
+    /** 
+     * Check for data in datastore every 0.1 seconds until data exists or 15 seconds have elapsed
+     * Run this instead of waiting on cloud function return due to slight delay in datastore
+     */
+    private ImmutableList<Long> listenForDataOrTimeout(ImmutableList<Long> data, String googleSearch) throws InterruptedException {
+        long startTime = System.currentTimeMillis(); //fetch starting time
+        while (data.isEmpty() && (System.currentTimeMillis() - startTime) < 15000) {
+            data = getInvestmentDataIfExists(googleSearch);
+            TimeUnit.MILLISECONDS.sleep(100);
+        }
+        return data;
     }
 
     public Long getLatestUpdatedDateForSearch(String googleSearch) {
@@ -220,11 +271,11 @@ public class InvestmentCalculator {
     public long convertDateToEpochLong(Date d) {
         Calendar c = Calendar.getInstance(TimeZone.getTimeZone("GMT"));
         c.setTime(d);
-        c.set(Calendar.HOUR_OF_DAY, 0);
+        c.set(Calendar.HOUR_OF_DAY, 24);
         c.set(Calendar.MINUTE, 0);
         c.set(Calendar.SECOND, 0);
         c.set(Calendar.MILLISECOND, 0);
-        long unixTime = c.getTimeInMillis() - ONE_DAY_MILLISECONDS;
+        long unixTime = c.getTimeInMillis();
         return unixTime;
     }
   

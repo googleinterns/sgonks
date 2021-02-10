@@ -103,7 +103,10 @@ def backfill_missing_data_as_necessary(daily_data, entity):
     for date in required_dates:
         # convert date to string for datastore indexing purposes
         date_str = str(date)
-        if date_str in daily_data:
+        # NOTE : Pytrends fails in one of two ways: Mostly it returns blank data, in which case the date_str
+        # will not be present in the dataframe. But sometimes it returns a stream of 0s. Since it is near impossible
+        # to get 24 0 points in a row for legitimate reasons, we here treat any daily datapoint of 0 as missing data.
+        if date_str in daily_data and daily_data[date_str] != 0:
             # we have successfully retrieved data for this date
             continue
         elif hasattr(entity, date_str):
