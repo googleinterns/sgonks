@@ -13,7 +13,7 @@ export const signInWithGoogle = async () => {
 
   let idToken = await auth.currentUser.getIdToken(true);
 
-  // sent the idToken POST function to verify the user.
+  // sent the idToken POST function to verify the user
   try {
     await fetch("/authentication", {
       method: "POST",
