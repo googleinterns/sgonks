@@ -8,7 +8,7 @@ const MySGonks = (props) => {
   const unsoldInvestments = !props.investments
     ? undefined
     : props.investments.filter(
-        (investment) => investment.dateSoldMilliSeconds == 0
+        (investment) => investment.dateSoldMilliSeconds === 0
       );
 
   return (
