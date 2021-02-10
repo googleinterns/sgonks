@@ -23,7 +23,8 @@ const Marketplace = (props) => {
     fetch(`./contextData?search_term=${searchEntry}`)
       .then((response) => response.json())
       .then((data) => {
-        console.log(data);
+        const marshalledData = data.map((datapoint) => datapoint / 24);
+        console.log(marshalledData);
       });
   };
 
