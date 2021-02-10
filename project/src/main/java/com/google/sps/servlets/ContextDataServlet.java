@@ -28,15 +28,6 @@ import javax.servlet.http.HttpServletResponse;
 
 import com.google.common.collect.ImmutableList;
 
-import com.google.cloud.pubsub.v1.Publisher;
-import com.google.pubsub.v1.ProjectTopicName;
-import com.google.pubsub.v1.PubsubMessage;
-import com.google.protobuf.ByteString;
-import java.util.HashMap;
-import java.nio.charset.StandardCharsets;
-
-import java.util.concurrent.*;
-
 /**
  * Return the last 7 days of data to frontend for a given search query
  */
@@ -52,25 +43,7 @@ public class ContextDataServlet extends HttpServlet {
 
         ImmutableList<Long> data = calc.getInvestmentDataIfExists(googleSearch);
         if (data.isEmpty()) {
-            String date = calc.oneWeekBefore(calc.getLatestDate()).toString();
-
-            HashMap<String, String> arguments = new HashMap<>();
-            arguments.put("search", googleSearch);
-            arguments.put("date", date);
-
-            ByteString byteStr = ByteString.copyFrom(gson.toJson(arguments), StandardCharsets.UTF_8);
-            PubsubMessage pubsubApiMessage = PubsubMessage.newBuilder().setData(byteStr).build();
-            Publisher publisher = Publisher.newBuilder(
-                ProjectTopicName.of("google.com:sgonks-step272", "trendData")).build();
-            
-            try {
-                // Attempt to publish the message
-                publisher.publish(pubsubApiMessage).get();
-                // listen for data to be added to db
-                data = listenForDataOrTimeout(calc, data, googleSearch);
-            } catch (InterruptedException | ExecutionException e) {
-                LOGGER.log(Level.SEVERE, "Error publishing Pub/Sub message: " + e.getMessage(), e);
-            }
+            data = calc.createAndFetchInvestmentData(googleSearch, data);
         }
 
         if (data.isEmpty()) {
@@ -83,18 +56,5 @@ public class ContextDataServlet extends HttpServlet {
             response.setContentType("application/json");
             response.getWriter().println(gson.toJson(data));
         }
-    }
-
-    /** 
-     * Check for data in datastore every 0.1 seconds until data exists or 15 seconds have elapsed
-     * Run this instead of waiting on cloud function return due to slight delay in datastore
-     */
-    private ImmutableList<Long> listenForDataOrTimeout(InvestmentCalculator calc, ImmutableList<Long> data, String googleSearch) throws InterruptedException {
-        long startTime = System.currentTimeMillis(); //fetch starting time
-        while (data.isEmpty() && (System.currentTimeMillis() - startTime) < 15000) {
-            data = calc.getInvestmentDataIfExists(googleSearch);
-            TimeUnit.MILLISECONDS.sleep(100);
-        }
-        return data;
     }
 }
