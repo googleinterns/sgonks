@@ -3,6 +3,7 @@ import classes from "./MySGonks.module.css";
 import Block from "../../components/UI/Block/Block";
 import LinkButton from "../../components/UI/LinkButton/LinkButton";
 import LongSGonksList from "../../components/SGonksLists/LongSGonksList/LongSGonksList";
+import ChartCard from "../../components/ChartCard/ChartCard";
 
 const MySGonks = (props) => {
   const unsoldInvestments = !props.investments
@@ -11,10 +12,78 @@ const MySGonks = (props) => {
         (investment) => investment.dateSoldMilliSeconds === 0
       );
 
+  const ONE_WEEK_MILLISECONDS = 7 * 24 * 60 * 60 * 1000;
+  const ONE_DAY_MILLISECONDS = 24 * 60 * 60 * 1000;
+
+  const getEarliestDate = (investments) => {
+    var currentEarliest = Infinity;
+    for (var i = 0; i < investments.length; i++) {
+      currentEarliest = Math.min(currentEarliest, investments[i].dateInvestedMilliSeconds);
+    }
+    return currentEarliest - ONE_WEEK_MILLISECONDS;
+  }
+
+  const getTitleChartRow = (investments) => {
+    var titleRow = ['x'];
+    for (var i = 0; i < investments.length; i++) {
+      var search = investments[i].searchItem;
+      titleRow.push(search);
+    }
+    return titleRow;
+  }
+
+  const formatChartData = () => {
+    const investments = props.investments;
+    console.log(investments);
+    var data = [getTitleChartRow(investments)];
+    const earliestDate = getEarliestDate(investments);
+    const currentDate = Date.now();
+    // add every required date point to chart
+    var i = 0; // start at second row 
+    var date = earliestDate;
+    while (date <= currentDate) {
+      var row = [i];
+      data.push(row);
+      date += ONE_DAY_MILLISECONDS;
+      i++;
+    }
+    // add each investment's datapoints to correct chart indices
+    for (i = 0; i < investments.length; i++) {
+      var firstDateWithData = investments[i].dateInvestedMilliSeconds - ONE_WEEK_MILLISECONDS;
+      var lastDateWithData = investments[i].dateSoldMilliseconds;
+      var rowCount = 1; // start at second row
+      var dataCount = 0;
+      date = earliestDate;
+      while (date <= currentDate) {
+        if (date < firstDateWithData || date > lastDateWithData) {
+          row = data[rowCount];
+          row.push(0);
+          data[rowCount] = row;
+        } else {
+          row = data[rowCount];
+          row.push(investments[i].dataPoints[dataCount]);
+          data[rowCount] = row;
+          dataCount++;
+        }
+        date += ONE_DAY_MILLISECONDS;
+        rowCount++;
+      }
+    }
+    return data;
+  }
+
+  const chartsData = {
+    haxis: "Time",
+    vaxis: "Investment Value",
+    data: formatChartData(),
+  };
+
   return (
     <div className={classes.MySGonksContainer}>
       <div className={classes.ChartAndInfoContainer}>
-        <Block className={classes.ChartContainer}>chart</Block>
+        <Block className={classes.ChartContainer}>
+          <ChartCard chartInfo={chartsData}></ChartCard>
+        </Block>
         <div className={classes.InfoContainer}>
           <Block className={classes.InfoBlock}>
             <h3>Firstname Lastname</h3>
