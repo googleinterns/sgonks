@@ -90,7 +90,7 @@ const MySGonks = (props) => {
             <div className={classes.MonetaryInfo}>
               <p>
                 <span>Initial worth:</span>
-                <span className={classes.TrendBucks}>t$???</span>
+                <span className={classes.TrendBucks}>t$500</span>
               </p>
               <p>
                 <span>Net worth:</span>
