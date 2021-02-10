@@ -8,16 +8,23 @@ import Button from "../../components/UI/Button/Button";
 const Marketplace = (props) => {
   const [searchEntry, setSearchEntry] = useState("");
   const [purchaseAmount, setPurchaseAmount] = useState(0);
+  const [loadingChart, setLoadingChart] = useState(false);
 
   const onSearchChange = (e) => {
-    console.log(e.target.value);
+    setSearchEntry(e.target.value);
   };
+
   const onSearchEntered = () => {
     if (searchEntry.trim() === "") {
       console.log("empty");
       return;
     }
-    console.log("called");
+    setLoadingChart(true);
+    fetch(`./contextData?search_term=${searchEntry}`)
+      .then((response) => response.json())
+      .then((data) => {
+        console.log(data);
+      });
   };
 
   return (
