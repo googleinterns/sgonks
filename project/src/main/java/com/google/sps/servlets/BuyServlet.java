@@ -34,6 +34,10 @@ import java.util.Date;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
+/**
+ * servlet for buying a new investment
+ * returns an Investment object representing the just purchased investment
+ */
 @WebServlet("/buy")
 public class BuyServlet extends HttpServlet {
 
