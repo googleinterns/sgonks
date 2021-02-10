@@ -16,6 +16,11 @@ const MySGonks = (props) => {
         (investment) => investment.dateSoldMilliSeconds === 0
       );
 
+  const getUsername = () => {
+    const rank = props.generalInfo.rank - 1
+    return props.rankings[rank].name
+  }
+
   const getEarliestDate = (investments) => {
     var currentEarliest = Infinity;
     for (var i = 0; i < investments.length; i++) {
@@ -85,6 +90,8 @@ const MySGonks = (props) => {
     data: formatChartData(),
   };
 
+  
+
   return (
     <div className={classes.MySGonksContainer}>
       <div className={classes.ChartAndInfoContainer}>
@@ -93,7 +100,7 @@ const MySGonks = (props) => {
         </Block>
         <div className={classes.InfoContainer}>
           <Block className={classes.InfoBlock}>
-            <h3>Firstname Lastname</h3>
+            <h3>{getUsername()}</h3>
             <div className={classes.MonetaryInfo}>
               <p>
                 <span>Initial worth:</span>
