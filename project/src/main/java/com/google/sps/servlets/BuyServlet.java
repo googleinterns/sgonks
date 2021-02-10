@@ -112,7 +112,7 @@ public class BuyServlet extends HttpServlet {
             investmentStmt.execute();
             ResultSet rs = investmentStmt.getGeneratedKeys();
             long id;
-            while (rs.next()) {
+            if (rs.next()) {
                 id = rs.getLong(1);
                 LOGGER.log(Level.INFO, "Investment " + id + " added to database.");
                 updateAmountAvailable(conn, user, competition, amtInvested);
