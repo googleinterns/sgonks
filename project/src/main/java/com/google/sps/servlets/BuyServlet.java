@@ -104,11 +104,26 @@ public class BuyServlet extends HttpServlet {
                 id = rs.getInt(1);
                 LOGGER.log(Level.INFO, "Investment " + id + " added to database.");
                 // TODO ADD ID WHEN ID CHANGE MERGED
+                updateAmountAvailable(conn, user, competition, amtInvested);
                 Investment investment = Investment.create(searchQuery, currentDateSeconds * 1000,
                     0L, amtInvested, amtInvested, data);
                 return investment;
             }
             return null;
+        }
+    }
+
+    /**
+     * Update the amount the user has available in the database
+     */
+    private void updateAmountAvailable(Connection conn, long user, long competition, int amtInvested) 
+        throws SQLException {
+        String stmt = "UPDATE participants SET amt_available=amt_available - " + amtInvested 
+         + ", net_worth=net_worth + " + amtInvested 
+         + " WHERE user=" + user + " AND competition=" + competition + ";";
+        try (PreparedStatement updateStmt = conn.prepareStatement(stmt);) {
+            // Execute the statement
+            updateStmt.execute();
         }
     }
 }
