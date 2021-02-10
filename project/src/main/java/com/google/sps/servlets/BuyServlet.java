@@ -23,6 +23,7 @@ import com.google.gson.Gson;
 import com.google.sps.data.*;  
 
 import java.sql.PreparedStatement;
+import java.sql.Statement;
 import java.sql.ResultSet;
 import java.sql.Connection;
 import java.sql.SQLException;
@@ -92,16 +93,13 @@ public class BuyServlet extends HttpServlet {
             + "invest_date, sell_date, amt_invested) VALUES (%d, %d, '%s', DATE '%tF', NULL, %d);",
             user, competition, searchQuery, currentDate, amtInvested);
 
-        try (PreparedStatement investmentStmt = conn.prepareStatement(stmt);) {
+        try (PreparedStatement investmentStmt = conn.prepareStatement(stmt, Statement.RETURN_GENERATED_KEYS);) {
             // Execute the statement
             investmentStmt.execute();
-        }
-        String getId = "SELECT LAST_INSERT_ID();";
-        try (PreparedStatement idStmt = conn.prepareStatement(getId);) {
-            ResultSet rs = idStmt.executeQuery();
+            ResultSet rs = investmentStmt.getGeneratedKeys();
             long id;
             while (rs.next()) {
-                id = rs.getInt(1);
+                id = rs.getLong(1);
                 LOGGER.log(Level.INFO, "Investment " + id + " added to database.");
                 updateAmountAvailable(conn, user, competition, amtInvested);
                 Investment investment = Investment.create(id, searchQuery, currentDateSeconds * 1000,
