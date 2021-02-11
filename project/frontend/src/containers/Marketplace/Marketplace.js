@@ -4,11 +4,13 @@ import Block from "../../components/UI/Block/Block";
 import TrendingSearches from "../../components/TrendingSearches/TrendingSearches";
 import RecentBuys from "../../components/RecentBuys/RecentBuysList";
 import Button from "../../components/UI/Button/Button";
+import ChartCard from "../../components/ChartCard/ChartCard";
 
 const Marketplace = (props) => {
   const [searchEntry, setSearchEntry] = useState("");
   const [purchaseAmount, setPurchaseAmount] = useState(0);
-  const [loadingChart, setLoadingChart] = useState(false);
+  const [loadingData, setLoadingData] = useState(false);
+  const [chartData, setChartData] = useState();
 
   const onSearchChange = (e) => {
     setSearchEntry(e.target.value);
@@ -19,14 +21,43 @@ const Marketplace = (props) => {
       console.log("empty");
       return;
     }
-    setLoadingChart(true);
+    setLoadingData(true);
     fetch(`./contextData?search_term=${searchEntry}`)
       .then((response) => response.json())
       .then((data) => {
-        const marshalledData = data.map((datapoint) => datapoint / 24);
-        console.log(marshalledData);
+        const averagedData = data.map((datapoint) => datapoint / 24);
+        setChartData(averagedData);
+        setLoadingData(false);
       });
   };
+
+  const formatChartData = () => {
+    const data = [];
+    data.push(["x", "Popularity"]);
+    for (let i = 0; i < chartData.length; i++) {
+      data.push([i, chartData[i]]);
+    }
+    return data;
+  };
+
+  const chartsData = {
+    haxis: "Time",
+    vaxis: "Net Worth",
+    data: [
+      ["x", "ctx"],
+      [0, 84],
+      [1, 14],
+      [2, 55],
+      [3, 32],
+      ["4", 51],
+    ],
+  };
+
+  const chartSpace = loadingData ? (
+    <div>Loading</div>
+  ) : (
+    <ChartCard chartInfo={chartsData}></ChartCard>
+  );
 
   return (
     <div className={classes.MarketplaceContainer}>
@@ -41,7 +72,7 @@ const Marketplace = (props) => {
             Search
           </Button>
         </div>
-        <Block className={classes.ChartContainer}>chart here</Block>
+        <Block className={classes.ChartContainer}>{chartSpace}</Block>
         <div className={classes.PurchaseSection}>
           <h2>"search query"</h2>
           <div className={classes.BuyInfo}>
