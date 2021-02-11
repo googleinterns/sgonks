@@ -10,6 +10,10 @@ import Rank from "../../components/Rank/Rank";
 import ChartCard from "../../components/ChartCard/ChartCard";
 
 const Dashboard = (props) => {
+  const ONE_WEEK_MILLISECONDS = 7 * 24 * 60 * 60 * 1000;
+  const ONE_DAY_MILLISECONDS = 24 * 60 * 60 * 1000;
+  const INITIAL_WORTH = 500;
+
   const toDayHourMinute = (totalTime) => {
     let millisInDay = 24 * 60 * 60 * 1000,
       millisInHour = 60 * 60 * 1000,
@@ -42,17 +46,78 @@ const Dashboard = (props) => {
     return formatDHM(toDayHourMinute(remainingTime));
   };
 
-  const placeholderChartsData = {
-    haxis: "Date",
-    vaxis: "Popularity",
-    data: [
-      ["x", "trend 1", "trend 2", "trend 3"],
-      [0, 1, 2, 90],
-      [1, 0, 6, 80],
-      [2, 34, 23, 23],
-      [3, 22, 43, 12],
-      [4, 34, 56, 91],
-    ],
+  const getUsername = () => {
+    const rank = props.generalInfo.rank - 1
+    return props.rankings[rank].name
+  }
+
+  const getEarliestDate = (investments) => {
+    var currentEarliest = Infinity;
+    for (var i = 0; i < investments.length; i++) {
+      currentEarliest = Math.min(currentEarliest, investments[i].dateInvestedMilliSeconds);
+    }
+    return currentEarliest - ONE_WEEK_MILLISECONDS;
+  }
+
+  const getTitleChartRow = (investments) => {
+    var titleRow = ['x'];
+    for (var i = 0; i < investments.length; i++) {
+      var search = investments[i].searchItem;
+      titleRow.push(search);
+    }
+    return titleRow;
+  }
+
+  const populateInvestmentData = (investments, data, earliestDate, currentDate) => {
+    // add each investment's datapoints to correct chart indices
+    for (var i = 0; i < investments.length; i++) {
+      var firstDateWithData = investments[i].dateInvestedMilliSeconds - ONE_WEEK_MILLISECONDS;
+      var lastDateWithData = investments[i].dateSoldMilliseconds;
+      var rowCount = 1; // start at second row
+      var dataCount = 0;
+      var date = earliestDate;
+      var row;
+      while (date <= currentDate) {
+        if (date < firstDateWithData || date > lastDateWithData) {
+          row = data[rowCount];
+          row.push(null);
+          data[rowCount] = row;
+        } else {
+          row = data[rowCount];
+          row.push(investments[i].dataPoints[dataCount]);
+          data[rowCount] = row;
+          dataCount++;
+        }
+        date += ONE_DAY_MILLISECONDS;
+        rowCount++;
+      }
+    }
+    return data;
+  }
+
+  const formatChartData = () => {
+    const investments = props.investments;
+    console.log(investments);
+    var data = [getTitleChartRow(investments)];
+    const earliestDate = getEarliestDate(investments);
+    const currentDate = Date.now();
+    // add every required date point to chart
+    var i = 0; // start at second row 
+    var date = earliestDate;
+    while (date <= currentDate) {
+      var row = [i];
+      data.push(row);
+      date += ONE_DAY_MILLISECONDS;
+      i++;
+    }
+    populateInvestmentData(investments, data, earliestDate, currentDate);
+    return data;
+  }
+
+  const chartsData = {
+    haxis: "Time",
+    vaxis: "Investment Value",
+    data: formatChartData(),
   };
 
   return (
@@ -60,7 +125,7 @@ const Dashboard = (props) => {
       <div className={classes.Column}>
         <div className={classes.WelcomeMessage}>
           <h1 className={classes.WelcomeMessage}>
-            Welcome back, <span>Firstname</span>!
+            Welcome back, <span>{getUsername()}</span>!
           </h1>
         </div>
         <Block className={classes.CompInfo}>
@@ -81,7 +146,7 @@ const Dashboard = (props) => {
           </div>
         </Block>
         <Block className={classes.ChartContainer}>
-          <ChartCard chartInfo={placeholderChartsData}></ChartCard>
+          <ChartCard chartInfo={chartsData}></ChartCard>
         </Block>
         <LinkButton inverted="true">View my sGonks</LinkButton>
       </div>
