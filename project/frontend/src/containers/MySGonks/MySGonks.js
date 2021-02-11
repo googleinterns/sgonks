@@ -38,7 +38,6 @@ const MySGonks = (props) => {
     return titleRow;
   }
 
-  // add each investment's datapoints to correct chart indices
   const populateInvestmentData = (investments, data, earliestDate, currentDate) => {
     // looping through each investment owned by the user (both sold and unsold)
     for (var i = 0; i < investments.length; i++) {
@@ -80,24 +79,28 @@ const MySGonks = (props) => {
 
   const formatChartData = () => {
     const investments = props.investments;
-    console.log(investments);
-    var data = [getTitleChartRow(investments)];
-    const earliestDate = getEarliestDate(investments);
-    const currentDate = Date.now();
-    // add every required date point to chart
-    var i = 1; // start at second row 
-    var date = earliestDate;
-    while (date <= currentDate) {
-      var row = [i];
-      data.push(row);
-      date += ONE_DAY_MILLISECONDS;
-      i++;
+    if (investments.length > 0) {
+      var data = [getTitleChartRow(investments)];
+      const earliestDate = getEarliestDate(investments);
+      const currentDate = Date.now();
+      // add every required date point to chart
+      var i = 1; // start at second row 
+      var date = earliestDate;
+      while (date <= currentDate) {
+        var row = [i];
+        data.push(row);
+        date += ONE_DAY_MILLISECONDS;
+        i++;
+      }
+      populateInvestmentData(investments, data, earliestDate, currentDate);
+      return data;
+    } else {
+      return null; //empty array will result in blank chart
     }
-    populateInvestmentData(investments, data, earliestDate, currentDate);
-    return data;
   }
 
   const chartsData = {
+    dataType: "investment",
     haxis: "Time",
     vaxis: "Investment Value",
     data: formatChartData(),
