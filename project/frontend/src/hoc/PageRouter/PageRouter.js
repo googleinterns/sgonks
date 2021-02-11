@@ -54,15 +54,15 @@ const PageRouter = (props) => {
           />
         )}
       />
-      <Route 
-        path="/competition" 
+      <Route
+        path="/competition"
         render={() => (
-          <Competition 
+          <Competition
             generalInfo={props.competitionInfo.generalInfo}
             networths={props.competitionInfo.networths}
             rankings={props.competitionInfo.rankings}
           />
-        )} 
+        )}
       />
       <Route
         path="/mysgonks"
@@ -81,6 +81,7 @@ const PageRouter = (props) => {
             recentBuys={props.competitionInfo.recentBuys}
             trendingSearches={props.competitionInfo.trending}
             investments={props.competitionInfo.investments}
+            compId={props.compId}
           />
         )}
       />

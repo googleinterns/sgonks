@@ -87,10 +87,31 @@ const Marketplace = (props) => {
 
   const onConfirmPurchase = () => {
     console.log(purchaseAmount);
-    if (purchaseAmount <= 1 || purchaseAmount === "") {
-      console.log("true");
+    // if ()
+
+    if (
+      purchaseAmount < 1 ||
+      purchaseAmount === "" ||
+      purchaseAmount > props.generalInfo.amountAvailable
+    ) {
+      alert.show("Invalid purchase amount", { type: "error" });
+    } else {
+      console.log("success");
+      //TODO update userId with the one in context once auth stuff is merged
+      console.log(
+        `./buy?user=${1}&competition=${
+          props.compId
+        }&search=${searchEntry}&amount=${purchaseAmount}`
+      );
+      fetch(
+        `./buy?user=${1}&competition=${
+          props.compId
+        }&search=${searchEntry}&amount=${purchaseAmount}`
+      ).then(() => {
+        alert.show("Purchase successful", { type: "success" });
+        // window.location.reload();
+      });
     }
-    alert.show("Oh look, an alert!");
   };
 
   return (
@@ -118,7 +139,7 @@ const Marketplace = (props) => {
           </div>
           <div className={classes.BuyInfo}>
             Currently available:
-            <span>t$1234</span>
+            <span>t${props.generalInfo.amountAvailable}</span>
           </div>
           <Button onClick={onConfirmPurchase}>Confirm Purchase</Button>
         </div>
