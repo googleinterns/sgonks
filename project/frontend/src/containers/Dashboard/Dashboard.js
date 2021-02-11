@@ -12,15 +12,13 @@ import ChartCard from "../../components/ChartCard/ChartCard";
 const Dashboard = (props) => {
   const ONE_WEEK_MILLISECONDS = 7 * 24 * 60 * 60 * 1000;
   const ONE_DAY_MILLISECONDS = 24 * 60 * 60 * 1000;
-  const INITIAL_WORTH = 500;
+  const ONE_HOUR_MILLISECONDS = 60 * 60 * 1000;
 
   const toDayHourMinute = (totalTime) => {
-    let millisInDay = 24 * 60 * 60 * 1000,
-      millisInHour = 60 * 60 * 1000,
-      days = Math.floor(totalTime / millisInDay),
-      hours = Math.floor((totalTime - days * millisInDay) / millisInHour),
+     let days = Math.floor(totalTime / ONE_DAY_MILLISECONDS),
+      hours = Math.floor((totalTime - days * ONE_DAY_MILLISECONDS) / ONE_HOUR_MILLISECONDS),
       minutes = Math.round(
-        (totalTime - days * millisInDay - hours * millisInHour) / 60000
+        (totalTime - days * ONE_DAY_MILLISECONDS - hours * ONE_HOUR_MILLISECONDS) / 60000
       ),
       pad = function (n) {
         return n < 10 ? "0" + n : n;
