@@ -18,21 +18,15 @@ const Marketplace = (props) => {
 
   const onSearchEntered = () => {
     if (searchEntry.trim() === "") {
-      console.log("empty");
       return;
     }
     setLoadingData(true);
-    console.log("setting loadingData TRUE");
     fetchContextData(searchEntry)
       .then((data) => {
-        console.log("onSearchEntered: data: ");
-
-        console.log(data);
         setChartData(data);
       })
       .then(() => {
         setLoadingData(false);
-        console.log("setting loadingData FALSE");
       });
   };
 
@@ -47,9 +41,6 @@ const Marketplace = (props) => {
         console.log(e);
         return null;
       });
-
-    console.log("fetchContextData: formattedData: ");
-    console.log(formattedData);
     return formattedData;
   };
 
