@@ -12,7 +12,7 @@ const CreateCompetition = (props) => {
   const [compName, setCompName] = useState("");
   const [startDate, setStartDate] = useState("");
   const [endDate, setEndDate] = useState("");
-  const [dateErrorMessage, setDateErrorMessage] = useState("undefined");
+  const [dateErrorMessage, setDateErrorMessage] = useState("");
   const userid = 1;
 
   function onAddParticipant() {
@@ -138,7 +138,7 @@ const CreateCompetition = (props) => {
           Confirm creation
         </LinkButton>
       </div>
-      {dateErrorMessage !== "undefined" && <p>{dateErrorMessage}</p>}
+      {dateErrorMessage !== "" && <p>{dateErrorMessage}</p>}
     </div>
   );
 };
