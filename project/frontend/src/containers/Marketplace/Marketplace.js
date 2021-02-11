@@ -25,6 +25,8 @@ const Marketplace = (props) => {
     console.log("setting loadingData TRUE");
     fetchContextData(searchEntry)
       .then((data) => {
+        console.log("onSearchEntered: data: ");
+
         console.log(data);
         setChartData(data);
       })
@@ -73,31 +75,6 @@ const Marketplace = (props) => {
       ></ChartCard>
     );
   }
-
-  // if (chartData !== undefined && loadingData === false) {
-  //   formatChartData(chartData);
-  //   chartSpace = (
-  //     <ChartCard
-  //       chartInfo={{
-  //         haxis: "Time",
-  //         vaxis: "Net Worth",
-  //         data: formatChartData(),
-  //       }}
-  //     ></ChartCard>
-  //   );
-  // }
-
-  // const chartSpace = loadingData ? (
-  //   <div>Loading</div>
-  // ) : (
-  //   <ChartCard
-  //     chartInfo={{
-  //       haxis: "Time",
-  //       vaxis: "Net Worth",
-  //       data: formatChartData(),
-  //     }}
-  //   ></ChartCard>
-  // );
 
   return (
     <div className={classes.MarketplaceContainer}>
