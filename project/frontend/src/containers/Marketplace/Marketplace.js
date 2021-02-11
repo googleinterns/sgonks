@@ -16,6 +16,11 @@ const Marketplace = (props) => {
     setSearchEntry(e.target.value);
   };
 
+  const onAmountChange = (e) => {
+    setPurchaseAmount(e.target.value);
+    console.log(e.target.value);
+  };
+
   const onSearchEntered = () => {
     if (searchEntry.trim() === "") {
       return;
@@ -96,7 +101,8 @@ const Marketplace = (props) => {
           <div className={classes.BuyInfo}>
             Amount to purchase:
             <span>
-              t$ <input></input>
+              t$
+              <input type="number" onChange={(e) => onAmountChange(e)}></input>
             </span>
           </div>
           <div className={classes.BuyInfo}>
