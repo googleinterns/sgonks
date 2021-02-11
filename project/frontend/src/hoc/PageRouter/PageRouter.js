@@ -82,7 +82,7 @@ const PageRouter = (props) => {
             trendingSearches={props.competitionInfo.trending}
             investments={props.competitionInfo.investments}
             compId={props.compId}
-            updateGeneralInfo={props.updateGeneralInfo}
+            updateInfo={props.updateInfo}
           />
         )}
       />

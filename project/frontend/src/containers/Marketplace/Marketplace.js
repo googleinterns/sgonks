@@ -117,7 +117,7 @@ const Marketplace = (props) => {
           props.compId
         }&search=${searchEntry}&amount=${purchaseAmount}`
       ).then(() => {
-        props.updateGeneralInfo();
+        props.updateInfo();
         reset();
         alert.show("Purchase successful", { type: "success" });
       });

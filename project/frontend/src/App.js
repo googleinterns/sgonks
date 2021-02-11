@@ -95,10 +95,20 @@ function App() {
     }
   }, [user.id, authStateReceived]);
 
-  const updateGeneralInfo = () => {
+  const updateInfo = () => {
     fetchCompetitionInfo(
       `./competitionInfo?user=${user.id}&competition=${compId}`,
       "generalInfo"
+    ).then((data) => {
+      let newCompInfo = { ...competitionInfo };
+      newCompInfo = { data, ...newCompInfo };
+      console.log("UPDATING");
+      console.log(newCompInfo);
+      setCompetitionInfo(newCompInfo);
+    });
+    fetchCompetitionInfo(
+      `./investments?user=${user.id}&competition=${compId}`,
+      "investments"
     ).then((data) => {
       let newCompInfo = { ...competitionInfo };
       newCompInfo = { data, ...newCompInfo };
@@ -125,7 +135,7 @@ function App() {
               loading={loading}
               competitionInfo={competitionInfo}
               updateCompId={setCompId}
-              updateGeneralInfo={updateGeneralInfo}
+              updateInfo={updateInfo}
             />
           </Layout>
         </AuthContext>
