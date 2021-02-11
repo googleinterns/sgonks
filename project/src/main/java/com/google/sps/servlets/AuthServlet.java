@@ -45,8 +45,6 @@ public class AuthServlet extends HttpServlet {
     try (Connection conn = pool.getConnection()) {
       String email = request.getParameter("email");
       String name = request.getParameter("name");
-      LOGGER.log(Level.WARNING, name);
-      LOGGER.log(Level.WARNING, email);
       User user = getUser(conn, email);
 
       if (user == null) {
@@ -57,8 +55,6 @@ public class AuthServlet extends HttpServlet {
       Gson gson = new Gson();
       response.setContentType("application/json");
       response.getWriter().println(gson.toJson(user));
-      // response.setContentType("text/html;");
-      // response.getWriter().println("<h1>" + user + "</h1>");
     } catch (SQLException ex) {
       LOGGER.log(Level.WARNING, "Error while attempting to find user.", ex);
       response.setStatus(500);
