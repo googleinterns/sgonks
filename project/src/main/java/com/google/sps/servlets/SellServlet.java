@@ -52,18 +52,14 @@ public class SellServlet extends HttpServlet {
           "SELECT user, competition, sell_date, invest_date, amt_invested, google_search FROM investments WHERE id="
               + investmentID
               + ";";
-      long userID, compID, amt_invested;
-      String googleSearch;
-      Date investDate, sellDate;
+      long userID, compID;
+      Date sellDate;
       try (PreparedStatement statement = conn.prepareStatement(findUserIdStmt)) {
         ResultSet rs = statement.executeQuery();
         if (rs.next()) {
           userID = rs.getLong(1);
           compID = rs.getLong(2);
           sellDate = rs.getDate(3);
-          investDate = rs.getDate(4);
-          amt_invested = rs.getLong(5);
-          googleSearch = rs.getString(6);
         } else {
           LOGGER.log(Level.WARNING,
               "Investment id: " + investmentID + "doesn't exist in the database.");
