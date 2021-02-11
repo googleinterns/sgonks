@@ -87,6 +87,13 @@ const Marketplace = (props) => {
     );
   }
 
+  const reset = () => {
+    setPurchaseAmount(0);
+    setQueriedEntry("");
+    setChartData();
+    setSearchEntry("");
+  };
+
   const onConfirmPurchase = () => {
     console.log(purchaseAmount);
     if (!queriedEntry) {
@@ -111,7 +118,7 @@ const Marketplace = (props) => {
         }&search=${searchEntry}&amount=${purchaseAmount}`
       ).then(() => {
         props.updateGeneralInfo();
-        setPurchaseAmount(0);
+        reset();
         alert.show("Purchase successful", { type: "success" });
       });
     }
