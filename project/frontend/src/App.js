@@ -75,14 +75,8 @@ function App() {
           `./investments?user=${user.id}&competition=${compId}`,
           "investments"
         ),
-        fetchCompetitionInfo(
-          "./trending", 
-          "trending"
-        ),
-        fetchCompetitionInfo(
-          `./networths?competition=${compId}`,
-          "networths"
-        ),
+        fetchCompetitionInfo("./trending", "trending"),
+        fetchCompetitionInfo(`./networths?competition=${compId}`, "networths"),
         fetchCompetitionInfo(
           `./rankedCompetitors?competition=${compId}`,
           "rankings"
@@ -101,6 +95,19 @@ function App() {
     }
   }, [user.id, authStateReceived]);
 
+  const updateGeneralInfo = () => {
+    fetchCompetitionInfo(
+      `./competitionInfo?user=${user.id}&competition=${compId}`,
+      "generalInfo"
+    ).then((data) => {
+      let newCompInfo = { ...competitionInfo };
+      newCompInfo = { data, ...newCompInfo };
+      console.log("UPDATING");
+      console.log(newCompInfo);
+      setCompetitionInfo(newCompInfo);
+    });
+  };
+
   return (
     <BrowserRouter>
       <div className="App">
@@ -118,6 +125,7 @@ function App() {
               loading={loading}
               competitionInfo={competitionInfo}
               updateCompId={setCompId}
+              updateGeneralInfo={updateGeneralInfo}
             />
           </Layout>
         </AuthContext>

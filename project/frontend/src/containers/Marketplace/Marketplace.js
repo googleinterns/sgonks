@@ -110,8 +110,8 @@ const Marketplace = (props) => {
           props.compId
         }&search=${searchEntry}&amount=${purchaseAmount}`
       ).then(() => {
+        props.updateGeneralInfo();
         alert.show("Purchase successful", { type: "success" });
-        // window.location.reload();
       });
     }
   };
