@@ -51,6 +51,7 @@ const PageRouter = (props) => {
             recentBuys={props.competitionInfo.recentBuys}
             trendingSearches={props.competitionInfo.trending}
             investments={props.competitionInfo.investments}
+            rankings={props.competitionInfo.rankings}
           />
         )}
       />
@@ -70,6 +71,7 @@ const PageRouter = (props) => {
           <MySGonks
             generalInfo={props.competitionInfo.generalInfo}
             investments={props.competitionInfo.investments}
+            rankings={props.competitionInfo.rankings}
           />
         )}
       />
