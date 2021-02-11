@@ -1,4 +1,6 @@
 import React, { useState } from "react";
+import { useAlert } from "react-alert";
+
 import classes from "./Marketplace.module.css";
 import Block from "../../components/UI/Block/Block";
 import TrendingSearches from "../../components/TrendingSearches/TrendingSearches";
@@ -11,6 +13,8 @@ const Marketplace = (props) => {
   const [purchaseAmount, setPurchaseAmount] = useState(0);
   const [loadingData, setLoadingData] = useState(false);
   const [chartData, setChartData] = useState();
+
+  const alert = useAlert();
 
   const onSearchChange = (e) => {
     setSearchEntry(e.target.value);
@@ -83,6 +87,10 @@ const Marketplace = (props) => {
 
   const onConfirmPurchase = () => {
     console.log(purchaseAmount);
+    if (purchaseAmount <= 1 || purchaseAmount === "") {
+      console.log("true");
+    }
+    alert.show("Oh look, an alert!");
   };
 
   return (
