@@ -136,4 +136,12 @@
   font-size: 3vw;
   font-weight: 600;
   color: rgb(237, 237, 237);
+  margin: auto;
+}
+
+.NoDataMessage {
+  font-size: 2vw;
+  font-weight: 600;
+  color: rgb(116, 116, 116);
+  margin: auto;
 }

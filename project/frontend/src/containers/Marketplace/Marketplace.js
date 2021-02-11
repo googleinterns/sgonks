@@ -67,9 +67,13 @@ const Marketplace = (props) => {
   );
 
   if (loadingData === true) {
-    chartSpace = <div className={classes.SearchPrompt}>Loading...</div>;
+    chartSpace = <p className={classes.SearchPrompt}>Loading...</p>;
   } else if (chartData === null) {
-    chartSpace = <div className={classes.SearchPrompt}>No data</div>;
+    chartSpace = (
+      <p className={classes.NoDataMessage}>
+        No data :( <br /> Try a more popular search term!
+      </p>
+    );
   } else if (chartData !== undefined) {
     chartSpace = (
       <ChartCard
