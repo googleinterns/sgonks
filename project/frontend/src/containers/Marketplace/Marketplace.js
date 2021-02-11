@@ -10,6 +10,7 @@ import ChartCard from "../../components/ChartCard/ChartCard";
 
 const Marketplace = (props) => {
   const [searchEntry, setSearchEntry] = useState("");
+  const [queriedEntry, setQueriedEntry] = useState("");
   const [purchaseAmount, setPurchaseAmount] = useState(0);
   const [loadingData, setLoadingData] = useState(false);
   const [chartData, setChartData] = useState();
@@ -34,6 +35,7 @@ const Marketplace = (props) => {
         setChartData(data);
       })
       .then(() => {
+        setQueriedEntry(searchEntry);
         setLoadingData(false);
       });
   };
@@ -87,9 +89,9 @@ const Marketplace = (props) => {
 
   const onConfirmPurchase = () => {
     console.log(purchaseAmount);
-    // if ()
-
-    if (
+    if (!queriedEntry) {
+      alert.show("Invalid search term", { type: "error" });
+    } else if (
       purchaseAmount < 1 ||
       purchaseAmount === "" ||
       purchaseAmount > props.generalInfo.amountAvailable
