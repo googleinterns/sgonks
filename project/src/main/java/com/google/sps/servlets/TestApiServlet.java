@@ -43,6 +43,5 @@ public class TestApiServlet extends HttpServlet {
     public void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
         LOGGER.info("user accessed protected resource ok");
         response.setStatus(HttpServletResponse.SC_OK);
-        response.getWriter().write("You are authorized");
     }
 }
