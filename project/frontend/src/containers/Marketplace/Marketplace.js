@@ -111,6 +111,7 @@ const Marketplace = (props) => {
         }&search=${searchEntry}&amount=${purchaseAmount}`
       ).then(() => {
         props.updateGeneralInfo();
+        setPurchaseAmount(0);
         alert.show("Purchase successful", { type: "success" });
       });
     }
@@ -131,12 +132,20 @@ const Marketplace = (props) => {
         </div>
         <Block className={classes.ChartContainer}>{chartSpace}</Block>
         <div className={classes.PurchaseSection}>
-          <h2>"search query"</h2>
+          <h2>
+            {queriedEntry == ""
+              ? "Search something..."
+              : '"' + queriedEntry + '"'}
+          </h2>
           <div className={classes.BuyInfo}>
             Amount to purchase:
             <span>
               t$
-              <input type="number" onChange={(e) => onAmountChange(e)}></input>
+              <input
+                type="number"
+                value={purchaseAmount}
+                onChange={(e) => onAmountChange(e)}
+              ></input>
             </span>
           </div>
           <div className={classes.BuyInfo}>
