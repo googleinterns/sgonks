@@ -38,25 +38,7 @@ public class SellServlet extends HttpServlet {
 
   @Override
   public void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException {
-    long investmentID = 1, amt_invested = 100000;
-    Date sellDate = null;
-    Date today = new Date();
-    long userID = -1;
-    long compID = -1;
-
-    String frontEndInfo = CompetitionsServlet.getInformationFromFrontEnd(request);
-
-    /**
-     * This part of code need to received a json obj from the front end to work
-     *
-     try {
-     //get specific information from json object
-     JSONObject jsonObj = new JSONObject(frontEndInfo);
-     investmentID = jsonObj.getLong("investmentID");
-     } catch (JSONException e) {
-     e.printStackTrace();
-     }
-     */
+    long investmentID = -1;    //long investmentID = Long.parseLong(request.getParameter("id"));
 
     DataSource pool = (DataSource) request.getServletContext().getAttribute("db-connection-pool");
     Connection conn = null;
@@ -67,23 +49,34 @@ public class SellServlet extends HttpServlet {
 
       //get the information about the investments to use for updating the data
       String findUserIdStmt =
-          "SELECT user,competition,sell_date,amt_invested FROM investments WHERE id=" + investmentID
+          "SELECT user, competition, sell_date, invest_date, amt_invested, google_search FROM investments WHERE id="
+              + investmentID
               + ";";
+      long userID, compID, amt_invested;
+      String googleSearch;
+      Date investDate, sellDate;
       try (PreparedStatement statement = conn.prepareStatement(findUserIdStmt)) {
         ResultSet rs = statement.executeQuery();
-        while (rs.next()) {
+        if (rs.next()) {
           userID = rs.getLong(1);
           compID = rs.getLong(2);
           sellDate = rs.getDate(3);
-          amt_invested = rs.getLong(4);
+          investDate = rs.getDate(4);
+          amt_invested = rs.getLong(5);
+          googleSearch = rs.getString(6);
+        } else {
+          LOGGER.log(Level.WARNING,
+              "Investment id: " + investmentID + "doesn't exist in the database.");
+          return;
         }
       }
 
-      if (!investmentIsSellable(userID, investmentID, sellDate)) {
+      if (!investmentIsSellable(sellDate)) {
         return;
       }
 
       //add today as the sell date to the investment
+      Date today = new Date();
       String updateSellDateStmt = String.format(
           "UPDATE investments SET sell_date=DATE '%tF' WHERE id=%d;",
           today, investmentID);
@@ -91,23 +84,17 @@ public class SellServlet extends HttpServlet {
         statement.execute();
       }
 
-      //update user's amount available
-      String updateStmt = String.format(
-          "UPDATE participants SET amt_available = amt_available + %d AND net_worth = net_worth + %d WHERE user=%d AND competition=%d",
-          amt_invested,amt_invested, userID, compID);
-      try (PreparedStatement statement = conn.prepareStatement(updateStmt)) {
-        statement.execute();
-      }
+      updateUserAmountAvailable(conn, userID, compID);
 
       conn.commit();
 
     } catch (SQLException ex) {
       // roll back the transaction if the transaction is not completed
-      try{
+      try {
         if (conn != null) {
           conn.rollback();
         }
-      } catch(SQLException e) {
+      } catch (SQLException e) {
         LOGGER.log(Level.WARNING, "Something went wrong cancelling a transaction");
       } finally {
         LOGGER.log(Level.WARNING, "Error while selling the investment.", ex);
@@ -119,24 +106,42 @@ public class SellServlet extends HttpServlet {
 
   /**
    * Check the status of the current investment if it's sellable or not.
-   * @param userID -- id of user that want to sell the investment
-   * @param investmentID -- id of investment that user is willing to sell
+   *
    * @param sellDate -- current investment sell date in the database before selling
-   * @return false -- investment id doesn't exist or this investment has already been sold.
-   *         true -- this investment can be sell by this user.
+   * @return false -- this investment has already been sold. true -- this investment can be sell by
+   * this user.
    */
-  private boolean investmentIsSellable(long userID, long investmentID, Date sellDate) {
-    String errorMessage = "";
-    if (userID == -1) {
-      errorMessage = "This investment id: " + investmentID + " doesn't exist in the database.";
-    } else if (sellDate != null) {
-      errorMessage = "This investment id: " + investmentID + " has already been sold.";
+  private boolean investmentIsSellable(Date sellDate) {
+    if (sellDate != null) {
+      LOGGER.log(Level.WARNING, "This investment has already been sold.");
     }
-    if (!errorMessage.isEmpty()) {
-      LOGGER.log(Level.WARNING, errorMessage);
-    }
+    return sellDate == null;
+  }
 
-    return errorMessage.isEmpty();
+  /**
+   * Calculate the current value of the investment base on the popularity since the investment has
+   * been brought. Update users amount available and net worth after selling this investment.
+   *
+   * @param conn       -- connection to database
+   * @param userID     -- user ID
+   * @param compID     -- competition ID
+   * @throws SQLException
+   */
+  private void updateUserAmountAvailable(Connection conn, long userID, long compID) throws SQLException {
+
+    //calculate value of the investment
+    InvestmentCalculator calculator = new InvestmentCalculator();
+    long investmentValue = calculator
+        .sumInvestmentValues(conn, userID, compID);
+    int netWorth = calculator.calculateNetWorth(conn, userID, compID);
+
+    //update the database
+    String updateStmt = String.format(
+        "UPDATE participants SET amt_available = amt_available + %d, net_worth=%d WHERE user=%d AND competition=%d",
+        investmentValue, netWorth, userID, compID);
+    try (PreparedStatement statement = conn.prepareStatement(updateStmt)) {
+      statement.execute();
+    }
   }
 }
 
