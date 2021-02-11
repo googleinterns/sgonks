@@ -18,7 +18,6 @@ const Marketplace = (props) => {
 
   const onAmountChange = (e) => {
     setPurchaseAmount(e.target.value);
-    console.log(e.target.value);
   };
 
   const onSearchEntered = () => {
@@ -82,6 +81,10 @@ const Marketplace = (props) => {
     );
   }
 
+  const onConfirmPurchase = () => {
+    console.log(purchaseAmount);
+  };
+
   return (
     <div className={classes.MarketplaceContainer}>
       <div className={classes.BuyContainer}>
@@ -109,7 +112,7 @@ const Marketplace = (props) => {
             Currently available:
             <span>t$1234</span>
           </div>
-          <Button>Confirm Purchase</Button>
+          <Button onClick={onConfirmPurchase}>Confirm Purchase</Button>
         </div>
       </div>
       <div className={classes.BuySuggestions}>
