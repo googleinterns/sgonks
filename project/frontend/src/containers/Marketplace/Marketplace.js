@@ -42,6 +42,10 @@ const Marketplace = (props) => {
       .then((data) => {
         const averagedData = data.map((datapoint) => datapoint / 24);
         return formatChartData(averagedData);
+      })
+      .catch((e) => {
+        console.log(e);
+        return null;
       });
 
     console.log("fetchContextData: formattedData: ");
@@ -63,16 +67,16 @@ const Marketplace = (props) => {
   );
 
   if (loadingData === true) {
-    chartSpace = <div> loooading</div>;
-  }
-
-  if (chartData !== undefined) {
+    chartSpace = <div className={classes.SearchPrompt}>Loading...</div>;
+  } else if (chartData === null) {
+    chartSpace = <div className={classes.SearchPrompt}>No data</div>;
+  } else if (chartData !== undefined) {
     chartSpace = (
       <ChartCard
         chartInfo={{
           haxis: "Time",
           vaxis: "Net Worth",
-          data: formatChartData(chartData),
+          data: chartData,
         }}
       ></ChartCard>
     );
@@ -91,9 +95,7 @@ const Marketplace = (props) => {
             Search
           </Button>
         </div>
-        <Block className={classes.ChartContainer}>
-          <div className={classes.ChartContentWrapper}>{chartSpace}</div>
-        </Block>
+        <Block className={classes.ChartContainer}>{chartSpace}</Block>
         <div className={classes.PurchaseSection}>
           <h2>"search query"</h2>
           <div className={classes.BuyInfo}>
