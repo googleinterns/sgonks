@@ -17,18 +17,20 @@ package com.google.sps.servlets;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseAuthException;
 import com.google.firebase.auth.FirebaseToken;
+import com.google.firebase.auth.SessionCookieOptions;
 import com.google.gson.Gson;
 import com.google.sps.data.*;
-
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.concurrent.TimeUnit;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.servlet.annotation.WebServlet;
+import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -68,23 +70,6 @@ public class AuthServlet extends HttpServlet {
 
   @Override
   public void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException {
-    String uid = verifyIDToken(request);
-    //stored the user data in the session
-    request.getSession().setAttribute("uid",uid);
-  }
-
-  @Override
-  public void doDelete(HttpServletRequest request, HttpServletResponse response) throws IOException {
-    request.getSession().setAttribute("uid",null);
-  }
-
-  /**
-   *  Get the ID Token that is passed though request, verify the user and return the decoded uid.
-   * @param request -- request
-   * @return decoded ID Token.
-   * @throws IOException
-   */
-  private String verifyIDToken(HttpServletRequest request) throws IOException{
     //get the client ID Token from the request body
     StringBuilder buffer = new StringBuilder();
     BufferedReader reader = request.getReader();
@@ -93,17 +78,50 @@ public class AuthServlet extends HttpServlet {
       buffer.append(line);
       buffer.append(System.lineSeparator());
     }
-    String body = buffer.toString();
+    String idToken = buffer.toString();
 
-    //decode and verify client ID token
-    FirebaseToken decodedToken = null;
+    long expiresIn = TimeUnit.DAYS.toMillis(5);
+    SessionCookieOptions options = SessionCookieOptions.builder()
+        .setExpiresIn(expiresIn)
+        .build();
+
     try {
-      decodedToken = FirebaseAuth.getInstance().verifyIdToken(body);
-    } catch (FirebaseAuthException e) {
-      e.printStackTrace();
-    }
+      // Create the session cookie. This will also verify the ID token in the process.
+      // The session cookie will have the same claims as the ID token.
+      String sessionCookie = FirebaseAuth.getInstance().createSessionCookie(idToken, options);
+      Cookie firebaseCookie = new Cookie("firebase_session", sessionCookie);
+      response.addCookie(firebaseCookie);
 
-    return decodedToken.getUid();
+      FirebaseToken decodedToken = FirebaseAuth.getInstance().verifyIdToken(idToken);
+      if (decodedToken == null) {
+        response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
+        response.getWriter().write("Invalid token");
+        return;
+      }
+      /*
+      String email = decodedToken.getEmail();
+
+      // get user from db using email
+
+      request.getSession().setAttribute("userID", userID)
+      */
+
+      response.setStatus(HttpServletResponse.SC_OK);
+      response.flushBuffer();
+    } catch (FirebaseAuthException e) {
+      response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
+      response.getWriter().write("Failed to create a session cookie");
+    }
+  }
+
+  @Override
+  public void doDelete(HttpServletRequest request, HttpServletResponse response) throws IOException {
+    request.getSession().setAttribute("userID", null);
+
+    Cookie emptyCookie = new Cookie("firebase_session", null);
+    response.addCookie(emptyCookie);
+    response.setStatus(HttpServletResponse.SC_OK);
+    response.flushBuffer();
   }
 
   private User getUser(Connection conn, String email) throws SQLException {
