@@ -58,7 +58,9 @@ const Marketplace = (props) => {
     return chartData;
   };
 
-  let chartSpace = <div>Search something!</div>;
+  let chartSpace = (
+    <div className={classes.SearchPrompt}>Search something!</div>
+  );
 
   if (loadingData === true) {
     chartSpace = <div> loooading</div>;
