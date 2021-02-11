@@ -61,6 +61,7 @@ public class AuthServlet extends HttpServlet {
       LOGGER.log(Level.WARNING, "Error while attempting to find user.", ex);
       response.setStatus(500);
       response.getWriter().write("Unable to successfully fetch user");
+      response.getWriter().flush();
     }
   }
 
@@ -92,6 +93,7 @@ public class AuthServlet extends HttpServlet {
       if (decodedToken == null) {
         response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
         response.getWriter().write("Invalid token");
+        response.getWriter().flush();
         return;
       }
       /*
@@ -107,6 +109,7 @@ public class AuthServlet extends HttpServlet {
     } catch (FirebaseAuthException e) {
       response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
       response.getWriter().write("Failed to create a session cookie");
+      response.getWriter().flush();
     }
   }
 

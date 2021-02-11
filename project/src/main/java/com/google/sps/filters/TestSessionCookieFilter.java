@@ -32,6 +32,9 @@ public class TestSessionCookieFilter implements Filter {
                     } catch (FirebaseAuthException e) {
                         log.warning("failed to decode session cookie");
                         return null;
+                    } catch (IllegalArgumentException e) {
+                        // cookie is null or empty
+                        return null;
                     }
                 }
             }

@@ -20,7 +20,6 @@ const googleProvider = new firebase.auth.GoogleAuthProvider();
 const signIn = (callback) => {
   firebase.auth().signInWithPopup(googleProvider).then(result => {
     let user = result.user;
-    console.log(user);
     user.getIdToken().then(idToken => {
       postIdTokenToAuth(idToken).then((res) => {
         callback(res.ok, {
