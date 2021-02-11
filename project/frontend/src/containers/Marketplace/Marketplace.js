@@ -58,7 +58,7 @@ const Marketplace = (props) => {
     return chartData;
   };
 
-  let chartSpace = <div>search something!</div>;
+  let chartSpace = <div>Search something!</div>;
 
   if (loadingData === true) {
     chartSpace = <div> loooading</div>;
@@ -89,7 +89,9 @@ const Marketplace = (props) => {
             Search
           </Button>
         </div>
-        <Block className={classes.ChartContainer}>{chartSpace}</Block>
+        <Block className={classes.ChartContainer}>
+          <div className={classes.ChartContentWrapper}>{chartSpace}</div>
+        </Block>
         <div className={classes.PurchaseSection}>
           <h2>"search query"</h2>
           <div className={classes.BuyInfo}>
