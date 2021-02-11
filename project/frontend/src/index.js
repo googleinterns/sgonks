@@ -8,9 +8,17 @@ import AlertTemplate from "react-alert-template-basic";
 import App from "./App";
 import reportWebVitals from "./reportWebVitals";
 
+const options = {
+  position: positions.BOTTOM_CENTER,
+  timeout: 5000,
+  offset: "30px",
+  transition: transitions.SCALE,
+  type: "error",
+};
+
 ReactDOM.render(
   <React.StrictMode>
-    <AlertProvider template={AlertTemplate}>
+    <AlertProvider template={AlertTemplate} {...options}>
       <App />
     </AlertProvider>
   </React.StrictMode>,
