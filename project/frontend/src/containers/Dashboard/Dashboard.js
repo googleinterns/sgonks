@@ -7,10 +7,9 @@ import ShortSGonksList from "../../components/SGonksLists/ShortSGonksList/ShortS
 import TrendingSearches from "../../components/TrendingSearches/TrendingSearches";
 import RecentBuysList from "../../components/RecentBuys/RecentBuysList";
 import Rank from "../../components/Rank/Rank";
-import ChartCard from "../../components/ChartCard/ChartCard";
+import InvestmentChart from "../../components/InvestmentChart/InvestmentChart";
 
 const Dashboard = (props) => {
-  const ONE_WEEK_MILLISECONDS = 7 * 24 * 60 * 60 * 1000;
   const ONE_DAY_MILLISECONDS = 24 * 60 * 60 * 1000;
   const ONE_HOUR_MILLISECONDS = 60 * 60 * 1000;
 
@@ -49,75 +48,6 @@ const Dashboard = (props) => {
     return props.rankings[rank].name
   }
 
-  const getEarliestDate = (investments) => {
-    var currentEarliest = Infinity;
-    for (var i = 0; i < investments.length; i++) {
-      currentEarliest = Math.min(currentEarliest, investments[i].dateInvestedMilliSeconds);
-    }
-    return currentEarliest - ONE_WEEK_MILLISECONDS;
-  }
-
-  const getTitleChartRow = (investments) => {
-    var titleRow = ['x'];
-    for (var i = 0; i < investments.length; i++) {
-      var search = investments[i].searchItem;
-      titleRow.push(search);
-    }
-    return titleRow;
-  }
-
-  const populateInvestmentData = (investments, data, earliestDate, currentDate) => {
-    // add each investment's datapoints to correct chart indices
-    for (var i = 0; i < investments.length; i++) {
-      var firstDateWithData = investments[i].dateInvestedMilliSeconds - ONE_WEEK_MILLISECONDS;
-      var lastDateWithData = investments[i].dateSoldMilliseconds;
-      var rowCount = 1; // start at second row
-      var dataCount = 0;
-      var date = earliestDate;
-      var row;
-      while (date <= currentDate) {
-        if (date < firstDateWithData || date > lastDateWithData) {
-          row = data[rowCount];
-          row.push(null);
-          data[rowCount] = row;
-        } else {
-          row = data[rowCount];
-          row.push(investments[i].dataPoints[dataCount]);
-          data[rowCount] = row;
-          dataCount++;
-        }
-        date += ONE_DAY_MILLISECONDS;
-        rowCount++;
-      }
-    }
-    return data;
-  }
-
-  const formatChartData = () => {
-    const investments = props.investments;
-    console.log(investments);
-    var data = [getTitleChartRow(investments)];
-    const earliestDate = getEarliestDate(investments);
-    const currentDate = Date.now();
-    // add every required date point to chart
-    var i = 0; // start at second row 
-    var date = earliestDate;
-    while (date <= currentDate) {
-      var row = [i];
-      data.push(row);
-      date += ONE_DAY_MILLISECONDS;
-      i++;
-    }
-    populateInvestmentData(investments, data, earliestDate, currentDate);
-    return data;
-  }
-
-  const chartsData = {
-    haxis: "Time",
-    vaxis: "Investment Value",
-    data: formatChartData(),
-  };
-
   return (
     <div className={classes.DashboardContainer}>
       <div className={classes.Column}>
@@ -144,7 +74,11 @@ const Dashboard = (props) => {
           </div>
         </Block>
         <Block className={classes.ChartContainer}>
-          <ChartCard chartInfo={chartsData}></ChartCard>
+          <InvestmentChart
+            investments={props.investments}
+            maxInvestments={1}
+            maxDataPoints={20}
+          ></InvestmentChart>
         </Block>
         <LinkButton inverted="true">View my sGonks</LinkButton>
       </div>
