@@ -53,13 +53,18 @@ public class SellServlet extends HttpServlet {
               + investmentID
               + ";";
       long userID, compID;
-      Date sellDate;
+      int amt_invested;
+      String googleSearch;
+      Date investDate, sellDate;
       try (PreparedStatement statement = conn.prepareStatement(findUserIdStmt)) {
         ResultSet rs = statement.executeQuery();
         if (rs.next()) {
           userID = rs.getLong(1);
           compID = rs.getLong(2);
           sellDate = rs.getDate(3);
+          investDate = rs.getDate(4);
+          amt_invested = rs.getInt(5);
+          googleSearch = rs.getString(6);
         } else {
           LOGGER.log(Level.WARNING,
               "Investment id: " + investmentID + "doesn't exist in the database.");
@@ -80,7 +85,7 @@ public class SellServlet extends HttpServlet {
         statement.execute();
       }
 
-      updateUserAmountAvailable(conn, userID, compID);
+      updateUserAmountAvailable(conn, userID, compID, googleSearch, investDate, amt_invested);
 
       conn.commit();
 
@@ -123,18 +128,17 @@ public class SellServlet extends HttpServlet {
    * @param compID     -- competition ID
    * @throws SQLException
    */
-  private void updateUserAmountAvailable(Connection conn, long userID, long compID) throws SQLException {
+  private void updateUserAmountAvailable(Connection conn, long userID, long compID, String googleSearch, Date investDate, int amtInvested) throws SQLException {
 
     //calculate value of the investment
     InvestmentCalculator calculator = new InvestmentCalculator();
-    long investmentValue = calculator
-        .sumInvestmentValues(conn, userID, compID);
-    int netWorth = calculator.calculateNetWorth(conn, userID, compID);
+    int investmentValue = calculator
+        .getInvestmentValue(googleSearch, calculator.convertDateToEpochLong(investDate), 0,  amtInvested);
 
     //update the database
     String updateStmt = String.format(
-        "UPDATE participants SET amt_available = amt_available + %d, net_worth=%d WHERE user=%d AND competition=%d",
-        investmentValue, netWorth, userID, compID);
+        "UPDATE participants SET amt_available=amt_available+%d, net_worth=net_worth+%d WHERE user=%d AND competition=%d",
+        investmentValue, investmentValue, userID, compID);
     try (PreparedStatement statement = conn.prepareStatement(updateStmt)) {
       statement.execute();
     }
