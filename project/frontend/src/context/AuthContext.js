@@ -1,15 +1,9 @@
-import React from "react";
-import { signInWithGoogle, signOut } from "../services/firebase";
+import { createContext } from "react";
 
-const { Provider, Consumer } = React.createContext();
-
-export const AuthContext = (props) => {
-  const auth = {
-    handleAuth: signInWithGoogle,
-    clearAuth: signOut,
-  };
-
-  return <Provider value={auth}>{props.children}</Provider>;
-};
-
-export default Consumer;
+export const AuthContext = createContext({
+    isLoggedIn: false,
+    isLoggingIn: false,
+    login: () => {},
+    logout: () => {},
+    user: {},
+});

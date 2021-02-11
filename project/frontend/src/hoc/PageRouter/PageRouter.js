@@ -1,5 +1,7 @@
-import React from "react";
+import React, { useContext } from "react";
 import { Route, Switch, Redirect } from "react-router-dom";
+
+import { AuthContext } from "../../context/AuthContext";
 
 import LandingPage from "../../containers/LandingPage/LandingPage";
 import SelectCompetition from "../../containers/SelectCompetition/SelectCompetition";
@@ -8,15 +10,16 @@ import MySGonks from "../../containers/MySGonks/MySGonks";
 import Marketplace from "../../containers/Marketplace/Marketplace";
 import Competition from "../../containers/Competition/Competition";
 
-import { NO_COMPETITION } from "../../App";
+import { NO_COMPETITION } from "../../containers/Content/Content";
 
 const PageRouter = (props) => {
-  console.log(props);
+  const authContext = useContext(AuthContext);
 
-  if (!props.authStateReceived) {
+  if (authContext.isLoggingIn) {
     return <div>Signing in...</div>;
   }
-  if (!props.signedIn) {
+
+  if (!authContext.isLoggedIn) {
     return (
       <Switch>
         <Route path="/signin" component={LandingPage} />

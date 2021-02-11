@@ -2,150 +2,73 @@ import "./App.css";
 import React, { useState, useEffect } from "react";
 import { BrowserRouter } from "react-router-dom";
 
-import HeaderBar from "./components/HeaderBar/HeaderBar";
-import Layout from "./hoc/Layout/Layout";
-import PageRouter from "./hoc/PageRouter/PageRouter";
+import Content from "./containers/Content/Content";
 
 import { AuthContext } from "./context/AuthContext";
-import { auth, onAuthStateChange } from "./services/firebase";
+import auth from "./services/auth";
 
 export const NO_COMPETITION = 0;
 export const INITIAL_WORTH = 500;
 
+const testCookieProtectedEndpoint = () => {
+  fetch("/api/test", {method: "GET"})
+    .then(res => {
+      console.log("cookie protected endpoint test:");
+      console.log(res);
+    });
+}
+
+
 function App() {
-  const [user, setUser] = useState({ signedIn: false });
-  const [authStateReceived, setAuthStateReceived] = useState(false);
-  const [compId, setCompId] = useState(NO_COMPETITION);
-  const [competitionInfo, setCompetitionInfo] = useState({});
-  const [loading, setLoading] = useState(false);
+  const [isLoggedIn, setLoggedIn] = useState(false);
+  const [isLoggingIn, setIsLoggingIn] = useState(false);
+  const [user, setUserInfo] = useState({});
 
   useEffect(() => {
-    const unsubscribe = onAuthStateChange((userData) => {
-      setUser(userData);
-      setAuthStateReceived(true);
-    });
-    return () => {
-      unsubscribe();
-    };
-  }, []);
-
-  useEffect(() => {
-    const parsedCompId = Number(
-      localStorage.getItem("compId") || NO_COMPETITION
-    );
-    setCompId(parsedCompId);
-  }, []);
-
-  const fetchCompetitionInfo = async (fetchCall, stateKey) => {
-    try {
-      const data = await fetch(fetchCall).then((response) => response.json());
-      return {
-        [stateKey]: data,
-      };
-    } catch (e) {
-      return {
-        [stateKey]: undefined,
-      };
+    let status = auth.loadLoginStatus();
+    console.log("loaded login status:", status);
+    if (status.isLoggedIn) {
+      setLoggedIn(true);
+      setUserInfo(status.userInfo);
     }
-  };
+  }, [])
 
-  const isReadyForDataFetch = () => {
-    if (!user.signedIn) return false;
-    if (user.id === undefined || user.id === 0) return false;
-    if (compId === NO_COMPETITION) return false;
-    return true;
-  };
+  const login = () => {
+    setIsLoggingIn(true);
 
-  const fetchData = () => {
-    setLoading(true);
-    Promise.all([
-      fetchCompetitionInfo(
-        `./competitionInfo?user=${user.id}&competition=${compId}`,
-        "generalInfo"
-      ),
-      fetchCompetitionInfo(`./recentBuys?competition=${compId}`, "recentBuys"),
-      fetchCompetitionInfo(
-        `./investments?user=${user.id}&competition=${compId}`,
-        "investments"
-      ),
-      fetchCompetitionInfo("./trending", "trending"),
-      fetchCompetitionInfo(`./networths?competition=${compId}`, "networths"),
-      fetchCompetitionInfo(
-        `./rankedCompetitors?competition=${compId}`,
-        "rankings"
-      ),
-    ]).then((resolvedData) => {
-      setLoading(false);
-      let newCompInfo = {};
-      for (const response of resolvedData) {
-        newCompInfo = {
-          ...newCompInfo,
-          ...response,
-        };
+    testCookieProtectedEndpoint();
+
+    auth.signIn((ok, user) => {
+      if (ok) {
+        setUserInfo(user);
+        setIsLoggingIn(false);
+        setLoggedIn(true);
+
+        auth.persistLoginStatus(user);
+
+        testCookieProtectedEndpoint();
+      } else {
+        setIsLoggingIn(false);
+        console.log("error logging in");
       }
-      setCompetitionInfo(newCompInfo);
     });
-  };
+  }
 
-  const fetchPartialData = () => {
-    setLoading(true);
-    Promise.all([
-      fetchCompetitionInfo(
-        `./competitionInfo?user=${user.id}&competition=${compId}`,
-        "generalInfo"
-      ),
-      fetchCompetitionInfo(
-        `./investments?user=${user.id}&competition=${compId}`,
-        "investments"
-      ),
-    ]).then((resolvedData) => {
-      setLoading(false);
-      let newPartialInfo = {};
-      for (const response of resolvedData) {
-        newPartialInfo = {
-          ...newPartialInfo,
-          ...response,
-        };
-      }
-      let newCompInfo = {
-        ...competitionInfo,
-        ...newPartialInfo,
-      };
-      console.log(newCompInfo);
-      setCompetitionInfo(newCompInfo);
-    });
-  };
-
-  useEffect(() => {
-    if (!authStateReceived) {
-      return;
-    }
-    if (isReadyForDataFetch()) {
-      fetchData();
-    }
-  }, [user.id, authStateReceived]);
+  const logout = () => {
+    auth.signOut().then(() => {
+      setLoggedIn(false);
+      setIsLoggingIn(false);
+      setUserInfo({});
+      auth.clearPersistedLoginStatus();
+    })
+  }
 
   return (
     <BrowserRouter>
       <div className="App">
-        <AuthContext>
-          <HeaderBar
-            loggedIn={user.signedIn}
-            innerNav={compId != NO_COMPETITION}
-            updateCompId={setCompId}
-          />
-          <Layout>
-            <PageRouter
-              authStateReceived={authStateReceived}
-              signedIn={user.signedIn}
-              compId={compId}
-              loading={loading}
-              competitionInfo={competitionInfo}
-              updateCompId={setCompId}
-              updateInfo={fetchPartialData}
-            />
-          </Layout>
-        </AuthContext>
+        <AuthContext.Provider value={{isLoggedIn, isLoggingIn, user, login, logout}}>
+          <Content />
+        </AuthContext.Provider>
       </div>
     </BrowserRouter>
   );
