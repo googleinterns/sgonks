@@ -37,10 +37,12 @@ const CreateCompetition = (props) => {
       setDateErrorMessage(
         "Invalid date selection! start date cannot be before today."
       );
+    } else if (startDate === "" || endDate === "") {
+      setDateErrorMessage("start date or end date is not selected.");
     } else {
       setDateErrorMessage("");
     }
-    return end > start && start >= today;
+    return startDate !== "" && endDate !== "" && end > start && start >= today;
   }
 
   const sendInfo = async () => {
