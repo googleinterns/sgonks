@@ -38,30 +38,43 @@ const MySGonks = (props) => {
     return titleRow;
   }
 
+  // add each investment's datapoints to correct chart indices
   const populateInvestmentData = (investments, data, earliestDate, currentDate) => {
-    // add each investment's datapoints to correct chart indices
+    // looping through each investment owned by the user (both sold and unsold)
     for (var i = 0; i < investments.length; i++) {
+      // fetch relevant dates for when we have datapoints
       var firstDateWithData = investments[i].dateInvestedMilliSeconds - ONE_WEEK_MILLISECONDS;
-      var lastDateWithData = investments[i].dateSoldMilliseconds;
-      var rowCount = 1; // start at second row
-      var dataCount = 0;
+      var lastDateWithData;
+      var sellDate = investments[i].dateSoldMilliSeconds;
+      if (sellDate === 0) {
+        // we have not sold the investment - upper bound not relevant
+        lastDateWithData = Infinity;
+      } else {
+        // we have sold the investment = upper bound on data is the sell date
+        lastDateWithData = sellDate;
+      }
+
+      var rowCount = 1; // start at second row (first row defines the columns)
+      var dataCount = 0; // the index within the investments array of datapoints that we are up to
       var date = earliestDate;
       var row;
       while (date <= currentDate) {
-        if (date < firstDateWithData || date > lastDateWithData) {
-          row = data[rowCount];
-          row.push(null);
-          data[rowCount] = row;
-        } else {
-          row = data[rowCount];
+        row = data[rowCount];
+
+        // if the date is within the range for which we have data, fetch this data
+        if (date >= firstDateWithData && date <= lastDateWithData) {
           row.push(investments[i].dataPoints[dataCount]);
-          data[rowCount] = row;
           dataCount++;
+        // date is out of range for which we have data, insert null
+        } else {
+          row.push(null);
         }
-        date += ONE_DAY_MILLISECONDS;
+        data[rowCount] = row; // insert updated row to data table
+        date += ONE_DAY_MILLISECONDS; //increment date and row count
         rowCount++;
       }
     }
+    console.log(data);
     return data;
   }
 
@@ -72,7 +85,7 @@ const MySGonks = (props) => {
     const earliestDate = getEarliestDate(investments);
     const currentDate = Date.now();
     // add every required date point to chart
-    var i = 0; // start at second row 
+    var i = 1; // start at second row 
     var date = earliestDate;
     while (date <= currentDate) {
       var row = [i];
