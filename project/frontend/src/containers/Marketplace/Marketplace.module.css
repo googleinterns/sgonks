@@ -123,3 +123,11 @@
   height: 100%;
   font-size: 1.3vw;
 }
+
+.ChartContentWrapper {
+  height: 100%;
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
