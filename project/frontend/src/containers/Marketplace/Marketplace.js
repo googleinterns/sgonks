@@ -22,42 +22,82 @@ const Marketplace = (props) => {
       return;
     }
     setLoadingData(true);
-    fetch(`./contextData?search_term=${searchEntry}`)
-      .then((response) => response.json())
+    console.log("setting loadingData TRUE");
+    fetchContextData(searchEntry)
       .then((data) => {
-        const averagedData = data.map((datapoint) => datapoint / 24);
-        setChartData(averagedData);
+        console.log(data);
+        setChartData(data);
+      })
+      .then(() => {
         setLoadingData(false);
+        console.log("setting loadingData FALSE");
       });
   };
 
-  const formatChartData = () => {
-    const data = [];
-    data.push(["x", "Popularity"]);
-    for (let i = 0; i < chartData.length; i++) {
-      data.push([i, chartData[i]]);
+  const fetchContextData = async (entry) => {
+    const formattedData = await fetch(`./contextData?search_term=${entry}`)
+      .then((response) => response.json())
+      .then((data) => {
+        const averagedData = data.map((datapoint) => datapoint / 24);
+        return formatChartData(averagedData);
+      });
+
+    console.log("fetchContextData: formattedData: ");
+    console.log(formattedData);
+    return formattedData;
+  };
+
+  const formatChartData = (data) => {
+    const chartData = [];
+    chartData.push(["x", "Popularity"]);
+    for (let i = 0; i < data.length; i++) {
+      chartData.push([i, data[i]]);
     }
-    return data;
+    return chartData;
   };
 
-  const chartsData = {
-    haxis: "Time",
-    vaxis: "Net Worth",
-    data: [
-      ["x", "ctx"],
-      [0, 84],
-      [1, 14],
-      [2, 55],
-      [3, 32],
-      ["4", 51],
-    ],
-  };
+  let chartSpace = <div>search something!</div>;
 
-  const chartSpace = loadingData ? (
-    <div>Loading</div>
-  ) : (
-    <ChartCard chartInfo={chartsData}></ChartCard>
-  );
+  if (loadingData === true) {
+    chartSpace = <div> loooading</div>;
+  }
+
+  if (chartData !== undefined) {
+    chartSpace = (
+      <ChartCard
+        chartInfo={{
+          haxis: "Time",
+          vaxis: "Net Worth",
+          data: formatChartData(chartData),
+        }}
+      ></ChartCard>
+    );
+  }
+
+  // if (chartData !== undefined && loadingData === false) {
+  //   formatChartData(chartData);
+  //   chartSpace = (
+  //     <ChartCard
+  //       chartInfo={{
+  //         haxis: "Time",
+  //         vaxis: "Net Worth",
+  //         data: formatChartData(),
+  //       }}
+  //     ></ChartCard>
+  //   );
+  // }
+
+  // const chartSpace = loadingData ? (
+  //   <div>Loading</div>
+  // ) : (
+  //   <ChartCard
+  //     chartInfo={{
+  //       haxis: "Time",
+  //       vaxis: "Net Worth",
+  //       data: formatChartData(),
+  //     }}
+  //   ></ChartCard>
+  // );
 
   return (
     <div className={classes.MarketplaceContainer}>
