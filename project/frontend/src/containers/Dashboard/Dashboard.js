@@ -7,16 +7,17 @@ import ShortSGonksList from "../../components/SGonksLists/ShortSGonksList/ShortS
 import TrendingSearches from "../../components/TrendingSearches/TrendingSearches";
 import RecentBuysList from "../../components/RecentBuys/RecentBuysList";
 import Rank from "../../components/Rank/Rank";
-import ChartCard from "../../components/ChartCard/ChartCard";
+import InvestmentChart from "../../components/InvestmentChart/InvestmentChart";
 
 const Dashboard = (props) => {
+  const ONE_DAY_MILLISECONDS = 24 * 60 * 60 * 1000;
+  const ONE_HOUR_MILLISECONDS = 60 * 60 * 1000;
+
   const toDayHourMinute = (totalTime) => {
-    let millisInDay = 24 * 60 * 60 * 1000,
-      millisInHour = 60 * 60 * 1000,
-      days = Math.floor(totalTime / millisInDay),
-      hours = Math.floor((totalTime - days * millisInDay) / millisInHour),
+     let days = Math.floor(totalTime / ONE_DAY_MILLISECONDS),
+      hours = Math.floor((totalTime - days * ONE_DAY_MILLISECONDS) / ONE_HOUR_MILLISECONDS),
       minutes = Math.round(
-        (totalTime - days * millisInDay - hours * millisInHour) / 60000
+        (totalTime - days * ONE_DAY_MILLISECONDS - hours * ONE_HOUR_MILLISECONDS) / 60000
       ),
       pad = function (n) {
         return n < 10 ? "0" + n : n;
@@ -42,25 +43,23 @@ const Dashboard = (props) => {
     return formatDHM(toDayHourMinute(remainingTime));
   };
 
-  const placeholderChartsData = {
-    haxis: "Date",
-    vaxis: "Popularity",
-    data: [
-      ["x", "trend 1", "trend 2", "trend 3"],
-      [0, 1, 2, 90],
-      [1, 0, 6, 80],
-      [2, 34, 23, 23],
-      [3, 22, 43, 12],
-      [4, 34, 56, 91],
-    ],
-  };
+  const getUsername = () => {
+    const rank = props.generalInfo.rank - 1
+    return props.rankings[rank].name
+  }
+
+  const unsoldInvestments = !props.investments
+    ? undefined
+    : props.investments.filter(
+        (investment) => investment.dateSoldMilliSeconds === 0
+      );
 
   return (
     <div className={classes.DashboardContainer}>
       <div className={classes.Column}>
         <div className={classes.WelcomeMessage}>
           <h1 className={classes.WelcomeMessage}>
-            Welcome back, <span>Firstname</span>!
+            Welcome back, <span>{getUsername()}</span>!
           </h1>
         </div>
         <Block className={classes.CompInfo}>
@@ -77,13 +76,16 @@ const Dashboard = (props) => {
         <Block className={classes.YourSGonks}>
           <h2>Your sGonks</h2>
           <div className={classes.sGonksListContainer}>
-            <ShortSGonksList sgonks={props.investments}></ShortSGonksList>
+            <ShortSGonksList sgonks={unsoldInvestments}></ShortSGonksList>
           </div>
         </Block>
         <Block className={classes.ChartContainer}>
-          <ChartCard chartInfo={placeholderChartsData}></ChartCard>
+          <InvestmentChart
+            investments={props.investments}
+            maxInvestments={10}
+          ></InvestmentChart>
         </Block>
-        <LinkButton inverted="true">View my sGonks</LinkButton>
+        <LinkButton inverted="true" to="/mysgonks">View my sGonks</LinkButton>
       </div>
       <div className={classes.Column}>
         <Block className={classes.MoneyInfo}>
@@ -92,7 +94,7 @@ const Dashboard = (props) => {
           <h2>Net worth:</h2>
           <p>t${props.generalInfo.netWorth}</p>
         </Block>
-        <LinkButton>Buy sGonks</LinkButton>
+        <LinkButton to="/marketplace">Buy sGonks</LinkButton>
         <Block className={classes.TrendingSearches}>
           <h2>Trending searches</h2>
           <div className={classes.TrendingSearchListContainer}>
