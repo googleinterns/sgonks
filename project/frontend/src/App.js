@@ -55,68 +55,45 @@ function App() {
     return true;
   };
 
+  const fetchData = () => {
+    setLoading(true);
+    Promise.all([
+      fetchCompetitionInfo(
+        `./competitionInfo?user=${user.id}&competition=${compId}`,
+        "generalInfo"
+      ),
+      fetchCompetitionInfo(`./recentBuys?competition=${compId}`, "recentBuys"),
+      fetchCompetitionInfo(
+        `./investments?user=${user.id}&competition=${compId}`,
+        "investments"
+      ),
+      fetchCompetitionInfo("./trending", "trending"),
+      fetchCompetitionInfo(`./networths?competition=${compId}`, "networths"),
+      fetchCompetitionInfo(
+        `./rankedCompetitors?competition=${compId}`,
+        "rankings"
+      ),
+    ]).then((resolvedData) => {
+      setLoading(false);
+      let newCompInfo = {};
+      for (const response of resolvedData) {
+        newCompInfo = {
+          ...newCompInfo,
+          ...response,
+        };
+      }
+      setCompetitionInfo(newCompInfo);
+    });
+  };
+
   useEffect(() => {
     if (!authStateReceived) {
       return;
     }
-
     if (isReadyForDataFetch()) {
-      setLoading(true);
-      Promise.all([
-        fetchCompetitionInfo(
-          `./competitionInfo?user=${user.id}&competition=${compId}`,
-          "generalInfo"
-        ),
-        fetchCompetitionInfo(
-          `./recentBuys?competition=${compId}`,
-          "recentBuys"
-        ),
-        fetchCompetitionInfo(
-          `./investments?user=${user.id}&competition=${compId}`,
-          "investments"
-        ),
-        fetchCompetitionInfo("./trending", "trending"),
-        fetchCompetitionInfo(`./networths?competition=${compId}`, "networths"),
-        fetchCompetitionInfo(
-          `./rankedCompetitors?competition=${compId}`,
-          "rankings"
-        ),
-      ]).then((resolvedData) => {
-        setLoading(false);
-        let newCompInfo = {};
-        for (const response of resolvedData) {
-          newCompInfo = {
-            ...newCompInfo,
-            ...response,
-          };
-        }
-        setCompetitionInfo(newCompInfo);
-      });
+      fetchData();
     }
   }, [user.id, authStateReceived]);
-
-  const updateInfo = () => {
-    fetchCompetitionInfo(
-      `./competitionInfo?user=${user.id}&competition=${compId}`,
-      "generalInfo"
-    ).then((data) => {
-      let newCompInfo = { ...competitionInfo };
-      newCompInfo = { data, ...newCompInfo };
-      console.log("UPDATING");
-      console.log(newCompInfo);
-      setCompetitionInfo(newCompInfo);
-    });
-    fetchCompetitionInfo(
-      `./investments?user=${user.id}&competition=${compId}`,
-      "investments"
-    ).then((data) => {
-      let newCompInfo = { ...competitionInfo };
-      newCompInfo = { data, ...newCompInfo };
-      console.log("UPDATING");
-      console.log(newCompInfo);
-      setCompetitionInfo(newCompInfo);
-    });
-  };
 
   return (
     <BrowserRouter>
@@ -135,7 +112,7 @@ function App() {
               loading={loading}
               competitionInfo={competitionInfo}
               updateCompId={setCompId}
-              updateInfo={updateInfo}
+              updateInfo={fetchData}
             />
           </Layout>
         </AuthContext>
