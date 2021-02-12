@@ -82,7 +82,7 @@ const Dashboard = (props) => {
         <Block className={classes.ChartContainer}>
           <InvestmentChart
             investments={props.investments}
-            maxInvestments={1}
+            maxInvestments={10}
             maxDataPoints={20}
           ></InvestmentChart>
         </Block>
