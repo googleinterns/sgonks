@@ -137,8 +137,8 @@ public class SellServlet extends HttpServlet {
 
     //update the database
     String updateStmt = String.format(
-        "UPDATE participants SET amt_available=amt_available+%d, net_worth=net_worth+%d WHERE user=%d AND competition=%d",
-        investmentValue, investmentValue, userID, compID);
+        "UPDATE participants SET amt_available=amt_available+%d WHERE user=%d AND competition=%d",
+        investmentValue, userID, compID);
     try (PreparedStatement statement = conn.prepareStatement(updateStmt)) {
       statement.execute();
     }
