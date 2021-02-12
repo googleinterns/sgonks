@@ -1,19 +1,29 @@
 import React, { useState } from "react";
+import { useAlert } from "react-alert";
+
 import classes from "./Marketplace.module.css";
 import Block from "../../components/UI/Block/Block";
 import TrendingSearches from "../../components/TrendingSearches/TrendingSearches";
 import RecentBuys from "../../components/RecentBuys/RecentBuysList";
 import Button from "../../components/UI/Button/Button";
 import ChartCard from "../../components/ChartCard/ChartCard";
+import { Redirect, useHistory } from "react-router-dom";
 
 const Marketplace = (props) => {
   const [searchEntry, setSearchEntry] = useState("");
+  const [queriedEntry, setQueriedEntry] = useState("");
   const [purchaseAmount, setPurchaseAmount] = useState(0);
   const [loadingData, setLoadingData] = useState(false);
   const [chartData, setChartData] = useState();
 
+  const alert = useAlert();
+
   const onSearchChange = (e) => {
     setSearchEntry(e.target.value);
+  };
+
+  const onAmountChange = (e) => {
+    setPurchaseAmount(e.target.value);
   };
 
   const onSearchEntered = () => {
@@ -26,6 +36,7 @@ const Marketplace = (props) => {
         setChartData(data);
       })
       .then(() => {
+        setQueriedEntry(searchEntry);
         setLoadingData(false);
       });
   };
@@ -77,6 +88,46 @@ const Marketplace = (props) => {
     );
   }
 
+  const reset = () => {
+    setPurchaseAmount(0);
+    setQueriedEntry("");
+    setChartData();
+    setSearchEntry("");
+  };
+
+  let history = useHistory();
+
+  const onConfirmPurchase = () => {
+    console.log(purchaseAmount);
+    if (!queriedEntry) {
+      alert.show("Invalid search term", { type: "error" });
+    } else if (
+      purchaseAmount < 1 ||
+      purchaseAmount === "" ||
+      purchaseAmount > props.generalInfo.amountAvailable
+    ) {
+      alert.show("Invalid purchase amount", { type: "error" });
+    } else {
+      console.log("success");
+      //TODO update userId with the one in context once auth stuff is merged
+      console.log(
+        `./buy?user=${1}&competition=${
+          props.compId
+        }&search=${searchEntry}&amount=${purchaseAmount}`
+      );
+      fetch(
+        `./buy?user=${1}&competition=${
+          props.compId
+        }&search=${searchEntry}&amount=${purchaseAmount}`
+      ).then(() => {
+        props.updateInfo();
+        reset();
+        alert.show("Purchase successful", { type: "success" });
+        history.push("/mysgonks");
+      });
+    }
+  };
+
   return (
     <div className={classes.MarketplaceContainer}>
       <div className={classes.BuyContainer}>
@@ -92,18 +143,27 @@ const Marketplace = (props) => {
         </div>
         <Block className={classes.ChartContainer}>{chartSpace}</Block>
         <div className={classes.PurchaseSection}>
-          <h2>"search query"</h2>
+          <h2>
+            {queriedEntry == ""
+              ? "Search something..."
+              : '"' + queriedEntry + '"'}
+          </h2>
           <div className={classes.BuyInfo}>
             Amount to purchase:
             <span>
-              t$ <input></input>
+              t$
+              <input
+                type="number"
+                value={purchaseAmount}
+                onChange={(e) => onAmountChange(e)}
+              ></input>
             </span>
           </div>
           <div className={classes.BuyInfo}>
             Currently available:
-            <span>t$1234</span>
+            <span>t${props.generalInfo.amountAvailable}</span>
           </div>
-          <Button>Confirm Purchase</Button>
+          <Button onClick={onConfirmPurchase}>Confirm Purchase</Button>
         </div>
       </div>
       <div className={classes.BuySuggestions}>
