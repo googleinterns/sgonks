@@ -83,7 +83,6 @@ const Dashboard = (props) => {
           <InvestmentChart
             investments={props.investments}
             maxInvestments={10}
-            maxDataPoints={20}
           ></InvestmentChart>
         </Block>
         <LinkButton inverted="true">View my sGonks</LinkButton>
