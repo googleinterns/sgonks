@@ -86,6 +86,35 @@ function App() {
     });
   };
 
+  const fetchPartialData = () => {
+    setLoading(true);
+    Promise.all([
+      fetchCompetitionInfo(
+        `./competitionInfo?user=${user.id}&competition=${compId}`,
+        "generalInfo"
+      ),
+      fetchCompetitionInfo(
+        `./investments?user=${user.id}&competition=${compId}`,
+        "investments"
+      ),
+    ]).then((resolvedData) => {
+      setLoading(false);
+      let newPartialInfo = {};
+      for (const response of resolvedData) {
+        newPartialInfo = {
+          ...newPartialInfo,
+          ...response,
+        };
+      }
+      let newCompInfo = {
+        ...competitionInfo,
+        ...newPartialInfo,
+      };
+      console.log(newCompInfo);
+      setCompetitionInfo(newCompInfo);
+    });
+  };
+
   useEffect(() => {
     if (!authStateReceived) {
       return;
@@ -112,7 +141,7 @@ function App() {
               loading={loading}
               competitionInfo={competitionInfo}
               updateCompId={setCompId}
-              updateInfo={fetchData}
+              updateInfo={fetchPartialData}
             />
           </Layout>
         </AuthContext>
