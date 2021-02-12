@@ -5,7 +5,6 @@ import LinkButton from "../../components/UI/LinkButton/LinkButton";
 import ParticipantCard from "../../components/ParticipantCard/ParticipantCard";
 import { RiAddCircleLine } from "react-icons/ri";
 import regeneratorRuntime from "regenerator-runtime";
-import { onCompSelect } from "../../containers/SelectCompetition/SelectCompetition.js";
 
 const CreateCompetition = (props) => {
   const [participant, setParticipant] = useState("");
@@ -13,6 +12,7 @@ const CreateCompetition = (props) => {
   const [compName, setCompName] = useState("");
   const [startDate, setStartDate] = useState("");
   const [endDate, setEndDate] = useState("");
+  const [dateErrorMessage, setDateErrorMessage] = useState("");
   const userid = 1;
 
   function onAddParticipant() {
@@ -24,7 +24,30 @@ const CreateCompetition = (props) => {
   const onParticipantDelete = (participant) =>
     setParticipantList(participantList.filter((v) => v !== participant?.email));
 
+  function checkValidDate() {
+    const start = new Date(startDate);
+    const end = new Date(endDate);
+    const now = new Date();
+    const today = new Date(now.getFullYear(), now.getMonth(), now.getDate());
+    if (end < start) {
+      setDateErrorMessage(
+        "Invalid date selection! start date cannot be after end date."
+      );
+    } else if (start < today) {
+      setDateErrorMessage(
+        "Invalid date selection! start date cannot be before today."
+      );
+    } else if (startDate === "" || endDate === "") {
+      setDateErrorMessage("start date or end date is not selected.");
+    } else {
+      setDateErrorMessage("");
+    }
+    return startDate !== "" && endDate !== "" && end > start && start >= today;
+  }
+
   const sendInfo = async () => {
+    if (!checkValidDate()) return;
+
     const postBody = {
       userId: userid,
       name: compName,
@@ -102,7 +125,6 @@ const CreateCompetition = (props) => {
           </div>
         </div>
       </div>
-
       <div className={classes.ButtonContainer}>
         <LinkButton
           width="275px"
@@ -118,6 +140,7 @@ const CreateCompetition = (props) => {
           Confirm creation
         </LinkButton>
       </div>
+      {dateErrorMessage !== "" && <p>{dateErrorMessage}</p>}
     </div>
   );
 };
