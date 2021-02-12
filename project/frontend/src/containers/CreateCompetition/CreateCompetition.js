@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import classes from "./CreateCompetition.module.css";
 import { Link } from "react-router-dom";
+import { useAlert } from "react-alert";
 import LinkButton from "../../components/UI/LinkButton/LinkButton";
 import ParticipantCard from "../../components/ParticipantCard/ParticipantCard";
 import { RiAddCircleLine } from "react-icons/ri";
@@ -12,8 +13,9 @@ const CreateCompetition = (props) => {
   const [compName, setCompName] = useState("");
   const [startDate, setStartDate] = useState("");
   const [endDate, setEndDate] = useState("");
-  const [dateErrorMessage, setDateErrorMessage] = useState("");
   const userid = 1;
+
+  const alert = useAlert(); //for displaying alert messages
 
   function onAddParticipant() {
     if (participant === "") return;
@@ -30,17 +32,16 @@ const CreateCompetition = (props) => {
     const now = new Date();
     const today = new Date(now.getFullYear(), now.getMonth(), now.getDate());
     if (end < start) {
-      setDateErrorMessage(
-        "Invalid date selection! start date cannot be after end date."
+      alert.show(
+        "Invalid date selection! start date cannot be after end date.",
+        { type: "error" }
       );
     } else if (start < today) {
-      setDateErrorMessage(
-        "Invalid date selection! start date cannot be before today."
-      );
+      alert.show("Invalid date selection! start date cannot be before today.", {
+        type: "error",
+      });
     } else if (startDate === "" || endDate === "") {
-      setDateErrorMessage("start date or end date is not selected.");
-    } else {
-      setDateErrorMessage("");
+      alert.show("start date or end date is not selected.", { type: "error" });
     }
     return startDate !== "" && endDate !== "" && end > start && start >= today;
   }
@@ -62,6 +63,9 @@ const CreateCompetition = (props) => {
           "Content-Type": "application/json",
         },
         body: JSON.stringify(postBody),
+      });
+      alert.show("Competition is successfully created", {
+        type: "success",
       });
       console.log("successfully send to back end: \n " + sendInfo);
     } catch (error) {
@@ -140,7 +144,6 @@ const CreateCompetition = (props) => {
           Confirm creation
         </LinkButton>
       </div>
-      {dateErrorMessage !== "" && <p>{dateErrorMessage}</p>}
     </div>
   );
 };
