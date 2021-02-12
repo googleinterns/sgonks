@@ -5,12 +5,19 @@ const InvestmentChart = (props) => {
     const ONE_WEEK_MILLISECONDS = 7 * 24 * 60 * 60 * 1000;
     const ONE_DAY_MILLISECONDS = 24 * 60 * 60 * 1000;
 
-    const getEarliestDate = (investments) => {
-        var currentEarliest = Infinity;
+    /**
+     * Find the earliest date (milliseconds, epoch) for which there is popularity data returned
+     * by the investments servlet, out of all the investments. This is one week before the earliest
+     * buy date, as the servlet returns a week of contextual data. 
+     * 
+     * @param investments - a non-empty array of json data about all user investments
+     */
+    const getEarliestDateWithData = (investments) => {
+        var earliestBuyDate = Infinity;
         for (var i = 0; i < investments.length; i++) {
-          currentEarliest = Math.min(currentEarliest, investments[i].dateInvestedMilliSeconds);
+            earliestBuyDate = Math.min(earliestBuyDate, investments[i].dateInvestedMilliSeconds);
         }
-        return currentEarliest - ONE_WEEK_MILLISECONDS;
+        return earliestBuyDate - ONE_WEEK_MILLISECONDS;
     }
 
     const getTitleChartRow = (investments) => {
@@ -65,7 +72,7 @@ const InvestmentChart = (props) => {
         const investments = props.investments;
         if (investments.length > 0) {
             var data = [getTitleChartRow(investments)];
-            const earliestDate = getEarliestDate(investments);
+            const earliestDate = getEarliestDateWithData(investments);
             const currentDate = Date.now();
             // add every required date point to chart
             var i = 1; // start at second row 
