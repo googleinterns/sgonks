@@ -23,7 +23,10 @@ const MySGonks = (props) => {
     <div className={classes.MySGonksContainer}>
       <div className={classes.ChartAndInfoContainer}>
         <Block className={classes.ChartContainer}>
-          <ChartCard chartInfo={chartsData}></ChartCard>
+          <InvestmentChart
+            investments={props.investments}
+            maxInvestments={props.investments.length}
+          ></InvestmentChart>
         </Block>
         <div className={classes.InfoContainer}>
           <Block className={classes.InfoBlock}>
