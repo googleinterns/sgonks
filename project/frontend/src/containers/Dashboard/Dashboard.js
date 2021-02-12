@@ -85,7 +85,7 @@ const Dashboard = (props) => {
             maxInvestments={10}
           ></InvestmentChart>
         </Block>
-        <LinkButton inverted="true">View my sGonks</LinkButton>
+        <LinkButton inverted="true" to="/mysgonks">View my sGonks</LinkButton>
       </div>
       <div className={classes.Column}>
         <Block className={classes.MoneyInfo}>
@@ -94,7 +94,7 @@ const Dashboard = (props) => {
           <h2>Net worth:</h2>
           <p>t${props.generalInfo.netWorth}</p>
         </Block>
-        <LinkButton>Buy sGonks</LinkButton>
+        <LinkButton to="/marketplace">Buy sGonks</LinkButton>
         <Block className={classes.TrendingSearches}>
           <h2>Trending searches</h2>
           <div className={classes.TrendingSearchListContainer}>
