@@ -8,7 +8,7 @@ const LongSGonkRow = (props) => {
   const alert = useAlert();
 
   const sellThisInvestment = async () => {
-    console.log("This function is called");
+    //send this investment id to back end
     try {
       await fetch("/sell", {
         method: "POST",
@@ -17,11 +17,11 @@ const LongSGonkRow = (props) => {
         },
         body: `id=${props.investmentId}`,
       });
-      console.log("successfully sent the investment id: " + props.investmentId);
-      alert.show(
-        props.searchTerm + "Successfully sold '" + props.searchTerm + "'",
-        { type: "success" }
-      );
+
+      //display an alert when the investment is successfully sold
+      alert.show("Successfully sold '" + props.searchTerm + "'", {
+        type: "success",
+      });
     } catch (error) {
       alert.show("Selling investment unsuccessful", { type: "error" });
       console.error("Error:", error);
