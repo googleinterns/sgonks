@@ -13,17 +13,6 @@ const InvestmentChart = (props) => {
         return currentEarliest - ONE_WEEK_MILLISECONDS;
     }
 
-    const limitDataLength = (data) => {
-        if (props.maxDataPoints <= data.length + 1) {
-            // we haven't exceeded the maximum number of data points allowed
-            return;
-        } else {
-            // trim the data
-            var excess = props.maxDataPoints - data.length + 1;
-            data.splice(1, excess); // remove the earliest data points until we are at acceptable length
-        }
-    }
-
     const getTitleChartRow = (investments) => {
         var titleRow = ['x'];
         for (var i = 0; i < Math.min(props.maxInvestments, investments.length); i++) {
@@ -88,7 +77,6 @@ const InvestmentChart = (props) => {
                 i++;
             }
             populateInvestmentData(investments, data, earliestDate, currentDate);
-            limitDataLength(data);
             return data;
         } else {
             return null; //empty array will result in blank chart
