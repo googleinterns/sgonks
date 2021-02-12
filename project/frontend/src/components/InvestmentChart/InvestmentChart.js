@@ -13,7 +13,7 @@ const InvestmentChart = (props) => {
      * @param investments - a non-empty array of json data about all user investments
      */
     const getEarliestDateWithData = (investments) => {
-        var earliestBuyDate = Infinity;
+        var earliestBuyDate = investments[0].dateInvestedMilliSeconds;
         for (var i = 0; i < investments.length; i++) {
             earliestBuyDate = Math.min(earliestBuyDate, investments[i].dateInvestedMilliSeconds);
         }
