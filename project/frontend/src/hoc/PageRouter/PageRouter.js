@@ -51,6 +51,7 @@ const PageRouter = (props) => {
             recentBuys={props.competitionInfo.recentBuys}
             trendingSearches={props.competitionInfo.trending}
             investments={props.competitionInfo.investments}
+            rankings={props.competitionInfo.rankings}
           />
         )}
       />
