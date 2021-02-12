@@ -100,7 +100,7 @@ public class SellServlet extends HttpServlet {
       } finally {
         LOGGER.log(Level.WARNING, "Error while selling the investment.", ex);
         response.setStatus(500);
-        response.getWriter().write("Unable to sold the given investment");
+        response.getWriter().write("Unable to sell the given investment");
       }
     }
   }
@@ -109,7 +109,7 @@ public class SellServlet extends HttpServlet {
    * Check the status of the current investment if it's sellable or not.
    *
    * @param sellDate -- current investment sell date in the database before selling
-   * @return false -- this investment has already been sold. true -- this investment can be sell by
+   * @return false -- this investment has already been sold. true -- this investment can be sold by
    * this user.
    */
   private boolean investmentIsSellable(Date sellDate) {
@@ -121,7 +121,7 @@ public class SellServlet extends HttpServlet {
 
   /**
    * Calculate the current value of the investment base on the popularity since the investment has
-   * been brought. Update users amount available and net worth after selling this investment.
+   * been bought. Update user's amount available after selling this investment.
    *
    * @param conn       -- connection to database
    * @param userID     -- user ID
