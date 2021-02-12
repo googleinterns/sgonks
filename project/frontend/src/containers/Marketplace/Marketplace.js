@@ -1,11 +1,82 @@
-import React from "react";
+import React, { useState } from "react";
 import classes from "./Marketplace.module.css";
 import Block from "../../components/UI/Block/Block";
 import TrendingSearches from "../../components/TrendingSearches/TrendingSearches";
 import RecentBuys from "../../components/RecentBuys/RecentBuysList";
 import Button from "../../components/UI/Button/Button";
+import ChartCard from "../../components/ChartCard/ChartCard";
 
 const Marketplace = (props) => {
+  const [searchEntry, setSearchEntry] = useState("");
+  const [purchaseAmount, setPurchaseAmount] = useState(0);
+  const [loadingData, setLoadingData] = useState(false);
+  const [chartData, setChartData] = useState();
+
+  const onSearchChange = (e) => {
+    setSearchEntry(e.target.value);
+  };
+
+  const onSearchEntered = () => {
+    if (searchEntry.trim() === "") {
+      return;
+    }
+    setLoadingData(true);
+    fetchContextData(searchEntry)
+      .then((data) => {
+        setChartData(data);
+      })
+      .then(() => {
+        setLoadingData(false);
+      });
+  };
+
+  const fetchContextData = async (entry) => {
+    const formattedData = await fetch(`./contextData?search_term=${entry}`)
+      .then((response) => response.json())
+      .then((data) => {
+        const averagedData = data.map((datapoint) => datapoint / 24);
+        return formatChartData(averagedData);
+      })
+      .catch((e) => {
+        console.log(e);
+        return null;
+      });
+    return formattedData;
+  };
+
+  const formatChartData = (data) => {
+    const chartData = [];
+    chartData.push(["x", "Popularity"]);
+    for (let i = 0; i < data.length; i++) {
+      chartData.push([i, data[i]]);
+    }
+    return chartData;
+  };
+
+  let chartSpace = (
+    <div className={classes.SearchPrompt}>Search something!</div>
+  );
+
+  if (loadingData === true) {
+    chartSpace = <p className={classes.SearchPrompt}>Loading...</p>;
+  } else if (chartData === null) {
+    chartSpace = (
+      <p className={classes.NoDataMessage}>
+        No data :( <br /> Try a more popular search term!
+      </p>
+    );
+  } else if (chartData !== undefined) {
+    chartSpace = (
+      <ChartCard
+        chartInfo={{
+          haxis: "Time",
+          vaxis: "Net Worth",
+          data: chartData,
+        }}
+      ></ChartCard>
+    );
+  }
+
   return (
     <div className={classes.MarketplaceContainer}>
       <div className={classes.BuyContainer}>
@@ -13,12 +84,13 @@ const Marketplace = (props) => {
           <input
             className={classes.SearchInput}
             placeholder="Search a trend"
+            onChange={(e) => onSearchChange(e)}
           ></input>
-          <Button inverted padding="3px 20px">
+          <Button inverted padding="3px 20px" onClick={onSearchEntered}>
             Search
           </Button>
         </div>
-        <Block className={classes.ChartContainer}>chart here </Block>
+        <Block className={classes.ChartContainer}>{chartSpace}</Block>
         <div className={classes.PurchaseSection}>
           <h2>"search query"</h2>
           <div className={classes.BuyInfo}>
