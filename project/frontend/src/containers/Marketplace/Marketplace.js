@@ -7,6 +7,7 @@ import TrendingSearches from "../../components/TrendingSearches/TrendingSearches
 import RecentBuys from "../../components/RecentBuys/RecentBuysList";
 import Button from "../../components/UI/Button/Button";
 import ChartCard from "../../components/ChartCard/ChartCard";
+import { Redirect, useHistory } from "react-router-dom";
 
 const Marketplace = (props) => {
   const [searchEntry, setSearchEntry] = useState("");
@@ -94,6 +95,8 @@ const Marketplace = (props) => {
     setSearchEntry("");
   };
 
+  let history = useHistory();
+
   const onConfirmPurchase = () => {
     console.log(purchaseAmount);
     if (!queriedEntry) {
@@ -120,6 +123,7 @@ const Marketplace = (props) => {
         props.updateInfo();
         reset();
         alert.show("Purchase successful", { type: "success" });
+        history.push("/mysgonks");
       });
     }
   };
