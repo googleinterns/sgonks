@@ -38,7 +38,7 @@ public class SellServlet extends HttpServlet {
 
   @Override
   public void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException {
-    long investmentID = -1;    //long investmentID = Long.parseLong(request.getParameter("id"));
+    long investmentID = Long.parseLong(request.getParameter("id"));
 
     DataSource pool = (DataSource) request.getServletContext().getAttribute("db-connection-pool");
     Connection conn = null;
