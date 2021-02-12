@@ -59,7 +59,7 @@ public class BuyServlet extends HttpServlet {
             Investment investment = addInvestment(conn, user, competition, searchQuery, amtInvested);
             if (investment == null) {
                 response.setStatus(500);
-                response.getWriter().write("Timeout while fetching investment. Try again later.");
+                response.getWriter().write("Something went wrong fetching investment. Try again later.");
             } else {
                 //transaction succesful - commit to db
                 conn.commit();
@@ -100,6 +100,24 @@ public class BuyServlet extends HttpServlet {
 
         if (data.isEmpty()) {
             //we timed out. return null and then send response - DO NOT add to investments db
+            return null;
+        }
+
+        String amtAvailableStmt = String.format("SELECT amt_available from participants WHERE id=%d AND "
+        + "competition=%d;", user, competition);
+        int amtAvailable;
+        try (PreparedStatement availableStmt = conn.prepareStatement(amtAvailableStmt)) {
+            availableStmt.execute();
+            ResultSet rs = availableStmt.getGeneratedKeys();
+            if (rs.next()) {
+                amtAvailable = rs.getInt(1);
+                if (amtAvailable < amtInvested) {
+                    // not enough money - should have been checked at frontend already so user is being sneaky
+                    return null;
+                }
+            }
+        } catch (SQLException e) {
+            // could not fetch amt user has available - no way to verify purchase is ok
             return null;
         }
 
