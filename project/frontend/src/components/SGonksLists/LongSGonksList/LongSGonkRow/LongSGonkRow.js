@@ -1,8 +1,11 @@
 import React from "react";
+import { useAlert } from "react-alert";
 import classes from "./LongSGonkRow.module.css";
 
 const LongSGonkRow = (props) => {
   const priceDelta = props.currentValue - props.amountInvested;
+
+  const alert = useAlert();
 
   const sellThisInvestment = async () => {
     console.log("This function is called");
@@ -15,7 +18,12 @@ const LongSGonkRow = (props) => {
         body: `id=${props.investmentId}`,
       });
       console.log("successfully sent the investment id: " + props.investmentId);
+      alert.show(
+        props.searchTerm + "Successfully sold '" + props.searchTerm + "'",
+        { type: "success" }
+      );
     } catch (error) {
+      alert.show("Selling investment unsuccessful", { type: "error" });
       console.error("Error:", error);
     }
   };
