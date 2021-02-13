@@ -63,6 +63,7 @@ const loadLoginStatus = () => {
 
 const clearPersistedLoginStatus = () => {
   // clear user details from localstorage
+  localStorage.removeItem("user");
 };
 
 export default {
