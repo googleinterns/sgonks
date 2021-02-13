@@ -47,7 +47,6 @@ const signOut = () => {
         },
       });
     });
-  });
 };
 
 const persistLoginStatus = (user) => {
