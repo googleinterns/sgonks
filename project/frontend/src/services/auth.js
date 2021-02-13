@@ -56,10 +56,17 @@ const persistLoginStatus = (user) => {
 
 const loadLoginStatus = () => {
   // read user details from localstorage
-  const user = JSON.parse(localStorage.getItem("user"));
-  return {
-    isLoggedIn: false,
-  };
+  const user = JSON.parselocalStorage.getItem("user");
+  if (user) {
+    return {
+      isLoggedIn: true,
+      userInfo: user,
+    };
+  } else {
+    return {
+      isLoggedIn: false,
+    };
+  }
 };
 
 const clearPersistedLoginStatus = () => {
