@@ -51,11 +51,12 @@ const signOut = () => {
 
 const persistLoginStatus = (user) => {
   // save user details to localstorage
-  localStorage.setItem("user", user);
+  localStorage.setItem("user", JSON.stringify(user));
 };
 
 const loadLoginStatus = () => {
   // read user details from localstorage
+  const user = JSON.parse(localStorage.getItem("user"));
   return {
     isLoggedIn: false,
   };
