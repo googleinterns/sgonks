@@ -82,7 +82,7 @@ const Content = () => {
 
   return (
     <div className={classes.Content}>
-      //TODO innerNav={user.signedIn && compId != NO_COMPETITION}
+      {/* //TODO "innerNav={user.signedIn && compId != NO_COMPETITION}" */}
       <HeaderBar innerNav={compId != NO_COMPETITION} updateCompId={setCompId} />
       <Layout>
         <PageRouter
