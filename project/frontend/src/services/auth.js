@@ -14,49 +14,56 @@ const postIdTokenToAuth = (idToken) => {
     },
     body: idToken,
   });
-}
+};
 
 const googleProvider = new firebase.auth.GoogleAuthProvider();
 const signIn = (callback) => {
-  firebase.auth().signInWithPopup(googleProvider).then(result => {
-    let user = result.user;
-    user.getIdToken().then(idToken => {
-      postIdTokenToAuth(idToken).then((res) => {
-        callback(res.ok, {
-          email: user.email,
-          displayName: user.displayName,
-          id: 1, // TEMPORARY
-        })
-      })
-    })
-  })
+  firebase
+    .auth()
+    .signInWithPopup(googleProvider)
+    .then((result) => {
+      let user = result.user;
+      user.getIdToken().then((idToken) => {
+        postIdTokenToAuth(idToken).then((res) => {
+          callback(res.ok, {
+            email: user.email,
+            displayName: user.displayName,
+            id: 1, // TEMPORARY
+          });
+        });
+      });
+    });
 };
 
 const signOut = () => {
-  return firebase.auth().currentUser.getIdToken(true).then(() => {
-    return fetch("/authentication", {
-      method: "DELETE",
-      headers: {
-        "Content-Type": "application/json",
-      }
+  return firebase
+    .auth()
+    .currentUser.getIdToken(true)
+    .then(() => {
+      return fetch("/authentication", {
+        method: "DELETE",
+        headers: {
+          "Content-Type": "application/json",
+        },
+      });
     });
-  });
 };
 
 const persistLoginStatus = (user) => {
   // save user details to localstorage
-}
+  localStorage.setItem("user", user);
+};
 
 const loadLoginStatus = () => {
   // read user details from localstorage
   return {
-    isLoggedIn: false
-  }
-}
+    isLoggedIn: false,
+  };
+};
 
 const clearPersistedLoginStatus = () => {
   // clear user details from localstorage
-}
+};
 
 export default {
   signIn: signIn,
@@ -64,4 +71,4 @@ export default {
   persistLoginStatus: persistLoginStatus,
   loadLoginStatus: loadLoginStatus,
   clearPersistedLoginStatus: clearPersistedLoginStatus,
-}
+};
