@@ -14,31 +14,38 @@ const postIdTokenToAuth = (idToken) => {
     },
     body: idToken,
   });
-}
+};
 
 const googleProvider = new firebase.auth.GoogleAuthProvider();
 const signIn = (callback) => {
-  firebase.auth().signInWithPopup(googleProvider).then(result => {
-    let user = result.user;
-    user.getIdToken().then(idToken => {
-      postIdTokenToAuth(idToken).then((res) => {
-        callback(res.ok, {
-          email: user.email,
-          displayName: user.displayName,
-          id: 1, // TEMPORARY
-        })
-      })
-    })
-  })
+  firebase
+    .auth()
+    .signInWithPopup(googleProvider)
+    .then((result) => {
+      let user = result.user;
+      user.getIdToken().then((idToken) => {
+        postIdTokenToAuth(idToken).then((res) => {
+          callback(res.ok, {
+            email: user.email,
+            displayName: user.displayName,
+            id: 1, // TEMPORARY
+          });
+        });
+      });
+    });
 };
 
 const signOut = () => {
-  return firebase.auth().currentUser.getIdToken(true).then(() => {
-    return fetch("/authentication", {
-      method: "DELETE",
-      headers: {
-        "Content-Type": "application/json",
-      }
+  return firebase
+    .auth()
+    .currentUser.getIdToken(true)
+    .then(() => {
+      return fetch("/authentication", {
+        method: "DELETE",
+        headers: {
+          "Content-Type": "application/json",
+        },
+      });
     });
   });
 };
