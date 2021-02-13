@@ -1,5 +1,6 @@
 import React, { useContext, useState, useEffect } from "react";
 import { AuthContext } from "../../context/AuthContext";
+import classes from "./Content.module.css";
 
 import HeaderBar from "../../components/HeaderBar/HeaderBar";
 
@@ -55,28 +56,18 @@ const Content = () => {
         `./competitionInfo?user=${user.id}&competition=${compId}`,
         "generalInfo"
       ),
-      fetchCompetitionInfo(
-        `./recentBuys?competition=${compId}`,
-        "recentBuys"
-      ),
+      fetchCompetitionInfo(`./recentBuys?competition=${compId}`, "recentBuys"),
       fetchCompetitionInfo(
         `./investments?user=${user.id}&competition=${compId}`,
         "investments"
       ),
-      fetchCompetitionInfo(
-        "./trending",
-        "trending"
-      ),
-      fetchCompetitionInfo(
-        `./networths?competition=${compId}`,
-        "networths"
-      ),
+      fetchCompetitionInfo("./trending", "trending"),
+      fetchCompetitionInfo(`./networths?competition=${compId}`, "networths"),
       fetchCompetitionInfo(
         `./rankedCompetitors?competition=${compId}`,
         "rankings"
       ),
-    ])
-    .then((resolvedData) => {
+    ]).then((resolvedData) => {
       setLoading(false);
       let newCompInfo = {};
       for (const response of resolvedData) {
@@ -90,11 +81,8 @@ const Content = () => {
   }, [authContext.isLoggedIn]);
 
   return (
-    <div>
-      <HeaderBar
-        innerNav={compId != NO_COMPETITION}
-        updateCompId={setCompId}
-      />
+    <div className={classes.Content}>
+      <HeaderBar innerNav={compId != NO_COMPETITION} updateCompId={setCompId} />
 
       <Layout>
         <PageRouter
@@ -106,6 +94,6 @@ const Content = () => {
       </Layout>
     </div>
   );
-}
+};
 
 export default Content;
