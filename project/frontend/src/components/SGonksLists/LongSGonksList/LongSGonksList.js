@@ -8,15 +8,15 @@ const LongSGonksList = (props) => {
     return <ErrorMessage>investments</ErrorMessage>;
   }
 
-  const investmentRows = props.investments.map((investment, i) => {
+  const investmentRows = props.investments.map((investment) => {
     return (
       <LongSGonkRow
-        //TODO replace key with investment id once it's ready
-        key={i}
+        key={investment.id}
         searchTerm={investment.searchItem}
         buyInDate={investment.dateInvestedMilliSeconds}
         amountInvested={investment.amtInvested}
         currentValue={investment.currentValue}
+        investmentId={investment.id}
       ></LongSGonkRow>
     );
   });
