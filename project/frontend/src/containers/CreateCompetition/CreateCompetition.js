@@ -130,14 +130,7 @@ const CreateCompetition = (props) => {
         </div>
       </div>
       <div className={classes.ButtonContainer}>
-        <LinkButton
-          width="275px"
-          inverted="true"
-          onClick={() => {
-            props.compIdChanged(0);
-            console.log("This function is called ");
-          }}
-        >
+        <LinkButton width="275px" inverted="true" to="/compselect">
           Cancel
         </LinkButton>
         <LinkButton width="275px" onMouseDown={sendInfo}>
