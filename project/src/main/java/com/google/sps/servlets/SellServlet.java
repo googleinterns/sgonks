@@ -77,10 +77,12 @@ public class SellServlet extends HttpServlet {
       }
 
       //add today as the sell date to the investment
-      Date today = new Date();
+      InvestmentCalculator calc = new InvestmentCalculator();
+      Long currentDateSeconds = calc.getLatestDate();
+      Date currentDate = new Date(currentDateSeconds * 1000);
       String updateSellDateStmt = String.format(
           "UPDATE investments SET sell_date=DATE '%tF' WHERE id=%d;",
-          today, investmentID);
+          currentDate, investmentID);
       try (PreparedStatement statement = conn.prepareStatement(updateSellDateStmt)) {
         statement.execute();
       }
