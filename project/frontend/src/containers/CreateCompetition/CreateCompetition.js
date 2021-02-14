@@ -133,7 +133,11 @@ const CreateCompetition = (props) => {
         <LinkButton width="275px" inverted="true" to="/compselect">
           Cancel
         </LinkButton>
-        <LinkButton width="275px" onMouseDown={sendInfo}>
+        <LinkButton
+          width="275px"
+          onMouseDown={sendInfo}
+          // onClick={() => props.updateCompId(INSERT_COMP_ID_HERE)}
+        >
           Confirm creation
         </LinkButton>
       </div>
