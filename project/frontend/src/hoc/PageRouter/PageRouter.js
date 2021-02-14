@@ -33,7 +33,10 @@ const PageRouter = (props) => {
           path="/compselect"
           render={() => <SelectCompetition updateCompId={props.updateCompId} />}
         />
-        <Route path="/createcomp" render={() => <CreateCompetition />} />
+        <Route
+          path="/createcomp"
+          render={() => <CreateCompetition updateCompId={props.updateCompId} />}
+        />
         <Redirect to="/compselect" />
       </Switch>
     );
