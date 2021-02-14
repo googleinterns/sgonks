@@ -15,7 +15,7 @@ const LandingPage = (props) => {
         <LoginButtonSet></LoginButtonSet>
       </div>
       <div className={classes.IllustrationContainer}>
-        <img src={Illustration} className={classes.Logo} />
+        <img src={Illustration} className={classes.Illustration} />
       </div>
     </div>
   );
