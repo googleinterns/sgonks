@@ -46,6 +46,7 @@ project/.settings/
 firebaseConfig.js
 config/
 config.py
+project/datastore_key.json
 
 # Ignore Python generated files
 __pycache__/
