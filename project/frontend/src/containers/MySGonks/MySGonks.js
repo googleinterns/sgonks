@@ -15,18 +15,15 @@ const MySGonks = (props) => {
       );
 
   const getUsername = () => {
-    const rank = props.generalInfo.rank - 1
-    return props.rankings[rank].name
-  }
+    const rank = props.generalInfo.rank - 1;
+    return props.rankings[rank].name;
+  };
 
   return (
     <div className={classes.MySGonksContainer}>
       <div className={classes.ChartAndInfoContainer}>
         <Block className={classes.ChartContainer}>
-          <InvestmentChart
-            investments={props.investments}
-            maxInvestments={props.investments.length}
-          ></InvestmentChart>
+          <InvestmentChart investments={props.investments}></InvestmentChart>
         </Block>
         <div className={classes.InfoContainer}>
           <Block className={classes.InfoBlock}>
