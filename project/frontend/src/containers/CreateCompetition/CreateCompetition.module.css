@@ -109,7 +109,6 @@ input[type="date"] {
 
 .icons {
   position: absolute;
-  top: 34.5%;
   margin: auto;
   width: 4%;
   height: 4.35%;
@@ -130,13 +129,4 @@ input[type="date"] {
   margin-top: 20px;
   width: 87%;
   overflow-y: auto;
-}
-
-.icons {
-  position: absolute;
-  top: 34.5%;
-  margin: auto;
-  width: 4%;
-  height: 4.35%;
-  cursor: pointer;
 }
