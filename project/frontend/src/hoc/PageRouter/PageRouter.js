@@ -8,6 +8,7 @@ import MySGonks from "../../containers/MySGonks/MySGonks";
 import Marketplace from "../../containers/Marketplace/Marketplace";
 import Competition from "../../containers/Competition/Competition";
 import CreateCompetition from "../../containers/CreateCompetition/CreateCompetition";
+import Explanation from "../../containers/Explanation/Explanation";
 
 import { NO_COMPETITION } from "../../App";
 
@@ -21,6 +22,7 @@ const PageRouter = (props) => {
     return (
       <Switch>
         <Route path="/signin" component={LandingPage} />
+        <Route path="/explanation" component={Explanation} />
         <Redirect to="/signin" />
       </Switch>
     );

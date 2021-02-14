@@ -9,7 +9,9 @@ const LoginButtonSet = (props) => {
       {(context) => {
         return (
           <div className={classes.ButtonSetContainer}>
-            <LinkButton inverted="true">What is sGonks?</LinkButton>
+            <LinkButton inverted="true" to="/explanation">
+              What is sGonks?
+            </LinkButton>
             <LinkButton to="/compselect" onClick={context.handleAuth}>
               Sign in
             </LinkButton>
