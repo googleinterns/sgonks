@@ -7,6 +7,7 @@ import Dashboard from "../../containers/Dashboard/Dashboard";
 import MySGonks from "../../containers/MySGonks/MySGonks";
 import Marketplace from "../../containers/Marketplace/Marketplace";
 import Competition from "../../containers/Competition/Competition";
+import CreateCompetition from "../../containers/CreateCompetition/CreateCompetition";
 
 import { NO_COMPETITION } from "../../App";
 
@@ -32,6 +33,7 @@ const PageRouter = (props) => {
           path="/compselect"
           render={() => <SelectCompetition updateCompId={props.updateCompId} />}
         />
+        <Route path="/createcomp" render={() => <CreateCompetition />} />
         <Redirect to="/compselect" />
       </Switch>
     );
