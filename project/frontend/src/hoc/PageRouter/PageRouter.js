@@ -1,5 +1,7 @@
 import React, { useContext } from "react";
 import { Route, Switch, Redirect } from "react-router-dom";
+import ReactLoading from "react-loading";
+import classes from "./PageRouter.module.css";
 
 import { AuthContext } from "../../context/AuthContext";
 
@@ -9,6 +11,8 @@ import Dashboard from "../../containers/Dashboard/Dashboard";
 import MySGonks from "../../containers/MySGonks/MySGonks";
 import Marketplace from "../../containers/Marketplace/Marketplace";
 import Competition from "../../containers/Competition/Competition";
+import CreateCompetition from "../../containers/CreateCompetition/CreateCompetition";
+import Explanation from "../../containers/Explanation/Explanation";
 
 import { NO_COMPETITION } from "../../containers/Content/Content";
 
@@ -16,13 +20,19 @@ const PageRouter = (props) => {
   const authContext = useContext(AuthContext);
 
   if (authContext.isLoggingIn) {
-    return <div>Signing in...</div>;
+    return (
+      <div className={classes.Loading}>
+        <ReactLoading type="spokes" color="#2f7de7" />
+        <p>Signing in...</p>
+      </div>
+    );
   }
 
   if (!authContext.isLoggedIn) {
     return (
       <Switch>
         <Route path="/signin" component={LandingPage} />
+        <Route path="/explanation" component={Explanation} />
         <Redirect to="/signin" />
       </Switch>
     );
@@ -35,13 +45,22 @@ const PageRouter = (props) => {
           path="/compselect"
           render={() => <SelectCompetition updateCompId={props.updateCompId} />}
         />
+        <Route
+          path="/createcomp"
+          render={() => <CreateCompetition updateCompId={props.updateCompId} />}
+        />
         <Redirect to="/compselect" />
       </Switch>
     );
   }
 
   if (props.loading || Object.keys(props.competitionInfo).length === 0) {
-    return <div>Loading...</div>;
+    return (
+      <div className={classes.Loading}>
+        <ReactLoading type="bars" color="#2f7de7" width={80} />
+        <p>Crunching data...</p>
+      </div>
+    );
   }
 
   return (
@@ -75,6 +94,7 @@ const PageRouter = (props) => {
             generalInfo={props.competitionInfo.generalInfo}
             investments={props.competitionInfo.investments}
             rankings={props.competitionInfo.rankings}
+            updateInfo={props.updateInfo}
           />
         )}
       />
