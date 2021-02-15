@@ -4,10 +4,9 @@ import Block from "../../components/UI/Block/Block";
 import LinkButton from "../../components/UI/LinkButton/LinkButton";
 import LongSGonksList from "../../components/SGonksLists/LongSGonksList/LongSGonksList";
 import InvestmentChart from "../../components/InvestmentChart/InvestmentChart";
+import { INITIAL_WORTH } from "../../App";
 
 const MySGonks = (props) => {
-  const INITIAL_WORTH = 500;
-
   const unsoldInvestments = !props.investments
     ? undefined
     : props.investments.filter(

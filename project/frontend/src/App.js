@@ -10,6 +10,7 @@ import { AuthContext } from "./context/AuthContext";
 import { auth, onAuthStateChange } from "./services/firebase";
 
 export const NO_COMPETITION = 0;
+export const INITIAL_WORTH = 500;
 
 function App() {
   const [user, setUser] = useState({ signedIn: false });
