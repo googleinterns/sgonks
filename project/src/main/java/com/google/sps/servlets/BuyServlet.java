@@ -74,7 +74,7 @@ public class BuyServlet extends HttpServlet {
                     conn.rollback();
                 }
             } catch(SQLException e) {
-                LOGGER.log(Level.WARNING, "Something went wrong cancelling a transaction");
+                LOGGER.log(Level.WARNING, "Something went wrong cancelling a transaction", e);
             } finally {
                 LOGGER.log(Level.WARNING, "Error while attempting to buy investment.", ex);
                 response.setStatus(500);
@@ -97,18 +97,16 @@ public class BuyServlet extends HttpServlet {
             // if not, fetch using cloud function and wait for some set time
             data = calc.createAndFetchInvestmentData(searchQuery, data);
         }
-
         if (data.isEmpty()) {
             //we timed out. return null and then send response - DO NOT add to investments db
             return null;
         }
-
-        String amtAvailableStmt = String.format("SELECT amt_available from participants WHERE id=%d AND "
+        String amtAvailableStmt = String.format("SELECT amt_available from participants WHERE user=%d AND "
         + "competition=%d;", user, competition);
         int amtAvailable;
         try (PreparedStatement availableStmt = conn.prepareStatement(amtAvailableStmt)) {
-            availableStmt.execute();
-            ResultSet rs = availableStmt.getGeneratedKeys();
+            ResultSet rs = availableStmt.executeQuery();
+
             if (rs.next()) {
                 amtAvailable = rs.getInt(1);
                 if (amtAvailable < amtInvested) {
@@ -118,7 +116,8 @@ public class BuyServlet extends HttpServlet {
             }
         } catch (SQLException e) {
             // could not fetch amt user has available - no way to verify purchase is ok
-            return null;
+            LOGGER.log(Level.WARNING, "Error fetching amount available", e);
+            return null; 
         }
 
         String stmt = String.format("INSERT INTO investments (user, competition, google_search, " 
