@@ -29,6 +29,8 @@ h3 {
 .Hero h3 {
   color: #5f6368;
   font-size: 1.1vw;
+  margin-top: -3%;
+  padding-bottom: 3%;
 }
 
 .IllustrationContainer {

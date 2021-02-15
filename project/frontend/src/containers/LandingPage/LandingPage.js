@@ -9,8 +9,8 @@ const LandingPage = (props) => {
       <div className={classes.Hero}>
         <h1>Who's the next trendsetter?</h1>
         <h3>
-          Something something a description of what the game does, what benefits
-          it has. Something something ...
+          Participate with your team in a fun game with long-term progression,
+          and see who can go sGonks!
         </h3>
         <LoginButtonSet></LoginButtonSet>
       </div>
