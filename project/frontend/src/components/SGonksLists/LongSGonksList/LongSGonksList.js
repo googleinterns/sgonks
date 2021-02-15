@@ -17,6 +17,7 @@ const LongSGonksList = (props) => {
         amountInvested={investment.amtInvested}
         currentValue={investment.currentValue}
         investmentId={investment.id}
+        updateInfo={props.updateInfo}
       ></LongSGonkRow>
     );
   });

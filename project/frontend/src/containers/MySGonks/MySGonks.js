@@ -50,7 +50,10 @@ const MySGonks = (props) => {
         </div>
       </div>
       <div className={classes.SGonksListContainer}>
-        <LongSGonksList investments={unsoldInvestments}></LongSGonksList>
+        <LongSGonksList
+          investments={unsoldInvestments}
+          updateInfo={props.updateInfo}
+        ></LongSGonksList>
       </div>
     </div>
   );
