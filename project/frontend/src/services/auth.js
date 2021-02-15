@@ -24,29 +24,27 @@ const signIn = (callback) => {
     .then((result) => {
       let user = result.user;
       user.getIdToken().then((idToken) => {
-        postIdTokenToAuth(idToken).then((res) => {
-          callback(res.ok, {
-            email: user.email,
-            displayName: user.displayName,
-            id: 1, // TEMPORARY
+        postIdTokenToAuth(idToken)
+          .then((response) => response.json())
+          .then((data) => {
+            callback(data.ok, {
+              email: user.email,
+              displayName: user.displayName,
+              id: data.id,
+            });
+            console.log("user id: " + data.id);
           });
-        });
       });
     });
 };
 
 const signOut = () => {
-  return firebase
-    .auth()
-    .currentUser.getIdToken(true)
-    .then(() => {
-      return fetch("/authentication", {
-        method: "DELETE",
-        headers: {
-          "Content-Type": "application/json",
-        },
-      });
-    });
+  return fetch("/authentication", {
+    method: "DELETE",
+    headers: {
+      "Content-Type": "application/json",
+    },
+  });
 };
 
 const persistLoginStatus = (user) => {

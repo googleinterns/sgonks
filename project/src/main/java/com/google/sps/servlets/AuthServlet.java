@@ -41,19 +41,26 @@ public class AuthServlet extends HttpServlet {
   private static final Logger LOGGER = Logger.getLogger(AuthServlet.class.getName());
 
   @Override
-  public void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
+  public void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException {
+    User user = verifyIDToken(request,response);
+    sendUserToFrontEnd(request,response, user);
+  }
+
+  public void sendUserToFrontEnd(HttpServletRequest request, HttpServletResponse response, User currentUser) throws IOException {
+    if (currentUser == null){
+      LOGGER.log(Level.WARNING, "Unsuccessful to verify user the object is null");
+      return;
+    }
     DataSource pool = (DataSource) request.getServletContext().getAttribute("db-connection-pool");
+    System.out.println("This is the user's information email: " + currentUser.email() + " name: "+ currentUser.name() + " id: " + currentUser.id());
 
     try (Connection conn = pool.getConnection()) {
-      String email = request.getParameter("email");
-      String name = request.getParameter("name");
-      LOGGER.log(Level.WARNING, name);
-      LOGGER.log(Level.WARNING, email);
-      User user = getUser(conn, email);
+      //check if user is in the database
+      User user = getUser(conn, currentUser.email());
 
       if (user == null) {
         // the user is not already in the database - create a new one
-        user = addUser(conn, name, email);
+        user = addUser(conn, currentUser.name(), currentUser.email());
       }
 
       Gson gson = new Gson();
@@ -67,29 +74,19 @@ public class AuthServlet extends HttpServlet {
     }
   }
 
-  @Override
-  public void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException {
-    String uid = verifyIDToken(request);
-    //stored the user data in the session
-    request.getSession().setAttribute("uid",uid);
-  }
 
-  @Override
-  public void doDelete(HttpServletRequest request, HttpServletResponse response) throws IOException {
-    request.getSession().setAttribute("uid",null);
-  }
 
   /**
    *  Get the ID Token that is passed though request, verify the user and return the decoded uid.
    * @param request -- request
-   * @return decoded ID Token.
    * @throws IOException
    */
-  private String verifyIDToken(HttpServletRequest request) throws IOException{
+  private User verifyIDToken(HttpServletRequest request, HttpServletResponse response) throws IOException{
     //get the client ID Token from the request body
     StringBuilder buffer = new StringBuilder();
     BufferedReader reader = request.getReader();
     String line;
+    User userObj = null;
     while ((line = reader.readLine()) != null) {
       buffer.append(line);
       buffer.append(System.lineSeparator());
@@ -113,12 +110,17 @@ public class AuthServlet extends HttpServlet {
         response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
         response.getWriter().write("Invalid token");
         response.getWriter().flush();
-        return;
+        return null;
       }
 
       String email = decodedToken.getEmail();
       long userID = getUserID(request, email);
+
+      userObj =  User.create(userID,decodedToken.getName(),email);
+
+      //stored the user's is in the session
       request.getSession().setAttribute("userID", userID);
+      System.out.println("NEW CODE CHEKCINT THAT IT WORKS" + request.getSession().getAttribute("userID"));
 
       response.setStatus(HttpServletResponse.SC_OK);
       response.flushBuffer();
@@ -127,6 +129,7 @@ public class AuthServlet extends HttpServlet {
       response.getWriter().write("Failed to create a session cookie");
       response.getWriter().flush();
     }
+    return userObj;
   }
 
   @Override
@@ -203,4 +206,6 @@ public class AuthServlet extends HttpServlet {
     }
   }
 }
+
+
 
