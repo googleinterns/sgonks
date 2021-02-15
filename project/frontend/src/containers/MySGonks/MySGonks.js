@@ -22,7 +22,6 @@ const MySGonks = (props) => {
     <div className={classes.MySGonksContainer}>
       <div className={classes.ChartAndInfoContainer}>
         <Block className={classes.ChartContainer}>
-          {/* <div className={classes.Test}>testing div</div> */}
           <InvestmentChart investments={props.investments}></InvestmentChart>
         </Block>
         <div className={classes.InfoContainer}>
