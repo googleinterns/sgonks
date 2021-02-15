@@ -2,6 +2,7 @@ import React from "react";
 import classes from "./CompetitionCard.module.css";
 import LinkButton from "../UI/LinkButton/LinkButton";
 import Rank from "../Rank/Rank";
+import { INITIAL_WORTH } from "../../App";
 
 const CompetitionCard = (props) => {
   return (
@@ -33,11 +34,19 @@ const CompetitionCard = (props) => {
         <div className={classes.UserCompInfo}>
           <p>
             <span>Initial worth: </span>
-            <span>t$???</span>
+            <span>t${INITIAL_WORTH}</span>
           </p>
           <p>
             <span>Current net worth: </span>
-            <span>t${props.netWorth}</span>
+            <span
+              style={
+                props.netWorth > INITIAL_WORTH
+                  ? { color: "green" }
+                  : { color: "red" }
+              }
+            >
+              t${props.netWorth}
+            </span>
           </p>
           <p>
             <span>Currently available: </span>
