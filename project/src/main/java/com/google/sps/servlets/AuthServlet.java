@@ -20,6 +20,7 @@ import com.google.firebase.auth.FirebaseToken;
 import com.google.firebase.auth.SessionCookieOptions;
 import com.google.gson.Gson;
 import com.google.sps.data.*;
+
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.sql.Connection;
@@ -47,6 +48,8 @@ public class AuthServlet extends HttpServlet {
     try (Connection conn = pool.getConnection()) {
       String email = request.getParameter("email");
       String name = request.getParameter("name");
+      LOGGER.log(Level.WARNING, name);
+      LOGGER.log(Level.WARNING, email);
       User user = getUser(conn, email);
 
       if (user == null) {
@@ -57,6 +60,8 @@ public class AuthServlet extends HttpServlet {
       Gson gson = new Gson();
       response.setContentType("application/json");
       response.getWriter().println(gson.toJson(user));
+      // response.setContentType("text/html;");
+      // response.getWriter().println("<h1>" + user + "</h1>");
     } catch (SQLException ex) {
       LOGGER.log(Level.WARNING, "Error while attempting to find user.", ex);
       response.setStatus(500);
@@ -67,6 +72,23 @@ public class AuthServlet extends HttpServlet {
 
   @Override
   public void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException {
+    String uid = verifyIDToken(request);
+    //stored the user data in the session
+    request.getSession().setAttribute("uid",uid);
+  }
+
+  @Override
+  public void doDelete(HttpServletRequest request, HttpServletResponse response) throws IOException {
+    request.getSession().setAttribute("uid",null);
+  }
+
+  /**
+   *  Get the ID Token that is passed though request, verify the user and return the decoded uid.
+   * @param request -- request
+   * @return decoded ID Token.
+   * @throws IOException
+   */
+  private String verifyIDToken(HttpServletRequest request) throws IOException{
     //get the client ID Token from the request body
     StringBuilder buffer = new StringBuilder();
     BufferedReader reader = request.getReader();
@@ -184,4 +206,3 @@ public class AuthServlet extends HttpServlet {
     }
   }
 }
-
