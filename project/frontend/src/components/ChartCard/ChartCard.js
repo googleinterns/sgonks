@@ -23,7 +23,7 @@ const ChartCard = (props) => {
             chartArea: {
               // leave room for y-axis labels
               left: 50,
-              right: 150,
+              right: "15%",
               bottom: 20,
               top: 10,
               width: "100%",
