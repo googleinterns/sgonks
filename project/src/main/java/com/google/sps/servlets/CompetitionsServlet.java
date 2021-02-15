@@ -72,25 +72,6 @@ public class CompetitionsServlet extends HttpServlet {
     }
   }
 
-
-//  /**
-//   * Return the body information of the given request.
-//   *
-//   * @param request -- HTTP Servlet request
-//   * @return request body
-//   * @throws IOException
-//   */
-//  public static String getInformationFromFrontEnd(HttpServletRequest request) throws IOException {
-//    StringBuilder buffer = new StringBuilder();
-//    BufferedReader reader = request.getReader();
-//    String line;
-//    while ((line = reader.readLine()) != null) {
-//      buffer.append(line);
-//      buffer.append(System.lineSeparator());
-//    }
-//    return buffer.toString();
-//  }
-
   /**
    * Return all competitions that the user is in.
    *
