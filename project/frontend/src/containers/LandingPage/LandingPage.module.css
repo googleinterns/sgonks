@@ -40,5 +40,12 @@ h3 {
   height: 125%;
   margin-top: -8%;
   transform: rotate(-15deg);
-  filter: drop-shadow(3px 8px 3px rgb(187, 187, 187));
+  /* filter: drop-shadow(3px 8px 3px rgb(187, 187, 187)) saturate(65%)
+    brightness(1.2); */
+
+  filter: drop-shadow(3px 8px 3px rgb(187, 187, 187)) opacity(70%);
+}
+
+.Illustration:hover {
+  transform: rotate(-10deg) scale(1.2);
 }
