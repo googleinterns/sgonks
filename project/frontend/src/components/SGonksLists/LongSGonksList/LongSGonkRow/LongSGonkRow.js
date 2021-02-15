@@ -22,6 +22,8 @@ const LongSGonkRow = (props) => {
       alert.show("Successfully sold '" + props.searchTerm + "'", {
         type: "success",
       });
+
+      props.updateInfo();
     } catch (error) {
       alert.show("Selling investment unsuccessful", { type: "error" });
       console.error("Error:", error);

@@ -48,7 +48,6 @@ import com.google.appengine.api.datastore.EntityNotFoundException;
 public class CompetitionsServlet extends HttpServlet {
 
   private static final Logger LOGGER = Logger.getLogger(CompetitionsServlet.class.getName());
-  private static int INITIAL_NETWORTH = 500;
 
   @Override
   public void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
@@ -71,121 +70,6 @@ public class CompetitionsServlet extends HttpServlet {
       response.setStatus(500);
       response.getWriter().write("Unable to successfully fetch competitions.");
     }
-  }
-
-  @Override
-  public void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException {
-    String frontEndInfo = getInformationFromFrontEnd(request);
-
-    try {
-      //get specific information from json object
-      JSONObject jsonObj = new JSONObject(frontEndInfo);
-      int userId = jsonObj.getInt("userId");
-      String compName = jsonObj.getString("name");
-      SimpleDateFormat formatter = new SimpleDateFormat("dd-MM-yyyy");
-      Date startDate = formatter.parse(jsonObj.getString("startdate"));
-      Date endDate = formatter.parse(jsonObj.getString("enddate"));
-      JSONArray participants = jsonObj.getJSONArray("list");
-
-      DataSource pool = (DataSource) request.getServletContext().getAttribute("db-connection-pool");
-      try (Connection conn = pool.getConnection()) {
-
-        //add competition to database
-        String competitionStmt = String.format(
-            "INSERT INTO competitions (start_date, end_date, competition_name, creator) VALUES "
-                + "(DATE '%tF', DATE '%tF', '%s', %d);",
-            startDate, endDate, compName, userId);
-        try (PreparedStatement competitionstmt = conn.prepareStatement(competitionStmt)) {
-          // Execute the statement
-          competitionstmt.execute();
-          LOGGER.log(Level.INFO,
-              "Added start date: " + startDate + "end date: " + endDate + "name: " + compName
-                  + "user id: " + userId + " to competitions database.");
-        }
-        long competitionId = getLatestInsertedID(conn);
-
-        //add participants to database
-        for (int i = 0; i < participants.length(); i++) {
-          String email = participants.get(i).toString();
-
-          //check if the user is already in the database or not
-          String findUserStmt = "SELECT name,id FROM users WHERE email='" + email + "';";
-          try (PreparedStatement stmt = conn.prepareStatement(findUserStmt)) {
-            ResultSet rs = stmt.executeQuery();
-            String name = null;
-            long id = -1;
-            while (rs.next()) {
-              name = rs.getString(1);
-              id = rs.getLong(2);
-            }
-
-            if (name == null) {
-              //add a new user to database
-              String userStmt =
-                  "INSERT INTO users (name,email) VALUES ('" + null + "', '" + email + "');";
-              try (PreparedStatement statement = conn.prepareStatement(userStmt)) {
-                // Execute the statement
-                statement.execute();
-                LOGGER.log(Level.INFO,
-                    "Added name: " + name + " email: " + email + " to users database.");
-              }
-              id = getLatestInsertedID(conn);
-            }
-
-            //insert participants to database
-            String participantsStmt = String.format(
-                "INSERT INTO participants (user, competition, amt_available, net_worth, rank, rank_yesterday) VALUES "
-                    + "(%d , %d , %d , %d , %d , %d);",
-                id, competitionId, INITIAL_NETWORTH, INITIAL_NETWORTH, 1, null);
-            try (PreparedStatement statement = conn.prepareStatement(participantsStmt)) {
-              // Execute the statement
-              statement.execute();
-              LOGGER.log(Level.INFO, "Added user id: " + id + " competition id: " + competitionId
-                  + " to participants database.");
-            }
-            insertIntoDatastore(id, competitionId, INITIAL_NETWORTH);
-          }
-        }
-      }
-    } catch (Exception e) {
-      System.out.println("ERROR!!" + e);
-    }
-  }
-
-  /**
-   * Return the body information of the given request.
-   *
-   * @param request -- HTTP Servlet request
-   * @return request body
-   * @throws IOException
-   */
-  public static String getInformationFromFrontEnd(HttpServletRequest request) throws IOException {
-    StringBuilder buffer = new StringBuilder();
-    BufferedReader reader = request.getReader();
-    String line;
-    while ((line = reader.readLine()) != null) {
-      buffer.append(line);
-      buffer.append(System.lineSeparator());
-    }
-    return buffer.toString();
-  }
-
-  /**
-   * Retunr the latest ID of the object that's added to the database.
-   *
-   * @param conn -- database connection
-   * @return ID of the latest object
-   * @throws SQLException
-   */
-  private int getLatestInsertedID(Connection conn) throws SQLException {
-    try (PreparedStatement stmt = conn.prepareStatement("SELECT LAST_INSERT_ID();")) {
-      // Execute the statement
-      ResultSet rs = stmt.executeQuery();
-      while (rs.next()) {
-        return rs.getInt(1);
-      }
-    }
-    return -1;
   }
 
   /**
@@ -267,32 +151,5 @@ public class CompetitionsServlet extends HttpServlet {
       }
       return User.create(creatorId, null, null);
     }
-  }
-
-  /**
-   * Insert the initial networth of each user into the networth history datastore
-   */
-  private void insertIntoDatastore(long user, long competition, int netWorth) {
-    Datastore datastore = DatastoreOptions.getDefaultInstance().getService();
-    InvestmentCalculator calc = new InvestmentCalculator();
-
-    /** This might be a bit before the comp starts but that's not a problem as we only query 
-     * the dates we want anyway. */
-    String currentDate = Long.toString(calc.getLatestDate());
-    String entityId = String.format("id=%dcompetition=%d", user, competition);
-
-    Entity netWorthEntity;
-    Key key = datastore.newKeyFactory()
-      .setKind("NetWorths")
-      .newKey(entityId);
-    try {
-      // This shouldn't trigger unless something goes wrong and we try to insert the same entity twice
-      Entity oldNetWorthEntity = datastore.get(key);
-      netWorthEntity = Entity.newBuilder(oldNetWorthEntity).set(currentDate, netWorth).build();;
-    } catch (NullPointerException e) {
-      netWorthEntity = Entity.newBuilder(key).set(currentDate, netWorth).build();
-    }
-    //upsert the entity to the datastore (will create a new entity if not already existing)
-    datastore.put(netWorthEntity);
   }
 }
