@@ -1,6 +1,7 @@
 import React from "react";
 import classes from "./LandingPage.module.css";
 import LoginButtonSet from "../../components/UI/LoginButtonSet/LoginButtonSet";
+import Illustration from "../../assets/landing_illustration.png";
 
 const LandingPage = (props) => {
   return (
@@ -13,7 +14,9 @@ const LandingPage = (props) => {
         </h3>
         <LoginButtonSet></LoginButtonSet>
       </div>
-      <div className={classes.IllustrationContainer}></div>
+      <div className={classes.IllustrationContainer}>
+        <img src={Illustration} className={classes.Illustration} />
+      </div>
     </div>
   );
 };
