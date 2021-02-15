@@ -20,7 +20,6 @@ import com.google.firebase.auth.FirebaseToken;
 import com.google.firebase.auth.SessionCookieOptions;
 import com.google.gson.Gson;
 import com.google.sps.data.*;
-
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.sql.Connection;
@@ -60,8 +59,6 @@ public class AuthServlet extends HttpServlet {
       Gson gson = new Gson();
       response.setContentType("application/json");
       response.getWriter().println(gson.toJson(user));
-      // response.setContentType("text/html;");
-      // response.getWriter().println("<h1>" + user + "</h1>");
     } catch (SQLException ex) {
       LOGGER.log(Level.WARNING, "Error while attempting to find user.", ex);
       response.setStatus(500);
@@ -120,7 +117,7 @@ public class AuthServlet extends HttpServlet {
       }
 
       String email = decodedToken.getEmail();
-      long userID = getUserID(request,email);
+      long userID = getUserID(request, email);
       request.getSession().setAttribute("userID", userID);
 
       response.setStatus(HttpServletResponse.SC_OK);
@@ -154,7 +151,7 @@ public class AuthServlet extends HttpServlet {
     long userID = -1;
 
     try (Connection conn = pool.getConnection()) {
-      User user = getUser(conn,email);
+      User user = getUser(conn, email);
 
       if (user == null) {
         // the user is not already in the database - add user to the database
