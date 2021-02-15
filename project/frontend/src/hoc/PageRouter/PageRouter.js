@@ -19,7 +19,7 @@ const PageRouter = (props) => {
 
   if (!props.authStateReceived) {
     return (
-      <div>
+      <div className={classes.Loading}>
         Signing in...
         <ReactLoading type="spokes" color="#2f7de7" />
       </div>
@@ -54,8 +54,8 @@ const PageRouter = (props) => {
   if (props.loading || Object.keys(props.competitionInfo).length === 0) {
     return (
       <div className={classes.Loading}>
-        Crunching data...
-        <ReactLoading type="bars" color="#2f7de7" />
+        <ReactLoading type="bars" color="#2f7de7" width={80} />
+        <p>Crunching data...</p>
       </div>
     );
   }
