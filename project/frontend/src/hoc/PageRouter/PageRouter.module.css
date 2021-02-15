@@ -1,0 +1,9 @@
+.Loading {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.Loading p {
+  color: rgb(80, 80, 80);
+}

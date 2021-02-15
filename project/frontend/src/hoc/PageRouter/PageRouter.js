@@ -1,5 +1,7 @@
 import React from "react";
 import { Route, Switch, Redirect } from "react-router-dom";
+import ReactLoading from "react-loading";
+import classes from "./PageRouter.module.css";
 
 import LandingPage from "../../containers/LandingPage/LandingPage";
 import SelectCompetition from "../../containers/SelectCompetition/SelectCompetition";
@@ -16,7 +18,12 @@ const PageRouter = (props) => {
   console.log(props);
 
   if (!props.authStateReceived) {
-    return <div>Signing in...</div>;
+    return (
+      <div className={classes.Loading}>
+        <ReactLoading type="spokes" color="#2f7de7" />
+        <p>Signing in...</p>
+      </div>
+    );
   }
   if (!props.signedIn) {
     return (
@@ -45,7 +52,12 @@ const PageRouter = (props) => {
   }
 
   if (props.loading || Object.keys(props.competitionInfo).length === 0) {
-    return <div>Loading...</div>;
+    return (
+      <div className={classes.Loading}>
+        <ReactLoading type="bars" color="#2f7de7" width={80} />
+        <p>Crunching data...</p>
+      </div>
+    );
   }
 
   return (
@@ -79,6 +91,7 @@ const PageRouter = (props) => {
             generalInfo={props.competitionInfo.generalInfo}
             investments={props.competitionInfo.investments}
             rankings={props.competitionInfo.rankings}
+            updateInfo={props.updateInfo}
           />
         )}
       />
