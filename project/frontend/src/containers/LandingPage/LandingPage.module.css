@@ -33,19 +33,18 @@ h3 {
 
 .IllustrationContainer {
   height: 100%;
-  width: 57%;
+  width: 50%;
 }
 
 .Illustration {
-  height: 125%;
-  margin-top: -8%;
-  transform: rotate(-15deg);
-  /* filter: drop-shadow(3px 8px 3px rgb(187, 187, 187)) saturate(65%)
-    brightness(1.2); */
-
+  height: 90%;
+  margin-top: 10%;
+  transform: rotate(28deg);
   filter: drop-shadow(3px 8px 3px rgb(187, 187, 187)) opacity(70%);
+  transition: transform 0.2s;
 }
 
 .Illustration:hover {
-  transform: rotate(-10deg) scale(1.2);
+  transform: rotate(24deg) scale(1.1);
+  transition: transform 0.2s;
 }
