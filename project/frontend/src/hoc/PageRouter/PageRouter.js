@@ -20,8 +20,8 @@ const PageRouter = (props) => {
   if (!props.authStateReceived) {
     return (
       <div className={classes.Loading}>
-        Signing in...
         <ReactLoading type="spokes" color="#2f7de7" />
+        <p>Signing in...</p>
       </div>
     );
   }
