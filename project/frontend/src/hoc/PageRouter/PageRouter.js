@@ -10,7 +10,7 @@ import MySGonks from "../../containers/MySGonks/MySGonks";
 import Marketplace from "../../containers/Marketplace/Marketplace";
 import Competition from "../../containers/Competition/Competition";
 
-import { NO_COMPETITION } from "../../containers/Content/Content";
+import { NO_COMPETITION } from "../../App";
 
 const PageRouter = (props) => {
   const authContext = useContext(AuthContext);

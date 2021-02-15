@@ -7,7 +7,7 @@ import HeaderBar from "../../components/HeaderBar/HeaderBar";
 import Layout from "../../hoc/Layout/Layout";
 import PageRouter from "../../hoc/PageRouter/PageRouter";
 
-export const NO_COMPETITION = 0;
+import { NO_COMPETITION } from "../../App"
 
 const Content = () => {
   const authContext = useContext(AuthContext);
