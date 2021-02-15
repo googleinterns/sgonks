@@ -1,5 +1,6 @@
 import React from "react";
 import ChartCard from "../../components/ChartCard/ChartCard";
+import classes from "./InvestmentChart.module.css";
 
 const InvestmentChart = (props) => {
   if (props.investments === undefined) {
@@ -118,11 +119,7 @@ const InvestmentChart = (props) => {
     data: formatChartData(),
   };
 
-  return (
-    <div>
-      <ChartCard chartInfo={chartsData}></ChartCard>
-    </div>
-  );
+  return <ChartCard chartInfo={chartsData}></ChartCard>;
 };
 
 export default InvestmentChart;
