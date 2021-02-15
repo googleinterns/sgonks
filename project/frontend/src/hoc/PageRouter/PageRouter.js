@@ -53,7 +53,7 @@ const PageRouter = (props) => {
 
   if (props.loading || Object.keys(props.competitionInfo).length === 0) {
     return (
-      <div className={classNames.Loading}>
+      <div className={classes.Loading}>
         Crunching data...
         <ReactLoading type="bars" color="#2f7de7" />
       </div>
