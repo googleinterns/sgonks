@@ -1,5 +1,6 @@
 import React from "react";
 import { Route, Switch, Redirect } from "react-router-dom";
+import ReactLoading from "react-loading";
 
 import LandingPage from "../../containers/LandingPage/LandingPage";
 import SelectCompetition from "../../containers/SelectCompetition/SelectCompetition";
@@ -45,7 +46,7 @@ const PageRouter = (props) => {
   }
 
   if (props.loading || Object.keys(props.competitionInfo).length === 0) {
-    return <div>Loading...</div>;
+    return <ReactLoading type="bars" color="#000" />;
   }
 
   return (
