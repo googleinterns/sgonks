@@ -31,7 +31,7 @@ function App() {
       setLoggedIn(true);
       setUserInfo(status.userInfo);
     }
-  }, [])
+  }, []);
 
   const login = () => {
     setIsLoggingIn(true);
@@ -52,7 +52,7 @@ function App() {
         console.log("error logging in");
       }
     });
-  }
+  };
 
   const logout = () => {
     auth.signOut().then(() => {
@@ -60,13 +60,15 @@ function App() {
       setIsLoggingIn(false);
       setUserInfo({});
       auth.clearPersistedLoginStatus();
-    })
-  }
+    });
+  };
 
   return (
     <BrowserRouter>
       <div className="App">
-        <AuthContext.Provider value={{isLoggedIn, isLoggingIn, user, login, logout}}>
+        <AuthContext.Provider
+          value={{ isLoggedIn, isLoggingIn, user, login, logout }}
+        >
           <Content />
         </AuthContext.Provider>
       </div>
