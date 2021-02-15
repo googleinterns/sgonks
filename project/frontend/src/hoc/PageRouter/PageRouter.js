@@ -46,7 +46,7 @@ const PageRouter = (props) => {
   }
 
   if (props.loading || Object.keys(props.competitionInfo).length === 0) {
-    return <ReactLoading type="bars" color="#000" />;
+    return <ReactLoading type="bars" color="#2f7de7" />;
   }
 
   return (
