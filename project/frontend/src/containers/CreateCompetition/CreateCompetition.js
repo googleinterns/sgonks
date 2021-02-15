@@ -57,17 +57,20 @@ const CreateCompetition = (props) => {
       list: participantList,
     };
     try {
-      await fetch("/competitionList", {
+      var data = await fetch("/createCompetition", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
         },
         body: JSON.stringify(postBody),
       });
+      let body = await data.text();
+      props.updateCompId(parseInt(body));
+
+      console.log("successfully Created the competition with the id:  " + body);
       alert.show("Competition is successfully created", {
         type: "success",
       });
-      console.log("successfully send to back end: \n " + sendInfo);
     } catch (error) {
       console.error("Error:", error);
     }
@@ -133,11 +136,7 @@ const CreateCompetition = (props) => {
         <LinkButton width="275px" inverted="true" to="/compselect">
           Cancel
         </LinkButton>
-        <LinkButton
-          width="275px"
-          onMouseDown={sendInfo}
-          // onClick={() => props.updateCompId(INSERT_COMP_ID_HERE)}
-        >
+        <LinkButton width="275px" onClick={sendInfo}>
           Confirm creation
         </LinkButton>
       </div>
