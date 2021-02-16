@@ -14,7 +14,7 @@ import Competition from "../../containers/Competition/Competition";
 import CreateCompetition from "../../containers/CreateCompetition/CreateCompetition";
 import Explanation from "../../containers/Explanation/Explanation";
 
-import { NO_COMPETITION } from "../../containers/Content/Content";
+import { NO_COMPETITION } from "../../App"
 
 const PageRouter = (props) => {
   const authContext = useContext(AuthContext);
