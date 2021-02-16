@@ -35,6 +35,10 @@ const signIn = (callback) => {
             console.log("user id: " + data.id);
           });
       });
+    })
+    .catch((error) => {
+      console.log("ERROR! ", error);
+      callback(false);
     });
 };
 
