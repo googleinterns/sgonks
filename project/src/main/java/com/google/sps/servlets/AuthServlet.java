@@ -42,47 +42,44 @@ public class AuthServlet extends HttpServlet {
 
   @Override
   public void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException {
-    User user = verifyIDToken(request,response);
-    sendUserToFrontEnd(request,response, user);
+    User user = verifyIDToken(request, response);
+    sendUserToFrontEnd(request, response, user);
   }
 
-  public void sendUserToFrontEnd(HttpServletRequest request, HttpServletResponse response, User currentUser) throws IOException {
-    if (currentUser == null){
-      LOGGER.log(Level.WARNING, "Unsuccessful to verify user the object is null");
+  /**
+   * Send the user's data (name, email and id) that's been verified to frontend.
+   * @param request -- HTTP request
+   * @param response -- HTTP response
+   * @param currentUser -- the information of the user that is logging in
+   * @throws IOException
+   */
+  public void sendUserToFrontEnd(HttpServletRequest request, HttpServletResponse response,
+      User currentUser) throws IOException {
+    if (currentUser == null) {
+      LOGGER.log(Level.WARNING, "Unsuccessful to verify user, the object is null");
+      response.setStatus(500);
+      response.getWriter().write("Unable to successfully or verified user");
+      response.getWriter().flush();
       return;
     }
-    DataSource pool = (DataSource) request.getServletContext().getAttribute("db-connection-pool");
-    System.out.println("This is the user's information email: " + currentUser.email() + " name: "+ currentUser.name() + " id: " + currentUser.id());
 
-    try (Connection conn = pool.getConnection()) {
-      //check if user is in the database
-      User user = getUser(conn, currentUser.email());
+    Gson gson = new Gson();
+    response.setContentType("application/json");
+    response.getWriter().println(gson.toJson(currentUser));
 
-      if (user == null) {
-        // the user is not already in the database - create a new one
-        user = addUser(conn, currentUser.name(), currentUser.email());
-      }
-
-      Gson gson = new Gson();
-      response.setContentType("application/json");
-      response.getWriter().println(gson.toJson(user));
-    } catch (SQLException ex) {
-      LOGGER.log(Level.WARNING, "Error while attempting to find user.", ex);
-      response.setStatus(500);
-      response.getWriter().write("Unable to successfully fetch user");
-      response.getWriter().flush();
-    }
+    LOGGER.log(Level.INFO,
+        "Sending Information to frontend .. name: " + currentUser.name()
+            + " email: " + currentUser.email() + " id: " + currentUser.id());
   }
-
-
 
   /**
    *  Get the ID Token that is passed though request, verify the user and return the decoded uid.
    * @param request -- request
    * @throws IOException
    */
-  private User verifyIDToken(HttpServletRequest request, HttpServletResponse response) throws IOException{
-    //get the client ID Token from the request body
+  private User verifyIDToken(HttpServletRequest request, HttpServletResponse response)
+      throws IOException {
+    // get the client ID Token from the request body
     StringBuilder buffer = new StringBuilder();
     BufferedReader reader = request.getReader();
     String line;
@@ -94,9 +91,7 @@ public class AuthServlet extends HttpServlet {
     String idToken = buffer.toString();
 
     long expiresIn = TimeUnit.DAYS.toMillis(5);
-    SessionCookieOptions options = SessionCookieOptions.builder()
-        .setExpiresIn(expiresIn)
-        .build();
+    SessionCookieOptions options = SessionCookieOptions.builder().setExpiresIn(expiresIn).build();
 
     try {
       // Create the session cookie. This will also verify the ID token in the process.
@@ -114,13 +109,14 @@ public class AuthServlet extends HttpServlet {
       }
 
       String email = decodedToken.getEmail();
-      long userID = getUserID(request, email);
+      String name = decodedToken.getName();
+      long userID = getOrCreateUserID(request, email, name);
 
-      userObj =  User.create(userID,decodedToken.getName(),email);
+      // create a user object to hold all the user's verified information to send to frontend
+      userObj = User.create(userID, name, email);
 
-      //stored the user's is in the session
+      // stored the user's is in the session
       request.getSession().setAttribute("userID", userID);
-      System.out.println("NEW CODE CHEKCINT THAT IT WORKS" + request.getSession().getAttribute("userID"));
 
       response.setStatus(HttpServletResponse.SC_OK);
       response.flushBuffer();
@@ -133,7 +129,8 @@ public class AuthServlet extends HttpServlet {
   }
 
   @Override
-  public void doDelete(HttpServletRequest request, HttpServletResponse response) throws IOException {
+  public void doDelete(HttpServletRequest request, HttpServletResponse response)
+      throws IOException {
     request.getSession().setAttribute("userID", null);
 
     Cookie emptyCookie = new Cookie("firebase_session", null);
@@ -146,10 +143,11 @@ public class AuthServlet extends HttpServlet {
    * If user is in the database, get the user ID in the database from the given email.
    * Otherwise add user to the database and return the user's ID.
    * @param request -- HTTP request
+   * @param name -- in the case that user needs to be added to the database
    * @param email -- user's email from the decoded token
    * @return -- user's ID in the database
    */
-  private long getUserID(HttpServletRequest request, String email){
+  private long getOrCreateUserID(HttpServletRequest request, String email, String name) {
     DataSource pool = (DataSource) request.getServletContext().getAttribute("db-connection-pool");
     long userID = -1;
 
@@ -158,8 +156,7 @@ public class AuthServlet extends HttpServlet {
 
       if (user == null) {
         // the user is not already in the database - add user to the database
-        //@TODO need to get the name from the frontend when it's implemented
-        user = addUser(conn, null, email);
+        user = addUser(conn, name, email);
       }
       userID = user.id();
     } catch (SQLException ex) {
@@ -192,7 +189,6 @@ public class AuthServlet extends HttpServlet {
       // Execute the statement
       userStmt.execute();
       LOGGER.log(Level.INFO, "User " + name + " added to database.");
-
     }
     String getId = "SELECT LAST_INSERT_ID();";
     try (PreparedStatement idStmt = conn.prepareStatement(getId);) {
@@ -206,6 +202,3 @@ public class AuthServlet extends HttpServlet {
     }
   }
 }
-
-
-
