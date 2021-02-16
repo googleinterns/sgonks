@@ -27,7 +27,7 @@ const signIn = (callback) => {
         postIdTokenToAuth(idToken)
           .then((response) => response.json())
           .then((data) => {
-            callback(data.ok, {
+            callback(true, {
               email: user.email,
               displayName: user.displayName,
               id: data.id,
