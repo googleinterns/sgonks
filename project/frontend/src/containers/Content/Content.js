@@ -11,6 +11,7 @@ import { NO_COMPETITION } from "../../App";
 
 const Content = () => {
   const authContext = useContext(AuthContext);
+  const user = authContext.user;
 
   const [compId, setCompId] = useState(NO_COMPETITION);
   const [competitionInfo, setCompetitionInfo] = useState({});
@@ -124,6 +125,7 @@ const Content = () => {
   useEffect(() => {
     console.log("useEffect for isReadyForDataFetch called");
     if (isReadyForDataFetch()) {
+      fetchData();
     }
   }, [authContext.isLoggedIn, compId]);
 
@@ -138,6 +140,7 @@ const Content = () => {
           loading={loading}
           competitionInfo={competitionInfo}
           updateCompId={setCompId}
+          updateInfo={fetchPartialData}
         />
       </Layout>
     </div>
