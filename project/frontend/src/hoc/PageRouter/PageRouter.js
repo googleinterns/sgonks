@@ -1,7 +1,9 @@
-import React from "react";
+import React, { useContext } from "react";
 import { Route, Switch, Redirect } from "react-router-dom";
 import ReactLoading from "react-loading";
 import classes from "./PageRouter.module.css";
+
+import { AuthContext } from "../../context/AuthContext";
 
 import LandingPage from "../../containers/LandingPage/LandingPage";
 import SelectCompetition from "../../containers/SelectCompetition/SelectCompetition";
@@ -15,9 +17,9 @@ import Explanation from "../../containers/Explanation/Explanation";
 import { NO_COMPETITION } from "../../App";
 
 const PageRouter = (props) => {
-  console.log(props);
+  const authContext = useContext(AuthContext);
 
-  if (!props.authStateReceived) {
+  if (authContext.isLoggingIn) {
     return (
       <div className={classes.Loading}>
         <ReactLoading type="spokes" color="#2f7de7" />
@@ -25,7 +27,8 @@ const PageRouter = (props) => {
       </div>
     );
   }
-  if (!props.signedIn) {
+
+  if (!authContext.isLoggedIn) {
     return (
       <Switch>
         <Route path="/signin" component={LandingPage} />

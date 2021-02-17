@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useContext } from "react";
 import { useAlert } from "react-alert";
 
 import classes from "./Marketplace.module.css";
@@ -8,6 +8,7 @@ import RecentBuys from "../../components/RecentBuys/RecentBuysList";
 import Button from "../../components/UI/Button/Button";
 import ChartCard from "../../components/ChartCard/ChartCard";
 import { Redirect, useHistory } from "react-router-dom";
+import { AuthContext } from "../../context/AuthContext";
 
 const Marketplace = (props) => {
   const [searchEntry, setSearchEntry] = useState("");
@@ -15,6 +16,7 @@ const Marketplace = (props) => {
   const [purchaseAmount, setPurchaseAmount] = useState(0);
   const [loadingData, setLoadingData] = useState(false);
   const [chartData, setChartData] = useState();
+  const userId = useContext(AuthContext).user.id;
 
   const alert = useAlert();
 
@@ -109,16 +111,11 @@ const Marketplace = (props) => {
       alert.show("Invalid purchase amount", { type: "error" });
     } else {
       console.log("success");
-      //TODO update userId with the one in context once auth stuff is merged
       console.log(
-        `./buy?user=${1}&competition=${
-          props.compId
-        }&search=${searchEntry}&amount=${purchaseAmount}`
+        `./buy?user=${userId}&competition=${props.compId}&search=${searchEntry}&amount=${purchaseAmount}`
       );
       fetch(
-        `./buy?user=${1}&competition=${
-          props.compId
-        }&search=${searchEntry}&amount=${purchaseAmount}`
+        `./buy?user=${userId}&competition=${props.compId}&search=${searchEntry}&amount=${purchaseAmount}`
       ).then(() => {
         props.updateInfo();
         reset();

@@ -1,24 +1,20 @@
-import React from "react";
+import React, { useContext } from "react";
+import { AuthContext } from "../../../context/AuthContext"
 import LinkButton from "../LinkButton/LinkButton";
 import classes from "./LoginButtonSet.module.css";
-import Consumer from "../../../context/AuthContext";
 
 const LoginButtonSet = (props) => {
+  const authContext = useContext(AuthContext);
+
   return (
-    <Consumer>
-      {(context) => {
-        return (
-          <div className={classes.ButtonSetContainer}>
-            <LinkButton inverted="true" to="/explanation">
-              What is sGonks?
-            </LinkButton>
-            <LinkButton to="/compselect" onClick={context.handleAuth}>
-              Sign in
-            </LinkButton>
-          </div>
-        );
-      }}
-    </Consumer>
+    <div className={classes.ButtonSetContainer}>
+      <LinkButton inverted="true" to="/explanation">
+        What is sGonks?
+      </LinkButton>
+      <LinkButton to="/compselect" onClick={authContext.login}>
+        Sign in
+      </LinkButton>
+    </div>
   );
 };
 
