@@ -124,7 +124,6 @@ const Content = () => {
   useEffect(() => {
     console.log("useEffect for isReadyForDataFetch called");
     if (isReadyForDataFetch()) {
-      fetchData();
     }
   }, [authContext.isLoggedIn, compId]);
 
