@@ -25,13 +25,13 @@ from scripts.fetch_trends import get_trending_searches, get_updated_daily_data
 from scripts.database_updates import get_investment_data, update_investment_database, update_trending_database
 from scripts.config import Secret
 
-# Imports the Google Cloud client library
+# Imports external dependencies
 from google.cloud import datastore
-
 import requests
+from flask import Flask
 
-
-if __name__ == "__main__":
+@app.route('/start')
+def run_updates():
     # Update data in Datastore:
 
     # Instantiates a client
@@ -55,3 +55,17 @@ if __name__ == "__main__":
     req = requests.get("http://localhost:8080/cron", params={"password" : password}) # replace this link with the googleplex link in prod
     # close the request
     req.close()
+    return {"success" : True}
+
+app = Flask(__name__)
+
+
+if __name__ == '__main__':
+    # This is used when running locally only. When deploying to Google App
+    # Engine, a webserver process such as Gunicorn will serve the app. This
+    # can be configured by adding an `entrypoint` to app.yaml.
+    # Flask's development server will automatically serve static files in
+    # the "static" directory. See:
+    # http://flask.pocoo.org/docs/1.0/quickstart/#static-files. Once deployed,
+    # App Engine itself will serve those files as configured in app.yaml.
+    app.run(host='127.0.0.1', port=8081, debug=True)
