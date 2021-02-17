@@ -21,9 +21,9 @@ end of each day UTC time.
 """
 
 # Imports the method for fetching formatted data from google trends
-from fetch_trends import get_trending_searches, get_updated_daily_data
-from database_updates import get_investment_data, update_investment_database, update_trending_database
-from config import Secret
+from scripts.fetch_trends import get_trending_searches, get_updated_daily_data
+from scripts.database_updates import get_investment_data, update_investment_database, update_trending_database
+from scripts.config import Secret
 
 # Imports the Google Cloud client library
 from google.cloud import datastore
