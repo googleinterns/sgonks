@@ -61,6 +61,66 @@ const Content = () => {
     return true;
   };
 
+  const fetchData = () => {
+    setLoading(true);
+    Promise.all([
+      fetchCompetitionInfo(
+        `./competitionInfo?user=${user.id}&competition=${compId}`,
+        "generalInfo"
+      ),
+      fetchCompetitionInfo(`./recentBuys?competition=${compId}`, "recentBuys"),
+      fetchCompetitionInfo(
+        `./investments?user=${user.id}&competition=${compId}`,
+        "investments"
+      ),
+      fetchCompetitionInfo("./trending", "trending"),
+      fetchCompetitionInfo(`./networths?competition=${compId}`, "networths"),
+      fetchCompetitionInfo(
+        `./rankedCompetitors?competition=${compId}`,
+        "rankings"
+      ),
+    ]).then((resolvedData) => {
+      setLoading(false);
+      let newCompInfo = {};
+      for (const response of resolvedData) {
+        newCompInfo = {
+          ...newCompInfo,
+          ...response,
+        };
+      }
+      setCompetitionInfo(newCompInfo);
+    });
+  };
+
+  const fetchPartialData = () => {
+    setLoading(true);
+    Promise.all([
+      fetchCompetitionInfo(
+        `./competitionInfo?user=${user.id}&competition=${compId}`,
+        "generalInfo"
+      ),
+      fetchCompetitionInfo(
+        `./investments?user=${user.id}&competition=${compId}`,
+        "investments"
+      ),
+    ]).then((resolvedData) => {
+      setLoading(false);
+      let newPartialInfo = {};
+      for (const response of resolvedData) {
+        newPartialInfo = {
+          ...newPartialInfo,
+          ...response,
+        };
+      }
+      let newCompInfo = {
+        ...competitionInfo,
+        ...newPartialInfo,
+      };
+      console.log(newCompInfo);
+      setCompetitionInfo(newCompInfo);
+    });
+  };
+
   useEffect(() => {
     console.log("useEffect for isReadyForDataFetch called");
     if (!isReadyForDataFetch()) return;
