@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useContext } from "react";
 import classes from "./CreateCompetition.module.css";
 import { Link } from "react-router-dom";
 import { useAlert } from "react-alert";
@@ -6,6 +6,7 @@ import LinkButton from "../../components/UI/LinkButton/LinkButton";
 import ParticipantCard from "../../components/ParticipantCard/ParticipantCard";
 import { RiAddCircleLine } from "react-icons/ri";
 import regeneratorRuntime from "regenerator-runtime";
+import { AuthContext } from "../../context/AuthContext";
 
 const CreateCompetition = (props) => {
   const [participant, setParticipant] = useState("");
@@ -13,7 +14,8 @@ const CreateCompetition = (props) => {
   const [compName, setCompName] = useState("");
   const [startDate, setStartDate] = useState("");
   const [endDate, setEndDate] = useState("");
-  const userid = 1;
+
+  const userid = useContext(AuthContext).user.id;
 
   const alert = useAlert(); //for displaying alert messages
 

@@ -1,13 +1,15 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useContext } from "react";
 import classes from "./SelectCompetition.module.css";
 import CompetitionCard from "../../components/CompetitionCard/CompetitionCard";
 import LinkButton from "../../components/UI/LinkButton/LinkButton";
 import { useHorizontalScroll } from "../../components/UI/UIActions/useHorizontalScroll";
+import { AuthContext } from "../../context/AuthContext";
 
 const SelectCompetition = (props) => {
   const scrollRef = useHorizontalScroll();
 
-  const userId = 1;
+  const userId = useContext(AuthContext).user.id;
+
   const [comps, setComps] = useState(null);
 
   const competitionSelectedHandler = (compId) => {
