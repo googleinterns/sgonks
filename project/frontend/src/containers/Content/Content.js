@@ -123,39 +123,9 @@ const Content = () => {
 
   useEffect(() => {
     console.log("useEffect for isReadyForDataFetch called");
-    if (!isReadyForDataFetch()) return;
-
-    console.log("attepmpting fetch");
-    setLoading(true);
-    let user = authContext.user;
-    Promise.all([
-      fetchCompetitionInfo(
-        `./competitionInfo?user=${user.id}&competition=${compId}`,
-        "generalInfo"
-      ),
-      fetchCompetitionInfo(`./recentBuys?competition=${compId}`, "recentBuys"),
-      fetchCompetitionInfo(
-        `./investments?user=${user.id}&competition=${compId}`,
-        "investments"
-      ),
-      fetchCompetitionInfo("./trending", "trending"),
-      fetchCompetitionInfo(`./networths?competition=${compId}`, "networths"),
-      fetchCompetitionInfo(
-        `./rankedCompetitors?competition=${compId}`,
-        "rankings"
-      ),
-    ]).then((resolvedData) => {
-      setLoading(false);
-      let newCompInfo = {};
-      for (const response of resolvedData) {
-        newCompInfo = {
-          ...newCompInfo,
-          ...response,
-        };
-      }
-      console.log(newCompInfo);
-      setCompetitionInfo(newCompInfo);
-    });
+    if (isReadyForDataFetch()) {
+      fetchData();
+    }
   }, [authContext.isLoggedIn, compId]);
 
   return (
