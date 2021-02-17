@@ -7,7 +7,7 @@ import HeaderBar from "../../components/HeaderBar/HeaderBar";
 import Layout from "../../hoc/Layout/Layout";
 import PageRouter from "../../hoc/PageRouter/PageRouter";
 
-import { NO_COMPETITION } from "../../App"
+import { NO_COMPETITION } from "../../App";
 
 const Content = () => {
   const authContext = useContext(AuthContext);
@@ -24,6 +24,7 @@ const Content = () => {
   }, []);
 
   const fetchCompetitionInfo = async (fetchCall, stateKey) => {
+    console.log("fetching " + stateKey);
     try {
       const data = await fetch(fetchCall).then((response) => response.json());
       return {
@@ -37,18 +38,34 @@ const Content = () => {
   };
 
   const isReadyForDataFetch = () => {
-    if (authContext.isLoggingIn || !authContext.isLoggedIn) return false;
-    if (!authContext.user) return false;
+    if (authContext.isLoggingIn || !authContext.isLoggedIn) {
+      console.log("(authContext.isLoggingIn || !authContext.isLoggedIn) FALSE");
+      return false;
+    }
+    if (!authContext.user) {
+      console.log("(!authContext.user) FALSE");
+      return false;
+    }
 
     let user = authContext.user;
-    if (user.id === undefined || user.id === 0) return false;
-    if (compId === NO_COMPETITION) return false;
+    if (user.id === undefined || user.id === 0) {
+      console.log("(user.id === undefined || user.id === 0) FALSE");
+      return false;
+    }
+    if (compId === NO_COMPETITION) {
+      console.log("(compId === NO_COMPETITION) FALSE");
+      return false;
+    }
+
+    console.log("ready to fetch");
     return true;
   };
 
   useEffect(() => {
+    console.log("useEffect for isReadyForDataFetch called");
     if (!isReadyForDataFetch()) return;
 
+    console.log("attepmpting fetch");
     setLoading(true);
     let user = authContext.user;
     Promise.all([
@@ -76,9 +93,10 @@ const Content = () => {
           ...response,
         };
       }
+      console.log(newCompInfo);
       setCompetitionInfo(newCompInfo);
     });
-  }, [authContext.isLoggedIn]);
+  }, [authContext.isLoggedIn, compId]);
 
   return (
     <div className={classes.Content}>

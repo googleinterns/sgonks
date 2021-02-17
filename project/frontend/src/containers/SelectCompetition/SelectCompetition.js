@@ -61,6 +61,9 @@ const SelectCompetition = (props) => {
   };
 
   useEffect(() => {
+    console.log(
+      "selectCompetition page: fetching ./competitionList with userid " + userId
+    );
     fetch("./competitionList?user=" + userId)
       .then((response) => response.json())
       .then((data) => {
