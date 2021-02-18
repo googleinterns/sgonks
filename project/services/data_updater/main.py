@@ -52,7 +52,7 @@ def run_updates():
     # password prevents 3rd parties running the cron servlet at undesired times. Stored in a Secret() class
     password = Secret().password
     # create a connection request for the cron servlet, with password as a parameter
-    req = requests.get("http://localhost:8080/cron", params={"password" : password}) # replace this link with the googleplex link in prod
+    req = requests.get("https://sgonks-step272.googleplex.com/cron", params={"password" : password}) # replace this link with the googleplex link in prod
     # close the request
     req.close()
     return {"success" : True}
