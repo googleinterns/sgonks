@@ -18,7 +18,7 @@ for (const p of fs.readdirSync(SOURCE_DIR)) {
 module.exports = {
   entry: entries,
   output: {
-    path: path.resolve(__dirname, "../src/main/webapp/build/js"),
+    path: path.resolve(__dirname, "../services/default/src/main/webapp/build/js"),
     filename: "[name].js",
     publicPath: "http://localhost:9000/",
   },

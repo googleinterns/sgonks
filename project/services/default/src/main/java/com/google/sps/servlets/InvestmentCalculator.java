@@ -145,7 +145,7 @@ public class InvestmentCalculator {
             // haven't sold investment yet, get data up to latest datapoint
             endDateEpoch = getLatestUpdatedDateForSearch(googleSearch);
         } else {
-            endDateEpoch = sellDate;
+            endDateEpoch = Math.min(sellDate, getLatestUpdatedDateForSearch(googleSearch));
         }
 
         List<String> dates = new ArrayList();

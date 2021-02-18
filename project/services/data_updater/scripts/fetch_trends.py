@@ -38,7 +38,7 @@ def get_updated_daily_data(entity):
     end = get_end_times()
 
     hourly_data = fetch_hourly_data(search_term, *start, *end)
-    daily_data = aggregate_hourly_to_daily(hourly_data)
+    daily_data = aggregate_hourly_to_daily(hourly_data, entity)
     complete_data = backfill_missing_data_as_necessary(daily_data, entity)
 
     return complete_data
@@ -68,12 +68,12 @@ def fetch_hourly_data(search_term, year_start, month_start, day_start, year_end,
     return hourly_data
 
 
-def aggregate_hourly_to_daily(hourly_df):
+def aggregate_hourly_to_daily(hourly_df, entity):
     """
     hourly_df : a dataframe of hourly search data
     returns a dictionary of aggregated data
     """
-    search_term = hourly_df.columns[0]
+    search_term = entity['search_term']
     new_data = {
         "search_term": search_term
     }
