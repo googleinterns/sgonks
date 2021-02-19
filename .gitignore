@@ -43,9 +43,6 @@ project/.project
 project/.settings/
 
 # Ignore secrets
-firebaseConfig.js
-config/
-config.py
 project/datastore_key.json
 
 # Ignore Python generated files
